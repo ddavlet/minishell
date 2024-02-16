@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:48:42 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/14 18:32:37 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/15 20:01:00 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include <signal.h>
 # include <stdio.h>
+# include <string.h>
+# include <stdbool.h>
 
 typedef enum e_oper {
 	RUN,
@@ -34,5 +36,8 @@ typedef struct s_pars
 	// struct s_pars	*next;
 }					t_pars;
 
+/*Utils*/
+char	**pars_split(char const *s, char c);
+int		ft_isexeption(char c);
 
 #endif
