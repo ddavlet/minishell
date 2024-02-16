@@ -1,3 +1,13 @@
 add an array of integers that count number of quotation opened - closed
 all quotations must be 0 in the end. Can check it in the beggining
 if not 0 int the end, stop
+
+parsing starts with the most significant part:
+1. need to set up the significance value for keys
+2. go down by significance and changed input untill all levels passed
+3. i.e. open up all brackets and modify brackets if needed,
+  then get the value of some variable $VARIABLE and then go to operants
+4. I can also store all level keys in array and search for them
+5. use tokenazation for keys
+6. chat-gpt "how bash reads input"
+7. enumarator for commands and all tokens (since they are fixed)
