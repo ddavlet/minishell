@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 19:59:03 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/16 12:19:18 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:23:14 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static unsigned int	ft_counter(char const *s, char c)
 	unsigned int	i;
 
 	i = 0;
-	while (*s && !ft_isexeption(s[i]))
+	while (*s && !ft_isexeption(*s))
 	{
 		if (*s != c)
 		{

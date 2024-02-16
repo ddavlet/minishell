@@ -1,0 +1,3 @@
+add an array of integers that count number of quotation opened - closed
+all quotations must be 0 in the end. Can check it in the beggining
+if not 0 int the end, stop

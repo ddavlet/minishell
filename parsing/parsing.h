@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:48:42 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/16 13:03:23 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:13:54 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,20 @@
 # include <string.h>
 # include <stdbool.h>
 
-typedef enum e_oper {
+typedef enum e_oper
+{
 	RUN,
 	PIPE,
 	OR,
 	AND,
 }			t_oper;
+
+typedef enum e_quote
+{
+	ZERO,
+	SIGNLE,
+	DOUBLE
+}			t_quote;
 
 typedef struct s_pars
 {
@@ -39,5 +47,7 @@ typedef struct s_pars
 /*Utils*/
 char	**pars_split(char const *s, char c);
 int		ft_isexeption(char c);
+int		ft_isquotation(char c);
+
 
 #endif

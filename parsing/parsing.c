@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:49:26 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/16 12:38:39 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:14:57 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_oper	parse_rule(char *txt)
 	txt++; //we don't search for it from the first char + SEGFAULT protection
 	while (*txt)
 	{
-		if (*(txt - 1) != '\\')
+		if (*(txt - 1) != '\\') // add if for quotations
 		{
 			if (*txt == '|' && *(txt + 1) != '|')
 				return (PIPE);
@@ -61,11 +61,12 @@ char	*parse_name(char **ptr)
 
 	// i = 0;
 	txt = *ptr;
-	while (*txt == ' ')
+	while (*txt == ' ' || ft_isexeption(*txt)) // only space considered here
 		txt++;
+	*ptr = txt;
 	while (*txt) // is the text contain only normal spaces?
 	{
-		if (ft_isspace(*txt) || ft_isexeption(*txt))
+		if (ft_isspace(*txt) || ft_isexeption(*txt)) // other spaces considered here
 			break ;
 		txt++;
 	}
@@ -117,10 +118,11 @@ void	debug_print(t_pars *com)
 t_pars	*init_comand(char **txt, int i)
 {
 	t_pars	*com;
-	// char	*ptr;
+	t_quote	q;
 
-	// ptr = *txt;
-	(void)i;
+
+	(void)i; // ??
+	q = ZERO;
 	com = (t_pars *)malloc(sizeof(t_pars));
 	com->name = parse_name(txt);
 	com->operat = parse_rule(*txt);
@@ -132,13 +134,15 @@ t_pars	*init_comand(char **txt, int i)
 t_pars	**parse_text(char *txt)
 {
 	t_pars	**comands;
-	int		count; //assume that number of command are less then int
 	int		i;
+	int		count; //assume that number of command are less then int
 
 	count = count_commands(txt);
 	comands = (t_pars **)malloc(sizeof(t_pars *) * (count + 1));
 	comands[count] = NULL;
 	i = 0;
+	while (*txt == ' ')
+		txt++;
 	while (i < count)
 	{
 		comands[i] = init_comand(&txt, i);
@@ -155,13 +159,13 @@ void	debug_print_parse(t_pars **commands)
 	size_t	i;
 
 	i = 0;
-	while(commands[i])
+	while (commands[i])
 		debug_print(commands[i++]);
 }
 
 int	main(int argc, char *argv[])
 {
-	t_pars **commands = parse_text(argv[1]);
+	t_pars	**commands = parse_text(argv[1]);
 
 	debug_print_parse(commands);
 	(void)argc;
