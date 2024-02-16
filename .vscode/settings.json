@@ -1,0 +1,11 @@
+{
+	"files.associations": {
+		"readline.h": "c",
+		"history.h": "c",
+		"rlstdc.h": "c",
+		"signals.h": "c",
+		"libft.h": "c",
+		"unistd.h": "c",
+		"signal.h": "c"
+	}
+}

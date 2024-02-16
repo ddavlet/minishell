@@ -1,0 +1,11 @@
+{
+    "tasks": [
+        {
+			"label": "Parsing",
+			"type": "shell",
+			"command": "cc -Wall -Werror -Wextra -g ./parsing/*.c ./libft/libft.a -o parsing.out",
+			"problemMatcher": []
+		}
+    ],
+    "version": "2.0.0"
+}
