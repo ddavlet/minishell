@@ -31,3 +31,9 @@ echo
 echo "test with sigle quotation: 'echo ''test         $(echo test)'' '"
 echo "test         $(echo test)"
 echo
+echo "testing argument asignment: 'ARG='test' | echo \$ARG'"
+ARG='test' | echo $ARG
+echo
+echo "testing argument asigment first then echo: 'ARG='test' \n echo \$ARG'"
+ARG='test'
+echo $ARG
