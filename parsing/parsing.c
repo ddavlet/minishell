@@ -6,13 +6,13 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:49:26 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/15 21:07:32 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:38:39 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-t_oper	retn_rule(char *txt)
+t_oper	parse_rule(char *txt)
 {
 	txt++; //we don't search for it from the first char + SEGFAULT protection
 	while (*txt)
@@ -75,13 +75,27 @@ char	*parse_name(char **ptr)
 	return (name);
 }
 
+int	contain_quotations(char *txt)
+{
+	while (*txt && !ft_isexeption(*txt))
+	{
+		if (*txt == '\'' || *txt == '\"')
+			return (1);
+		txt++;
+	}
+	return (0);
+}
+
 char	**parse_args(char **ptr)
 {
 	char	**args;
 	char	*txt;
 
 	txt = *ptr;
-	args = pars_split(txt, ' ');
+	if (contain_quotations(txt))
+		; // what to do when we have quotations?
+	else
+		args = pars_split(txt, ' ');
 	while (*txt && !ft_isexeption(*txt))
 		txt++;
 	if (ft_isexeption(*txt))
@@ -92,6 +106,7 @@ char	**parse_args(char **ptr)
 
 void	debug_print(t_pars *com)
 {
+	ft_printf("\nCommand:\n");
 	ft_printf("comand: %s\n", com->name);
 	ft_printf("operation code: %d\n", com->operat);
 	int	i = 0;
@@ -105,9 +120,10 @@ t_pars	*init_comand(char **txt, int i)
 	// char	*ptr;
 
 	// ptr = *txt;
+	(void)i;
 	com = (t_pars *)malloc(sizeof(t_pars));
 	com->name = parse_name(txt);
-	com->operat = retn_rule(*txt);
+	com->operat = parse_rule(*txt);
 	com->args = parse_args(txt);
 	// debug_print(com);
 	return (com);
@@ -124,7 +140,10 @@ t_pars	**parse_text(char *txt)
 	comands[count] = NULL;
 	i = 0;
 	while (i < count)
-		comands[i++] = init_comand(&txt, i);
+	{
+		comands[i] = init_comand(&txt, i);
+		i++;
+	}
 	return (comands);
 }
 
