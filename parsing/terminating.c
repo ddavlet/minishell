@@ -20,7 +20,7 @@ int	terminate_tokens(char **ptr)
 
 	i = 0;
 	if (!ptr)
-		return (0); //??
+		return (0); //is that error??
 	while (ptr[i])
 		free(ptr[i]);
 	free(ptr);

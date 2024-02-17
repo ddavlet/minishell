@@ -22,9 +22,9 @@ void	debug_print_come(t_com **commands)
 
 void	debug_print_tokens(char **tokens)
 {
-	ssize_t	i;
+	int	i;
 
 	i = -1;
 	while (tokens[++i])
-		printf("token %lo: %s\n", i, tokens[i]);
+		ft_printf("token %d: %s\n", i, tokens[i]);
 }
