@@ -22,7 +22,7 @@ int	terminate_tokens(char **ptr)
 	if (!ptr)
 		return (0); //is that error??
 	while (ptr[i])
-		free(ptr[i]);
+		free(ptr[i++]);
 	free(ptr);
 	return (0);
 }

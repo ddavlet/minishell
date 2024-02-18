@@ -88,7 +88,7 @@ char	**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q)
 			merged[j] = ft_strdup(tokens[++e_q]);
 		j++;
 	}
-	free(tokens);
+	terminate_tokens(tokens);
 	return (merged);
 }
 
@@ -119,39 +119,89 @@ char	**merge_quotations(char **tokens)
 	return (tokens);
 }
 
-// char *parse_envvar(char *env_var)
-// {
-// 	t_env	*envvar;
+uint32_t	del_pos(const char *txt)
+{
+	uint32_t	i;
 
+	i = 0;
+	while (txt[i])
+	{
+		if (!ft_isalnum(txt[i]))
+			break ;
+		i++;
+	}
+	return (i);
+}
 
-// }
+char	*find_var(t_env	*root, char *search)
+{
+	t_env	*child;
 
-// char	*find_envvar(char *txt)
-// {
-// 	unsigned int	i;
+	child = root->child;
+	while (child)
+	{
+		if (child->letter == *search && *(search + 1))
+		{
+			child = child->child;
+			search++;
+		}
+		else if (child->letter == *search && !*(search + 1))
+		{
+			free(search);
+			if (child->exists == true)
+				return (child->content);
+			else
+				return ("");
+		}
+		else
+			child = child->next;
+	}
+	free(search);
+	return ("");
+}
 
-// 	i = 0;
-// 	while (txt[i])
-// 	{
-// 		if (txt[i] == '$')
+char	*set_envvar(const char *txt, t_env *root)
+{
+	char		*new_txt;
+	char		*tmp;
+	uint32_t	i;
 
-// 	}
-// }
+	i = 0;
+	while (txt[i] && txt[i] == '$' && !del_pos(&txt[i + 1]))
+		i++;
+	if (!txt[i])
+		return (ft_strdup(txt)); // ?? protect
+	new_txt = ft_substr(txt, 0, i); //protect
+	tmp = new_txt;
+	new_txt = ft_strjoin(tmp, find_var(root, ft_substr(txt, i, del_pos(&txt[i])))); // protect
+	free(tmp);
+	i += del_pos(&txt[i]);
+	tmp = new_txt;
+	new_txt = ft_strjoin(tmp, set_envvar(&txt[i], root));
+	// recursion to find all $ARGS ??
+	return (new_txt);
+}
 
-// char	**get_variable(char **tokens)
-// {
-// 	ssize_t	i;
+void	get_variable(char **tokens, t_env *root)
+{
+	ssize_t	i;
+	char	*tmp;
 
-// 	i = 0;
-// 	while (tokens[i])
-// 	{
-// 		if (tokens[i][0] == '\"')
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i][0] == '\"')
+		{
+			tmp = tokens[i];
+			tokens[i] = set_envvar(tmp, root);
+			free(tmp);
+		}
+		i++;
+	}
 
-// 	}
+}
 
-// }
-
-t_com	**parse_text(char *txt)
+t_com	**parse_text(char *txt, t_env *root)
 {
 	t_com	**commands;
 	// int		i;
@@ -161,9 +211,10 @@ t_com	**parse_text(char *txt)
 	tokens = pars_split(txt);
 	// check tokens (i.e. "&" or "|||"), since it is limitation of split funtion
 	tokens = merge_quotations(tokens);
+	debug_print_tokens(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
-	// tokens =
+	get_variable(tokens, root);
 	debug_print_tokens(tokens);
 	(void)commands;
 	return (NULL);

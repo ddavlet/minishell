@@ -62,3 +62,5 @@ echo """'"'"test"'"'"""
 'e'c''h''o'' tes't'
 "ec"h"o" 'te's't'
 echo
+echo "testing echo with space after $ sign: 'echo test$ test'"
+echo test$ test

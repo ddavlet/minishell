@@ -7,6 +7,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <stdbool.h>
+# include <stdint.h>
 
 typedef enum e_oper
 {
@@ -52,7 +53,7 @@ typedef struct s_env
 }					t_env;
 
 /*Commands functions*/
-t_com	**parse_text(char *txt);
+t_com	**parse_text(char *txt, t_env *root);
 /*Utils*/
 char	**pars_split(char const *s);
 int		ft_isexeption(char c);
