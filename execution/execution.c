@@ -1,127 +1,87 @@
 
 #include "execution.h"
 
-int	execution(t_pars **cmd_arr, char *envp[])
+int	execute_command(t_com *cmd, char *envp[])
 {
-	int		i;
-	int		fd[2];
-	pid_t	pid;
+	char	**argv;
+	char	*cmd_name;
+	char	*path;
 
-	i = 0;
-	while (cmd_arr[i])
+	cmd_name = cmd->com;
+	create_argv(cmd, &argv);
+	if (argv == NULL)
 	{
-		if (cmd_arr[i]->operat == AND)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (execve(cmd_arr[i]->name, cmd_arr[i]->args, envp) == -1)
-				{
-					perror("execve");
-					exit(1);
-				}
-			}
-			else if (pid > 0)
-			{
-				waitpid(pid, NULL, 0);
-			}
-			else
-			{
-				perror("fork");
-				exit(1);
-			}
-		}
-		else if (cmd_arr[i]->operat == OR)
-		{
-				pid = fork();
-				if (pid == 0)
-				{
-					if (execve(cmd_arr[i]->name, cmd_arr[i]->args, envp) == -1)
-					{
-						perror("execve");
-						exit(1);
-					}
-				}
-				else if (pid > 0)
-				{
-					waitpid(pid, NULL, 0);
-				}
-				else
-				{
-					perror("fork");
-					exit(1);
-				}
-		}
-		else
-		if (cmd_arr[i]->operat == PIPE)
-		{
-			if (pipe(fd) == -1)
-			{
-				perror("pipe");
-				exit(1);
-			}
-			pid = fork();
-			if (pid == 0)
-			{
-				// CHILD
-				dup2(fd[1], 1); // redirect stdout to the write end of the pipe
-				close(fd[0]);
-				close(fd[1]);
-				if (execve(cmd_arr[i]->name, cmd_arr[i]->args, envp) == -1)
-				{
-					perror("execve");
-					exit(1);
-				}
-			}
-			else if (pid > 0) 
-			{
-				// PARENT
-				dup2(fd[0], 0); // redirect stdin to the read end of the pipe
-				close(fd[0]);
-				close(fd[1]);
-				waitpid(pid, NULL, 0);
-			}
-			else
-			{
-				perror("fork");
-				exit(1);
-			}
-		}
-		else
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (execve(cmd_arr[i]->name, cmd_arr[i]->args, envp) == -1)
-				{
-					perror("execve");
-					exit(1);
-				}
-			}
-			else if (pid > 0)
-			{
-				waitpid(pid, NULL, 0);
-			}
-			else
-			{
-				perror("fork");
-				exit(1);
-			}
-		}
-		i++;
+		terminate_command(cmd);
+		return (-1);
 	}
-	return (0);
+	path = get_path(cmd_name, envp);
+	if (path == NULL)
+	{
+		free(path);
+		ft_putstr_fd("pipex: command not found: ", 2);
+		ft_putendl_fd(cmd_name, 2);
+		terminate_command(cmd);
+		return (-1);
+	}
+	if (execve(path, argv, envp) == -1)
+	{
+		free(path);
+		ft_putstr_fd("pipex: execve", 2);
+		ft_putendl_fd(cmd_name, 2);
+		free_string_arr(argv);
+		return (-1);
+	}
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int	execute_chain_of_commands(t_com **cmds, char *envp[])
 {
-	// t_pars	**commands = parse_text(argv[1]);
-	t_pars	**commands = parse_text("ls -l | grep .c | wc -l");
+	int		fd[2]; // f[0] - read, f[1] - write
+	pid_t	pid;
+	int		status;
+	int		i;
 
-	debug_print_parse(commands);
-	execution(commands, envp);
+	i = 0;
+	while (cmds[i + 1])
+	{
+		if (pipe(fd) == -1)
+		{
+			perror("pipe");
+			terminate_execution();
+		}
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			terminate_execution();
+		}
+		if (pid == 0) 
+		{
+			close(fd[0]); 
+			dup2(fd[1], 1);
+			close(fd[1]);
+			execute_command(cmds[i], envp);
+		}
+		else
+		{
+			waitpid(pid, &status, 0);
+			close(fd[1]);
+			dup2(fd[0], 0); // redirect stdin to read end of pipe
+			close(fd[0]);
+			execute_command(cmds[i + 1], envp);
 
-	(void)argc;
-	(void)argv;
+			i++;
+		}
+	}
+
+}
+
+int	execution(t_com **cmds, char *envp[])
+{
+	if (!cmds || cmds[0] == NULL)
+		terminate_execution(cmds, envp);
+	else if (cmds[1] == NULL)
+		execute_command(cmds[0], envp);
+	else
+		execute_chain_of_commands(cmds, envp);
 	return (0);
 }
