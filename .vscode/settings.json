@@ -6,6 +6,7 @@
 		"signals.h": "c",
 		"libft.h": "c",
 		"unistd.h": "c",
-		"signal.h": "c"
+		"signal.h": "c",
+		"parsing.h": "c"
 	}
 }

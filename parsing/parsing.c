@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:49:26 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/16 16:14:57 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:59:14 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,143 +31,164 @@ t_oper	parse_rule(char *txt)
 	return (RUN);
 }
 
-int	count_commands(char *txt) //here max value of pipes is limited to int. Need protection?
+int	count_commands(char **txt) //here max value of commands is limited to int. Need protection?
 {
 	int	count;
+	int	i;
 
 	count = 1;
-	txt++; //we don't search for it from the first char + SEGFAULT protection
+	i = 0;
 	while (*txt)
 	{
-		if (*(txt - 1) != '\\') // no need to handle it according to subject
-		{
-			if (*txt == '|' && *(txt + 1) != '|')
-				count++;
-			else if (*txt == '|')
-				count++;
-			else if (*txt == '&' && *(txt + 1) == '&')
-				count++;
-		}
+		if (*txt[0] == '|')
+			count++;
+		else if (*txt[0] == '&')
+			count++;
 		txt++;
 	}
 	return (count);
 }
 
-char	*parse_name(char **ptr)
+int	contain_quotations(char **tokens)
 {
-	char	*name;
-	char	*txt;
-	// size_t	i;
+	ssize_t	i;
 
-	// i = 0;
-	txt = *ptr;
-	while (*txt == ' ' || ft_isexeption(*txt)) // only space considered here
-		txt++;
-	*ptr = txt;
-	while (*txt) // is the text contain only normal spaces?
+	i = 0;
+	while (tokens[i])
 	{
-		if (ft_isspace(*txt) || ft_isexeption(*txt)) // other spaces considered here
-			break ;
-		txt++;
-	}
-	name = ft_substr(*ptr, 0, txt - *ptr);
-	txt++;
-	*ptr = txt;
-	return (name);
-}
-
-int	contain_quotations(char *txt)
-{
-	while (*txt && !ft_isexeption(*txt))
-	{
-		if (*txt == '\'' || *txt == '\"')
+		if (ft_isquotation(tokens[i][0]) && !tokens[i][1])
 			return (1);
-		txt++;
+		i++;
 	}
 	return (0);
 }
 
-char	**parse_args(char **ptr)
+char	*merge_to_char(char **tokens, ssize_t b_q, ssize_t e_q)
 {
-	char	**args;
-	char	*txt;
+	char	*merged;
+	char	*tmp;
 
-	txt = *ptr;
-	if (contain_quotations(txt))
-		; // what to do when we have quotations?
-	else
-		args = pars_split(txt, ' ');
-	while (*txt && !ft_isexeption(*txt))
-		txt++;
-	if (ft_isexeption(*txt))
-		txt++;
-	*ptr = txt;
-	return (args);
+	merged = ft_strdup(tokens[b_q++]);
+	while (b_q <= e_q)
+	{
+		tmp = merged;
+		merged = ft_strjoin(tmp, tokens[b_q]);
+		free(tmp);
+		(b_q)++;
+	}
+	return (merged);
 }
 
-void	debug_print(t_pars *com)
+char	**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q)
 {
-	ft_printf("\nCommand:\n");
-	ft_printf("comand: %s\n", com->name);
-	ft_printf("operation code: %d\n", com->operat);
-	int	i = 0;
-	while ((com->args)[i])
-		ft_printf("arguments: %s\n", (com->args)[i++]);
+	char	**merged;
+	ssize_t	i;
+	ssize_t	j;
+	ssize_t	len;
+
+	i = 0;
+	while (tokens[i])
+		i++;
+	j = 0;
+	len = i - (e_q - b_q);
+	merged = (char **)ft_calloc(sizeof(char *), len + 1);
+	while (j < len)
+	{
+		if (j < b_q)
+			merged[j] = ft_strdup(tokens[j]);
+		else if (b_q == j)
+			merged[j] = merge_to_char(tokens, b_q, e_q);
+		else
+			merged[j] = ft_strdup(tokens[++e_q]);
+		j++;
+	}
+	free(tokens);
+	return (merged);
 }
 
-t_pars	*init_comand(char **txt, int i)
+void	*error_quot_tockens(char **tokens)
 {
-	t_pars	*com;
-	t_quote	q;
+	ft_printf("Parsing error: quotation(s) not closed"); // error text;
+	terminate_tokens(tokens);
+	return (NULL);
+}
 
+char	**merge_quotations(char **tokens)
+{
+	ssize_t	i;
+	ssize_t	b_q;
+	t_quote	type_q;
 
-	(void)i; // ??
-	q = ZERO;
-	com = (t_pars *)malloc(sizeof(t_pars));
-	com->name = parse_name(txt);
-	com->operat = parse_rule(*txt);
-	com->args = parse_args(txt);
+	b_q = 0;
+	i = 0;
+	while (tokens[i])
+	{
+		type_q = ft_isquotation(tokens[i][0]);
+		if (type_q)
+		{
+			b_q = i++;
+			while (ft_isquotation(tokens[i][0]) != type_q && tokens[i])
+				i++;
+			if (!tokens[i])
+				return (error_quot_tockens(tokens));
+			type_q = ZERO_Q;
+			tokens = merge_funct(tokens, b_q, i);
+			i = b_q;
+		}
+		i++;
+	}
+	return (tokens);
+}
+
+t_com	*init_comand(char **tokens)
+{
+	t_com	*com;
+	// t_quote	q;
+
+	// q = ZERO;
+	com = (t_com *)malloc(sizeof(t_com));
+	com->com = ft_strdup(tokens[0]); // I can start freeing here for memory efficiency?
+	// com->args = parse_args(tokens);
+	// com->operat = parse_rule(tokens);
 	// debug_print(com);
 	return (com);
 }
 
-t_pars	**parse_text(char *txt)
+t_com	**parse_text(char *txt)
 {
-	t_pars	**comands;
+	t_com	**comands;
 	int		i;
+	char	**tokens;
 	int		count; //assume that number of command are less then int
 
-	count = count_commands(txt);
-	comands = (t_pars **)malloc(sizeof(t_pars *) * (count + 1));
-	comands[count] = NULL;
+	tokens = pars_split(txt);
+	// check tokens (i.e. "&" or "|||"), since it is limitation of split funtion
+	tokens = merge_quotations(tokens);
+	if (!tokens)
+		return (NULL); // ?? catch it, mein Freund
+	debug_print_tokens(tokens);
+	count = count_commands(tokens);
+	comands = (t_com **)ft_calloc(sizeof(t_com *), (count + 1));
 	i = 0;
-	while (*txt == ' ')
-		txt++;
 	while (i < count)
 	{
-		comands[i] = init_comand(&txt, i);
+		comands[i] = init_comand(tokens);
 		i++;
 	}
+	free(tokens);
 	return (comands);
 }
 
 
+
 // test purmose main:
-
-void	debug_print_parse(t_pars **commands)
-{
-	size_t	i;
-
-	i = 0;
-	while (commands[i])
-		debug_print(commands[i++]);
-}
-
 int	main(int argc, char *argv[])
 {
-	t_pars	**commands = parse_text(argv[1]);
+	t_com	**commands;
 
-	debug_print_parse(commands);
+	commands = parse_text(argv[1]);
+	debug_print_come(commands);
+	terminate_commands(commands);
 	(void)argc;
 	(void)commands;
 	return (0);

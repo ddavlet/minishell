@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:48:42 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/16 16:13:54 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:40:47 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,33 @@ typedef enum e_oper
 
 typedef enum e_quote
 {
-	ZERO,
-	SIGNLE,
-	DOUBLE
+	ZERO_Q,
+	SIGNLE_Q,
+	DOUBLE_Q
 }			t_quote;
 
-typedef struct s_pars
+typedef struct s_com
 {
-	char			*name;
+	char			*com;
 	bool			ligit;
 	enum e_oper		operat;
 	char			**args;
-	// struct s_pars	*next;
-}					t_pars;
+}					t_com;
 
 /*Utils*/
-char	**pars_split(char const *s, char c);
+char	**pars_split(char const *s);
 int		ft_isexeption(char c);
-int		ft_isquotation(char c);
+t_quote	ft_isquotation(char c);
 
+
+/*Terminating functions*/
+int		terminate_commands(t_com **commands);
+int		terminate_tokens(char **ptr);
+
+
+/*Debuging functions*/
+void	debug_print_come(t_com **commands);
+void	debug_print(t_com *com);
+void	debug_print_tokens(char **tokens);
 
 #endif
