@@ -8,5 +8,6 @@
 		"unistd.h": "c",
 		"signal.h": "c",
 		"parsing.h": "c"
-	}
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }

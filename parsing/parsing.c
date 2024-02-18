@@ -22,10 +22,8 @@ t_oper	parse_rule(char *txt)
 int	count_commands(char **txt) //here max value of commands is limited to int. Need protection?
 {
 	int	count;
-	int	i;
 
 	count = 1;
-	i = 0;
 	while (*txt)
 	{
 		if (*txt[0] == '|')

@@ -74,6 +74,9 @@ t_env	*init_env(void);
 /*Utils*/
 void	add_envvar(t_env *root, char *envvar, const char *content);
 void	add_node(t_env **list_p, char c, const char *content);
+/*Terminating*/
+void	terminate_env(t_env *root);
+
 /*Debuging*/
 void	debug_print_env(t_env	*root, const char *search);
 
