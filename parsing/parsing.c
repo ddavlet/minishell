@@ -121,52 +121,54 @@ char	**merge_quotations(char **tokens)
 	return (tokens);
 }
 
-char *parse_envvar(char *env_var)
-{
-	t_envvar	*envvar;
+// char *parse_envvar(char *env_var)
+// {
+// 	t_env	*envvar;
 
 
-}
+// }
 
-char	*find_envvar(char *txt)
-{
-	unsigned int	i;
+// char	*find_envvar(char *txt)
+// {
+// 	unsigned int	i;
 
-	i = 0;
-	while (txt[i])
-	{
-		if (txt[i] == '$')
+// 	i = 0;
+// 	while (txt[i])
+// 	{
+// 		if (txt[i] == '$')
 
-	}
-}
+// 	}
+// }
 
-char	**get_variable(char **tokens)
-{
-	ssize_t	i;
+// char	**get_variable(char **tokens)
+// {
+// 	ssize_t	i;
 
-	i = 0;
-	while (tokens[i])
-	{
-		if (tokens[i][0] == '\"')
+// 	i = 0;
+// 	while (tokens[i])
+// 	{
+// 		if (tokens[i][0] == '\"')
 
-	}
+// 	}
 
-}
+// }
 
 t_com	**parse_text(char *txt)
 {
-	t_com	**comands;
-	int		i;
+	t_com	**commands;
+	// int		i;
 	char	**tokens;
-	int		count; //assume that number of command are less then int
+	// int		count; //assume that number of command are less then int
 
 	tokens = pars_split(txt);
 	// check tokens (i.e. "&" or "|||"), since it is limitation of split funtion
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
-	tokens =
+	// tokens =
 	debug_print_tokens(tokens);
+	(void)commands;
+	return (NULL);
 }
 
 // test purmose main:

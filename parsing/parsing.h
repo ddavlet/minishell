@@ -42,34 +42,40 @@ typedef struct s_com
 	char			**args;
 }					t_com;
 
-typedef struct s_envvar
+typedef struct s_env
 {
 	char			letter;
 	bool			exists;
 	char			*content;
-	struct s_envvar	*child;
-	struct s_envvar	*next;
-}					t_envvar;
+	struct s_env	*child;
+	struct s_env	*next;
+}					t_env;
 
+/*Commands functions*/
+t_com	**parse_text(char *txt);
 /*Utils*/
 char	**pars_split(char const *s);
 int		ft_isexeption(char c);
 t_quote	ft_isquotation(char c);
-
-/*Enviroment function*/
-
-
-/*Terminating functions*/
+/*Terminating*/
 int		terminate_commands(t_com **commands);
 int		terminate_tokens(char **ptr);
-
-/*Error functions*/
+/*Error*/
 void	*error_quot_tockens(char **tokens);
-
-
-/*Debuging functions*/
+/*Debuging*/
 void	debug_print_come(t_com **commands);
 void	debug_print(t_com *com);
 void	debug_print_tokens(char **tokens);
+
+/**************************************************************/
+
+/*Enviroment function*/
+t_env	*init_env(void);
+/*Utils*/
+void	add_envvar(t_env *root, char *envvar, const char *content);
+void	add_node(t_env **list_p, char c, const char *content);
+/*Debuging*/
+void	debug_print_env(t_env	*root, const char *search);
+
 
 #endif

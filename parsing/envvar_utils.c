@@ -1,61 +1,62 @@
 #include "parsing.h"
 
-t_envvar	*init_envvar(void)
+t_env	*init_env(void)
 {
-	t_envvar	*root;
+	t_env	*root;
 
-	root = (t_envvar *)ft_calloc(sizeof(t_envvar), 1);
+	root = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (!root)
 	{
 		ft_printf("Parsing error: failed to allocate memory \
 			for enviromental variables");
 		return (NULL);
 	}
-	root->content = NULL;
-	root->exists = false;
-	root->child = NULL;
-	root->letter = 0;
 	return (root);
 }
-void	add_node(t_envvar *list, char c, const char *content)
-{
-	t_envvar	*last;
-	t_envvar	*new_node;
 
-	last = list;
-	while (last->next)
-		last = last->next;
+void	add_node(t_env **list_p, char c, const char *content)
+{
+	t_env	*last;
+	t_env	*new_node;
+
+	last = *list_p;
+	new_node = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (content)
 	{
 		new_node->content = ft_strdup(content);
 		new_node->exists = true;
 	}
+	new_node->letter = c;
+	if (!last)
+		*list_p = new_node;
 	else
 	{
-		new_node->content = NULL;
-		new_node->exists = false;
+		while (last->next)
+			last = last->next;
+		last->next = new_node;
 	}
-	new_node->child = NULL;
-	new_node->next = NULL;
-	last->next = new_node;
 }
 
-int	add_envvar(t_envvar *root, char *envvar, const char *content)
+void	add_envvar(t_env *root, char *envvar, const char *content)
 {
-	t_envvar	*child;
+	t_env	**child_p;
 
-	child = root;
+	child_p = &root->child;
 	while (*envvar)
 	{
-		while (child && *envvar != child->letter)
-			child = child->next;
-		if (!child && *(envvar + 1))
-			add_node(child, *envvar, NULL);
-		else if (!child && !*(envvar + 1))
-			add_node(child, *envvar, content);
+		while ((*child_p) && *envvar != (*child_p)->letter)
+			child_p = &((*child_p)->next);
+		if (!(*child_p) && *(envvar + 1))
+		{
+			add_node(child_p, *envvar, NULL);
+			child_p = &((*child_p)->child);
+		}
+		else if (!(*child_p) && !*(envvar + 1))
+			add_node(child_p, *envvar, content);
 		else if (*(envvar + 1))
-			child = child->child;
+			child_p = &((*child_p)->child);
 		else if (!*(envvar + 1))
-			child->content = content;
+			(*child_p)->content = ft_strdup(content);
+		envvar++;
 	}
 }

@@ -28,3 +28,36 @@ void	debug_print_tokens(char **tokens)
 	while (tokens[++i])
 		ft_printf("token %d: %s\n", i, tokens[i]);
 }
+
+void	debug_print_env(t_env	*root, const char *search)
+{
+	t_env	*child;
+
+	child = root->child;
+	while (child)
+	{
+		if (child->letter == *search && *(search + 1))
+		{
+			child = child->child;
+			search++;
+		}
+		else if (child->letter == *search && !*(search + 1))
+		{
+			if (child->exists == true)
+			{
+				ft_printf ("%s\n", child->content);
+				break ;
+			}
+			else
+			{
+				ft_printf ("found, but does not exist\n");
+				break ;
+			}
+		}
+		else
+			child = child->next;
+	}
+	if (!child)
+		ft_printf ("didn't find anything\n");
+}
+
