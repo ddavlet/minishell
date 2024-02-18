@@ -21,6 +21,8 @@ void	add_node(t_env **list_p, char c, const char *content)
 
 	last = *list_p;
 	new_node = (t_env *)ft_calloc(sizeof(t_env), 1);
+	if (!new_node)
+		return (NULL); //dela with this return
 	if (content)
 	{
 		new_node->content = ft_strdup(content);
@@ -59,4 +61,11 @@ void	add_envvar(t_env *root, char *envvar, const char *content)
 			(*child_p)->content = ft_strdup(content);
 		envvar++;
 	}
+}
+
+void	terminate_env(t_env *root)
+{
+	if (!root)
+		return ;
+
 }
