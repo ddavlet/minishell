@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 17:49:26 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/17 19:59:14 by ddavlety         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "parsing.h"
 
 t_oper	parse_rule(char *txt)
@@ -179,17 +167,5 @@ t_com	**parse_text(char *txt)
 	return (comands);
 }
 
-
-
 // test purmose main:
-int	main(int argc, char *argv[])
-{
-	t_com	**commands;
 
-	commands = parse_text(argv[1]);
-	debug_print_come(commands);
-	terminate_commands(commands);
-	(void)argc;
-	(void)commands;
-	return (0);
-}

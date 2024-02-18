@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 17:48:42 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/17 19:40:47 by ddavlety         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -42,6 +30,15 @@ typedef struct s_com
 	enum e_oper		operat;
 	char			**args;
 }					t_com;
+
+typedef struct s_tree
+{
+	char			letter;
+	bool			exists;
+	char			*content;
+	struct s_tree	*child;
+	struct s_tree	*next;
+}					t_tree;
 
 /*Utils*/
 char	**pars_split(char const *s);
