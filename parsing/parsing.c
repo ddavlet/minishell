@@ -94,13 +94,6 @@ char	**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q)
 	return (merged);
 }
 
-void	*error_quot_tockens(char **tokens)
-{
-	ft_printf("Parsing error: quotation(s) not closed"); // error text;
-	terminate_tokens(tokens);
-	return (NULL);
-}
-
 char	**merge_quotations(char **tokens)
 {
 	ssize_t	i;
@@ -128,18 +121,36 @@ char	**merge_quotations(char **tokens)
 	return (tokens);
 }
 
-t_com	*init_comand(char **tokens)
+char *parse_envvar(char *env_var)
 {
-	t_com	*com;
-	// t_quote	q;
+	t_envvar	*envvar;
 
-	// q = ZERO;
-	com = (t_com *)malloc(sizeof(t_com));
-	com->com = ft_strdup(tokens[0]); // I can start freeing here for memory efficiency?
-	// com->args = parse_args(tokens);
-	// com->operat = parse_rule(tokens);
-	// debug_print(com);
-	return (com);
+
+}
+
+char	*find_envvar(char *txt)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (txt[i])
+	{
+		if (txt[i] == '$')
+
+	}
+}
+
+char	**get_variable(char **tokens)
+{
+	ssize_t	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i][0] == '\"')
+
+	}
+
 }
 
 t_com	**parse_text(char *txt)
@@ -154,17 +165,8 @@ t_com	**parse_text(char *txt)
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
+	tokens =
 	debug_print_tokens(tokens);
-	count = count_commands(tokens);
-	comands = (t_com **)ft_calloc(sizeof(t_com *), (count + 1));
-	i = 0;
-	while (i < count)
-	{
-		comands[i] = init_comand(tokens);
-		i++;
-	}
-	free(tokens);
-	return (comands);
 }
 
 // test purmose main:

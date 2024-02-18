@@ -26,19 +26,19 @@ typedef enum e_quote
 typedef struct s_com
 {
 	char			*com;
-	bool			ligit;
+	bool			legit;
 	enum e_oper		operat;
 	char			**args;
 }					t_com;
 
-typedef struct s_tree
+typedef struct s_envvar
 {
 	char			letter;
 	bool			exists;
 	char			*content;
-	struct s_tree	*child;
-	struct s_tree	*next;
-}					t_tree;
+	struct s_envvar	*child;
+	struct s_envvar	*next;
+}					t_envvar;
 
 /*Utils*/
 char	**pars_split(char const *s);
@@ -49,6 +49,9 @@ t_quote	ft_isquotation(char c);
 /*Terminating functions*/
 int		terminate_commands(t_com **commands);
 int		terminate_tokens(char **ptr);
+
+/*Error functions*/
+void	*error_quot_tockens(char **tokens);
 
 
 /*Debuging functions*/
