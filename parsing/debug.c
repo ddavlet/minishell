@@ -7,8 +7,8 @@ void	debug_print(t_cmd *com)
 	ft_printf("comand: %s\n", com->com);
 	ft_printf("operation code: %d\n", com->operat);
 	int	i = 0;
-	while ((com->args)[i])
-		ft_printf("arguments: %s\n", (com->args)[i++]);
+	while ((com->argv)[i])
+		ft_printf("arguments: %s\n", (com->argv)[i++]);
 }
 
 void	debug_print_come(t_cmd **commands)

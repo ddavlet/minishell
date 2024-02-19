@@ -38,6 +38,7 @@ typedef struct s_smd
 	char			*com;
 	bool			legit;
 	enum e_oper		operat;
+	struct s_redir	*redirs;
 	char			**args;
 }					t_cmd;
 

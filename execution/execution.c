@@ -7,7 +7,7 @@ int	execute_command(t_cmd *cmd, char *envp[])
 	char	*path;
 
 	cmd_name = cmd->com;
-	if (cmd->args == NULL)
+	if (cmd->argv == NULL)
 	{
 		terminate_execution((t_cmd **)NULL, envp);
 		return (-1);
@@ -21,12 +21,12 @@ int	execute_command(t_cmd *cmd, char *envp[])
 		terminate_execution((t_cmd **)NULL, envp);
 		return (-1);
 	}
-	if (execve(path, cmd->args, envp) == -1)
+	if (execve(path, cmd->argv, envp) == -1)
 	{
 		free(path);
 		ft_putstr_fd("pipex: execve", 2);
 		ft_putendl_fd(cmd_name, 2);
-		free_string_arr(cmd->args);
+		free_string_arr(cmd->argv);
 		return (-1);
 	}
 	return (0);
