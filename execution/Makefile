@@ -1,14 +1,15 @@
-NAME=execution
-SRCS = $(NAME).c ../testing/testing_utils1.c ../parsing/parsing.c ../parsing/utils_pars.c ../parsing/utils_split.c ../libft/libft.a
-INC = -I../testing -I../parsing/
-
+NAME=execution_debug
+SRCS = execution*.c
+INC = -I../parsing/ -I../libft/
 
 all: $(NAME)
 
 $(NAME): $(NAME).c
-	gcc -o $(NAME) $(INC) $(SRCS)  -Wall -Wextra -Werror -std=c99 -pedantic
+	make -C ../libft/
+	gcc -o $(NAME) $(SRCS)  $(INC) ../libft/libft.a  -Wall -Wextra -Werror -std=c99 -pedantic
 
 clean:
+	make -C ../libft/ fclean
 	rm -f $(NAME)
 
 re: clean all
