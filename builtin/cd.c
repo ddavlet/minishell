@@ -7,7 +7,7 @@ int    builtin_cd(t_com *com, char *envp[])
 
     if (com->args[1] == NULL)
     {
-        path = ft_getenv("HOME", envp);
+        path = getenv("HOME");
         if (path == NULL)
         {
             ft_putstr_fd("cd: HOME not set\n", 2);
