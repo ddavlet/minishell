@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:48:36 by ddavlety          #+#    #+#             */
-/*   Updated: 2023/11/17 13:59:03 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/18 22:21:36 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	i = 0;
 	ptr = malloc(nmemb * size);
 	if (!ptr)
-		return (0);
+		return (NULL);
 	while (i < nmemb * size)
 		ptr[i++] = 0;
 	return ((void *)ptr);

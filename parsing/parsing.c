@@ -22,10 +22,8 @@ t_oper	parse_rule(char *txt)
 int	count_commands(char **txt) //here max value of commands is limited to int. Need protection?
 {
 	int	count;
-	int	i;
 
 	count = 1;
-	i = 0;
 	while (*txt)
 	{
 		if (*txt[0] == '|')
@@ -90,15 +88,8 @@ char	**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q)
 			merged[j] = ft_strdup(tokens[++e_q]);
 		j++;
 	}
-	free(tokens);
-	return (merged);
-}
-
-void	*error_quot_tockens(char **tokens)
-{
-	ft_printf("Parsing error: quotation(s) not closed"); // error text;
 	terminate_tokens(tokens);
-	return (NULL);
+	return (merged);
 }
 
 char	**merge_quotations(char **tokens)
@@ -128,43 +119,105 @@ char	**merge_quotations(char **tokens)
 	return (tokens);
 }
 
-t_com	*init_comand(char **tokens)
+uint32_t	del_pos(const char *txt)
 {
-	t_com	*com;
-	// t_quote	q;
+	uint32_t	i;
 
-	// q = ZERO;
-	com = (t_com *)malloc(sizeof(t_com));
-	com->com = ft_strdup(tokens[0]); // I can start freeing here for memory efficiency?
-	// com->args = parse_args(tokens);
-	// com->operat = parse_rule(tokens);
-	// debug_print(com);
-	return (com);
+	i = 0;
+	while (txt[i])
+	{
+		if (!ft_isalnum(txt[i]))
+			break ;
+		i++;
+	}
+	return (i);
 }
 
-t_com	**parse_text(char *txt)
+char	*find_var(t_env	*root, char *search)
 {
-	t_com	**comands;
-	int		i;
+	t_env	*child;
+
+	child = root->child;
+	while (child)
+	{
+		if (child->letter == *search && *(search + 1))
+		{
+			child = child->child;
+			search++;
+		}
+		else if (child->letter == *search && !*(search + 1))
+		{
+			free(search);
+			if (child->exists == true)
+				return (child->content);
+			else
+				return ("");
+		}
+		else
+			child = child->next;
+	}
+	free(search);
+	return ("");
+}
+
+char	*set_envvar(const char *txt, t_env *root)
+{
+	char		*new_txt;
+	char		*tmp;
+	uint32_t	i;
+
+	i = 0;
+	while (txt[i] && txt[i] == '$' && !del_pos(&txt[i + 1]))
+		i++;
+	if (!txt[i])
+		return (ft_strdup(txt)); // ?? protect
+	new_txt = ft_substr(txt, 0, i); //protect
+	tmp = new_txt;
+	new_txt = ft_strjoin(tmp, find_var(root, ft_substr(txt, i, del_pos(&txt[i])))); // protect
+	free(tmp);
+	i += del_pos(&txt[i]);
+	tmp = new_txt;
+	new_txt = ft_strjoin(tmp, set_envvar(&txt[i], root));
+	// recursion to find all $ARGS ??
+	return (new_txt);
+}
+
+void	get_variable(char **tokens, t_env *root)
+{
+	ssize_t	i;
+	char	*tmp;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i][0] == '\"')
+		{
+			tmp = tokens[i];
+			tokens[i] = set_envvar(tmp, root);
+			free(tmp);
+		}
+		i++;
+	}
+
+}
+
+t_com	**parse_text(char *txt, t_env *root)
+{
+	t_com	**commands;
+	// int		i;
 	char	**tokens;
-	int		count; //assume that number of command are less then int
+	// int		count; //assume that number of command are less then int
 
 	tokens = pars_split(txt);
 	// check tokens (i.e. "&" or "|||"), since it is limitation of split funtion
 	tokens = merge_quotations(tokens);
+	debug_print_tokens(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
+	get_variable(tokens, root);
 	debug_print_tokens(tokens);
-	count = count_commands(tokens);
-	comands = (t_com **)ft_calloc(sizeof(t_com *), (count + 1));
-	i = 0;
-	while (i < count)
-	{
-		comands[i] = init_comand(tokens);
-		i++;
-	}
-	free(tokens);
-	return (comands);
+	(void)commands;
+	return (NULL);
 }
 
 // test purmose main:

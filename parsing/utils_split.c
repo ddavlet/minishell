@@ -42,7 +42,7 @@ static ssize_t	ft_counter(char const *s) // chekc this function..
 	i = 0;
 	while (*s)
 	{
-		if (!ft_isspace(*s))
+		if (ft_chekc_token(*s))
 		{
 			i++;
 			s += (ft_count_len(&s) - 1);
