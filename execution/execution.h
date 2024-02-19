@@ -10,7 +10,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-int		execute_command_line(t_com **cmd_arr, char *envp[]);
+int		execute_command_line(t_cmd **cmd_arr, char *envp[]);
 
 /*
  *	utils
@@ -24,14 +24,14 @@ void	free_string_arr(char **arr);
 /*
 *   cleaners
 */
-void	terminate_execution(t_com **cmds, char *envp[]);
+void	terminate_execution(t_cmd **cmds, char *envp[]);
 
 /*
-*   debugging 
+*   debugging
 */
-t_com   **mockup_three_cmds(void);
-t_com **mockup_single_cmd(void);
-t_com   **mockup_empty_cmds(void);
+t_cmd   **mockup_ls_grep_wc(void);
+t_cmd **mockup_single_cmd(void);
+t_cmd   **mockup_empty_cmds(void);
 
 
 #endif

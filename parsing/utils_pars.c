@@ -28,3 +28,17 @@ int	if_isspecchar(char c)
 		return (1);
 	return (0);
 }
+
+uint32_t	del_pos(const char *txt)
+{
+	uint32_t	i;
+
+	i = 0;
+	while (txt[i])
+	{
+		if (!ft_isalnum(txt[i]) && txt[i] != '_')
+			break ;
+		i++;
+	}
+	return (i);
+}

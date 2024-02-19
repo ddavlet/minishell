@@ -14,7 +14,7 @@ t_env	*init_env(void)
 	return (root);
 }
 
-void	add_node(t_env **list_p, char c, const char *content)
+void	add_envnode(t_env **list_p, char c, const char *content)
 {
 	t_env	*last;
 	t_env	*new_node;
@@ -50,11 +50,11 @@ void	add_envvar(t_env *root, char *envvar, const char *content)
 			child_p = &((*child_p)->next);
 		if (!(*child_p) && *(envvar + 1))
 		{
-			add_node(child_p, *envvar, NULL);
+			add_envnode(child_p, *envvar, NULL);
 			child_p = &((*child_p)->child);
 		}
 		else if (!(*child_p) && !*(envvar + 1))
-			add_node(child_p, *envvar, content);
+			add_envnode(child_p, *envvar, content);
 		else if (*(envvar + 1))
 			child_p = &((*child_p)->child);
 		else if (!*(envvar + 1))

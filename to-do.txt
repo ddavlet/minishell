@@ -3,9 +3,4 @@ all quotations must be 0 in the end. Can check it in the beggining
 if not 0 int the end, stop
 
 parsing starts with the most significant part:
-1. Intead of returning empty string I can create empty istring
-  in root of enviromental variables. Return this empty string pointer.
-  use this pointer with static char and clean only at exit?
---find_var-- in --set_envvar--
-2. I have to fix my counter function in split, if definatly
-  counts wrong..
+

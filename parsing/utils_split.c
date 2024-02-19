@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-static int	ft_chekc_token(char c)
+static int	ft_istoken(char c)
 {
 	if (!c)
 		return (1);
@@ -20,17 +20,23 @@ static unsigned int	ft_count_len(char const **str)
 
 	i = 0;
 	s = *str;
-	if (ft_chekc_token(s[i]) == 2)
+	if (ft_istoken(s[i]) == 1)
 	{
-		while (ft_chekc_token(s[i]) == 2)
+		while (ft_istoken(s[i]) == 1)
 			i++;
 		return (i);
 	}
-	if (ft_chekc_token(s[i]) == 3)
+	if (ft_istoken(s[i]) == 2)
+	{
+		while (ft_istoken(s[i]) == 2)
+			i++;
+		return (i);
+	}
+	if (ft_istoken(s[i]) == 3)
 	{
 		return (1);
 	}
-	while (s[i] && !ft_chekc_token(s[i]))
+	while (s[i] && !ft_istoken(s[i]))
 		i++;
 	return (i);
 }
@@ -42,10 +48,12 @@ static ssize_t	ft_counter(char const *s) // chekc this function..
 	i = 0;
 	while (*s)
 	{
-		if (ft_chekc_token(*s))
+		if (ft_istoken(*s))
 		{
 			i++;
 			s += (ft_count_len(&s) - 1);
+			if (ft_istoken(*s) && !ft_istoken(*(s + 1)))
+				i++;
 		}
 		s++;
 	}
@@ -70,7 +78,7 @@ char	**pars_split(char const *s)
 	if (!s)
 		return (0);
 	word = 0;
-	split = (char **)ft_calloc((ft_counter(s) * 2), sizeof(char *));
+	split = (char **)ft_calloc((ft_counter(s) + 1), sizeof(char *));
 	if (!split)
 		return (0);
 	while (*s)
