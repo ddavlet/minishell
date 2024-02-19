@@ -58,13 +58,14 @@ int	execute_chain_of_commands(t_cmd **cmds, char *envp[])
 		}
 		if (pid == 0) // Child process
 		{
+			in_fd = determine_input_fd(cmds[i], in_fd);
 			if (cmds[i + 1] != NULL) // Not the last command
 			{
-				dup2(fd[1], STDOUT_FILENO); // Redirect stdout to pipe
-				close(fd[1]); // No need for the write end after dup2
-				close(fd[0]); // Child does not read from pipe
+				dup2(fd[1], STDOUT_FILENO); // dup2 will close STDOUT_FILENO before duplicating fd[1] to STDOUT_FILENO
+				close(fd[1]); 
+				close(fd[0]); 
 			}
-			if (in_fd != 0)
+			if (in_fd != 0) // If this is not the first command
 			{
 				dup2(in_fd, STDIN_FILENO); // Redirect stdin from previous pipe
 				close(in_fd); // No need for the old in_fd after dup2
