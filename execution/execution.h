@@ -7,17 +7,18 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <unistd.h>
 
-
-int	execution(t_pars **cmd_arr, char *envp[]);
+int		execution(t_com **cmd_arr, char *envp[]);
 
 /*
-*   utils
-*/
-void	remove_inner_quotes(char **cmd);
-void	msg_error(char *err);
-void	free_string_arr(char **arr);
-char	*get_path(char *cmd, char *envp[]);
+ *	utils
+ */
+int		count_cmds(t_com **cmds);
 char	*get_env_all_path(char *envp[]);
+char	*get_path(char *cmd, char *envp[]);
+void	free_string_arr(char **arr);
+void	msg_error(char *err);
+void	remove_inner_quotes(char **cmd);
 
 #endif
