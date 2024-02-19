@@ -126,7 +126,7 @@ uint32_t	del_pos(const char *txt)
 	i = 0;
 	while (txt[i])
 	{
-		if (!ft_isalnum(txt[i]))
+		if (!ft_isalnum(txt[i]) || txt[i] != '_')
 			break ;
 		i++;
 	}
@@ -138,6 +138,8 @@ char	*find_var(t_env	*root, char *search)
 	t_env	*child;
 
 	child = root->child;
+	if (!search)
+		return (NULL);
 	while (child)
 	{
 		if (child->letter == *search && *(search + 1))
@@ -163,21 +165,31 @@ char	*find_var(t_env	*root, char *search)
 char	*set_envvar(const char *txt, t_env *root)
 {
 	char		*new_txt;
-	char		*tmp;
+	char		*tmp_1;
+	char		*tmp_2;
 	uint32_t	i;
+	// uint32_t	j;
 
 	i = 0;
-	while (txt[i] && txt[i] == '$' && !del_pos(&txt[i + 1]))
+	// j = 0;
+	while (txt[i] && txt[i] != '*')
 		i++;
-	if (!txt[i])
-		return (ft_strdup(txt)); // ?? protect
+	// j = del_pos(&txt[i]);
+	// if (j == 0)
+	if (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_')
+		return (ft_strdup(txt));
 	new_txt = ft_substr(txt, 0, i); //protect
-	tmp = new_txt;
-	new_txt = ft_strjoin(tmp, find_var(root, ft_substr(txt, i, del_pos(&txt[i])))); // protect
-	free(tmp);
-	i += del_pos(&txt[i]);
-	tmp = new_txt;
-	new_txt = ft_strjoin(tmp, set_envvar(&txt[i], root));
+	if (!new_txt)
+		return (NULL); //protect
+	tmp_1 = new_txt;
+	tmp_2 = find_var(root, ft_substr(txt, i, del_pos(&txt[i + 1])));
+	if (!tmp_2)
+		return (NULL); // ?? protect
+	new_txt = ft_strjoin(tmp_1, tmp_2); // protect
+	free(tmp_1);
+	free(tmp_2);
+	tmp_1 = new_txt;
+	new_txt = ft_strjoin(tmp_1, &txt[i + del_pos(&txt[i])]);
 	// recursion to find all $ARGS ??
 	return (new_txt);
 }
@@ -190,11 +202,14 @@ void	get_variable(char **tokens, t_env *root)
 	i = 0;
 	while (tokens[i])
 	{
-		if (tokens[i][0] == '\"')
+		if (!(tokens[i][0] == '\''))
 		{
 			tmp = tokens[i];
-			tokens[i] = set_envvar(tmp, root);
-			free(tmp);
+			if (ft_strchr(tokens[i], '*'))
+			{
+				tokens[i] = set_envvar(tmp, root);
+				free(tmp);
+			}
 		}
 		i++;
 	}

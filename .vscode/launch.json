@@ -4,43 +4,43 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-		// {
-		// 	"name": "parsing_debug",
-		// 	"type": "cppdbg",
-		// 	"request": "launch",
-		// 	"program": "${workspaceFolder}/parsing.out",
-		// 	"args": ["'e'ch'o' test | echo test2 || echo test3 && echo test4"],
-		// 	"stopAtEntry": false,
-		// 	"cwd": "${fileDirname}",
-		// 	"environment": [],
-		// 	"externalConsole": false,
-		// 	"MIMode": "gdb",
-		// 	"preLaunchTask": "Parsing",
-		// 	"setupCommands": [
-		// 		{
-		// 			"description": "Enable pretty-printing for gdb",
-		// 			"text": "-enable-pretty-printing",
-		// 			"ignoreFailures": true
-		// 		},
-		// 		{
-		// 			"description": "Set Disassembly Flavor to Intel",
-		// 			"text": "-gdb-set disassembly-flavor intel",
-		// 			"ignoreFailures": true
-		// 		}
-		// 	]
-		// }
 		{
-			"name": "(lldb) Launch",
+			"name": "parsing_debug",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/parsing.out",
-			"args": ["'e'ch'o' \"$TEST\" | echo test2 || echo test3 && echo test4"],
+			"args": ["'e'ch'o' *USER test | echo test2 || echo test3 && echo test4"],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
 			"environment": [],
 			"externalConsole": false,
-			"MIMode": "lldb",
-			"preLaunchTask": "Parsing"
+			"MIMode": "gdb",
+			"preLaunchTask": "Parsing",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				},
+				{
+					"description": "Set Disassembly Flavor to Intel",
+					"text": "-gdb-set disassembly-flavor intel",
+					"ignoreFailures": true
+				}
+			]
 		}
+		// {
+		// 	"name": "(lldb) Launch",
+		// 	"type": "cppdbg",
+		// 	"request": "launch",
+		// 	"program": "${workspaceFolder}/parsing.out",
+		// 	"args": ["'e'ch'o' \"$TEST\" | echo test2 || echo test3 && echo test4"],
+		// 	"stopAtEntry": false,
+		// 	"cwd": "${fileDirname}",
+		// 	"environment": [],
+		// 	"externalConsole": false,
+		// 	"MIMode": "lldb",
+		// 	"preLaunchTask": "Parsing"
+		// }
 	]
 }

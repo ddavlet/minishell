@@ -24,24 +24,29 @@ typedef enum e_quote
 	DOUBLE_Q
 }			t_quote;
 
-typedef enum e_redir
+typedef enum e_red_sym
 {
 	NO_REDIR,
 	RED_INP,
 	RED_OUT,
 	LIM_INP,
 	APP_OUT
-}			t_redir;
+}			t_red_sym;
 
 typedef struct s_com
 {
 	char			*com;
 	bool			legit;
 	enum e_oper		operat;
-	enum e_redir	redir_sym;
-	char			*redir_name;
 	char			**args;
 }					t_com;
+
+typedef struct s_redir
+{
+	enum e_red_sym	redir_sym;
+	char			*redir_name;
+	struct s_red	*next;
+}					t_redir;
 
 typedef struct s_env
 {
