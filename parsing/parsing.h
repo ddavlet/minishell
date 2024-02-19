@@ -41,6 +41,7 @@ typedef struct s_com
 	enum e_redir	redir_sym;
 	char			*redir_name;
 	char			**args;
+	char			**envp;
 }					t_com;
 
 typedef struct s_env

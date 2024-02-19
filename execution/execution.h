@@ -29,7 +29,7 @@ void	terminate_execution(t_com **cmds, char *envp[]);
 /*
 *   debugging 
 */
-t_com   **mockup_ls_grep_wc(void);
+t_com   **mockup_three_cmds(void);
 t_com **mockup_single_cmd(void);
 t_com   **mockup_empty_cmds(void);
 

@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 
 
-t_com   **mockup_ls_grep_wc(void)
+t_com   **mockup_three_cmds(void)
 {
     t_com   **cmds;
     t_com   *cmd1;
@@ -34,7 +34,7 @@ t_com   **mockup_ls_grep_wc(void)
     cmd2->com = ft_strdup("grep");
     cmd2->args = (char **)malloc(sizeof(char *) * 3);
     cmd2->args[0] = ft_strdup("grep");
-    cmd2->args[1] = ft_strdup(".h");
+    cmd2->args[1] = ft_strdup("exe*");
     cmd2->args[2] = NULL;
 
     cmd3 = (t_com *)malloc(sizeof(t_com));
@@ -43,9 +43,10 @@ t_com   **mockup_ls_grep_wc(void)
     cmd3->redir_sym = NO_REDIR;
     cmd3->redir_name = NULL;
     cmd3->com = ft_strdup("wc");
-    cmd3->args = (char **)malloc(sizeof(char *) * 2);
+    cmd3->args = (char **)malloc(sizeof(char *) * 3);
     cmd3->args[0] = ft_strdup("wc");
-    cmd3->args[1] = NULL;
+    cmd3->args[1] = ft_strdup("-l");
+    cmd3->args[2] = NULL;
 
     cmds[0] = cmd1;
     cmds[1] = cmd2;
@@ -86,16 +87,16 @@ t_com   **mockup_empty_cmds(void)
     return (cmds);
 }
 
-/* int	main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_com	**cmds;
 
 	(void)argc;
 	(void)argv;
-	cmds = mockup_ls_grep_wc();
+	cmds = mockup_three_cmds();
 	if (cmds == NULL)
 		terminate_execution(cmds, envp);
 	execute_command_line(cmds, envp);
 	terminate_execution(cmds, envp);
 	return (0);
-} */
+}

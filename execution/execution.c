@@ -87,7 +87,7 @@ int	execute_chain_of_commands(t_com **cmds, char *envp[])
 	return 0; // Return success
 }
 
-int	execute_command_line(t_com **cmds, char *envp[])
+int	execute_command_line(t_com **cmds)
 {
 	if (!cmds || cmds[0] == NULL)
 		terminate_execution(cmds, envp);
