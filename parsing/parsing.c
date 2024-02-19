@@ -42,14 +42,19 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 {
 	t_cmd	**commands;
 	char	**tokens;
-	// int		i;
+	int		i;
 	// int		count; //assume that number of command are less then int
+	i = 0;
 	tokens = pars_split(txt);
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
-	count_commands(tokens);
+	commands = (t_cmd **)ft_calloc(count_commands(tokens), sizeof(t_cmd *));
+	// while (i < count_commands(tokens))
+	// {
+	// 	commands =
+	// }
 	debug_print_tokens(tokens);
 	terminate_tokens(tokens);
 	(void)commands;
