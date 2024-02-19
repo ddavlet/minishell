@@ -86,7 +86,7 @@ t_com   **mockup_empty_cmds(void)
     return (cmds);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+/* int	main(int argc, char *argv[], char *envp[])
 {
 	t_com	**cmds;
 
@@ -98,4 +98,4 @@ int	main(int argc, char *argv[], char *envp[])
 	execute_command_line(cmds, envp);
 	terminate_execution(cmds, envp);
 	return (0);
-}
+} */
