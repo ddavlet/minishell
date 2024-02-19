@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include <stdio.h>
 
-void	debug_print(t_com *com)
+void	debug_print(t_cmd *com)
 {
 	ft_printf("\nCommand:\n");
 	ft_printf("comand: %s\n", com->com);
@@ -11,7 +11,7 @@ void	debug_print(t_com *com)
 		ft_printf("arguments: %s\n", (com->args)[i++]);
 }
 
-void	debug_print_come(t_com **commands)
+void	debug_print_come(t_cmd **commands)
 {
 	size_t	i;
 

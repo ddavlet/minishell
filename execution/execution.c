@@ -1,7 +1,7 @@
 
 #include "execution.h"
 
-int	execute_command(t_com *cmd, char *envp[])
+int	execute_command(t_cmd *cmd, char *envp[])
 {
 	char	*cmd_name;
 	char	*path;
@@ -9,7 +9,7 @@ int	execute_command(t_com *cmd, char *envp[])
 	cmd_name = cmd->com;
 	if (cmd->args == NULL)
 	{
-		terminate_execution((t_com **)NULL, envp);
+		terminate_execution((t_cmd **)NULL, envp);
 		return (-1);
 	}
 	path = get_path(cmd_name, envp);
@@ -18,7 +18,7 @@ int	execute_command(t_com *cmd, char *envp[])
 		free(path);
 		ft_putstr_fd("pipex: command not found: ", 2);
 		ft_putendl_fd(cmd_name, 2);
-		terminate_execution((t_com **)NULL, envp);
+		terminate_execution((t_cmd **)NULL, envp);
 		return (-1);
 	}
 	if (execve(path, cmd->args, envp) == -1)
@@ -32,7 +32,7 @@ int	execute_command(t_com *cmd, char *envp[])
 	return (0);
 }
 
-int	execute_chain_of_commands(t_com **cmds, char *envp[])
+int	execute_chain_of_commands(t_cmd **cmds, char *envp[])
 {
 	int		fd[2];
 	int		in_fd = 0; // in_fd will be used to keep track of the input for the next command
@@ -70,7 +70,7 @@ int	execute_chain_of_commands(t_com **cmds, char *envp[])
 				close(in_fd); // No need for the old in_fd after dup2
 			}
 			execute_command(cmds[i], envp);
-			exit(0); 
+			exit(0);
 		}
 		else // Parent process
 		{
@@ -87,7 +87,7 @@ int	execute_chain_of_commands(t_com **cmds, char *envp[])
 	return 0; // Return success
 }
 
-int	execute_command_line(t_com **cmds, char *envp[])
+int	execute_command_line(t_cmd **cmds, char *envp[])
 {
 	if (!cmds || cmds[0] == NULL)
 		terminate_execution(cmds, envp);

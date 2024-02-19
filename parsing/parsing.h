@@ -33,13 +33,13 @@ typedef enum e_red_sym
 	APP_OUT
 }			t_red_sym;
 
-typedef struct s_com
+typedef struct s_smd
 {
 	char			*com;
 	bool			legit;
 	enum e_oper		operat;
 	char			**args;
-}					t_com;
+}					t_cmd;
 
 typedef struct s_redir
 {
@@ -58,19 +58,19 @@ typedef struct s_env
 }					t_env;
 
 /*Commands functions*/
-t_com	**parse_text(char *txt, t_env *root);
+t_cmd	**parse_text(char *txt, t_env *root);
 /*Utils*/
 char	**pars_split(char const *s);
 int		ft_isexeption(char c);
 t_quote	ft_isquotation(char c);
 /*Terminating*/
-int		terminate_commands(t_com **commands);
+int		terminate_commands(t_cmd **commands);
 int		terminate_tokens(char **ptr);
 /*Error*/
 void	*error_quot_tockens(char **tokens);
 /*Debuging*/
-void	debug_print_come(t_com **commands);
-void	debug_print(t_com *com);
+void	debug_print_come(t_cmd **commands);
+void	debug_print(t_cmd *com);
 void	debug_print_tokens(char **tokens);
 
 /**************************************************************/

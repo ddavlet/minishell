@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-int	terminate_commands(t_com **commands)
+int	terminate_commands(t_cmd **commands)
 {
 	int	i;
 

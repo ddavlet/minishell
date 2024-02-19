@@ -126,7 +126,7 @@ uint32_t	del_pos(const char *txt)
 	i = 0;
 	while (txt[i])
 	{
-		if (!ft_isalnum(txt[i]) || txt[i] != '_')
+		if (!ft_isalnum(txt[i]) && txt[i] != '_')
 			break ;
 		i++;
 	}
@@ -142,14 +142,13 @@ char	*find_var(t_env	*root, char *search)
 		return (NULL);
 	while (child)
 	{
-		if (child->letter == *search && *(search + 1))
+		if (child->letter == *search && *(search + 1)) // need to be checked~
 		{
 			child = child->child;
 			search++;
 		}
 		else if (child->letter == *search && !*(search + 1))
 		{
-			free(search);
 			if (child->exists == true)
 				return (child->content);
 			else
@@ -158,8 +157,7 @@ char	*find_var(t_env	*root, char *search)
 		else
 			child = child->next;
 	}
-	free(search);
-	return ("");
+	return (ft_strdup(""));
 }
 
 char	*set_envvar(const char *txt, t_env *root)
@@ -168,29 +166,29 @@ char	*set_envvar(const char *txt, t_env *root)
 	char		*tmp_1;
 	char		*tmp_2;
 	uint32_t	i;
-	// uint32_t	j;
 
 	i = 0;
-	// j = 0;
 	while (txt[i] && txt[i] != '*')
 		i++;
-	// j = del_pos(&txt[i]);
-	// if (j == 0)
 	if (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_')
 		return (ft_strdup(txt));
-	new_txt = ft_substr(txt, 0, i); //protect
+	new_txt = ft_substr(txt, 0, i);
 	if (!new_txt)
-		return (NULL); //protect
-	tmp_1 = new_txt;
-	tmp_2 = find_var(root, ft_substr(txt, i, del_pos(&txt[i + 1])));
+		return (NULL); // ?? protect
+	tmp_1 = ft_substr(txt, i + 1, del_pos(&txt[i + 1]));
+	if (!tmp_1)
+		return (NULL); // ?? protect
+	tmp_2 = find_var(root, tmp_1);
 	if (!tmp_2)
 		return (NULL); // ?? protect
+	free(tmp_1);
+	tmp_1 = new_txt;
 	new_txt = ft_strjoin(tmp_1, tmp_2); // protect
 	free(tmp_1);
 	free(tmp_2);
 	tmp_1 = new_txt;
-	new_txt = ft_strjoin(tmp_1, &txt[i + del_pos(&txt[i])]);
-	// recursion to find all $ARGS ??
+	new_txt = ft_strjoin(tmp_1, &txt[i + del_pos(&txt[i + 1]) + 1]);
+	free(tmp_1);
 	return (new_txt);
 }
 
@@ -204,9 +202,9 @@ void	get_variable(char **tokens, t_env *root)
 	{
 		if (!(tokens[i][0] == '\''))
 		{
-			tmp = tokens[i];
-			if (ft_strchr(tokens[i], '*'))
+			while (ft_strchr(tokens[i], '*'))
 			{
+				tmp = tokens[i];
 				tokens[i] = set_envvar(tmp, root);
 				free(tmp);
 			}
@@ -216,17 +214,16 @@ void	get_variable(char **tokens, t_env *root)
 
 }
 
-t_com	**parse_text(char *txt, t_env *root)
+t_cmd	**parse_text(char *txt, t_env *root)
 {
-	t_com	**commands;
+	t_cmd	**commands;
 	// int		i;
 	char	**tokens;
 	// int		count; //assume that number of command are less then int
 
 	tokens = pars_split(txt);
-	// check tokens (i.e. "&" or "|||"), since it is limitation of split funtion
+
 	tokens = merge_quotations(tokens);
-	debug_print_tokens(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
