@@ -1,7 +1,7 @@
 CC = cc
 AR = ar rcs
 NAME = libft.a
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g
 OPTION = -c -I
 INC_DIR = .
 RM = rm -f

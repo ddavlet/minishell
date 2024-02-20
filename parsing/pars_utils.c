@@ -11,13 +11,13 @@ int	ft_isexeption(char c)
 
 int	ft_isrediraction(const char *redir)
 {
-	if (ft_strncmp(redir, "<", 2))
+	if (!ft_strncmp(redir, "<", 2))
 		return (RED_INP);
-	else if (ft_strncmp(redir, ">", 2))
+	else if (!ft_strncmp(redir, ">", 2))
 		return (RED_OUT);
-	else if (ft_strncmp(redir, "<<", 2))
+	else if (!ft_strncmp(redir, "<<", 2))
 		return (HEAR_DOC);
-	else if (ft_strncmp(redir, ">>", 2))
+	else if (!ft_strncmp(redir, ">>", 2))
 		return (APP_OUT);
 	else
 		return (NO_REDIR);

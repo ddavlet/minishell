@@ -46,6 +46,8 @@ static ssize_t	ft_counter(char const *s) // chekc this function..
 	ssize_t	i;
 
 	i = 0;
+	if (!ft_istoken(*s))
+		i++;
 	while (*s)
 	{
 		if (ft_istoken(*s))
@@ -92,7 +94,7 @@ char	**pars_split(char const *s)
 			word++;
 		}
 		else
-			split[word++] = ft_strdup(" ");
+			split[word++] = ft_strdup("");
 		s++;
 	}
 	free(split[word]);

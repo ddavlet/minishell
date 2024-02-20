@@ -37,7 +37,7 @@ typedef struct s_smd
 {
 	char			*com;
 	char			**argv;
-	bool			legit;
+	// bool			legit;
 	enum e_oper		operat;
 	struct s_redir	*redirs;
 	struct s_env	*env;
@@ -60,8 +60,16 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+
+/*General utils*/
+ssize_t	ft_commandlen(char **tokens);
+char	**add_escape(char **token, const char *esc);
+
+
 /*Commands functions*/
 t_cmd	**parse_text(const char *txt, t_env *root);
+char	**create_argv(char **tokens);
+
 // t_redir	**init_redir(char **tokens, int len);
 void	append_redirnode(t_redir **redir, t_red_sym	key, const char *value);
 
@@ -76,8 +84,10 @@ char	*find_var(t_env	*root, char *search);
 /*Utils*/
 int		ft_isexeption(char c);
 t_quote	ft_isquotation(char c);
-int	ft_isrediraction(const char *redir);
+int		ft_isrediraction(const char *redir);
 uint32_t	del_pos(const char *txt);
+t_oper	oper_type(char *txt);
+
 
 /*Terminating*/
 int		terminate_commands(t_cmd **commands);
@@ -88,6 +98,7 @@ void	terminate_redirs(t_redir *redir_l);
 /*Error*/
 void	*error_quot_tockens(char **tokens);
 void	*error_general(void *ptr);
+void	*error_near_tocken(char *token);
 
 /*Debuging*/
 void	debug_print_cmd(t_cmd **commands);

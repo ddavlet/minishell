@@ -31,3 +31,9 @@ void	*error_general(void *ptr)
 	perror("Allocation error:");
 	return (NULL);
 }
+
+void	*error_near_tocken(char *token)
+{
+	printf("minishell: syntax error near unexpected token `%s'", token);
+	return (NULL);
+}

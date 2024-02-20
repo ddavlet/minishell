@@ -19,25 +19,27 @@ int	count_commands(char **txt) //here max value of commands is limited to int. N
 t_cmd	*init_cmd(char **tokens, int i)
 {
 	t_cmd	*cmd;
-	t_redir	**redir;
+	t_redir	*redir;
 	ssize_t	j;
 
 	j = 0;
 	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (error_general(cmd)); // protection
-	redir = (t_redir **)ft_calloc(sizeof(redir), 1);
+	redir = (t_redir *)ft_calloc(sizeof(t_redir), 1); // redir_init??
 	if (!redir)
 		return (error_general(redir)); // protect + free previous malloc
-	while (tokens[j] && !ft_isexeption(tokens[j][0]))
+	while (tokens[j] && !(ft_isexeption(tokens[j][1]) && tokens[j][0] == '\\'))
 	{
-		if (ft_isrediraction(tokens[j]))
-			append_redirnode(redir, ft_isrediraction(tokens[j]), tokens[j + 1]);
-		else
-			cmd->com = tokens[i];
+		if (ft_isrediraction(tokens[j++]))
+			append_redirnode(&redir, ft_isrediraction(tokens[j]), tokens[j + 1]);
 	}
+	cmd->argv = create_argv(tokens);
+	cmd->com = ft_strdup(cmd->argv[0]); // protect
+	cmd->operat = oper_type(tokens[j]);
+	cmd->redirs = redir;
 	(void)i;
-	return (NULL);
+	return (cmd);
 }
 
 t_cmd	**init_commands(char **tokens)
@@ -66,6 +68,7 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
+	add_escape(tokens, "\\");
 	commands = init_commands(tokens);
 	debug_print_array_strings(tokens);
 	terminate_ptr_str(tokens);

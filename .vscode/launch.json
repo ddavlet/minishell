@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/parsing.out",
-			"args": ["'e'ch'o' *USER*test | echo test2 || | echo test3 && echo test4"],
+			"args": ["echo *USER*test | echo test2 || | echo test3 && echo test4"],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
 			"environment": [],
