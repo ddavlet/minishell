@@ -13,3 +13,10 @@ void	*error_parsing_redir(t_redir *redir_l)
 	terminate_redirs(redir_l); // ??
 	return (NULL);
 }
+
+void	*error_env_init(void)
+{
+	ft_putendl_fd("Parsing error: failed to allocate memory \
+		for enviromental variables", 2);
+	return (NULL);
+}

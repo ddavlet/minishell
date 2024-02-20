@@ -26,3 +26,20 @@ int	terminate_tokens(char **ptr)
 	free(ptr);
 	return (0);
 }
+
+void	terminate_env(t_env *root)
+{
+	t_env	*tmp;
+
+	if (!root)
+		return ;
+	while (root)
+	{
+		terminate_env(root->child);
+		tmp = root;
+		root = root->next;
+		if (tmp->content)
+			free(tmp->content);
+		free(tmp);
+	}
+}

@@ -11,7 +11,7 @@ void	debug_print(t_cmd *com)
 		ft_printf("arguments: %s\n", (com->argv)[i++]);
 }
 
-void	debug_print_come(t_cmd **commands)
+void	debug_print_cmd(t_cmd **commands)
 {
 	size_t	i;
 
@@ -20,13 +20,13 @@ void	debug_print_come(t_cmd **commands)
 		debug_print(commands[i++]);
 }
 
-void	debug_print_tokens(char **tokens)
+void	debug_print_array_strings(char **tokens)
 {
 	int	i;
 
 	i = -1;
 	while (tokens[++i])
-		ft_printf("token %d: %s\n", i, tokens[i]);
+		ft_printf("String %d: %s\n", i, tokens[i]);
 }
 
 void	debug_print_env(t_env	*root, const char *search)

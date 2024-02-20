@@ -82,23 +82,27 @@ void	terminate_redirs(t_redir *redir_l);
 
 /*Error*/
 void	*error_quot_tockens(char **tokens);
+
 /*Debuging*/
-void	debug_print_come(t_cmd **commands);
+void	debug_print_cmd(t_cmd **commands);
 void	debug_print(t_cmd *com);
-void	debug_print_tokens(char **tokens);
+void	debug_print_array_strings(char **tokens);
 
 /**************************************************************/
 
 /*Enviroment function*/
-t_env	*init_env(void);
+t_env	*init_env(const char **envp);
 /*Find and set*/
-char	*set_envvar(const char *txt, t_env *root);
+char	*get_envvar(const char *txt, t_env *root);
 
 /*Utils*/
-void	add_envvar(t_env *root, char *envvar, const char *content);
+void	add_envvar(t_env *root, const char *envvar, const char *content);
 void	add_envnode(t_env **list_p, char c, const char *content);
 /*Terminating*/
 void	terminate_env(t_env *root);
+
+/*Error*/
+void	*error_env_init(void);
 
 /*Debuging*/
 void	debug_print_env(t_env	*root, const char *search);

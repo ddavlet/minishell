@@ -29,7 +29,7 @@ void	get_variable(char **tokens, t_env *root)
 			while (ft_strchr(tokens[i], '*'))
 			{
 				tmp = tokens[i];
-				tokens[i] = set_envvar(tmp, root);
+				tokens[i] = get_envvar(tmp, root);
 				free(tmp);
 			}
 		}
@@ -42,8 +42,8 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 {
 	t_cmd	**commands;
 	char	**tokens;
-	int		i;
-	// int		count; //assume that number of command are less then int
+	int		i;  //assume that number of command are less then int
+
 	i = 0;
 	tokens = pars_split(txt);
 	tokens = merge_quotations(tokens);
@@ -53,9 +53,9 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	commands = (t_cmd **)ft_calloc(count_commands(tokens), sizeof(t_cmd *));
 	// while (i < count_commands(tokens))
 	// {
-	// 	commands =
+	// 	commands = commands[i]
 	// }
-	debug_print_tokens(tokens);
+	debug_print_array_strings(tokens);
 	terminate_tokens(tokens);
 	(void)commands;
 	return (NULL);
