@@ -55,12 +55,16 @@ typedef struct s_env
 	char			letter;
 	bool			exists;
 	char			*content;
+	char			**envp;
 	struct s_env	*child;
 	struct s_env	*next;
 }					t_env;
 
 /*Commands functions*/
 t_cmd	**parse_text(const char *txt, t_env *root);
+// t_redir	**init_redir(char **tokens, int len);
+void	append_redirnode(t_redir **redir, t_red_sym	key, const char *value);
+
 
 /*Tokenization*/
 char	**pars_split(char const *s);
@@ -72,16 +76,18 @@ char	*find_var(t_env	*root, char *search);
 /*Utils*/
 int		ft_isexeption(char c);
 t_quote	ft_isquotation(char c);
+int	ft_isrediraction(const char *redir);
 uint32_t	del_pos(const char *txt);
 
 /*Terminating*/
 int		terminate_commands(t_cmd **commands);
-int		terminate_tokens(char **ptr);
+int		terminate_ptr_str(char **ptr);
 void	terminate_redirs(t_redir *redir_l);
 
 
 /*Error*/
 void	*error_quot_tockens(char **tokens);
+void	*error_general(void *ptr);
 
 /*Debuging*/
 void	debug_print_cmd(t_cmd **commands);
@@ -93,16 +99,19 @@ void	debug_print_array_strings(char **tokens);
 /*Enviroment function*/
 t_env	*init_env(const char **envp);
 /*Find and set*/
-char	*get_envvar(const char *txt, t_env *root);
+// char	*get_envvar(const char *txt, t_env *root);
+void	get_variable(char **tokens, t_env *root);
+
 
 /*Utils*/
-void	add_envvar(t_env *root, const char *envvar, const char *content);
-void	add_envnode(t_env **list_p, char c, const char *content);
+
 /*Terminating*/
 void	terminate_env(t_env *root);
 
 /*Error*/
 void	*error_env_init(void);
+void	*error_general(void *ptr);
+
 
 /*Debuging*/
 void	debug_print_env(t_env	*root, const char *search);

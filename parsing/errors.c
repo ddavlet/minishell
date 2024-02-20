@@ -3,7 +3,7 @@
 void	*error_quot_tockens(char **tokens)
 {
 	ft_putendl_fd("Parsing error: quotation(s) not closed", 2);
-	terminate_tokens(tokens);
+	terminate_ptr_str(tokens);
 	return (NULL);
 }
 
@@ -18,5 +18,16 @@ void	*error_env_init(void)
 {
 	ft_putendl_fd("Parsing error: failed to allocate memory \
 		for enviromental variables", 2);
+	return (NULL);
+}
+
+void	*error_general(void *ptr)
+{
+	if (ptr)
+	{
+		perror("Undefined error on allocation");
+		return (ptr);
+	}
+	perror("Allocation error:");
 	return (NULL);
 }

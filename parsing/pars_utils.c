@@ -9,6 +9,20 @@ int	ft_isexeption(char c)
 	return (0);
 }
 
+int	ft_isrediraction(const char *redir)
+{
+	if (ft_strncmp(redir, "<", 2))
+		return (RED_INP);
+	else if (ft_strncmp(redir, ">", 2))
+		return (RED_OUT);
+	else if (ft_strncmp(redir, "<<", 2))
+		return (HEAR_DOC);
+	else if (ft_strncmp(redir, ">>", 2))
+		return (APP_OUT);
+	else
+		return (NO_REDIR);
+}
+
 t_quote	ft_isquotation(char c)
 {
 	if (c == '\'')
@@ -18,7 +32,7 @@ t_quote	ft_isquotation(char c)
 	return (ZERO_Q);
 }
 
-int	if_isspecchar(char c)
+int	if_isspecchar(char c) // ??
 {
 	if (c == '$')
 		return (1);
