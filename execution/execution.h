@@ -9,6 +9,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <readline/readline.h>
 
 int		execute_command_line(t_cmd **cmd_arr, char *envp[]);
 
@@ -20,6 +21,13 @@ char	*get_path(char *cmd, char *envp[]);
 void	remove_inner_quotes(char **cmd);
 void	msg_error(char *err);
 void	free_string_arr(char **arr);
+
+/*
+*   redirections
+*/
+int	determine_output_fd(t_cmd *cmd, int out_fd);
+int	determine_input_fd(t_cmd *cmd, int in_fd);
+int handle_here_document(const char *delimiter);
 
 /*
 *   cleaners

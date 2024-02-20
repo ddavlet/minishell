@@ -25,10 +25,10 @@ t_cmd	*init_cmd(char **tokens, int i)
 	j = 0;
 	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
-		return (error_general(cmd)); // protection
+		return (error_general(cmd, "cmd")); // protection
 	redir = (t_redir *)ft_calloc(sizeof(t_redir), 1); // redir_init??
 	if (!redir)
-		return (error_general(redir)); // protect + free previous malloc
+		return (error_general(redir, "redir")); // protect + free previous malloc
 	while (tokens[j] && !(ft_isexeption(tokens[j][1]) && tokens[j][0] == '\\'))
 	{
 		if (ft_isrediraction(tokens[j++]))
@@ -50,7 +50,7 @@ t_cmd	**init_commands(char **tokens)
 	i = 0;
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
 	if (!commands)
-		return (error_general(commands)); // catch it!
+		return (error_general(commands, )); // catch it!
 	while (i < count_commands(tokens))
 	{
 		commands[i] = init_cmd(tokens, i + 1);

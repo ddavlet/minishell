@@ -72,6 +72,8 @@ int ft_unsetenv(char *key, char **envp)
                 k = i;
                 while (envp[k])
                 {
+                    if (k == i)
+                        free(envp[k]);
                     envp[k] = envp[k + 1];
                     k++;
                 }

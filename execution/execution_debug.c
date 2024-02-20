@@ -6,47 +6,53 @@
 #include <sys/wait.h>
 
 
-t_com   **mockup_three_cmds(void)
+t_cmd   **mockup_three_cmds(void)
 {
-    t_com   **cmds;
-    t_com   *cmd1;
-    t_com   *cmd2;
-    t_com   *cmd3;
+    t_cmd   **cmds;
+    t_cmd   *cmd1;
+    t_cmd   *cmd2;
+    t_cmd   *cmd3;
 
-    cmds = (t_com **)malloc(sizeof(t_com *) * 4);
+    cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
 
-    cmd1 = (t_com *)malloc(sizeof(t_com));
+    cmd1 = (t_cmd *)malloc(sizeof(t_cmd));
     cmd1->com = ft_strdup("ls");
     cmd1->legit = true;
     cmd1->operat = PIPE;
-    cmd1->redir_sym = NO_REDIR;
-    cmd1->redir_name = NULL;
-    cmd1->args = (char **)malloc(sizeof(char *) * 3);
-    cmd1->args[0] = ft_strdup("ls");
-    cmd1->args[1] = ft_strdup("-l");
-    cmd1->args[2] = NULL;
+    t_redir *redir1 = malloc(sizeof(t_redir));
+    redir1->redir_sym = NO_REDIR;
+    redir1->redir_name = NULL;
+    cmd1->redirs = redir1;
+    cmd1->argv = (char **)malloc(sizeof(char *) * 3);
+    cmd1->argv[0] = ft_strdup("ls");
+    cmd1->argv[1] = ft_strdup("-l");
+    cmd1->argv[2] = NULL;
 
-    cmd2 = (t_com *)malloc(sizeof(t_com));
+    cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
     cmd2->legit = true;
     cmd2->operat = PIPE;
-    cmd2->redir_sym = NO_REDIR;
-    cmd2->redir_name = NULL;
+    t_redir *redir2 = malloc(sizeof(t_redir));
+    redir2->redir_sym = NO_REDIR;
+    redir2->redir_name = NULL;
+    cmd2->redirs = redir2;
     cmd2->com = ft_strdup("grep");
-    cmd2->args = (char **)malloc(sizeof(char *) * 3);
-    cmd2->args[0] = ft_strdup("grep");
-    cmd2->args[1] = ft_strdup("exe*");
-    cmd2->args[2] = NULL;
+    cmd2->argv = (char **)malloc(sizeof(char *) * 3);
+    cmd2->argv[0] = ft_strdup("grep");
+    cmd2->argv[1] = ft_strdup("exe*");
+    cmd2->argv[2] = NULL;
 
-    cmd3 = (t_com *)malloc(sizeof(t_com));
+    cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
     cmd3->legit = true;
     cmd3->operat = PIPE;
-    cmd3->redir_sym = NO_REDIR;
-    cmd3->redir_name = NULL;
+    t_redir *redir3 = malloc(sizeof(t_redir));
+    redir3->redir_sym = NO_REDIR;
+    redir3->redir_name = NULL;
+    cmd3->redirs = redir3;
     cmd3->com = ft_strdup("wc");
-    cmd3->args = (char **)malloc(sizeof(char *) * 3);
-    cmd3->args[0] = ft_strdup("wc");
-    cmd3->args[1] = ft_strdup("-l");
-    cmd3->args[2] = NULL;
+    cmd3->argv = (char **)malloc(sizeof(char *) * 3);
+    cmd3->argv[0] = ft_strdup("wc");
+    cmd3->argv[1] = ft_strdup("-l");
+    cmd3->argv[2] = NULL;
 
     cmds[0] = cmd1;
     cmds[1] = cmd2;
@@ -55,22 +61,24 @@ t_com   **mockup_three_cmds(void)
     return (cmds);
 }
 
-t_com **mockup_single_cmd(void)
+t_cmd **mockup_single_cmd(void)
 {
-    t_com   **cmds;
-    t_com   *cmd;
+    t_cmd   **cmds;
+    t_cmd   *cmd;
 
-    cmds = (t_com **)malloc(sizeof(t_com *) * 2);
+    cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 2);
     
-    cmd = (t_com *)malloc(sizeof(t_com));
+    cmd = (t_cmd *)malloc(sizeof(t_cmd));
     cmd->com = ft_strdup("ls");
     cmd->legit = true;
     cmd->operat = RUN;
-    cmd->redir_sym = NO_REDIR;
-    cmd->redir_name = NULL;
-    cmd->args = (char **)malloc(sizeof(char *) * 2);
-    cmd->args[0] = ft_strdup("ls");
-    cmd->args[1] = NULL;
+    t_redir *redir = malloc(sizeof(t_redir));
+    redir->redir_sym = HEAR_DOC;
+    redir->redir_name = ft_strdup("EOF");
+    cmd->redirs = redir;
+    cmd->argv = (char **)malloc(sizeof(char *) * 2);
+    cmd->argv[0] = ft_strdup("ls");
+    cmd->argv[1] = NULL;
 
     cmds[0] = cmd;
     cmds[1] = NULL;
@@ -78,22 +86,23 @@ t_com **mockup_single_cmd(void)
     return (cmds);
 }
 
-t_com   **mockup_empty_cmds(void)
+t_cmd   **mockup_empty_cmds(void)
 {
-    t_com   **cmds;
+    t_cmd   **cmds;
 
-    cmds = (t_com **)malloc(sizeof(t_com *));
+    cmds = (t_cmd **)malloc(sizeof(t_cmd *));
     cmds[0] = NULL;
     return (cmds);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_com	**cmds;
+	t_cmd	**cmds;
 
 	(void)argc;
 	(void)argv;
-	cmds = mockup_three_cmds();
+	// cmds = mockup_three_cmds();
+    cmds = mockup_single_cmd();
 	if (cmds == NULL)
 		terminate_execution(cmds, envp);
 	execute_command_line(cmds, envp);

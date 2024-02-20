@@ -5,7 +5,7 @@ int    builtin_cd(t_com *com, char *envp[])
     char	*path;
     int		ret;
 
-    if (com->args[1] == NULL)
+    if (com->argv[1] == NULL)
     {
         path = getenv("HOME");
         if (path == NULL)
@@ -15,7 +15,7 @@ int    builtin_cd(t_com *com, char *envp[])
         }
     }
     else
-        path = com->args[1];
+        path = com->argv[1];
     ret = chdir(path);
     if (ret == -1)
     {

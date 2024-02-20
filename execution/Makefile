@@ -1,6 +1,7 @@
 NAME=execution_debug
-SRCS = execution*.c
+SRCS = execution*.c redirection*.c
 INC = -I../parsing/ -I../libft/
+LIB = -lreadline
 
 all: $(NAME)
 

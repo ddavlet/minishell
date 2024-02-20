@@ -74,29 +74,33 @@ char **trimmed_copy(char **tokens)
 	return (new);
 }
 
-char    ***split_arr(char **str, char c)
+char    ***split_arr(char **arr, char c)
 {
     char    ***new;
     int        delimiter_count;
-    int        i;
-    int        j;
-    int        k;
-    int        n;
     
     i = 0;
     delimiter_count = 0;
-    while (str[i])
+    while (arr[i])
     {
-        if (ft_strncmp(str[i], "", 1) == 0)
+        if (ft_strncmp(arr[i], "", 1) == 0)
             delimiter_count++;
         i++;
     }
     new = ft_calloc((delimiter_count + 2), sizeof(char **));
     if (!new)
         return (NULL);
-    i = 0;
-    j = 0;
-    n = 0;
+    new = some_smaller_function(arr, delimiter_count, i, j);
+    if (!new)
+        return (-1);
+    return (new);
+}
+
+
+char ***some_smaller_function(char **arr, int delimiter_count, int i, int j)
+{
+    int k = 0;
+    int n = 0;
     while (i < delimiter_count + 1)
     {
         k = 0;
@@ -162,7 +166,53 @@ char	*join_arr(char **arr)
     }
     new[j] = '\0';
     return (new);
+}
 
+void    merge(char **tokens, size_t j, size_t i)
+{
+    char **new_tok;
+    char *tmp;
+    size_t  k;
+
+
+    new_tok = (char **)ft_calloc(sizeof(char *), i - j)
+    if (!new_tok)
+        return (error_general(new_tok, "Merging"));
+    k = 0;
+    while (tokens[k] == )
+    {
+        if (k < j)
+            new_tok[k] = ft_strdup(tokens[k]);
+        else if ()
+        {
+            new_tok[k] = ft_strjoin(tokens[i], tokens[i + 1]);
+            terminate_ptr_str(tokens);
+            tokens = new_tok;
+
+        }
+    }
+
+}
+
+{"'e'", "ch", "'o'", "", "test"}
+
+char **merge_pp(cahr **tokens)
+{
+    size_t  i;
+    size_t  j;
+
+    i = 0;
+    j = 0;
+    while (tokens[i + 1])
+    {
+        if(tokens[i][0] == 0)
+        {
+            merge(tokens, j, i);
+            j = i + 1;
+        }
+        i++
+    }
+    if (i )
 }
 
 #include <sys/wait.h>

@@ -59,6 +59,8 @@ int	execute_chain_of_commands(t_cmd **cmds, char *envp[])
 		if (pid == 0) // Child process
 		{
 			in_fd = determine_input_fd(cmds[i], in_fd);
+			if (in_fd == -1)
+				terminate_execution(cmds, envp);
 			if (cmds[i + 1] != NULL) // Not the last command
 			{
 				dup2(fd[1], STDOUT_FILENO); // dup2 will close STDOUT_FILENO before duplicating fd[1] to STDOUT_FILENO

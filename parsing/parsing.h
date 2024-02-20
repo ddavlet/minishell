@@ -97,7 +97,7 @@ void	terminate_redirs(t_redir *redir_l);
 
 /*Error*/
 void	*error_quot_tockens(char **tokens);
-void	*error_general(void *ptr);
+void	*error_general(void *ptr, const char *str);
 void	*error_near_tocken(char *token);
 
 /*Debuging*/

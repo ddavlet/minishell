@@ -21,11 +21,17 @@ void	*error_env_init(void)
 	return (NULL);
 }
 
-void	*error_general(void *ptr)
+void	*error_general(void *ptr, const char *str)
 {
 	if (ptr)
 	{
-		perror("Undefined error on allocation");
+		if (str)
+		{
+			ft_putstr_fd(str, 2);
+			perror(": undefined error on allocation");
+		}
+		else
+			perror("Undefined error on allocation");
 		return (ptr);
 	}
 	perror("Allocation error:");

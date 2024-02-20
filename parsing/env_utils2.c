@@ -15,7 +15,7 @@ static char	*get_envvar(const char *txt, t_env *root)
 		return (ft_strdup(txt));
 	new_txt = ft_substr(txt, 0, i);
 	if (!new_txt)
-		return (error_general(new_txt)); // ?? protect
+		return (error_general(new_txt, "get_envvar")); // ?? protect
 	tmp_1 = ft_substr(txt, i + 1, del_pos(&txt[i + 1]));
 	if (!tmp_1)
 		return (NULL); // ?? protect
