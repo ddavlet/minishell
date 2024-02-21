@@ -9,7 +9,7 @@ int	ft_isexeption(char c)
 	return (0);
 }
 
-int	ft_isrediraction(const char *redir)
+t_red_sym	ft_isrediraction(const char *redir)
 {
 	if (!ft_strncmp(redir, "<", 2))
 		return (RED_INP);
@@ -32,16 +32,16 @@ t_quote	ft_isquotation(char c)
 	return (ZERO_Q);
 }
 
-int	if_isspecchar(char c) // ??
-{
-	if (c == '$')
-		return (1);
-	if (c == '<')
-		return (1);
-	if (c == '>')
-		return (1);
-	return (0);
-}
+// int	if_isspecchar(char *token) // ??
+// {
+// 	if (!ft_strncmp(redir, "\\|", 3))
+// 		return (1);
+// 	if (!ft_strncmp(redir, "\\|", 3))
+// 		return (1);
+// 	if (c == '>')
+// 		return (1);
+// 	return (0);
+// }
 
 uint32_t	del_pos(const char *txt)
 {

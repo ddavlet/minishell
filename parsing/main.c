@@ -7,7 +7,7 @@ int	main(int argc, const char *argv[], const char *envp[])
 
 	env = init_env(envp);
 	commands = parse_text(argv[1], env);
-	// debug_print_cmd(commands);
+	debug_print_cmd(commands);
 	terminate_commands(commands);
 	terminate_env(env);
 	(void)argc;

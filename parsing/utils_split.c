@@ -93,7 +93,7 @@ char	**pars_split(char const *s)
 			s += (ft_count_len(&s) - 1);
 			word++;
 		}
-		else
+		else if (ft_isspace(*s) && !ft_isspace(*(s + 1)))
 			split[word++] = ft_strdup("");
 		s++;
 	}

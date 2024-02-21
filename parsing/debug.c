@@ -4,7 +4,7 @@
 void	debug_print(t_cmd *com)
 {
 	ft_printf("\nCommand:\n");
-	ft_printf("comand: %s\n", com->com);
+	ft_printf("cmd_name: %s\n", com->com);
 	ft_printf("operation code: %d\n", com->operat);
 	int	i = 0;
 	while ((com->argv)[i])
@@ -16,6 +16,8 @@ void	debug_print_cmd(t_cmd **commands)
 	size_t	i;
 
 	i = 0;
+	if (!commands)
+		printf("Commands do not exist");
 	while (commands[i])
 		debug_print(commands[i++]);
 }

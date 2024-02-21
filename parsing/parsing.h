@@ -68,7 +68,7 @@ ssize_t		ft_arr_len(char **arr);
 
 /*Commands functions*/
 t_cmd		**parse_text(const char *txt, t_env *root);
-char		**create_argv(char **tokens);
+char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
 
 // t_redir	**init_redir(char **tokens, int len);
 void		append_redirnode(t_redir **redir, t_red_sym	key, const char *value);
@@ -85,13 +85,17 @@ char		*find_var(t_env	*root, char *search);
 /*Utils*/
 int			ft_isexeption(char c);
 t_quote		ft_isquotation(char c);
-int			ft_isrediraction(const char *redir);
+t_red_sym	ft_isrediraction(const char *redir);
 uint32_t	del_pos(const char *txt);
 t_oper		oper_type(char *txt);
 void		trim_quotes(char **tokens);
+ssize_t		find_next_cmd(char **tokens, ssize_t i);
+char		**parse_delspace(char **tokens);
+
+
 
 /*Terminating*/
-int			terminate_commands(t_cmd **commands);
+void		*terminate_commands(t_cmd **commands);
 int			terminate_ptr_str(char **ptr);
 void		terminate_redirs(t_redir *redir_l);
 
@@ -127,6 +131,12 @@ void		*error_general(void *ptr, const char *str);
 
 /*Debuging*/
 void		debug_print_env(t_env	*root, const char *search);
+
+
+/***************************************************************/
+
+/*Redirection functions*/
+t_redir	*init_redir(char **tokens, ssize_t prev, ssize_t next);
 
 
 #endif

@@ -41,7 +41,8 @@ char	**pars_merge(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		if (arr[i + 1] && arr[i][0] != 0 && arr[i + 1][0] != 0)
+		if (arr[i + 1] && arr[i][0] != 0 && arr[i + 1][0] != 0
+			&& !oper_type(arr[i]) && !oper_type(arr[i + 1]))
 		{
 			tmp = ft_strjoin(arr[i], arr[i + 1]);
 			arr = realoc_merge(arr, tmp, i);

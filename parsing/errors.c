@@ -40,6 +40,8 @@ void	*error_general(void *ptr, const char *str)
 
 void	*error_near_tocken(char *token)
 {
-	printf("minishell: syntax error near unexpected token `%s'", token);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	write(2, &(token[1]), 1);
+	ft_putendl_fd("'", 2);
 	return (NULL);
 }
