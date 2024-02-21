@@ -16,7 +16,7 @@ void	clean_commands(t_cmd **commands)
 	}
 }
 
-int	terminate_commands(t_cmd **commands)
+void	*terminate_commands(t_cmd **commands)
 {
 	int	i;
 

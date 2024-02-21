@@ -13,7 +13,7 @@ static int	ft_istoken(char c)
 	return (0);
 }
 
-static unsigned int	ft_count_len(char const **str)
+static uint32_t	ft_count_len(char const **str)
 {
 	unsigned int	i;
 	const char		*s;
@@ -93,7 +93,7 @@ char	**pars_split(char const *s)
 			s += (ft_count_len(&s) - 1);
 			word++;
 		}
-		else
+		else if (ft_isspace(*s) && !ft_isspace(*(s + 1)))
 			split[word++] = ft_strdup("");
 		s++;
 	}

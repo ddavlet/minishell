@@ -7,55 +7,54 @@ int	count_commands(char **txt) //here max value of commands is limited to int. N
 	count = 1;
 	while (*txt)
 	{
-		if (*txt[0] == '|')
-			count++;
-		else if (*txt[0] == '&')
+		if (oper_type(*txt))
 			count++;
 		txt++;
 	}
 	return (count);
 }
 
-t_cmd	*init_cmd(char **tokens, int i)
+t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 {
 	t_cmd	*cmd;
-	t_redir	*redir;
-	ssize_t	j;
+	// ssize_t	j;
 
-	j = 0;
+	// j = prev;
+	if (prev == next)
+		return (error_near_tocken(tokens[prev])); // catch it! error already printed
+	else if (prev == 1)
+		prev--;
 	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (error_general(cmd, "cmd")); // protection
-	redir = (t_redir *)ft_calloc(sizeof(t_redir), 1); // redir_init??
-	if (!redir)
-		return (error_general(redir, "redir")); // protect + free previous malloc
-	while (tokens[j] && !(ft_isexeption(tokens[j][1]) && tokens[j][0] == '\\'))
-	{
-		if (ft_isrediraction(tokens[j++]))
-			append_redirnode(&redir, ft_isrediraction(tokens[j]), tokens[j + 1]);
-	}
-	cmd->argv = create_argv(tokens);
+	cmd->redirs = init_redir(tokens, prev, next);
+	cmd->operat = oper_type(tokens[next]);
+	cmd->argv = create_argv(tokens, prev, next);
 	cmd->com = ft_strdup(cmd->argv[0]); // protect
-	cmd->operat = oper_type(tokens[j]);
-	cmd->redirs = redir;
-	(void)i;
 	return (cmd);
 }
 
 t_cmd	**init_commands(char **tokens)
 {
 	t_cmd	**commands;
-	int				i;  //assume that number of command are less then int
+	int				i; //assume that number of command are less then int
+	ssize_t			j; // tell when is the next command
+	ssize_t			k; // tell when is the prev command
 
 	i = 0;
+	j = 0;
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
 	if (!commands)
-		return (error_general(commands, )); // catch it!
-	while (i < count_commands(tokens))
+		return (error_general(commands, "commands structure")); // catch it!
+	while (i < (count_commands(tokens) - 1)) // incrase efficiency
 	{
-		commands[i] = init_cmd(tokens, i + 1);
+		k = j + 1;
+		j = find_next_cmd(tokens, k); // protect prom segfault
+		commands[i] = init_cmd(tokens, k, j);
+		if (!commands[i++])
+			return (terminate_commands(commands));
 	}
-	return (NULL);
+	return (commands);
 }
 
 t_cmd	**parse_text(const char *txt, t_env *root)
@@ -69,11 +68,12 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
 	add_escape(tokens, "\\");
+	trim_quotes(tokens);
+	tokens = pars_merge(tokens);
+	tokens = parse_delspace(tokens);
 	commands = init_commands(tokens);
-	debug_print_array_strings(tokens);
 	terminate_ptr_str(tokens);
-	(void)commands;
-	return (NULL);
+	return (commands);
 }
 
 // test purmose main:
