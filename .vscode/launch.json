@@ -28,19 +28,19 @@
 					"ignoreFailures": true
 				}
 			]
+		},
+		{
+			"name": "parsing_Mac",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/parsing.out",
+			"args": ["'e'ch'o' \"$TEST\" | echo test2 || echo test3 && echo test4"],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "lldb",
+			"preLaunchTask": "Parsing"
 		}
-		// {
-		// 	"name": "(lldb) Launch",
-		// 	"type": "cppdbg",
-		// 	"request": "launch",
-		// 	"program": "${workspaceFolder}/parsing.out",
-		// 	"args": ["'e'ch'o' \"$TEST\" | echo test2 || echo test3 && echo test4"],
-		// 	"stopAtEntry": false,
-		// 	"cwd": "${fileDirname}",
-		// 	"environment": [],
-		// 	"externalConsole": false,
-		// 	"MIMode": "lldb",
-		// 	"preLaunchTask": "Parsing"
-		// }
 	]
 }

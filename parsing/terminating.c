@@ -59,6 +59,8 @@ void	terminate_env(t_env *root)
 		terminate_env(root->child);
 		tmp = root;
 		root = root->next;
+		if (tmp->envp)
+			terminate_ptr_str(tmp->envp);
 		if (tmp->content)
 			free(tmp->content);
 		free(tmp);

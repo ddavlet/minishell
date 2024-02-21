@@ -115,7 +115,7 @@ void		debug_print_array_strings(char **tokens);
 /*Enviroment function*/
 t_env		*init_env(const char **envp);
 /*Find and set*/
-// char	*get_envvar(const char *txt, t_env *root);
+void		append_envp(t_env **envs, char *name, char *content);
 void		get_variable(char **tokens, t_env *root);
 
 
