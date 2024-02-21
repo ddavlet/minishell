@@ -78,7 +78,7 @@ char    ***split_arr(char **arr, char c)
 {
     char    ***new;
     int        delimiter_count;
-    
+
     i = 0;
     delimiter_count = 0;
     while (arr[i])
@@ -95,7 +95,6 @@ char    ***split_arr(char **arr, char c)
         return (-1);
     return (new);
 }
-
 
 char ***some_smaller_function(char **arr, int delimiter_count, int i, int j)
 {
@@ -194,8 +193,6 @@ void    merge(char **tokens, size_t j, size_t i)
 
 }
 
-{"'e'", "ch", "'o'", "", "test"}
-
 char **merge_pp(cahr **tokens)
 {
     size_t  i;
@@ -207,8 +204,8 @@ char **merge_pp(cahr **tokens)
     {
         if(tokens[i][0] == 0)
         {
-            merge(tokens, j, i);
             j = i + 1;
+            merge(tokens, j, i);
         }
         i++
     }

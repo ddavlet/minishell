@@ -50,7 +50,7 @@ t_cmd	**init_commands(char **tokens)
 	i = 0;
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
 	if (!commands)
-		return (error_general(commands, )); // catch it!
+		return (error_general(commands, "commands structure")); // catch it!
 	while (i < count_commands(tokens))
 	{
 		commands[i] = init_cmd(tokens, i + 1);
@@ -69,6 +69,8 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
 	add_escape(tokens, "\\");
+	trim_quotes(tokens);
+	tokens = pars_merge(tokens);
 	commands = init_commands(tokens);
 	debug_print_array_strings(tokens);
 	terminate_ptr_str(tokens);

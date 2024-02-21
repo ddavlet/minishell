@@ -13,7 +13,7 @@ static int	ft_istoken(char c)
 	return (0);
 }
 
-static unsigned int	ft_count_len(char const **str)
+static uint32_t	ft_count_len(char const **str)
 {
 	unsigned int	i;
 	const char		*s;

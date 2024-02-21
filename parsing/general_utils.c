@@ -31,10 +31,14 @@ char	**add_escape(char **token, const char *esc)
 	return (token);
 }
 
-// char	**ft_arr_append(char **ptr)
-// {
-// 	char	**new_ptr;
+ssize_t	ft_arr_len(char **arr)
+{
+	ssize_t	i;
 
-// 	if (!ptr)
-// 		ptr =
-// }
+	if (!arr)
+		return (-1);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}

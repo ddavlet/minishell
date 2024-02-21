@@ -4,8 +4,7 @@ int	main(int argc, const char *argv[], const char *envp[])
 {
 	t_cmd	**commands;
 	t_env	*env;
-	char tokens[][] = {"'e'", "c h", "'o'", " ", "'test: \"thisistext\"'", NULL};
-	(void)envp;
+
 	env = init_env(envp);
 	commands = parse_text(argv[1], env);
 	// debug_print_cmd(commands);
