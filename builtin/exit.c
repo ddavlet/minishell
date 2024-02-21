@@ -25,7 +25,3 @@ int   builtin_exit(char **args)
     }
     return (0);
 }
-
-// ft_isnumber is defined as follows:
-// int	ft_isnumber(char *str)
-

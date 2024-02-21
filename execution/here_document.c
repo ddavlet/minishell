@@ -1,16 +1,28 @@
 #include "execution.h"
 
+int create_temp_file(char **template)
+{
+    *template = "/tmp/cmdtmpXXXXXX"; // This could be made more dynamic
+    int fd = mkstemp(*template);
+    if (fd == -1)
+    {
+        perror("mkstemp");
+        return -1;
+    }
+    unlink(*template); // Ensure the file is removed when closed
+    return fd;
+}
+
 int handle_here_document(const char *delimiter)
 {
     char *template;
     int fd;
 	
-    template = "/tmp/cmdtmpXXXXXX";
-	fd = mkstemp(template);
+	fd = create_temp_file(&template);
     if (fd == -1)
-    {
-        perror("mkstemp");
-        return -1;
+	{
+		perror("mkstemp");
+		return -1;
     }
     unlink(template); // Ensure the file is removed when closed
     char *line = readline("%% ");
@@ -18,7 +30,6 @@ int handle_here_document(const char *delimiter)
     {
         if (strcmp(line, delimiter) == 0)
         {
-            // Check if the line is the delimiter
             free(line);
             break; // Delimiter reached, stop reading input
         }

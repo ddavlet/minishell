@@ -52,7 +52,7 @@ int	initialize_executor(t_cmd **cmds, char *envp[])
 
 int	execute_command_line(t_cmd **cmds, char *envp[])
 {
-	t_executor	executor;
+	t_executor	*executor;
 
 	executor = initialize_executor(cmds, envp);
 	if (!executor)

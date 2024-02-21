@@ -9,7 +9,8 @@
 		"signal.h": "c",
 		"parsing.h": "c",
 		"execution.h": "c",
-		"wait.h": "c"
+		"wait.h": "c",
+		"sstream": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

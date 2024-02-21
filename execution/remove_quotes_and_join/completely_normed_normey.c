@@ -25,8 +25,6 @@ char	**remove_quotes_and_join(char **arr)
 	char	**trimmed;
 	char	***split;
 	char	**new_arr;
-	char	*joined_str;
-	int		i;
 
 	trimmed = trim_quotes(arr);
 	if (!trimmed)

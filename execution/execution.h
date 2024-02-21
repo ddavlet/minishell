@@ -19,7 +19,6 @@ typedef struct s_executor
 	int			pid;
 	int			status;
 	t_cmd		**cmds;
-	char		**envp;
 }				t_executor;
 
 int				execute_command_line(t_cmd **cmd_arr, char *envp[]);
@@ -37,8 +36,8 @@ unsigned long	rand_simple(void);
 /*
  *   redirections
  */
-int				determine_output_fd(t_cmd *cmd, int out_fd);
-int				determine_input_fd(t_cmd *cmd, int in_fd);
+void			determine_output_fd(t_executor *executor, int cmd_index);
+void			determine_input_fd(t_executor *executor, int cmd_index);
 int				handle_here_document(const char *delimiter);
 
 /*

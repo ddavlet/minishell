@@ -11,7 +11,7 @@ static int	arr_len(char **arr)
 	return (i);
 }
 
-static char	*process_quote_trim(char *token)
+static char	*process_trimming(char *token)
 {
 	char	*new;
 
@@ -49,7 +49,7 @@ char	**trim_quotes(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		result[i] = process_quote_trim(arr[i]);
+		result[i] = process_trimming(arr[i]);
 		if (!result[i])
 		{
 			free_2d_arr(result);

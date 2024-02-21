@@ -1,33 +1,29 @@
 #include "execution.h"
 
-int	setup_pipe(t_executor executor, int i)
+int	setup_pipe(t_executor *executor, int i)
 {
-	if (executor->cmds[i + 1] != NULL)
+	if (executor->cmds[i + 1] != NULL && pipe(executor->pipe_fd) == -1)
 	{
-		if (pipe(executor->pipe_fd) == -1)
-		{
-			perror("pipe");
-			return (-1);
-		}
+		perror("pipe");
+		return (-1);
 	}
 	return (0);
 }
 
-int	forkerror(t_executor executor)
+int	forkerror(t_executor *executor)
 {
 	perror("fork");
 	return (-1);
 }
 
-void	child_process(void)
+void	child_process(t_executor *executor, int i)
 {
-	executor->in_fd = determine_input_fd(executor->cmds[i], executor->in_fd);
+	determine_input_fd(executor);
 	if (executor->in_fd == -1)
-		terminate_execution(executor);
+		terminate_execution(executor, i);
 	if (executor->cmds[i + 1] != NULL)
 	{
-		executor->out_fd = determine_output_fd(executor->cmds[i],
-				executor->pipe_fd[1]);
+		determine_output_fd(executor, i);
 		if (executor->out_fd == -1)
 			terminate_execution(executor->cmds, executor->envp);
 		dup2(executor->out_fd, STDOUT_FILENO);
@@ -43,18 +39,18 @@ void	child_process(void)
 	exit(0);
 }
 
-void	parent_process(void)
+void	parent_process(t_executor *executor, int i)
 {
 	waitpid(pid, &status, 0);
 	if (executor->in_fd != 0)
 		close(executor->in_fd);
 	executor->in_fd = executor->pipe_fd[0];
-	close(executor->pipe_fd[1]);           
+	close(executor->pipe_fd[1]);
 	if (executor->cmds[i + 1] == NULL)
-		close(in_fd);
+		close(executor->in_fd);
 }
 
-int	execute_loop(t_executor executor)
+int	execute_loop(t_executor *executor)
 {
 	int	i;
 
@@ -66,9 +62,9 @@ int	execute_loop(t_executor executor)
 		executor->pid = fork();
 		if (executor->pid == -1)
 			return (forkerror(executor));
-		if (executor->pid == 0 && child_process() == -1)
+		if (executor->pid == 0 && child_process(executor, i) == -1)
 			return (EXIT_FAILURE);
-		else if (parent_process() == -1)
+		else if (parent_process(executor, i) == -1)
 			return (EXIT_FAILURE);
 		i++;
 	}
