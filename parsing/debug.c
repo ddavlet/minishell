@@ -6,6 +6,8 @@ void	debug_print(t_cmd *com)
 	ft_printf("\nCommand:\n");
 	ft_printf("cmd_name: %s\n", com->com);
 	ft_printf("operation code: %d\n", com->operat);
+	ft_printf("Redirections: \n");
+	debug_print_redir(com->redirs);
 	int	i = 0;
 	while ((com->argv)[i])
 		ft_printf("arguments: %s\n", (com->argv)[i++]);
@@ -63,3 +65,15 @@ void	debug_print_env(t_env	*root, const char *search)
 		ft_printf ("didn't find anything\n");
 }
 
+void	debug_print_redir(t_redir	*redir)
+{
+	t_redir	*tmp;
+
+	tmp = redir;
+	while (tmp)
+	{
+		printf("symbol: %i\n", tmp->redir_sym);
+		printf("name: %s\n", tmp->redir_name);
+		tmp = tmp->next;
+	}
+}

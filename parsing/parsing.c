@@ -71,6 +71,7 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	trim_quotes(tokens);
 	tokens = pars_merge(tokens);
 	tokens = parse_delspace(tokens);
+	debug_print_array_strings(tokens);
 	commands = init_commands(tokens);
 	terminate_ptr_str(tokens);
 	return (commands);

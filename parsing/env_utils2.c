@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-static int	var_exists(char *arg)
+int	var_exists(char *arg)
 {
 	while (*arg && *arg != '=')
 		arg++;
@@ -64,29 +64,3 @@ void	get_variable(char **tokens, t_env *root)
 
 }
 
-void	append_envp(t_env **envs, char *name, char *content)
-{
-	ssize_t	i;
-	char	**new_envp;
-	char	*tmp;
-	t_env	*root;
-
-	root = *envs;
-	new_envp = (char **)ft_calloc(sizeof(char *), ft_arr_len(root->envp) + 2);
-	i = -1;
-	while (root->envp[++i] && var_exists(root->envp[i]))
-		new_envp[i] = root->envp[i];
-	if (root->envp[i])
-	{
-		tmp = root->envp[i];
-		root->envp[i] = ft_substr(tmp, 0, ft_strlen(name)); // must be tested
-		free(tmp);
-	}
-	else
-		new_envp[i] = ft_strjoin(name, "=");
-	tmp = new_envp[i];
-	new_envp[i] = ft_strjoin(tmp, content);
-	free(tmp);
-	free(root->envp);
-	root->envp = new_envp;
-}

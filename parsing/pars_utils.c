@@ -32,17 +32,6 @@ t_quote	ft_isquotation(char c)
 	return (ZERO_Q);
 }
 
-// int	if_isspecchar(char *token) // ??
-// {
-// 	if (!ft_strncmp(redir, "\\|", 3))
-// 		return (1);
-// 	if (!ft_strncmp(redir, "\\|", 3))
-// 		return (1);
-// 	if (c == '>')
-// 		return (1);
-// 	return (0);
-// }
-
 uint32_t	del_pos(const char *txt)
 {
 	uint32_t	i;

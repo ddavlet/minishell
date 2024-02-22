@@ -103,6 +103,8 @@ void				*error_near_tocken(char *token);
 void				debug_print_cmd(t_cmd **commands);
 void				debug_print(t_cmd *com);
 void				debug_print_array_strings(char **tokens);
+void				debug_print_redir(t_redir	*redir);
+
 
 /**************************************************************/
 
@@ -114,6 +116,7 @@ void		get_variable(char **tokens, t_env *root);
 
 
 /*Utils*/
+int	var_exists(char *arg);
 
 /*Terminating*/
 void				terminate_env(t_env *root);
