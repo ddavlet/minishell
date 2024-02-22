@@ -41,10 +41,12 @@ char	*get_path(char *cmd, char *envp[])
 	return (NULL);
 }
 
-void	free_string_arr(char **arr)
+void	free_arr2d(void **arr2d)
 {
 	int	i;
+    char **arr;
 
+    arr = (char **)arr2d;
 	i = 0;
 	while (arr[i])
 		free(arr[i++]);
@@ -57,20 +59,6 @@ void	msg_error(char *err)
 	exit(EXIT_FAILURE);
 }
 
-void	remove_inner_quotes(char **cmd)
-{
-	int		i;
-	char	*untrimmed;
-
-	i = 0;
-	while (cmd[i] != NULL)
-	{
-		untrimmed = cmd[i];
-		cmd[i] = ft_strtrim(untrimmed, "\'\"");
-		free(untrimmed);
-		i++;
-	}
-}
 
 unsigned long	rand_simple(void)
 {

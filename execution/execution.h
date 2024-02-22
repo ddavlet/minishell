@@ -16,12 +16,13 @@ typedef struct s_executor
 	int			in_fd;
 	int			out_fd;
 	int			pipe_fd[2];
-	int			pid;
+	pid_t		pid;
 	int			status;
 	t_cmd		**cmds;
 }				t_executor;
 
 int				execute_command_line(t_cmd **cmd_arr, char *envp[]);
+int				ft_mkstemp(char *template);
 
 /*
  *	utils

@@ -1,7 +1,9 @@
 #include "execution.h"
 
-void	terminate_execution(t_cmd **cmds, char *envp[])
+void	terminate_execution(t_executor *executor, int i)
 {
-	(void)envp;
-	(void)cmds;
+    (void)executor;
+    (void)i;
 }
+
+

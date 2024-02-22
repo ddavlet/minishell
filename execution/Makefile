@@ -1,5 +1,5 @@
 NAME=execution_debug
-SRCS = execution*.c redirection*.c
+SRCS = execution*.c ./io_redirections/*.c ./utils/*.c ../parsing/*.c
 INC = -I../parsing/ -I../libft/
 LIB = -lreadline
 
