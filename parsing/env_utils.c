@@ -88,3 +88,31 @@ t_env	*init_env(const char **envp)
 	root->envp = env_copy(envp);
 	return (root);
 }
+
+void	append_envp(t_env **envs, char *name, char *content)
+{
+	ssize_t	i;
+	char	**new_envp;
+	char	*tmp;
+	t_env	*root;
+
+	root = *envs;
+	add_envvar(root, name, content);
+	new_envp = (char **)ft_calloc(sizeof(char *), ft_arr_len(root->envp) + 2);
+	i = -1;
+	while (root->envp[++i] && var_exists(root->envp[i]))
+		new_envp[i] = root->envp[i];
+	if (root->envp[i])
+	{
+		tmp = root->envp[i];
+		root->envp[i] = ft_substr(tmp, 0, ft_strlen(name)); // must be tested
+		free(tmp);
+	}
+	else
+		new_envp[i] = ft_strjoin(name, "=");
+	tmp = new_envp[i];
+	new_envp[i] = ft_strjoin(tmp, content);
+	free(tmp);
+	free(root->envp);
+	root->envp = new_envp;
+}
