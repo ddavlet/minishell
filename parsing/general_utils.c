@@ -31,14 +31,34 @@ char	**add_escape(char **token, const char *esc)
 	return (token);
 }
 
-ssize_t	ft_arr_len(char **arr)
+ssize_t	ft_arr_len(char **arr) // calculates only without spaces
 {
 	ssize_t	i;
+	ssize_t	j;
 
 	if (!arr)
 		return (-1);
 	i = 0;
+	j = 0;
 	while (arr[i])
+	{
+		if (arr[i][0])
+			j++;
 		i++;
-	return (i);
+	}
+	return (j);
+}
+
+char **append_arr_str(char **arr, char *str)
+{
+	char	**new_arr;
+	ssize_t	i;
+
+	i = -1;
+	new_arr = (char **)ft_calloc(sizeof(char *), ft_arr_len(arr) + 2);
+	while (arr[++i])
+		new_arr[i] = arr[i];
+	new_arr[i] = str;
+	free(arr);
+	return (new_arr);
 }

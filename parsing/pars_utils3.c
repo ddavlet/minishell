@@ -40,7 +40,7 @@ char	**parse_delspace(char **tokens)
 
 	i = 0;
 	j = 0;
-	new_arr = (char **)ft_calloc(sizeof(char *), (ft_arr_len(tokens) + 1) / 2 + 1);
+	new_arr = (char **)ft_calloc(sizeof(char *), (ft_arr_len(tokens) + 1));
 	while (tokens[i])
 	{
 		if (tokens[i][0] == 0)

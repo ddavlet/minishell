@@ -35,7 +35,7 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/parsing.out",
 			// "args": ["'e'ch'o' \"$TEST\" | echo test2 || echo test3 && echo test4"],
-			"args": ["echo <infile >outgfile test"],
+			"args": ["echo <infile >outgfile test |"],
 			// "args": ["echo"],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",

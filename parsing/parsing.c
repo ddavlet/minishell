@@ -29,7 +29,7 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 		return (error_general(cmd, "cmd")); // protection
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
-	cmd->argv = create_argv(tokens, prev, next);
+	cmd->argv = create_argv(tokens, prev, next + 1);
 	cmd->com = ft_strdup(cmd->argv[0]); // protect
 	return (cmd);
 }
@@ -70,7 +70,9 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	get_variable(tokens, root);
 	add_escape(tokens, "\\");
 	trim_quotes(tokens);
+	debug_print_array_strings(tokens);
 	tokens = pars_merge(tokens);
+	debug_print_array_strings(tokens);
 	tokens = parse_delspace(tokens);
 	debug_print_array_strings(tokens);
 	commands = init_commands(tokens);
