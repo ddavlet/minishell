@@ -10,6 +10,8 @@ static int	ft_istoken(char c)
 		return (2);
 	if (ft_isquotation(c))
 		return (3);
+	if (ft_isrediraction(&c))
+		return (4);
 	return (0);
 }
 
@@ -21,23 +23,23 @@ static uint32_t	ft_count_len(char const **str)
 	i = 0;
 	s = *str;
 	if (ft_istoken(s[i]) == 1)
-	{
 		while (ft_istoken(s[i]) == 1)
 			i++;
-		return (i);
-	}
-	if (ft_istoken(s[i]) == 2)
-	{
+	else if (ft_istoken(s[i]) == 2)
 		while (ft_istoken(s[i]) == 2)
 			i++;
-		return (i);
-	}
-	if (ft_istoken(s[i]) == 3)
-	{
+	else if (ft_istoken(s[i]) == 3)
 		return (1);
+	else if (ft_isrediraction(&s[i]))
+	{
+		if (ft_isrediraction(&s[i]) < 3)
+			return (1);
+		else
+			return (2);
 	}
-	while (s[i] && !ft_istoken(s[i]))
-		i++;
+	else
+		while (s[i] && !ft_istoken(s[i]))
+			i++;
 	return (i);
 }
 

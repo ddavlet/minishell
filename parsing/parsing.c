@@ -46,7 +46,7 @@ t_cmd	**init_commands(char **tokens)
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
 	if (!commands)
 		return (error_general(commands, "commands structure")); // catch it!
-	while (i < (count_commands(tokens) - 1)) // incrase efficiency
+	while (i < count_commands(tokens)) // incrase efficiency
 	{
 		k = j + 1;
 		j = find_next_cmd(tokens, k); // protect prom segfault
@@ -63,6 +63,7 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	char	**tokens;
 
 	tokens = pars_split(txt);
+	debug_print_array_strings(tokens);
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund

@@ -28,7 +28,8 @@ void	debug_print_array_strings(char **tokens)
 
 	i = -1;
 	while (tokens[++i])
-		ft_printf("String %d: %s\n", i, tokens[i]);
+		// ft_printf("String %d: %s\n", i, tokens[i]);
+		printf("String %d: %s\n", i, tokens[i]);
 }
 
 void	debug_print_env(t_env	*root, const char *search)
