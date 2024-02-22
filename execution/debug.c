@@ -16,7 +16,6 @@ t_cmd   **mockup_three_cmds(void)
 // First
     cmd1 = (t_cmd *)malloc(sizeof(t_cmd));
     cmd1->com = ft_strdup("ls");
-    cmd1->legit = true;
     cmd1->operat = PIPE;
     cmd1->argv = (char **)malloc(sizeof(char *) * 3);
     cmd1->argv[0] = ft_strdup("ls");
@@ -30,7 +29,6 @@ t_cmd   **mockup_three_cmds(void)
 
 // Second
     cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd2->legit = true;
     cmd2->operat = PIPE;
     cmd2->com = ft_strdup("grep");
     cmd2->argv = (char **)malloc(sizeof(char *) * 3);
@@ -45,7 +43,6 @@ t_cmd   **mockup_three_cmds(void)
 
 // Third
     cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd3->legit = true;
     cmd3->operat = PIPE;
     cmd3->com = ft_strdup("wc");
     cmd3->argv = (char **)malloc(sizeof(char *) * 3);
@@ -75,11 +72,10 @@ t_cmd **mockup_single_cmd(void)
     cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 2);
     
     cmd = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd->com = ft_strdup("ls");
-    cmd->legit = true;
+    cmd->com = ft_strdup("cat");
     cmd->operat = RUN;
     cmd->argv = (char **)malloc(sizeof(char *) * 2);
-    cmd->argv[0] = ft_strdup("ls");
+    cmd->argv[0] = ft_strdup("cat");
     cmd->argv[1] = NULL;
 
     t_redir *redir = malloc(sizeof(t_redir));
@@ -110,9 +106,6 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	// cmds = mockup_three_cmds();
     cmds = mockup_single_cmd();
-	if (cmds == NULL)
-		terminate_execution(cmds, envp);
-	execute_command_line(cmds, envp);
-	terminate_execution(cmds, envp);
+	execution(cmds, envp);
 	return (0);
 }

@@ -4,7 +4,7 @@ static void process_reading(int fd, const char *delimiter)
 {
     char *line;
     
-    line = readline(">%% ");
+    line = readline("\"> ");
     while ((line ) != NULL)
     {
         if (strcmp(line, delimiter) == 0)
@@ -15,7 +15,7 @@ static void process_reading(int fd, const char *delimiter)
         write(fd, line, strlen(line));
         write(fd, "\n", 1);
         free(line);
-        line = readline("%% ");
+        line = readline("\"> ");
     }
     free(line);
 }

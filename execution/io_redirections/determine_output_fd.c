@@ -1,14 +1,14 @@
 #include "../execution.h"
 
-void	determine_output_fd(t_executor *executor, int cmd_index)
+int	determine_output_fd(t_executor *executor, int cmd_index)
 {
 	t_redir *redir;
 
 	if (!executor || !executor->cmds || !executor->cmds[cmd_index])
 		return (-1);
 	redir = executor->cmds[cmd_index]->redirs;
-	if (redirs == NULL)
-		return (executor->out_fd);
+	if (redir == NULL)
+		return (0);
 	while (redir)
 	{
 		if (redir->redir_sym == RED_OUT)
@@ -17,4 +17,5 @@ void	determine_output_fd(t_executor *executor, int cmd_index)
 			handle_append_redirection(redir->redir_name);
 		redir = redir->next;
 	}
+    return (0);
 }

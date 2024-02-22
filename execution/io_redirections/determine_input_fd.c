@@ -1,15 +1,15 @@
 #include "../execution.h"
 
 
-void	determine_input_fd(t_executor *executor, int cmd_index)
+int	determine_input_fd(t_executor *executor, int cmd_index)
 {
 	t_redir *redir;
 
 	if (!executor || !executor->cmds || !executor->cmds[cmd_index])
 		return (-1);
 	redir = executor->cmds[cmd_index]->redirs;
-	if (redirs == NULL)
-		return (executor->in_fd);
+	if (redir == NULL)
+        return (0);
 	while (redir)
 	{
 		if (redir->redir_sym == RED_INP)
@@ -18,5 +18,5 @@ void	determine_input_fd(t_executor *executor, int cmd_index)
 			handle_here_document(redir->redir_name);
 		redir = redir->next;
 	}
+    return (0);
 }
-

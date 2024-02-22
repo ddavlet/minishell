@@ -1,13 +1,13 @@
-#include "../../execution.h"
+#include "../execution.h"
 
-static int rand_simple(void)
-{
-    static unsigned int seed = 0;
-    seed = seed * 1103515245 + 12345;
-    return (seed / 65536) % 32768;
-}
+// static int rand_simple(void)
+// {
+//     static unsigned int seed = 0;
+//     seed = seed * 1103515245 + 12345;
+//     return (seed / 65536) % 32768;
+// }
 
-void    assign_id(char *template)
+void    assign_id(char *template, int len)
 {
     char *chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     int num_chars;
@@ -33,14 +33,15 @@ int ft_mkstemp(char *template)
     int len;
 
     len = ft_strlen(template);
-    if (len < 6 || ft_strncmp(template[len - 6], "XXXXXX", 6) != 0)
+    if (len < 6 || ft_strncmp(template + (len - 6), "XXXXXX", 6) != 0)
     {
         ft_putstr_fd("Template must end with 'XXXXXX'\n", 2);
         return (-1);
     }
-    assign_id(template);
+    assign_id(template, len);
     fd = open(template, O_RDWR | O_CREAT | O_EXCL, 0600);
-    if (fd != -1)
-        return fd;
-	return (-1);
+    if (fd == -1)
+        return (-1);
+    else
+	    return (fd);
 }

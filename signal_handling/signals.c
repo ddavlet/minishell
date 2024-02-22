@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:30:41 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/13 13:45:09 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:15:28 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ void	sigusr_handler(int signo, siginfo_t *info, void *context)
 		// kill(info->si_pid, SIGUSR1);
 }
 
-int	main(void)
-{
-	struct sigaction	sa;
+// int	main(void)
+// {
+// 	struct sigaction	sa;
 
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = sigusr_handler;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		ft_printf("Error recieving SIGUSR1");
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		ft_printf("Error recieving SIGUSR2");
-	ft_printf("%i\n", getpid());
-	while (1)
-		usleep(1);
-	return (0);
-}
+// 	sa.sa_flags = SA_SIGINFO;
+// 	sa.sa_sigaction = sigusr_handler;
+// 	sigemptyset(&sa.sa_mask);
+// 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+// 		ft_printf("Error recieving SIGUSR1");
+// 	if (sigaction(SIGINT, &sa, NULL) == -1)
+// 		ft_printf("Error recieving SIGUSR2");
+// 	ft_printf("%i\n", getpid());
+// 	while (1)
+// 		usleep(1);
+// 	return (0);
+// }
