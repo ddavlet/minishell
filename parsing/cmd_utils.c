@@ -4,7 +4,7 @@ ssize_t	find_next_cmd(char **tokens, ssize_t i)
 {
 	if (i == 1)
 		i--;
-	while (!oper_type(tokens[i]))
+	while (tokens[i] && !oper_type(tokens[i]))
 	{
 		i++;
 		if (!tokens[i])
@@ -25,9 +25,9 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 	i = prev - 1;
 	// j = 0;
 	argv = (char **)ft_calloc(sizeof(char *), 1); // protect
-	while (++i < next || (tokens[i] && ft_isexeption(tokens[i][0])))
+	while (++i < next || (tokens[i] && ft_isexeption(tokens[i])))
 	{
-		if (ft_isrediraction(tokens[i]))
+		if (ft_isredir(tokens[i]))
 		{
 			if (sytax_redir(tokens[++i])) // EDGE CASES HANDLER
 			{

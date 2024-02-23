@@ -1,6 +1,7 @@
 Have to fix:
 
-I need function that checks tokens right after deleting spaces:
-consequent ||||| &&&& <<<< >>>> and so on are all edge cases
-so I need to check if there are more than 2 tokens in a row
-and if they are the same, then I need to throw an error.
+after $ sign:
+
+change * to $ sign
+check what can be passed after $ sign
+if after $ sign is non numeric, continue to read

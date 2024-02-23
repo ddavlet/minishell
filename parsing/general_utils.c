@@ -5,7 +5,7 @@ ssize_t	ft_commandlen(char **tokens)
 	size_t	i;
 
 	i = 0;
-	while (tokens[i] || !(ft_isexeption(tokens[i][1]) && tokens[i][0] == '\\'))
+	while (tokens[i] || !oper_type(tokens[i]))
 		i++;
 	return (i);
 }
@@ -18,7 +18,7 @@ char	**add_escape(char **token, const char *esc)
 	i = 0;
 	while (token[i])
 	{
-		if (ft_isexeption(token[i][0]))
+		if (ft_isexeption(token[i]))
 		{
 			tmp = token[i];
 			token[i] = ft_strjoin(esc, tmp);

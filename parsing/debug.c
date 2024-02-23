@@ -4,13 +4,15 @@
 void	debug_print(t_cmd *com)
 {
 	ft_printf("\nCommand:\n");
-	ft_printf("cmd_name: %s\n", com->com);
+	if (com->com)
+		ft_printf("cmd_name: %s\n", com->com);
 	ft_printf("operation code: %d\n", com->operat);
 	ft_printf("Redirections: \n");
 	debug_print_redir(com->redirs);
 	int	i = 0;
-	while ((com->argv)[i])
-		ft_printf("arguments: %s\n", (com->argv)[i++]);
+	if (com->argv)
+		while ((com->argv)[i])
+			ft_printf("arguments: %s\n", (com->argv)[i++]);
 }
 
 void	debug_print_cmd(t_cmd **commands)
@@ -19,7 +21,10 @@ void	debug_print_cmd(t_cmd **commands)
 
 	i = 0;
 	if (!commands)
+	{
 		printf("Commands do not exist");
+		return ;
+	}
 	while (commands[i])
 		debug_print(commands[i++]);
 }
@@ -31,7 +36,7 @@ void	debug_print_array_strings(char **tokens)
 	i = -1;
 	while (tokens[++i])
 		// ft_printf("String %d: %s\n", i, tokens[i]);
-		printf("String %d: %s\n", i, tokens[i]);
+		ft_printf("String %d: %s\n", i, tokens[i]);
 }
 
 void	debug_print_env(t_env	*root, const char *search)

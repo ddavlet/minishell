@@ -18,7 +18,7 @@ static char	*get_envvar(const char *txt, t_env *root)
 	uint32_t	i;
 
 	i = 0;
-	while (txt[i] && txt[i] != '*')
+	while (txt[i] && txt[i] != '$')
 		i++;
 	if (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_')
 		return (ft_strdup(txt));
@@ -44,19 +44,22 @@ static char	*get_envvar(const char *txt, t_env *root)
 
 void	get_variable(char **tokens, t_env *root)
 {
-	ssize_t	i;
-	char	*tmp;
+	ssize_t		i;
+	uint32_t	j;
+	char		*tmp;
 
 	i = 0;
 	while (tokens[i])
 	{
 		if (!(tokens[i][0] == '\''))
 		{
-			while (ft_strchr(tokens[i], '*'))
+			j = 0;
+			while (ft_strchr(tokens[i], '$') && j < ft_strlen(tokens[i]))
 			{
 				tmp = tokens[i];
 				tokens[i] = get_envvar(tmp, root);
 				free(tmp);
+				j++;
 			}
 		}
 		i++;

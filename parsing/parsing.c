@@ -17,9 +17,7 @@ int	count_commands(char **txt) //here max value of commands is limited to int. N
 t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 {
 	t_cmd	*cmd;
-	// ssize_t	j;
 
-	// j = prev;
 	if (prev == next)
 		return (error_near_tocken(tokens[prev])); // catch it! error already printed
 	else if (prev == 1)
@@ -30,7 +28,13 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
 	cmd->argv = create_argv(tokens, prev, next + 1);
-	cmd->com = ft_strdup(cmd->argv[0]); // protect
+	if (cmd->argv)
+	{
+		if (cmd->argv[0])
+			cmd->com = ft_strdup(cmd->argv[0]); // protect
+	}
+	else
+		return (terminate_cmd(cmd));
 	return (cmd);
 }
 
@@ -63,18 +67,20 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	char	**tokens;
 
 	tokens = pars_split(txt);
-	debug_print_array_strings(tokens);
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
 	add_escape(tokens, "\\");
 	trim_quotes(tokens);
-	debug_print_array_strings(tokens);
 	tokens = pars_merge(tokens);
-	debug_print_array_strings(tokens);
 	tokens = parse_delspace(tokens);
 	debug_print_array_strings(tokens);
+	if (!check_tokens(tokens))
+	{
+		terminate_ptr_str(tokens);
+		return (NULL);
+	}
 	commands = init_commands(tokens);
 	terminate_ptr_str(tokens);
 	return (commands);

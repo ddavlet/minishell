@@ -13,8 +13,9 @@ typedef enum e_oper
 {
 	RUN,
 	PIPE,
+	BCHGR,
 	OR,
-	AND,
+	AND
 }					t_oper;
 
 typedef enum e_quote
@@ -33,7 +34,7 @@ typedef enum e_red_sym
 	APP_OUT
 }					t_red_sym;
 
-typedef struct s_smd
+typedef struct s_cmd
 {
 	char			*com;
 	char			**argv;
@@ -82,9 +83,9 @@ char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
 char		*find_var(t_env *root, char *search);
 
 /*Utils*/
-int			ft_isexeption(char c);
+t_oper		ft_isexeption(char *txt);
 t_quote		ft_isquotation(char c);
-t_red_sym	ft_isrediraction(const char *redir);
+t_red_sym	ft_isredir(const char *redir);
 uint32_t	del_pos(const char *txt);
 t_oper		oper_type(char *txt);
 void		trim_quotes(char **tokens);
@@ -95,6 +96,8 @@ char		**parse_delspace(char **tokens);
 void		*terminate_commands(t_cmd **commands);
 int			terminate_ptr_str(char **ptr);
 void		terminate_redirs(t_redir *redir_l);
+void		*terminate_cmd(t_cmd *cmd);
+
 
 /*Error*/
 void		*error_quot_tockens(char **tokens);
@@ -119,6 +122,9 @@ void		get_variable(char **tokens, t_env *root);
 /*Sytax controllers*/
 int			sytax_redir(char *txt);
 int			syntax_exeption(char *token);
+int			ft_isignored(char *txt);
+void		*check_tokens(char **tokens);
+
 
 
 /*Utils*/

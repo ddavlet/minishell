@@ -6,11 +6,11 @@ static int	ft_istoken(char c)
 		return (1);
 	if (ft_isspace(c))
 		return (1);
-	if (ft_isexeption(c))
+	if (c == '|' || c == '&')
 		return (2);
 	if (ft_isquotation(c))
 		return (3);
-	if (ft_isrediraction(&c))
+	if (c == '<' || c == '>')
 		return (4);
 	return (0);
 }
@@ -25,14 +25,17 @@ static uint32_t	ft_count_len(char const **str)
 	if (ft_istoken(s[i]) == 1)
 		while (ft_istoken(s[i]) == 1)
 			i++;
-	else if (ft_istoken(s[i]) == 2)
-		while (ft_istoken(s[i]) == 2)
-			i++;
+	else if (ft_isexeption((char *)&s[i]) < 3 && ft_isexeption((char *)&s[i]))
+		return (1);
+	else if (ft_isexeption((char *)&s[i]))
+		return (2);
 	else if (ft_istoken(s[i]) == 3)
 		return (1);
-	else if (ft_isrediraction(&s[i]))
+	else if (ft_isignored((char *)&s[i]))
+		return (1);
+	else if (ft_isredir(&s[i]))
 	{
-		if (ft_isrediraction(&s[i]) < 3)
+		if (ft_isredir(&s[i]) < 3)
 			return (1);
 		else
 			return (2);
@@ -52,7 +55,7 @@ static ssize_t	ft_counter(char const *s) // chekc this function..
 		i++;
 	while (*s)
 	{
-		if (ft_istoken(*s))
+		if (ft_istoken(*s) || ft_isignored((char *)&(*s)))
 		{
 			i++;
 			s += (ft_count_len(&s) - 1);
