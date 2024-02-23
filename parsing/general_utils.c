@@ -34,19 +34,13 @@ char	**add_escape(char **token, const char *esc)
 ssize_t	ft_arr_len(char **arr) // calculates only without spaces
 {
 	ssize_t	i;
-	ssize_t	j;
 
 	if (!arr)
 		return (-1);
 	i = 0;
-	j = 0;
 	while (arr[i])
-	{
-		if (arr[i][0])
-			j++;
 		i++;
-	}
-	return (j);
+	return (i);
 }
 
 char **append_arr_str(char **arr, char *str)
@@ -61,4 +55,24 @@ char **append_arr_str(char **arr, char *str)
 	new_arr[i] = str;
 	free(arr);
 	return (new_arr);
+}
+
+ssize_t	arrlen_nosspace(char **arr)
+{
+	{
+	ssize_t	i;
+	ssize_t	j;
+
+	if (!arr)
+		return (-1);
+	i = 0;
+	j = 0;
+	while (arr[i])
+	{
+		if (arr[i][0])
+			j++;
+		i++;
+	}
+	return (j);
+}
 }

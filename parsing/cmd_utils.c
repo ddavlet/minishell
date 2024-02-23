@@ -25,7 +25,7 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 	i = prev - 1;
 	// j = 0;
 	argv = (char **)ft_calloc(sizeof(char *), 1); // protect
-	while (++i < next || ft_isexeption(tokens[i][0]))
+	while (++i < next || (tokens[i] && ft_isexeption(tokens[i][0])))
 	{
 		if (ft_isrediraction(tokens[i]))
 		{
@@ -35,18 +35,10 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 				return (error_near_tocken(tokens[i])); // catch! MORE ERRORS? EDGE CASES
 			}
 		}
+		else if (oper_type(tokens[i]))
+			break ;
 		else
 			argv = append_arr_str(argv, ft_strdup(tokens[i]));
 	}
-	// argv = (char **)ft_calloc(sizeof(char *), i - j + 1); // protect
-	// i = prev;
-	// j = 0;
-	// while (i < next)
-	// {
-	// 	if (ft_isrediraction(tokens[i]))
-	// 		i += 2;
-	// 	else
-	// 		argv[j++] = ft_strdup(tokens[i++]);
-	// }
 	return (argv);
 }
