@@ -1,21 +1,5 @@
 #include "parsing.h"
 
-// static uint32_t	ft_counter(const char **s)
-// {
-// 	uint32_t	i;
-// 	uint32_t	count;
-
-// 	i = 1;
-// 	count = 1;
-// 	while (s[i])
-// 	{
-// 		if (s[i][0] == 0)
-// 			count++;
-// 		i++;
-// 	}
-// 	return (count);
-// }
-
 char	**realoc_merge(char **arr, char *new, ssize_t i)
 {
 	char	**new_arr;

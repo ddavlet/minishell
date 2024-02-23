@@ -10,7 +10,7 @@ int	main(int argc, const char *argv[], const char *envp[])
 	debug_print_env(env, "MZZZ");
 	if (!argv[1])
 		commands = parse_text("'e'ch'o' $ USER*test | echo <<infile test2 \
-			|| echo test3 > outfile || echo test4", env);
+			|| echo test3 > outfile || echo test4  ", env);
 	else
 		commands = parse_text(argv[1], env);
 	debug_print_cmd(commands);

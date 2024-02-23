@@ -43,7 +43,7 @@ ssize_t	ft_arr_len(char **arr) // calculates only without spaces
 	return (i);
 }
 
-char **append_arr_str(char **arr, char *str)
+char	**append_arr_str(char **arr, char *str)
 {
 	char	**new_arr;
 	ssize_t	i;
@@ -59,7 +59,6 @@ char **append_arr_str(char **arr, char *str)
 
 ssize_t	arrlen_nosspace(char **arr)
 {
-	{
 	ssize_t	i;
 	ssize_t	j;
 
@@ -74,5 +73,5 @@ ssize_t	arrlen_nosspace(char **arr)
 		i++;
 	}
 	return (j);
-}
+
 }

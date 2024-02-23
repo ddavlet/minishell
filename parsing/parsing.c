@@ -1,8 +1,8 @@
 #include "parsing.h"
 
-int	count_commands(char **txt) //here max value of commands is limited to int. Need protection?
+uint32_t	count_commands(char **txt)
 {
-	int	count;
+	uint32_t	count;
 
 	count = 1;
 	while (*txt)
@@ -40,10 +40,10 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 
 t_cmd	**init_commands(char **tokens)
 {
-	t_cmd	**commands;
-	int				i; //assume that number of command are less then int
-	ssize_t			j; // tell when is the next command
-	ssize_t			k; // tell when is the prev command
+	t_cmd			**commands;
+	uint32_t		i;
+	ssize_t			j;
+	ssize_t			k;
 
 	i = 0;
 	j = 0;

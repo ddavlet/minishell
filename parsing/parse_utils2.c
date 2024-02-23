@@ -67,6 +67,7 @@ char	*find_var(t_env	*root, char *search)
 		else
 			child = child->next;
 	}
+	free (search);
 	return (ft_strdup(""));
 }
 

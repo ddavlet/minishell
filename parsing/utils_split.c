@@ -102,7 +102,7 @@ char	**pars_split(char const *s)
 			split[word++] = ft_strdup("");
 		s++;
 	}
-	free(split[word]);
-	split[word] = NULL;
+	// free(split[word]);
+	// split[word] = NULL;
 	return (split);
 }

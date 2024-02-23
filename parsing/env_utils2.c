@@ -1,5 +1,25 @@
 #include "parsing.h"
 
+char	*strjoin_free(char *s1, char const *s2)
+{
+	unsigned int	i;
+	unsigned int	j;
+	char			*ptr;
+
+	i = 0;
+	j = ft_strlen(s1) + ft_strlen(s2);
+	ptr = (char *)malloc((j + 1) * sizeof(char));
+	if (!ptr)
+		return (0);
+	while (*s1)
+		ptr[i++] = *s1++;
+	while (*s2)
+		ptr[i++] = *s2++;
+	free(s1);
+	ptr[i] = '\0';
+	return (ptr);
+}
+
 int	var_exists(char *arg)
 {
 	while (*arg && *arg != '=')
@@ -31,14 +51,11 @@ static char	*get_envvar(const char *txt, t_env *root)
 	tmp_2 = find_var(root, tmp_1);
 	if (!tmp_2)
 		return (NULL); // ?? protect
-	free(tmp_1);
 	tmp_1 = new_txt;
-	new_txt = ft_strjoin(tmp_1, tmp_2); // protect
-	free(tmp_1);
+	new_txt = strjoin_free(tmp_1, tmp_2); // protect
 	free(tmp_2);
 	tmp_1 = new_txt;
 	new_txt = ft_strjoin(tmp_1, &txt[i + del_pos(&txt[i + 1]) + 1]);
-	free(tmp_1);
 	return (new_txt);
 }
 
@@ -54,7 +71,7 @@ void	get_variable(char **tokens, t_env *root)
 		if (!(tokens[i][0] == '\''))
 		{
 			j = 0;
-			while (ft_strchr(tokens[i], '$') && j < ft_strlen(tokens[i]))
+			while (ft_strchr(tokens[i], '$') && j < ft_strlen(tokens[i])) // a bit inefficient
 			{
 				tmp = tokens[i];
 				tokens[i] = get_envvar(tmp, root);
