@@ -77,6 +77,8 @@ void	terminate_redirs(t_redir *redir_l)
 	{
 		tmp = redir_l;
 		redir_l = redir_l->next;
+		if (tmp->redir_name)
+			free(tmp->redir_name);
 		free(tmp->redir_name);
 		free(tmp);
 	}
