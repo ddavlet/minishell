@@ -46,9 +46,10 @@ unsigned long	rand_simple(void);
 /*
  *   io_redirections
  */
-int				determine_output_fd(t_executor *executor, int cmd_index);
-int				determine_input_fd(t_executor *executor, int cmd_index);
-int				handle_here_document(const char *delimiter);
+int				find_last_output_redir(t_executor *executor, int cmd_index);
+int				find_last_input_redir(t_executor *executor, int cmd_index);
+int				handle_here_document(const char *delimiter,
+					t_executor *executor);
 int				handle_truncate_redirection(const char *file_name);
 int				handle_append_redirection(const char *file_name);
 int				handle_input_redirection(const char *file_name);
@@ -62,7 +63,7 @@ void			terminate_execution(t_executor *executor);
  *   debugging
  */
 t_cmd			**mockup_three_cmds(void);
-t_cmd			**mockup_single_cmd(void);
-t_cmd			**mockup_empty_cmds(void);
+t_cmd			**mockup_single_cmd(char *env[]);
+t_cmd			**mockup(void);
 
 #endif

@@ -63,7 +63,7 @@ void	debug_print_env(t_env	*root, const char *search)
 		ft_printf ("didn't find anything\n");
 }
 
-/* moved it here sorry xoxo */
+
 // int	main(int argc, const char *argv[], const char *envp[])
 // {
 // 	t_cmd	**commands;
