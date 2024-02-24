@@ -55,7 +55,7 @@ char	*get_envvar(const char *txt, t_env *root)
 	new_txt = strjoin_free(tmp_1, tmp_2); // protect
 	free(tmp_2);
 	tmp_1 = new_txt;
-	new_txt = ft_strjoin(tmp_1, &txt[i + del_pos(&txt[i + 1]) + 1]);
+	new_txt = strjoin_free(tmp_1, &txt[i + del_pos(&txt[i + 1]) + 1]);
 	return (new_txt);
 }
 

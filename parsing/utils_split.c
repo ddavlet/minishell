@@ -33,13 +33,10 @@ static uint32_t	ft_count_len(char const **str)
 		return (1);
 	else if (ft_isignored((char *)&s[i]))
 		return (1);
+	else if (ft_isredir(&s[i]) < 3)
+		return (1);
 	else if (ft_isredir(&s[i]))
-	{
-		if (ft_isredir(&s[i]) < 3)
-			return (1);
-		else
-			return (2);
-	}
+		return (2);
 	else
 		while (s[i] && !ft_istoken(s[i]))
 			i++;
