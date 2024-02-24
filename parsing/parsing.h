@@ -115,8 +115,10 @@ void		debug_print_redir(t_redir	*redir);
 
 /*Enviroment function*/
 t_env		*init_env(const char **envp);
+char		**init_envv(t_env *root);
+
 /*Find and set*/
-void		append_envp(t_env **envs, char *name, char *content);
+void		append_envp(t_env *root, char *name, char *content);
 void		get_variable(char **tokens, t_env *root);
 
 /*Sytax controllers*/
