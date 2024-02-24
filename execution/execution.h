@@ -9,48 +9,61 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define TEMPLATE_CHARS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+typedef struct s_fd_state
+{
+	int			fd;
+	int			is_open;
+	char		*purpose;
+}				t_fd_state;
 
 typedef struct s_executor
 {
 	int			in_fd;
 	int			out_fd;
 	int			pipe_fd[2];
-	pid_t		pid;
 	int			status;
+	int			fd_count;
+	pid_t		pid;
+	t_fd_state	*fd_states;
 	t_cmd		**cmds;
 }				t_executor;
 
-int				execute_command_line(t_cmd **cmd_arr, char *envp[]);
+int				execution(t_cmd **cmds, char *envp[]);
+int				execute_command(char *argv[], char *envp[]);
+int				execute_loop(t_executor *executor);
 int				ft_mkstemp(char *template);
+int				child_process(t_executor *executor, int cmd_index);
+int				parent_process(t_executor *executor, int cmd_index);
 
 /*
  *	utils
  */
-char			*get_env_all_path(char *envp[]);
 char			*get_path(char *cmd, char *envp[]);
-void			remove_inner_quotes(char **cmd);
 void			msg_error(char *err);
-void			free_string_arr(char **arr);
+void			free_arr2d(void **arr2d);
 unsigned long	rand_simple(void);
 
 /*
- *   redirections
+ *   io_redirections
  */
-void			determine_output_fd(t_executor *executor, int cmd_index);
-void			determine_input_fd(t_executor *executor, int cmd_index);
-int				handle_here_document(const char *delimiter);
+int				find_last_output_redir(t_executor *executor, int cmd_index);
+int				find_last_input_redir(t_executor *executor, int cmd_index);
+int				handle_here_document(const char *delimiter,
+					t_executor *executor);
+int				handle_truncate_redirection(const char *file_name);
+int				handle_append_redirection(const char *file_name);
+int				handle_input_redirection(const char *file_name);
 
 /*
  *   cleaners
  */
-void			terminate_execution(t_cmd **cmds, char *envp[]);
+void			terminate_execution(t_executor *executor);
 
 /*
  *   debugging
  */
-t_cmd			**mockup_ls_grep_wc(void);
-t_cmd			**mockup_single_cmd(void);
-t_cmd			**mockup_empty_cmds(void);
+t_cmd			**mockup_three_cmds(void);
+t_cmd			**mockup_single_cmd(char *env[]);
+t_cmd			**mockup(void);
 
 #endif

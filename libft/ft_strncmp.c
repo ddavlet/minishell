@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 12:43:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/24 14:13:01 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:29:41 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

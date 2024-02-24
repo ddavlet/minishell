@@ -1,6 +1,6 @@
 #include "../execution.h"
 
-int	handle_truncate_redirection(char *file_name)
+int	handle_truncate_redirection(const char *file_name)
 {
 	int	fd;
 
