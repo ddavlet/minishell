@@ -1,11 +1,12 @@
 #include "builtin.h"
 
-int builtin_exit(char **args)
+int builtin_exit(char **argv, t_env *root)
 {
 	int i;
 
 	i = 0;
-	while (args[i])
+	(void)root;
+	while (argv[i])
 		i++;
 	if (i > 2)
 	{
@@ -14,14 +15,14 @@ int builtin_exit(char **args)
 	}
 	if (i == 2)
 	{
-		if (ft_isnumber(args[1]) == 0)
+		if (!ft_isnumber(argv[1]))
 		{
 			ft_putstr_fd("exit: ", 2);
-			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(argv[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
 			return (255);
 		}
-		return (ft_atoi(args[1]) % 256);
+		return (ft_atoi(argv[1]) % 256);
 	}
 	return (0);
 }

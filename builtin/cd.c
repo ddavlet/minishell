@@ -1,28 +1,21 @@
 #include "builtin.h"
 
-int builtin_cd(t_com *com, char *envp[])
+int builtin_cd(char **argv, t_env *root)
 {
-	char *path;
-	int ret;
+	char	*path;
 
-	if (com->argv[1] == NULL)
+	if (argv[1] == NULL)
 	{
-		path = getenv("HOME");
+		path = get_envvar("HOME", root);
 		if (path == NULL)
-		{
-			ft_putstr_fd("cd: HOME not set\n", 2);
-			return (1);
-		}
+			return (builtin_err_gen("cd", "HOME not set", NULL));
 	}
 	else
-		path = com->argv[1];
-	ret = chdir(path);
-	if (ret == -1)
-	{
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		return (1);
-	}
+		path = argv[1];
+	if (argv[2])
+		return (builtin_err_gen("cd", "too many arguments", NULL));
+	if (0) // check path?
+		return (builtin_err_gen("cd", "No such file or directory", path));
+	append_envp(root, "PWD", path);
 	return (0);
 }
