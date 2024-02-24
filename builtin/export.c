@@ -1,31 +1,27 @@
 #include "builtin.h"
 
-int    builtin_export(char **args, char **envp)
+// "export %s=%s\n", <name>, <value>
+
+int	builtin_export(char **argv, t_env *root) // recieve code!
 {
-    int    i;
-    char    *key;
-    char    *value;
+	uint32_t	i;
+	char		*key;
+	char		*value;
 
-    i = 1;
-    while (args[i] != NULL)
-    {
-        key = ft_strcdup(args[i], '=');
-        value = ft_strchr(args[i], '=');
-        if (value == NULL)
-        {
-            free(key);
-            return (1);
-        }
-        value++;
-        if (getenv(key) == NULL)
-            ft_setenv(key, value, envp); 
-        else
-            ft_setenv(key, value, envp); 
-        free(key);
-        i++;
-    }
-    return (0);
+	i = 1;
+	while (argv[i] != NULL)
+	{
+		key = ft_strcdup(argv[i], '=');
+		value = ft_strchr(argv[i], '=');
+		if (value == NULL)
+		{
+			free(key);
+			return (1);
+		}
+		value++;
+		append_envp(root, key, value);
+		free(key);
+		i++;
+	}
+	return (0);
 }
-
-
-
