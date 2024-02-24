@@ -1,21 +1,5 @@
 #include "parsing.h"
 
-// static uint32_t	ft_counter(const char **s)
-// {
-// 	uint32_t	i;
-// 	uint32_t	count;
-
-// 	i = 1;
-// 	count = 1;
-// 	while (s[i])
-// 	{
-// 		if (s[i][0] == 0)
-// 			count++;
-// 		i++;
-// 	}
-// 	return (count);
-// }
-
 char	**realoc_merge(char **arr, char *new, ssize_t i)
 {
 	char	**new_arr;
@@ -42,7 +26,8 @@ char	**pars_merge(char **arr)
 	while (arr[i])
 	{
 		if (arr[i + 1] && arr[i][0] != 0 && arr[i + 1][0] != 0
-			&& !oper_type(arr[i]) && !oper_type(arr[i + 1]))
+			&& !oper_type(arr[i]) && !oper_type(arr[i + 1])
+			&& !ft_isredir(arr[i]))
 		{
 			tmp = ft_strjoin(arr[i], arr[i + 1]);
 			arr = realoc_merge(arr, tmp, i);

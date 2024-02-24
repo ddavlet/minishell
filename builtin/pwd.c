@@ -1,10 +1,13 @@
 #include "builtin.h"
 
-int	builtin_pwd(char **args)
+int	builtin_pwd(char **argv, t_env *root)
 {
 	char	*pwd;
 
-	pwd = getcwd(NULL, 0);
+	(void)argv;
+	// if (argv[1])
+	// 	return (builtin_err_gen("pwd", "option(s) or argument(s) are not allowed", NULL));
+	pwd = find_var(root, ft_strdup("PWD"));
 	if (pwd == NULL)
 	{
 		ft_putstr_fd("pwd: error retrieving current directory:"

@@ -1,24 +1,29 @@
 #include "parsing.h"
 
-int	ft_isexeption(char c)
+t_oper	ft_isexeption(char *txt)
 {
-	if (c == '|') // add more exeptions if needed
-		return (1);
-	if (c == '&')
-		return (2);
-	return (0);
+	if (!ft_strncmp(txt, "||", 2))
+		return (OR);
+	if (!ft_strncmp(txt, "&&", 2))
+		return (AND);
+	if (!ft_strncmp(txt, "|", 1))
+		return (PIPE);
+	if (!ft_strncmp(txt, "&", 1))
+		return (BCHGR);
+	else
+		return (RUN);
 }
 
-t_red_sym	ft_isrediraction(const char *redir)
+t_red_sym	ft_isredir(const char *redir)
 {
-	if (!ft_strncmp(redir, "<", 2))
-		return (RED_INP);
-	else if (!ft_strncmp(redir, ">", 2))
-		return (RED_OUT);
-	else if (!ft_strncmp(redir, "<<", 2))
+	if (!ft_strncmp(redir, "<<", 2))
 		return (HEAR_DOC);
 	else if (!ft_strncmp(redir, ">>", 2))
 		return (APP_OUT);
+	else if (!ft_strncmp(redir, "<", 1))
+		return (RED_INP);
+	else if (!ft_strncmp(redir, ">", 1))
+		return (RED_OUT);
 	else
 		return (NO_REDIR);
 }
@@ -31,17 +36,6 @@ t_quote	ft_isquotation(char c)
 		return (DOUBLE_Q);
 	return (ZERO_Q);
 }
-
-// int	if_isspecchar(char *token) // ??
-// {
-// 	if (!ft_strncmp(redir, "\\|", 3))
-// 		return (1);
-// 	if (!ft_strncmp(redir, "\\|", 3))
-// 		return (1);
-// 	if (c == '>')
-// 		return (1);
-// 	return (0);
-// }
 
 uint32_t	del_pos(const char *txt)
 {

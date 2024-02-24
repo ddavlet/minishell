@@ -1,19 +1,18 @@
 #include "parsing.h"
 
-void	clean_commands(t_cmd **commands)
+void	*terminate_cmd(t_cmd *cmd)
 {
 	int	i;
 
 	i = 1;
-	if (!commands)
-		return ; // ERROR!
-	while (commands[i])
-	{
-		free(commands[i]->com);
-		terminate_ptr_str(commands[i]->argv);
-		terminate_redirs(commands[i]->redirs);
-		free(commands[i++]);
-	}
+	if (!cmd)
+		return (NULL); // ERROR!
+	if (cmd->com)
+		free(cmd->com);
+	terminate_ptr_str(cmd->argv);
+	terminate_redirs(cmd->redirs);
+	free(cmd);
+	return (NULL);
 }
 
 void	*terminate_commands(t_cmd **commands)
@@ -59,6 +58,8 @@ void	terminate_env(t_env *root)
 		terminate_env(root->child);
 		tmp = root;
 		root = root->next;
+		if (tmp->envp)
+			terminate_ptr_str(tmp->envp);
 		if (tmp->content)
 			free(tmp->content);
 		free(tmp);
@@ -75,7 +76,8 @@ void	terminate_redirs(t_redir *redir_l)
 	{
 		tmp = redir_l;
 		redir_l = redir_l->next;
-		free(tmp->redir_name);
+		if (tmp->redir_name)
+			free(tmp->redir_name);
 		free(tmp);
 	}
 }

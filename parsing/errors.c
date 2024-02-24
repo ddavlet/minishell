@@ -28,20 +28,25 @@ void	*error_general(void *ptr, const char *str)
 		if (str)
 		{
 			ft_putstr_fd(str, 2);
-			perror(": undefined error on allocation");
+			perror(": undefined error on allocation"); // why perror?
 		}
 		else
-			perror("Undefined error on allocation");
+			perror("Undefined error on allocation"); // why perror?
 		return (ptr);
 	}
-	perror("Allocation error:");
+	perror("Allocation error:"); // why perror?
 	return (NULL);
 }
 
 void	*error_near_tocken(char *token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	write(2, &(token[1]), 1);
-	ft_putendl_fd("'", 2);
+	if (!token)
+		write(2, "newline", 7);
+	else if (token[0] == '\\')
+		write(2, &(token[1]), 2);
+	else
+		write(2, &(token[0]),2);
+	ft_putendl_fd("\'", 2);
 	return (NULL);
 }

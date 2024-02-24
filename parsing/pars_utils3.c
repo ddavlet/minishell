@@ -2,12 +2,16 @@
 
 t_oper	oper_type(char *txt)
 {
-	if (!ft_strncmp(txt, "\\|", 3))
-		return (PIPE);
+	if (!txt)
+		return (RUN);
 	if (!ft_strncmp(txt, "\\||", 4))
 		return (OR);
 	if (!ft_strncmp(txt, "\\&&", 4))
 		return (AND);
+	if (!ft_strncmp(txt, "\\|", 3))
+		return (PIPE);
+	if (!ft_strncmp(txt, "\\&", 3))
+		return (BCHGR);
 	else
 		return (RUN);
 }
@@ -40,7 +44,7 @@ char	**parse_delspace(char **tokens)
 
 	i = 0;
 	j = 0;
-	new_arr = (char **)ft_calloc(sizeof(char *), (ft_arr_len(tokens) + 1) / 2 + 1);
+	new_arr = (char **)ft_calloc(sizeof(char *), (arrlen_nosspace(tokens) + 1));
 	while (tokens[i])
 	{
 		if (tokens[i][0] == 0)

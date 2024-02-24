@@ -4,7 +4,7 @@ ssize_t	find_next_cmd(char **tokens, ssize_t i)
 {
 	if (i == 1)
 		i--;
-	while (!oper_type(tokens[i]))
+	while (tokens[i] && !oper_type(tokens[i]))
 	{
 		i++;
 		if (!tokens[i])
@@ -20,29 +20,25 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 {
 	char	**argv;
 	ssize_t	i;
-	ssize_t	j;
+	// ssize_t	j;
 
-	i = prev;
-	j = 0;
-	while (i < next)
+	i = prev - 1;
+	// j = 0;
+	argv = (char **)ft_calloc(sizeof(char *), 1); // protect
+	while (++i < next || (tokens[i] && ft_isexeption(tokens[i])))
 	{
-		if (ft_isrediraction(tokens[i++]))
+		if (ft_isredir(tokens[i]))
 		{
-			if (oper_type(tokens[i]))
-				return (error_near_tocken(tokens[i])); // catch!
-			else
-				j += 2;
+			if (sytax_redir(tokens[++i])) // EDGE CASES HANDLER
+			{
+				terminate_ptr_str(argv);
+				return (error_near_tocken(tokens[i])); // catch! MORE ERRORS? EDGE CASES
+			}
 		}
-	}
-	argv = (char **)ft_calloc(sizeof(char *), i - j + 1); // protect
-	i = prev;
-	j = 0;
-	while (i < next)
-	{
-		if (ft_isrediraction(tokens[i]))
-			i += 2;
+		else if (oper_type(tokens[i]))
+			break ;
 		else
-			argv[j++] = ft_strdup(tokens[i++]);
+			argv = append_arr_str(argv, ft_strdup(tokens[i]));
 	}
 	return (argv);
 }

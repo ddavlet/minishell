@@ -4,11 +4,16 @@
 void	debug_print(t_cmd *com)
 {
 	ft_printf("\nCommand:\n");
-	ft_printf("cmd_name: %s\n", com->com);
-	ft_printf("operation code: %d\n", com->operat);
+	if (com->com)
+		ft_printf("Cmd_name: %s\n", com->com);
+	ft_printf("Operation code: %d\n", com->operat);
 	int	i = 0;
-	while ((com->argv)[i])
-		ft_printf("arguments: %s\n", (com->argv)[i++]);
+	if (com->argv)
+		while ((com->argv)[i])
+			ft_printf("Arguments: %s\n", (com->argv)[i++]);
+	ft_printf("Redirections: \n");
+	debug_print_redir(com->redirs);
+	ft_printf("_________________\n");
 }
 
 void	debug_print_cmd(t_cmd **commands)
@@ -17,7 +22,10 @@ void	debug_print_cmd(t_cmd **commands)
 
 	i = 0;
 	if (!commands)
+	{
 		printf("Commands do not exist");
+		return ;
+	}
 	while (commands[i])
 		debug_print(commands[i++]);
 }
@@ -28,6 +36,7 @@ void	debug_print_array_strings(char **tokens)
 
 	i = -1;
 	while (tokens[++i])
+		// ft_printf("String %d: %s\n", i, tokens[i]);
 		ft_printf("String %d: %s\n", i, tokens[i]);
 }
 
@@ -63,18 +72,15 @@ void	debug_print_env(t_env	*root, const char *search)
 		ft_printf ("didn't find anything\n");
 }
 
+void	debug_print_redir(t_redir	*redir)
+{
+	t_redir	*tmp;
 
-// int	main(int argc, const char *argv[], const char *envp[])
-// {
-// 	t_cmd	**commands;
-// 	t_env	*env;
-
-// 	env = init_env(envp);
-// 	commands = parse_text(argv[1], env);
-// 	debug_print_cmd(commands);
-// 	terminate_commands(commands);
-// 	terminate_env(env);
-// 	(void)argc;
-// 	(void)commands;
-// 	return (0);
-// }
+	tmp = redir;
+	while (tmp)
+	{
+		printf("symbol: %i\n", tmp->redir_sym);
+		printf("name: %s\n", tmp->redir_name);
+		tmp = tmp->next;
+	}
+}

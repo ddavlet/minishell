@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:27:43 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/21 13:56:23 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/24 14:13:32 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int		ft_putchar_fd(char c, int fd);
 
 int		ft_putstr_fd(const char *s, int fd);
 
-int		ft_putendl_fd(char *s, int fd);
+int		ft_putendl_fd(const char *s, int fd);
 
 int		ft_putnbr_fd(int n, int fd);
 

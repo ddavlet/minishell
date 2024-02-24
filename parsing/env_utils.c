@@ -25,7 +25,7 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 	}
 }
 
-static void	add_envvar(t_env *root,const char *envvar, const char *content)
+static void	add_envvar(t_env *root, const char *envvar, const char *content)
 {
 	t_env	**child_p;
 
@@ -44,7 +44,11 @@ static void	add_envvar(t_env *root,const char *envvar, const char *content)
 		else if (*(envvar + 1))
 			child_p = &((*child_p)->child);
 		else if (!*(envvar + 1))
+		{
+			free((*child_p)->content);
 			(*child_p)->content = ft_strdup(content);
+			(*child_p)->exists = true;
+		}
 		envvar++;
 	}
 }
@@ -87,4 +91,11 @@ t_env	*init_env(const char **envp)
 	}
 	root->envp = env_copy(envp);
 	return (root);
+}
+
+void	append_envp(t_env *root, char *name, char *content)
+{
+	add_envvar(root, name, content);
+	terminate_ptr_str(root->envp);
+	root->envp = init_envv(root);
 }
