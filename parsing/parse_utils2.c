@@ -43,34 +43,6 @@ char	**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q)
 	return (merged);
 }
 
-char	*find_var(t_env	*root, char *search)
-{
-	t_env	*child;
-
-	child = root->child;
-	if (!search)
-		return (NULL);
-	while (child)
-	{
-		if (child->letter == *search && *(search + 1)) // need to be checked~
-		{
-			child = child->child;
-			search++;
-		}
-		else if (child->letter == *search && !*(search + 1))
-		{
-			if (child->exists == true)
-				return (ft_strdup(child->content));
-			else
-				return (ft_strdup(""));
-		}
-		else
-			child = child->next;
-	}
-	free (search);
-	return (ft_strdup(""));
-}
-
 int	contain_quotations(char **tokens)
 {
 	ssize_t	i;

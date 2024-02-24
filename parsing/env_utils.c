@@ -47,6 +47,7 @@ static void	add_envvar(t_env *root, const char *envvar, const char *content)
 		{
 			free((*child_p)->content);
 			(*child_p)->content = ft_strdup(content);
+			(*child_p)->exists = true;
 		}
 		envvar++;
 	}
