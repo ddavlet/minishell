@@ -5,14 +5,15 @@ void	debug_print(t_cmd *com)
 {
 	ft_printf("\nCommand:\n");
 	if (com->com)
-		ft_printf("cmd_name: %s\n", com->com);
-	ft_printf("operation code: %d\n", com->operat);
-	ft_printf("Redirections: \n");
-	debug_print_redir(com->redirs);
+		ft_printf("Cmd_name: %s\n", com->com);
+	ft_printf("Operation code: %d\n", com->operat);
 	int	i = 0;
 	if (com->argv)
 		while ((com->argv)[i])
-			ft_printf("arguments: %s\n", (com->argv)[i++]);
+			ft_printf("Arguments: %s\n", (com->argv)[i++]);
+	ft_printf("Redirections: \n");
+	debug_print_redir(com->redirs);
+	ft_printf("_________________\n");
 }
 
 void	debug_print_cmd(t_cmd **commands)

@@ -2,6 +2,8 @@
 
 t_oper	oper_type(char *txt)
 {
+	if (!txt)
+		return (RUN);
 	if (!ft_strncmp(txt, "\\||", 4))
 		return (OR);
 	if (!ft_strncmp(txt, "\\&&", 4))

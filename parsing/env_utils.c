@@ -25,7 +25,7 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 	}
 }
 
-static void	add_envvar(t_env *root,const char *envvar, const char *content)
+static void	add_envvar(t_env *root, const char *envvar, const char *content)
 {
 	t_env	**child_p;
 
@@ -44,7 +44,11 @@ static void	add_envvar(t_env *root,const char *envvar, const char *content)
 		else if (*(envvar + 1))
 			child_p = &((*child_p)->child);
 		else if (!*(envvar + 1))
+		{
+			free((*child_p)->content);
 			(*child_p)->content = ft_strdup(content);
+			(*child_p)->exists = true;
+		}
 		envvar++;
 	}
 }
@@ -89,30 +93,9 @@ t_env	*init_env(const char **envp)
 	return (root);
 }
 
-void	append_envp(t_env **envs, char *name, char *content)
+void	append_envp(t_env *root, char *name, char *content)
 {
-	ssize_t	i;
-	char	**new_envp;
-	char	*tmp;
-	t_env	*root;
-
-	root = *envs;
 	add_envvar(root, name, content);
-	new_envp = (char **)ft_calloc(sizeof(char *), ft_arr_len(root->envp) + 2);
-	i = -1;
-	while (root->envp[++i] && var_exists(root->envp[i]))
-		new_envp[i] = root->envp[i];
-	if (root->envp[i])
-	{
-		tmp = root->envp[i];
-		root->envp[i] = ft_substr(tmp, 0, ft_strlen(name)); // must be tested
-		free(tmp);
-	}
-	else
-		new_envp[i] = ft_strjoin(name, "=");
-	tmp = new_envp[i];
-	new_envp[i] = ft_strjoin(tmp, content);
-	free(tmp);
-	free(root->envp);
-	root->envp = new_envp;
+	terminate_ptr_str(root->envp);
+	root->envp = init_envv(root);
 }

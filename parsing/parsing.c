@@ -18,9 +18,9 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 {
 	t_cmd	*cmd;
 
-	if (prev == next)
-		return (error_near_tocken(tokens[prev])); // catch it! error already printed
-	else if (prev == 1)
+	// if (prev == next)
+	// 	return (error_near_tocken(tokens[prev])); // catch it! error already printed
+	// else if (prev == 1)
 		prev--;
 	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)

@@ -30,7 +30,7 @@ int	var_exists(char *arg)
 		return (1);
 }
 
-static char	*get_envvar(const char *txt, t_env *root)
+char	*get_envvar(const char *txt, t_env *root)
 {
 	char		*new_txt;
 	char		*tmp_1;
@@ -84,3 +84,30 @@ void	get_variable(char **tokens, t_env *root)
 
 }
 
+char	*find_var(t_env	*root, char *search)
+{
+	t_env	*child;
+
+	child = root->child;
+	if (!search)
+		return (NULL);
+	while (child)
+	{
+		if (child->letter == *search && *(search + 1)) // need to be checked~
+		{
+			child = child->child;
+			search++;
+		}
+		else if (child->letter == *search && !*(search + 1))
+		{
+			if (child->exists == true)
+				return (ft_strdup(child->content));
+			else
+				return (ft_strdup(""));
+		}
+		else
+			child = child->next;
+	}
+	free (search);
+	return (ft_strdup(""));
+}
