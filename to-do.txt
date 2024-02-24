@@ -1,7 +1,14 @@
 Have to fix:
 
+
+!! when there are only 2 arguments in argv:
+commented protection prev == next
+I maybe protecting it before
+needs more tests
+
+
 after $ sign:
 
-change * to $ sign
+
 check what can be passed after $ sign
 if after $ sign is non numeric, continue to read

@@ -10,7 +10,8 @@
 		"parsing.h": "c",
 		"execution.h": "c",
 		"wait.h": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"builtin.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

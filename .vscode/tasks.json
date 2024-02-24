@@ -9,6 +9,12 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"label": "Builtins",
+			"type": "shell",
+			"command": "cc -Wall -Werror -Wextra -g ./builtin/*.c ./parsing/*.c ./libft/libft.a -o builtin.out",
+			"problemMatcher": []
 		}
 	],
     "version": "2.0.0"
