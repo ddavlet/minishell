@@ -34,17 +34,17 @@ void	*terminate_commands(t_cmd **commands)
 	return (0);
 }
 
-int	terminate_ptr_str(char **ptr)
+void	*terminate_ptr_str(char **ptr)
 {
 	ssize_t	i;
 
 	i = 0;
 	if (!ptr)
-		return (0); //is that error??
+		return (NULL);
 	while (ptr[i])
 		free(ptr[i++]);
 	free(ptr);
-	return (0);
+	return (NULL);
 }
 
 void	terminate_env(t_env *root)

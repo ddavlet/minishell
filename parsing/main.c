@@ -1,6 +1,8 @@
 #include "../builtin/builtin.h"
 
 char	**init_envv(t_env *root);
+void	router(char	**matches, char *letters, t_tree *root);
+
 
 int	main(int argc, const char *argv[], const char *envp[])
 {
@@ -25,6 +27,9 @@ int	main(int argc, const char *argv[], const char *envp[])
 	builtin_env(commands[0]->argv, env);
 	builtin_echo(commands[0]->argv, env);
 	builtin_cd(commands[0]->argv, env);
+	char	**matches;
+	char	letters[] = {"u", "s, *, r"};
+	router(matches, letters, env);
 	terminate_commands(commands);
 	terminate_env(env);
 	(void)argc;
