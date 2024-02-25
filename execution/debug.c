@@ -5,6 +5,37 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+void free_mockup_cmds(t_cmd **cmds)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (cmds[i])
+    {
+        j = 0;
+        while (cmds[i]->argv[j])
+        {
+            free(cmds[i]->argv[j]);
+            j++;
+        }
+        // free redirs
+        while (cmds[i]->redirs)
+        {
+            t_redir *tmp = cmds[i]->redirs;
+            cmds[i]->redirs = cmds[i]->redirs->next;
+            free(tmp->redir_name);
+            free(tmp);
+        }
+        free(cmds[i]->env);
+        free(cmds[i]->argv);
+        free(cmds[i]->com);
+        free(cmds[i]);
+        i++;
+    }
+    free(cmds);
+}
+
 
 t_cmd   **mockup_three_cmds(void)
 {
@@ -76,19 +107,50 @@ t_cmd **mockup_single_cmd(char *envp[])
     
     cmd = (t_cmd *)malloc(sizeof(t_cmd));
     cmd->com = ft_strdup("cat");
+    
     cmd->operat = RUN;
-    cmd->argv = (char **)malloc(sizeof(char *) * 2);
+
+    cmd->argv = (char **)malloc(sizeof(char *) * 3);
     cmd->argv[0] = ft_strdup("cat");
     cmd->argv[1] = NULL;
+    cmd->argv[2] = NULL;
 
     t_env *env = malloc(sizeof(t_env));
     env->envp = envp;
     cmd->env = env;
 
+    // NO_REDIR,
+	// RED_INP,
+	// RED_OUT,
+	// HEAR_DOC,
+	// APP_OUT
     t_redir *redir = malloc(sizeof(t_redir));
+    // t_redir *redir_2 = malloc(sizeof(t_redir));
+    // t_redir *redir_3 = malloc(sizeof(t_redir));
+    // t_redir *output_redir = malloc(sizeof(t_redir));
+    // t_redir *output_redir2 = malloc(sizeof(t_redir));
+
     redir->redir_sym = HEAR_DOC;
-    redir->redir_name = ft_strdup("EOF");
+    redir->redir_name = ft_strdup("end");
     redir->next = NULL;
+
+    // redir_2->redir_sym = RED_INP;
+    // redir_2->redir_name = ft_strdup("infile1");
+    // redir_2->next = output_redir;
+
+    // redir_3->redir_sym = RED_INP;
+    // redir_3->redir_name = ft_strdup("infile2");
+    // redir_3->next = output_redir2;
+    // // redir_3->next = output_redir;
+
+    // output_redir->redir_sym = RED_OUT;
+    // output_redir->redir_name = ft_strdup("outfile");
+    // output_redir->next = redir_3;
+
+    // output_redir2->redir_sym = RED_OUT;
+    // output_redir2->redir_name = ft_strdup("outfile1");
+    // output_redir2->next = NULL;
+
     cmd->redirs = redir;
 
     cmds[0] = cmd;
@@ -115,5 +177,6 @@ int	main(int argc, char *argv[], char *envp[])
 	// cmds = mockup_three_cmds();
     cmds = mockup_single_cmd(envp);
 	execution(cmds, envp);
+    free_mockup_cmds(cmds);
 	return (0);
 }
