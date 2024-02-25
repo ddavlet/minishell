@@ -37,24 +37,24 @@ char	**remove_quotes_and_join(char **arr)
 	return (new_arr);
 }
 
-#include <sys/wait.h>
+// #include <sys/wait.h>
 
-int	main(void)
-{
-	char *tokens[] = {"'e'", "ch", "'o'", "", "'test: \"thisistext\"'", NULL};
-	char **new_tokens;
+// int	main(void)
+// {
+// 	char *tokens[] = {"'e'", "ch", "'o'", "", "'test: \"thisistext\"'", NULL};
+// 	char **new_tokens;
 
-	new_tokens = remove_quotes_and_join(tokens);
-	if (!new_tokens)
-	{
-		printf("Error\n");
-		return (1);
-	}
-	int i = 0;
-	while(new_tokens[i])
-	{
-		printf("%s\n", new_tokens[i]);
-		i++;
-	}
-	return (0);
-}
+// 	new_tokens = remove_quotes_and_join(tokens);
+// 	if (!new_tokens)
+// 	{
+// 		printf("Error\n");
+// 		return (1);
+// 	}
+// 	int i = 0;
+// 	while(new_tokens[i])
+// 	{
+// 		printf("%s\n", new_tokens[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }

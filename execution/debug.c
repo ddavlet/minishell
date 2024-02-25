@@ -16,7 +16,6 @@ t_cmd   **mockup_three_cmds(void)
 // First
     cmd1 = (t_cmd *)malloc(sizeof(t_cmd));
     cmd1->com = ft_strdup("ls");
-    cmd1->legit = true;
     cmd1->operat = PIPE;
     cmd1->argv = (char **)malloc(sizeof(char *) * 3);
     cmd1->argv[0] = ft_strdup("ls");
@@ -26,11 +25,11 @@ t_cmd   **mockup_three_cmds(void)
     t_redir *redir1 = malloc(sizeof(t_redir));
     redir1->redir_sym = NO_REDIR;
     redir1->redir_name = NULL;
+    redir1->next = NULL;
     cmd1->redirs = redir1;
 
 // Second
     cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd2->legit = true;
     cmd2->operat = PIPE;
     cmd2->com = ft_strdup("grep");
     cmd2->argv = (char **)malloc(sizeof(char *) * 3);
@@ -41,11 +40,11 @@ t_cmd   **mockup_three_cmds(void)
     t_redir *redir2 = malloc(sizeof(t_redir));
     redir2->redir_sym = NO_REDIR;
     redir2->redir_name = NULL;
+    redir2->next = NULL;
     cmd2->redirs = redir2;
 
 // Third
     cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd3->legit = true;
     cmd3->operat = PIPE;
     cmd3->com = ft_strdup("wc");
     cmd3->argv = (char **)malloc(sizeof(char *) * 3);
@@ -56,6 +55,7 @@ t_cmd   **mockup_three_cmds(void)
     t_redir *redir3 = malloc(sizeof(t_redir));
     redir3->redir_sym = NO_REDIR;
     redir3->redir_name = NULL;
+    redir3->next = NULL;
     cmd3->redirs = redir3;
 
 // Assign to array
@@ -67,7 +67,7 @@ t_cmd   **mockup_three_cmds(void)
     return (cmds);
 }
 
-t_cmd **mockup_single_cmd(void)
+t_cmd **mockup_single_cmd(char *envp[])
 {
     t_cmd   **cmds;
     t_cmd   *cmd;
@@ -75,16 +75,20 @@ t_cmd **mockup_single_cmd(void)
     cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 2);
     
     cmd = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd->com = ft_strdup("ls");
-    cmd->legit = true;
+    cmd->com = ft_strdup("cat");
     cmd->operat = RUN;
     cmd->argv = (char **)malloc(sizeof(char *) * 2);
-    cmd->argv[0] = ft_strdup("ls");
+    cmd->argv[0] = ft_strdup("cat");
     cmd->argv[1] = NULL;
+
+    t_env *env = malloc(sizeof(t_env));
+    env->envp = envp;
+    cmd->env = env;
 
     t_redir *redir = malloc(sizeof(t_redir));
     redir->redir_sym = HEAR_DOC;
     redir->redir_name = ft_strdup("EOF");
+    redir->next = NULL;
     cmd->redirs = redir;
 
     cmds[0] = cmd;
@@ -106,13 +110,10 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_cmd	**cmds;
 
-	(void)argc;
+    (void)argc;
 	(void)argv;
 	// cmds = mockup_three_cmds();
-    cmds = mockup_single_cmd();
-	if (cmds == NULL)
-		terminate_execution(cmds, envp);
-	execute_command_line(cmds, envp);
-	terminate_execution(cmds, envp);
+    cmds = mockup_single_cmd(envp);
+	execution(cmds, envp);
 	return (0);
 }

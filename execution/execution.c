@@ -1,8 +1,9 @@
 
 #include "execution.h"
 
-int	initialize_executor(t_cmd **cmds, char *envp[])
+t_executor	*initialize_executor(t_cmd **cmds, char *envp[])
 {
+    t_executor    *executor;
 	if (!cmds || !envp)
 		return (NULL);
 	executor = (t_executor *)malloc(sizeof(t_executor));
@@ -15,11 +16,10 @@ int	initialize_executor(t_cmd **cmds, char *envp[])
 	executor->pid = 0;
 	executor->status = 0;
 	executor->cmds = cmds;
-	executor->envp = envp;
 	return (executor);
 }
 
-int	execute_command_line(t_cmd **cmds, char *envp[])
+int	execution(t_cmd **cmds, char *envp[])
 {
 	t_executor	*executor;
 
@@ -31,7 +31,7 @@ int	execute_command_line(t_cmd **cmds, char *envp[])
 		terminate_execution(executor);
 		return (-1);
 	}
-	execute_loop(executor)
+	execute_loop(executor);
 	terminate_execution(executor);
 	return (0);
 }

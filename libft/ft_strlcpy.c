@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 15:16:29 by ddavlety          #+#    #+#             */
-/*   Updated: 2023/11/14 19:26:33 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/02/23 21:56:56 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

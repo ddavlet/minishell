@@ -15,14 +15,14 @@ int path_error(char *cmd_name)
     return (-1);
 }
 
-int	execute_command(const char *argv[], const char *envp[])
+int	execute_command(char *argv[], char *envp[])
 {
-	const char	*path;
+	char	*path;
 
 	path = get_path(argv[0], envp);
 	if (path == NULL)
         return (path_error(argv[0]));
 	if (execve(path, argv, envp) == -1)
-        return ((execve_error(path)));
+        return ((execve_error(path, argv[0])));
 	return (0);
 }
