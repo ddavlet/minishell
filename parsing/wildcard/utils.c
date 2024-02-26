@@ -9,9 +9,12 @@ static void	add_envnode(t_tree **list_p, char c, const char *content)
 	new_node = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	if (!new_node)
 		return ; //dela with this return
-	new_node->name = ft_strdup(content);
-	new_node->exists = true;
 	new_node->letter = c;
+	if (content)
+	{
+		new_node->exists = true;
+		new_node->name = ft_strdup(content);
+	}
 	if (!last)
 		*list_p = new_node;
 	else
@@ -61,6 +64,9 @@ t_tree	*init_tree(const char **envp)
 		return (NULL);
 	i = 0;
 	while (envp[i])
+	{
 		add_envvar(root, envp[i], envp[i]);
+		i++;
+	}
 	return (root);
 }

@@ -13,7 +13,7 @@ typedef struct s_tree
 }					t_tree;
 
 t_tree	*init_tree(const char **envp);
-void	router(char	**matches, char *letters, t_tree *root);
+void	router(char	***matches, char *letters, t_tree *root);
 
 
 #endif
