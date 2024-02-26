@@ -30,7 +30,7 @@ int	execute_loop(t_executor *executor)
 			return (-1);
 		if (pid == 0 && child_process(executor, i) == -1)
 			return (-1);
-		else if (parent_process(executor, i) == -1)
+1		else if (parent_process(executor, i) == -1)
 			return (-1);
 		i++;
 	}

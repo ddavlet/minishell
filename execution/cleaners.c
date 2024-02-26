@@ -2,5 +2,5 @@
 
 void	terminate_execution(t_executor *executor)
 {
-    (void)executor;
+    free(executor);
 }

@@ -51,11 +51,11 @@ int	child_process(t_executor *executor, int cmd_index)
     printf("pipe_fd[0]: %d\n", executor->pipe_fd[0]);
     printf("pipe_fd[1]: %d\n", executor->pipe_fd[1]);
 	manage_input_redir(executor, cmd_index);
-	manage_output_redir(executor, cmd_index);
 	close(executor->pipe_fd[1]);
 	// close(executor->pipe_fd[0]);
     argv = executor->cmds[cmd_index]->argv;
     envp = executor->cmds[cmd_index]->env->envp;
 	execute_command(argv, envp);
 	return (0);
+	manage_output_redir(executor, cmd_index);
 }

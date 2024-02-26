@@ -16,6 +16,13 @@ typedef struct s_fd_state
 	char		*purpose;
 }				t_fd_state;
 
+typedef enum e_logic_op
+{
+    OR,
+    AND,
+    NONE
+}				t_logic_op;
+
 typedef struct s_executor
 {
 	int			in_fd;
@@ -23,6 +30,7 @@ typedef struct s_executor
 	int			pipe_fd[2];
 	int			status;
 	int			fd_count;
+	e_logic_op	priority_stack;
 	pid_t		pid;
 	t_fd_state	*fd_states;
 	t_cmd		**cmds;
@@ -48,7 +56,7 @@ unsigned long	rand_simple(void);
  */
 int				find_last_output_redir(t_executor *executor, int cmd_index);
 int				find_last_input_redir(t_executor *executor, int cmd_index);
-int				handle_here_document(const char *delimiter,
+int				handle_here_document(const char *delimiter, t_env *env,
 					t_executor *executor);
 int				handle_truncate_redirection(const char *file_name);
 int				handle_append_redirection(const char *file_name);

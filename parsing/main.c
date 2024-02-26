@@ -24,10 +24,10 @@ char *generate_random_filename() {
     return filename;
 }
 
-int	main(int argc, const char *argv[], const char *envp[])
-{
-	t_cmd	**commands;
-	t_env	*env;
+// int	main(int argc, const char *argv[], const char *envp[])
+// {
+// 	t_cmd	**commands;
+// 	t_env	*env;
 
 	env = init_env(envp);
 	append_envp(env, "MZZZ", "TEST");
