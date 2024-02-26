@@ -48,7 +48,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/wildcard.out",
-			"args": ["file1", "file2", "test1", "\*st", "te\*", "te\*t"],
+			"args": ["file1 test1 te'*'"],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
 			"environment": [],

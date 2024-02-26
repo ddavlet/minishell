@@ -33,7 +33,7 @@ static uint32_t	ft_count_len(char const **str)
 		return (1);
 	else if (ft_isignored((char *)&s[i]))
 		return (1);
-	else if (ft_isredir(&s[i]) < 3)
+	else if (ft_isredir(&s[i]) < 3 && ft_isredir(&s[i]))
 		return (1);
 	else if (ft_isredir(&s[i]))
 		return (2);

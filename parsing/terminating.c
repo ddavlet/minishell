@@ -2,10 +2,6 @@
 
 void	*terminate_cmd(t_cmd *cmd)
 {
-	int	i;
-
-	i = 1;
-    (void)i;
 	if (!cmd)
 		return (NULL); // ERROR!
 	if (cmd->com)

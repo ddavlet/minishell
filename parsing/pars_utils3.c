@@ -11,7 +11,7 @@ t_oper	oper_type(char *txt)
 	if (!ft_strncmp(txt, "\\|", 3))
 		return (PIPE);
 	if (!ft_strncmp(txt, "\\&", 3))
-		return (BCHGR);
+		return (BCKGR);
 	else
 		return (RUN);
 }

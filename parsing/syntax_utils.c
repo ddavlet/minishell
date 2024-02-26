@@ -10,7 +10,7 @@ int	ft_isignored(char *txt)
 		return (1);
 	if (!ft_strncmp(txt, "!", 2))
 		return (1);
-	if (oper_type(txt) == BCHGR)
+	if (oper_type(txt) == BCKGR)
 		return (1);
 	if (!ft_strncmp(txt, "\\", 2)) // 3 or 2?
 	{
