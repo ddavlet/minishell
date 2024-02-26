@@ -1,22 +1,8 @@
 #include "wildcard.h"
 
-void	f_2(char	***matches, char *letters, t_tree *root)
-{
-	t_tree	*child;
+static void	router(char	***matches, char *letters, t_tree *root);
 
-	child = root;
-	if (!child)
-		return ;
-	while (child)
-	{
-		f_2(matches, letters, child->child);
-		if (child->letter == letters[1])
-			router(matches, &letters[1], child);
-		child = child->next;
-	}
-}
-
-void	f_1(char	***matches, char *letters, t_tree *root)
+static void	f_1(char	***matches, char *letters, t_tree *root)
 {
 	t_tree	*child;
 
@@ -32,7 +18,23 @@ void	f_1(char	***matches, char *letters, t_tree *root)
 	return ;
 }
 
-void	f_3(char	***matches, t_tree *root)
+static void	f_2(char	***matches, char *letters, t_tree *root)
+{
+	t_tree	*child;
+
+	child = root;
+	if (!child)
+		return ;
+	while (child)
+	{
+		f_2(matches, letters, child->child);
+		if (child->letter == letters[1])
+			router(matches, &letters[1], child);
+		child = child->next;
+	}
+}
+
+static void	f_3(char	***matches, t_tree *root)
 {
 	t_tree	*child;
 
@@ -48,12 +50,14 @@ void	f_3(char	***matches, t_tree *root)
 	}
 }
 
-void	router(char	***matches, char *letters, t_tree *root)
+static void	router(char	***matches, char *letters, t_tree *root)
 {
+	while (letters[0] == '*' && letters[1] == '*')
+		letters++;
 	if (letters[0] == 42)
 	{
 		if (!letters[1])
-			return (f_3(matches, root->child)); // any value with the last *
+			return (f_3(matches, root)); // any value with the last *
 		else if (letters[1] == 42) // this this not exeptable!
 			return ;
 		else
@@ -75,6 +79,8 @@ void	router(char	***matches, char *letters, t_tree *root)
 
 void	find_wildcard(char	***matches, char *letters, t_tree *root)
 {
+	while (*letters == '*' && *(letters + 1) == '*')
+		letters++;
 	if (*letters == '*')
 		f_2(matches, letters, root->child);
 	else if (!*(letters + 1) && *letters == '*')

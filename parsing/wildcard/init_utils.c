@@ -1,6 +1,6 @@
 #include "wildcard.h"
 
-static void	add_envnode(t_tree **list_p, char c, const char *content)
+static void	add_node(t_tree **list_p, char c, const char *content)
 {
 	t_tree	*last;
 	t_tree	*new_node;
@@ -25,47 +25,48 @@ static void	add_envnode(t_tree **list_p, char c, const char *content)
 	}
 }
 
-static void	add_envvar(t_tree *root, const char *envvar, const char *content)
+void	add_branch(t_tree *root, const char *name, const char *content)
 {
 	t_tree	**child_p;
 
 	child_p = &root->child;
-	while (*envvar)
+	while (*name)
 	{
-		while ((*child_p) && *envvar != (*child_p)->letter)
+		while ((*child_p) && *name != (*child_p)->letter)
 			child_p = &((*child_p)->next);
-		if (!(*child_p) && *(envvar + 1))
+		if (!(*child_p) && *(name + 1))
 		{
-			add_envnode(child_p, *envvar, NULL);
+			add_node(child_p, *name, NULL);
 			child_p = &((*child_p)->child);
 		}
-		else if (!(*child_p) && !*(envvar + 1))
-			add_envnode(child_p, *envvar, content);
-		else if (*(envvar + 1))
+		else if (!(*child_p) && !*(name + 1))
+			add_node(child_p, *name, content);
+		else if (*(name + 1))
 			child_p = &((*child_p)->child);
-		else if (!*(envvar + 1))
+		else if (!*(name + 1))
 		{
 			free((*child_p)->name);
 			(*child_p)->name = ft_strdup(content);
 			(*child_p)->exists = true;
 		}
-		envvar++;
+		name++;
 	}
 }
 
-t_tree	*init_tree(const char **envp)
+t_tree	*init_tree(const char **name)
 {
 	t_tree		*root;
 	uint32_t	i;
-	// uint32_t	j;
 
 	root = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	if (!root)
 		return (NULL);
 	i = 0;
-	while (envp[i])
+	if (!name)
+		return (root);
+	while (name[i])
 	{
-		add_envvar(root, envp[i], envp[i]);
+		add_branch(root, name[i], name[i]);
 		i++;
 	}
 	return (root);

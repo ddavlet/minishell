@@ -3,16 +3,13 @@
 int	builtin_echo(char **argv, t_env *root)
 {
 	ssize_t	i;
-	bool	option;
 
 	(void)root;
-	i = 1;
-	option = 0;
+	i = 0;
+	while (argv[i] && !ft_strncmp(argv[i], "-n", 3))
+		i++;
 	while (argv[i])
 	{
-		while (!option && !ft_strncmp(argv[i], "-n", 3))
-			i++;
-		option = true;
 		ft_putstr_fd(argv[i], 1);
 		if (argv[i + 1])
 			ft_putstr_fd(" ", 1);

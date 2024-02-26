@@ -61,6 +61,57 @@ t_cmd	**init_commands(char **tokens)
 	return (commands);
 }
 
+t_tree	*read_directory(void)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	t_tree			*root;
+
+	root = (t_tree *)ft_calloc(sizeof(t_tree), 1);
+	dir = opendir("./wildcard/test");
+	if (!dir)
+	{
+		perror("wildcard parsing error");
+		return (NULL); // catch it!
+	}
+	entry = readdir(dir);
+	while (entry)
+	{
+		if (entry->d_type == 8) // ??
+			add_branch(root, entry->d_name, entry->d_name);
+		entry = readdir(dir);
+	}
+	return (root);
+}
+
+char	**get_wildcard(char **tokens)
+{
+	ssize_t	i;
+	ssize_t	j;
+	char	**str;
+	t_tree	*root;
+
+	i = 0;
+	str = (char **)ft_calloc(sizeof(char *), 1);
+	root = read_directory();
+	if (!str || !root)
+		return (NULL); // free first and catch this error
+	while (tokens[++i])
+	{
+		j = -1;
+		while (tokens[i][++j])
+		{
+			if (tokens[i][j] == 42)
+			{
+				find_wildcard(&str, tokens[i], root);
+				tokens = inject_string(tokens, str, &i);
+				break;
+			}
+		}
+	}
+	return (tokens);
+}
+
 t_cmd	**parse_text(const char *txt, t_env *root)
 {
 	t_cmd	**commands;
@@ -71,6 +122,7 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
+	tokens = get_wildcard(tokens);
 	add_escape(tokens, "\\");
 	trim_quotes(tokens);
 	tokens = pars_merge(tokens);
