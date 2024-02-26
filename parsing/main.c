@@ -47,12 +47,6 @@ int	main(int argc, const char *argv[], const char *envp[])
 	builtin_env(commands[0]->argv, env);
 	builtin_echo(commands[0]->argv, env);
 	builtin_cd(commands[0]->argv, env);
-
-	// char *file_names[10];
-    // // Initialize array with random filenames
-    // for (int i = 0; i < 10; i++) {
-    //     file_names[i] = generate_random_filename();
-    // }
 	char	**matches;
 	matches = (char **)ft_calloc(sizeof(char *), 1);
 	char	letters[] = "*es*";
