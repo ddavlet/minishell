@@ -8,6 +8,18 @@
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
+# include <dirent.h>
+# include "./wildcard/wildcard.h"
+
+typedef enum e_token
+{
+	EMPTY,
+	SPACE,
+	OPER,
+	QUOTE,
+	REDIR,
+	WILD,
+}					t_token;
 
 typedef enum e_oper
 {
@@ -65,6 +77,8 @@ ssize_t		ft_commandlen(char **tokens);
 char		**add_escape(char **token, const char *esc);
 ssize_t		ft_arr_len(char **arr);
 ssize_t		arrlen_nosspace(char **arr);
+char		**inject_string(char **to_arr, char **from_arr, ssize_t *inj_indx);
+
 
 
 /*Commands functions*/

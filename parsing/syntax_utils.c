@@ -12,9 +12,9 @@ int	ft_isignored(char *txt)
 		return (1);
 	if (oper_type(txt) == BCKGR)
 		return (1);
-	if (!ft_strncmp(txt, "\\", 2)) // 3 or 2?
+	if (!ft_strncmp(txt, "\\", 2)) // 1 or 2?
 	{
-		write(2, "escape met, check it", 20);
+		write(2, "escape met, check it", 20); // ??
 		return (1);
 	}
 	else

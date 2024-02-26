@@ -47,12 +47,12 @@ int	main(int argc, const char *argv[], const char *envp[])
 	builtin_env(commands[0]->argv, env);
 	builtin_echo(commands[0]->argv, env);
 	builtin_cd(commands[0]->argv, env);
-	char	**matches;
-	matches = (char **)ft_calloc(sizeof(char *), 1);
-	char	letters[] = "*es*";
-	t_tree *tree = init_tree((const char **)commands[0]->argv);
-	find_wildcard(&matches, letters, tree);
-	debug_print_array_strings(matches);
+	// char	**matches;
+	// matches = (char **)ft_calloc(sizeof(char *), 1);
+	// char	letters[] = "*****t*****";
+	// t_tree *tree = init_tree((const char **)commands[0]->argv);
+	// find_wildcard(&matches, letters, tree);
+	// debug_print_array_strings(matches);
 	terminate_commands(commands);
 	terminate_env(env);
 	(void)argc;
