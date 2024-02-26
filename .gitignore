@@ -54,6 +54,7 @@ dkms.conf
 
 # Main function
 main.c
+*.json
 
 # vscode
 .vscode/

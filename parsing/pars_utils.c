@@ -9,7 +9,7 @@ t_oper	ft_isexeption(char *txt)
 	if (!ft_strncmp(txt, "|", 1))
 		return (PIPE);
 	if (!ft_strncmp(txt, "&", 1))
-		return (BCHGR);
+		return (BCKGR);
 	else
 		return (RUN);
 }

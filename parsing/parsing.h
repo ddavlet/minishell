@@ -13,7 +13,7 @@ typedef enum e_oper
 {
 	RUN,
 	PIPE,
-	BCHGR,
+	BCKGR,
 	OR,
 	AND
 }					t_oper;
@@ -41,7 +41,6 @@ typedef struct s_cmd
 	enum e_oper		operat;
 	struct s_redir	*redirs;
 	struct s_env	*env;
-
 }					t_cmd;
 
 typedef struct s_redir
@@ -95,7 +94,7 @@ char		**parse_delspace(char **tokens);
 
 /*Terminating*/
 void		*terminate_commands(t_cmd **commands);
-int			terminate_ptr_str(char **ptr);
+void		*terminate_ptr_str(char **ptr);
 void		terminate_redirs(t_redir *redir_l);
 void		*terminate_cmd(t_cmd *cmd);
 

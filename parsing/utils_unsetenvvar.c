@@ -31,10 +31,6 @@ static int	remove_envvar(t_env	*root, const char *search)
 
 int	unset_envvar(t_env *root, const char *to_find)
 {
-	uint32_t	i;
-
-	i = 0;
-    (void)i;
 	if (remove_envvar(root, to_find))
 		return (1);
 	else
