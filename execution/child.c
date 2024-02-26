@@ -1,61 +1,63 @@
 #include "execution.h"
 
-static int	manage_output_redir(t_executor *executor, int cmd_index)
+static int	manage_output_redir(t_executor *exec, int cmd_index)
 {
-	if (executor->cmds[cmd_index + 1] != NULL)
+	if (exec->cmds[cmd_index + 1] != NULL)
 	{
-		dup2(executor->pipe_fd[1], STDOUT_FILENO);
+		dup2(exec->pipe_fd[1], STDOUT_FILENO);
 	}
-	if (executor->cmds[cmd_index]->redirs != NULL)
+	if (exec->cmds[cmd_index]->redirs != NULL)
 	{
-		if (executor->out_fd != STDOUT_FILENO)
-			close(executor->out_fd);
-		executor->out_fd = find_last_output_redir(executor, cmd_index);
-		if (executor->out_fd == -1)
+		if (exec->out_fd != STDOUT_FILENO)
+			close(exec->out_fd);
+		exec->out_fd = find_last_output_redir(exec, cmd_index);
+		if (exec->out_fd == -1)
 			return (-1);
 	}
-    printf("out_fd: %d\n", executor->out_fd);
-	dup2(executor->out_fd, STDOUT_FILENO);
-	if (executor->out_fd != STDOUT_FILENO)
-		close(executor->out_fd);
+	ft_printf("out_fd: %d\n", exec->out_fd);
+	dup2(exec->out_fd, STDOUT_FILENO);
+	if (exec->out_fd != STDOUT_FILENO)
+		close(exec->out_fd);
 	return (0);
 }
 
-static int	manage_input_redir(t_executor *executor, int cmd_index)
+static int	manage_input_redir(t_executor *exec, int cmd_index)
 {
-	if (executor->cmds[cmd_index]->redirs != NULL)
+	if (exec->cmds[cmd_index]->redirs != NULL)
 	{
-		if (executor->in_fd != STDIN_FILENO)
-			close(executor->in_fd);
-		executor->in_fd = find_last_input_redir(executor, cmd_index);
-		if (executor->in_fd == -1)
+		if (exec->in_fd != STDIN_FILENO)
+			close(exec->in_fd);
+		exec->in_fd = find_last_input_redir(exec, cmd_index);
+		if (exec->in_fd == -1)
 			return (-1);
 	}
-    printf("in_fd: %d\n", executor->in_fd);
-	dup2(executor->in_fd, STDIN_FILENO);
-	if (executor->in_fd != STDIN_FILENO)
-		close(executor->in_fd);
+	ft_printf("in_fd: %d\n", exec->in_fd);
+	dup2(exec->in_fd, STDIN_FILENO);
+	if (exec->in_fd != STDIN_FILENO)
+		close(exec->in_fd);
 	return (0);
 }
 
-int	child_process(t_executor *executor, int cmd_index)
+int	child_process(t_executor *exec, int cmd_index)
 {
     char    **argv;
     char    **envp;
 
-    if (!executor || !executor->cmds || !executor->cmds[cmd_index])
-	{
+    if (!exec || !exec->cmds || !exec->cmds[cmd_index])
         return (-1);
-	}
-    printf("child_process\n");
-    printf("pipe_fd[0]: %d\n", executor->pipe_fd[0]);
-    printf("pipe_fd[1]: %d\n", executor->pipe_fd[1]);
-	manage_input_redir(executor, cmd_index);
-	close(executor->pipe_fd[1]);
-	// close(executor->pipe_fd[0]);
-    argv = executor->cmds[cmd_index]->argv;
-    envp = executor->cmds[cmd_index]->env->envp;
+	manage_output_redir(exec, cmd_index);
+	manage_input_redir(exec, cmd_index);
+    close(exec->pipe_fd[1]);
+    argv = exec->cmds[cmd_index]->argv;
+    envp = exec->cmds[cmd_index]->env->envp;
 	execute_command(argv, envp);
 	return (0);
-	manage_output_redir(executor, cmd_index);
 }
+
+void    configure_execution(t_executor *exec, int cmd_index)
+{
+}
+
+    // ft_printf("DEBUG::child_process\n");
+    // ft_printf("DEBUG::pipe_fd[0]: %d\n", exec->pipe_fd[0]);
+    // ft_printf("DEBUG::pipe_fd[1]: %d\n", exec->pipe_fd[1]);

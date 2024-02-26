@@ -1,6 +1,6 @@
 #include "../execution.h"
 
-int handle_here_document(const char *delimiter, t_env *env, t_executor *executor)
+int handle_here_document(const char *delimiter, t_env *env, t_executor *exec)
 {
     char    *line;
     char    *tmp;
@@ -16,11 +16,11 @@ int handle_here_document(const char *delimiter, t_env *env, t_executor *executor
         // free(line);
         // line = tmp;
         // ft_printf("line: %s\n", line);
-        write(executor->pipe_fd[1], line, strlen(line));
-        write(executor->pipe_fd[1], "\n", 1);
+        write(exec->pipe_fd[1], line, strlen(line));
+        write(exec->pipe_fd[1], "\n", 1);
         free(line);
         line = readline("heredoc> ");
     }
     free(line);
-    return (executor->pipe_fd[0]);
+    return (exec->pipe_fd[0]);
 }

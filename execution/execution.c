@@ -3,40 +3,43 @@
 
 t_executor	*initialize_executor(t_cmd **cmds, char *envp[])
 {
-    t_executor    *executor;
+    t_executor    *exec;
     e_logic_op    *priority_stack;
 
 	if (!cmds || !envp)
 		return (NULL);
-	executor = (t_executor *)malloc(sizeof(t_executor));
-	if (!executor)
+	exec = (t_executor *)calloc(sizeof(t_executor));
+	if (!exec)
 		return (NULL);
-    priority_stack = (e_logic_op *)malloc(sizeof(e_logic_op) * arr_length((void **)cmds));
-	executor->in_fd = 0;
-	executor->out_fd = 1;
-	executor->pipe_fd[0] = 0;
-	executor->pipe_fd[1] = 0;
-	executor->pid = 0;
-	executor->fd_count = 0;
-	executor->status = 0;
-	executor->cmds = cmds;
-    executor->priority_stack
-	return (executor);
+    priority_stack = initialize_priority_stack(cmds);
+    if (!priority_stack)
+    {
+        free(exec);
+        return (NULL);
+    }
+	exec->cmds = cmds;
+	exec->fd_count = 0;
+	exec->in_fd = 0;
+	exec->out_fd = 1;
+	exec->pid = 0;
+    exec->priority_stack = priority_stack;
+	exec->status = 0;
+	return (exec);
 }
 
 int	execution(t_cmd **cmds, char *envp[])
 {
-	t_executor	*executor;
+	t_executor	*exec;
 
-	executor = initialize_executor(cmds, envp);
-	if (!executor)
+	exec = initialize_executor(cmds, envp);
+	if (!exec)
 		return (-1);
 	if (!cmds || cmds[0] == NULL)
 	{
-		terminate_execution(executor);
+		terminate_execution(exec);
 		return (-1);
 	}
-	execute_loop(executor);
-	terminate_execution(executor);
+	execute_loop(exec);
+	terminate_execution(exec);
 	return (0);
 }
