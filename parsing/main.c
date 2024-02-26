@@ -2,7 +2,7 @@
 #include "./wildcard/wildcard.h"
 
 char	**init_envv(t_env *root);
-void	router(char	**matches, char *letters, t_tree *root);
+void	find_wildcard(char	***matches, char *letters, t_tree *root);
 
 char *generate_random_filename() {
     char *filename = (char *)malloc(4 + 1); // Allocate memory for the filename
@@ -53,10 +53,11 @@ int	main(int argc, const char *argv[], const char *envp[])
     // for (int i = 0; i < 10; i++) {
     //     file_names[i] = generate_random_filename();
     // }
-	char	**matches = NULL;
-	char	letters[] = "us*r";
-	t_tree *tree = init_tree(&argv[1]);
-	router(matches, letters, tree);
+	char	**matches;
+	matches = (char **)ft_calloc(sizeof(char *), 1);
+	char	letters[] = "*es*";
+	t_tree *tree = init_tree((const char **)commands[0]->argv);
+	find_wildcard(&matches, letters, tree);
 	debug_print_array_strings(matches);
 	terminate_commands(commands);
 	terminate_env(env);
