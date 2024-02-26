@@ -94,7 +94,7 @@ char		**parse_delspace(char **tokens);
 
 /*Terminating*/
 void		*terminate_commands(t_cmd **commands);
-int			terminate_ptr_str(char **ptr);
+void		*terminate_ptr_str(char **ptr);
 void		terminate_redirs(t_redir *redir_l);
 void		*terminate_cmd(t_cmd *cmd);
 

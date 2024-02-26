@@ -41,45 +41,32 @@
 					"text": "b handle_here_document",
 					"ignoreFailures": true
 				}
-            ]
-        },
-		// {
-		// 	"name": "parsing_debug",
-		// 	"type": "cppdbg",
-		// 	"request": "launch",
-		// 	"program": "${workspaceFolder}/parsing.out",
-		// 	"args": ["'e'ch'o' *USER > USER  test1 test2 'test_test'| echo test2 ||  echo test3 && echo test4"],
-		// 	"stopAtEntry": false,
-		// 	"cwd": "${fileDirname}",
-		// 	"environment": [],
-		// 	"externalConsole": false,
-		// 	"MIMode": "gdb",
-		// 	"preLaunchTask": "Parsing",
-		// 	"setupCommands": [
-		// 		{
-		// 			"description": "Enable pretty-printing for gdb",
-		// 			"text": "-enable-pretty-printing",
-		// 			"ignoreFailures": true
-		// 		},
-		// 		{
-		// 			"description": "Set Disassembly Flavor to Intel",
-		// 			"text": "-gdb-set disassembly-flavor intel",
-		// 			"ignoreFailures": true
-		// 		}
-		// 	]
-		// }
-		// {
-		// 	"name": "(lldb) Launch",
-		// 	"type": "cppdbg",
-		// 	"request": "launch",
-		// 	"program": "${workspaceFolder}/parsing.out",
-		// 	"args": ["'e'ch'o' \"$TEST\" | echo test2 || echo test3 && echo test4"],
-		// 	"stopAtEntry": false,
-		// 	"cwd": "${fileDirname}",
-		// 	"environment": [],
-		// 	"externalConsole": false,
-		// 	"MIMode": "lldb",
-		// 	"preLaunchTask": "Parsing"
-		// }
+			]
+		},
+		{
+			"name": "wildcard_debug",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/wildcard.out",
+			"args": ["file1", "file2", "test1", "\*st", "te\*", "te\*t"],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"preLaunchTask": "Wildcard",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				},
+				{
+					"description": "Set Disassembly Flavor to Intel",
+					"text": "-gdb-set disassembly-flavor intel",
+					"ignoreFailures": true
+				}
+			]
+		}
 	]
 }

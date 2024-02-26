@@ -77,10 +77,7 @@ t_cmd	**parse_text(const char *txt, t_env *root)
 	tokens = parse_delspace(tokens);
 	debug_print_array_strings(tokens);
 	if (!check_tokens(tokens))
-	{
-		terminate_ptr_str(tokens);
-		return (NULL);
-	}
+		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
 	terminate_ptr_str(tokens);
 	return (commands);
