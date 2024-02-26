@@ -68,6 +68,6 @@ void	router(char	**matches, char *letters, t_tree *root)
 	else
 	{
 		if (root->exists)
-			append_arr_str(matches, ft_strdup(child->name));
+			append_arr_str(matches, ft_strdup(root->name));
 	}
 }

@@ -15,6 +15,12 @@
 			"type": "shell",
 			"command": "cc -Wall -Werror -Wextra -g ./builtin/*.c ./parsing/*.c ./libft/libft.a -o builtin.out",
 			"problemMatcher": []
+		},
+		{
+			"label": "Wildcard",
+			"type": "shell",
+			"command": "cc -Wall -Werror -Wextra -g ./builtin/*.c ./parsing/*.c ./parsing/wildcard/*c ./libft/libft.a -o wildcard.out",
+			"problemMatcher": []
 		}
 	],
     "version": "2.0.0"
