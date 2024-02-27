@@ -1,0 +1,16 @@
+START 
+-> cmd0 -> cmd1 -> cmd2
+    -> open_parenthesis 1
+        cmd3 -> cmd4
+        -> open_parenthesis 2
+                open_parenthesis 3
+                        -> cmd5
+                closing_parenthesis 3
+                pipe
+                -> cmd6
+        -> close_parenthesis 2
+        cmd7 -> cmd8
+    close_parenthesis 1
+    pipe
+cmd9 -> cmd10 -> cmd11
+END

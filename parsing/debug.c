@@ -23,7 +23,7 @@ void	debug_print_cmd(t_cmd **commands)
 	i = 0;
 	if (!commands)
 	{
-		printf("Commands do not exist");
+		ft_printf("Commands do not exist");
 		return ;
 	}
 	while (commands[i])
@@ -79,8 +79,8 @@ void	debug_print_redir(t_redir	*redir)
 	tmp = redir;
 	while (tmp)
 	{
-		printf("symbol: %i\n", tmp->redir_sym);
-		printf("name: %s\n", tmp->redir_name);
+		ft_printf("symbol: %i\n", tmp->redir_sym);
+		ft_printf("name: %s\n", tmp->redir_name);
 		tmp = tmp->next;
 	}
 }

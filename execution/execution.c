@@ -1,45 +1,98 @@
 
 #include "execution.h"
 
-t_executor	*initialize_executor(t_cmd **cmds, char *envp[])
+t_context   *initialize_context(void)
 {
-    t_executor    *exec;
-    e_logic_op    *priority_stack;
+    t_context   *context;
 
-	if (!cmds || !envp)
+    context = (t_context *)ft_calloc(1, sizeof(t_context));
+    if (!context)
+        return (NULL);
+    context->after = RUN;
+    context->before = RUN;
+    context->pid = -1;
+    context->pipe_fd = NULL;
+}
+
+t_executor	*initialize_executor(t_cmd **cmds)
+{
+	t_executor	*exec;
+
+	if (!cmds)
 		return (NULL);
 	exec = (t_executor *)calloc(sizeof(t_executor));
 	if (!exec)
 		return (NULL);
-    priority_stack = initialize_priority_stack(cmds);
-    if (!priority_stack)
-    {
-        free(exec);
-        return (NULL);
-    }
+	exec->command_index = 0;
 	exec->cmds = cmds;
-	exec->fd_count = 0;
 	exec->in_fd = 0;
 	exec->out_fd = 1;
-	exec->pid = 0;
-    exec->priority_stack = priority_stack;
-	exec->status = 0;
+	exec->status = -1;
 	return (exec);
 }
 
-int	execution(t_cmd **cmds, char *envp[])
+int	execution(t_cmd **cmds)
 {
 	t_executor	*exec;
+    t_context   *context;
 
+	if (!cmds)
+		return (-1);
+    if (cmds[0] == NULL)
+        return (0);
 	exec = initialize_executor(cmds, envp);
 	if (!exec)
 		return (-1);
-	if (!cmds || cmds[0] == NULL)
-	{
-		terminate_execution(exec);
-		return (-1);
-	}
-	execute_loop(exec);
+    context = initialize_context(exec);
+    if (!context)
+        handle_exit();
+    context->pid = fork();
+    if (context->pid == -1)
+        handle_exit();
+    else if (context->pid == 0)
+        execute_rekursively(exec, context);
+    else
+        waitpid(context->pid, &(exec->status), 0);
 	terminate_execution(exec);
 	return (0);
 }
+
+int    execute_rekursiv(t_executor exec, t_context *context)
+{
+    t_context   *subcontext;
+    t_cmd       *current_cmd;
+
+    subcontext = NULL;
+    current_cmd = current_command(exec);
+    if (current_cmd->open_parenthesis > 0)
+    {
+        subcontext = create_subcontext(current_cmd, context);
+        subcontext->pid = fork();
+        if (subcontext_pid == -1)
+            exit_handler();
+        if (subcontext_pid == 0)
+            exit(execute_rekursiv(exec, subcontext));
+        else
+            handle_exit_value(exec, subcontext);
+    }
+    else
+        exit(execute_loop(exec, context));
+}
+
+void    handle_exit_value(t_executor *exec, t_context *context)
+{
+    waitpid(subcontext->pid, &(exec->status), 0);
+}
+
+void    handle_exit(void)
+{
+    return ;
+}
+
+t_context   *create_subcontext(t_cmd *cmd, t_context *context)
+{
+    cmd->open_parenthesis -= 1;
+    return (NULL);
+}
+
+
