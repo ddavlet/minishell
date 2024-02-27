@@ -48,7 +48,7 @@ char	*join_array_elements(char **arr)
 	char	*result;
 
 	total_length = calculate_total_length(arr);
-	result = (char *)calloc(total_length + 1, sizeof(char));
+	result = (char *)ft_calloc(total_length + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	concatenate(result, arr);

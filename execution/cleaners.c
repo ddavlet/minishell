@@ -1,6 +1,6 @@
 #include "execution.h"
 
-void	terminate_execution(t_executor *executor)
+void	terminate_execution(t_executor *exec)
 {
-    free(executor);
+    free(exec);
 }

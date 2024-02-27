@@ -9,7 +9,7 @@ char	**join_strings_in_each_array(char ***arr_3d)
 	i = 0;
 	while (arr_3d[i])
 		i++;
-	arr_2d = (char **)calloc(i + 1, sizeof(char *));
+	arr_2d = (char **)ft_calloc(i + 1, sizeof(char *));
 	if (!arr_2d)
 	{
 		free_3d_arr(arr_3d);
@@ -47,13 +47,13 @@ char	**remove_quotes_and_join(char **arr)
 // 	new_tokens = remove_quotes_and_join(tokens);
 // 	if (!new_tokens)
 // 	{
-// 		printf("Error\n");
+// 		ft_printf("Error\n");
 // 		return (1);
 // 	}
 // 	int i = 0;
 // 	while(new_tokens[i])
 // 	{
-// 		printf("%s\n", new_tokens[i]);
+// 		ft_printf("%s\n", new_tokens[i]);
 // 		i++;
 // 	}
 // 	return (0);

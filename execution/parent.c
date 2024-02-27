@@ -1,68 +1,58 @@
 #include "execution.h"
 
-static int	check_child_status(t_executor *executor)
+static int	check_child_status(t_executor *exec)
 {
 	/*
-		if (WIFEXITED(executor->status))
+		if (WIFEXITED(exec->status))
 		{
-			if (WEXITSTATUS(executor->status) == 0)
+			if (WEXITSTATUS(exec->status) == 0)
 				return (0);
 			else
 				return (1);
 		}
-		else if (WIFSIGNALED(executor->status))
+		else if (WIFSIGNALED(exec->status))
 		{
-			if (WTERMSIG(executor->status) == SIGINT)
+			if (WTERMSIG(exec->status) == SIGINT)
 				return (130);
-			else if (WTERMSIG(executor->status) == SIGQUIT)
+			else if (WTERMSIG(exec->status) == SIGQUIT)
 				return (131);
 			else
-				return (128 + WTERMSIG(executor->status));
+				return (128 + WTERMSIG(exec->status));
 		}
 	*/
-    ft_printf("parent.c: executor->status: %d\n", executor->status);   
-	if (executor->status != 0)
+	ft_printf("DEBUG::parent.c: exec->status: %d\n", exec->status);   
+	if (exec->status != 0)
 	{
 		ft_putstr_fd("pipex: ", 2);
-		ft_putendl_fd(strerror(executor->status), 2);
+		ft_putendl_fd(strerror(exec->status), 2);
 		return (-1);
 	}
 	return (0);
 }
 
-static int	close_file_descriptors(t_executor *executor, int cmd_index)
+static int	close_file_descriptors(t_executor *exec, int cmd_index)
 {
-	int		in_fd;
-	int		*pipe_fd;
-	pid_t	pid;
-	t_cmd	**cmds;
-    int		status;
-
-	if (!executor || !executor->cmds)
+	if (!exec || !exec->cmds)
 		return (-1);
-	cmds = executor->cmds;
-	in_fd = executor->in_fd;
-	pid = executor->pid;
-	pipe_fd = executor->pipe_fd;
-    status = executor->status;
-	if (in_fd != 0)
-		close(in_fd);
-	in_fd = pipe_fd[0];
-	close(pipe_fd[1]);
-	if (cmds[cmd_index + 1] == NULL)
-    {
-        waitpid(pid, &status, 0);
-		close(in_fd);
-    }
-    return (0);
-}
-
-int	parent_process(t_executor *executor, int cmd_index)
-{
-	if (!executor)
-		return (-1);
-    ft_printf("parent_process\n");
-	close_file_descriptors(executor, cmd_index);
-	check_child_status(executor);
+	if (exec->in_fd != 0)
+		close(exec->in_fd);
+	exec->in_fd = pipe_fd[0];
+	close(exec->pipe_fd[1]);
+	if (exec->cmds[cmd_index + 1] == NULL)
+	{
+		waitpid(exec->pid, &(exec->status), 0);
+		close(exec->in_fd);
+	}
 	return (0);
 }
+
+int	parent_process(t_executor *exec, int cmd_index)
+{
+	if (!exec)
+		return (-1);
+	ft_printf("DEBUG::parent_process\n");
+	close_file_descriptors(exec, cmd_index);
+	check_child_status(exec);
+	return (0);
+}
+ 
