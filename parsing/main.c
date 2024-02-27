@@ -4,24 +4,27 @@
 char	**init_envv(t_env *root);
 void	find_wildcard(char	***matches, char *letters, t_tree *root);
 
-char *generate_random_filename() {
-    char *filename = (char *)malloc(4 + 1); // Allocate memory for the filename
-    if (filename == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(1);
-    }
+char *generate_random_filename()
+{
+	char *filename = (char *)malloc(4 + 1); // Allocate memory for the filename
+	if (filename == NULL)
+	{
+		fprintf(stderr, "Memory allocation failed\n");
+		exit(1);
+	}
 
-    // Define a pool of characters to choose from
-    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	// Define a pool of characters to choose from
+	const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    // Generate random characters for the filename
-    for (int i = 0; i < 4; ++i) {
-        int index = rand() % (sizeof(charset) - 1);
-        filename[i] = charset[index];
-    }
-    filename[4] = '\0'; // Null-terminate the string
+	// Generate random characters for the filename
+	for (int i = 0; i < 4; ++i)
+	{
+		int index = rand() % (sizeof(charset) - 1);
+		filename[i] = charset[index];
+	}
+	filename[4] = '\0'; // Null-terminate the string
 
-    return filename;
+	return filename;
 }
 
 int	main(int argc, const char *argv[], const char *envp[])
