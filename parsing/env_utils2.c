@@ -2,17 +2,17 @@
 
 char	*strjoin_free(char *s1, char const *s2)
 {
-	unsigned int	i;
-	unsigned int	j;
-	char			*ptr;
+	ssize_t	i;
+	ssize_t	j;
+	char	*ptr;
 
-	i = 0;
+	i = -1;
 	j = ft_strlen(s1) + ft_strlen(s2);
 	ptr = (char *)malloc((j + 1) * sizeof(char));
 	if (!ptr)
 		return (0);
-	while (*s1)
-		ptr[i++] = *s1++;
+	while (s1[++i])
+		ptr[i] = s1[i];
 	while (*s2)
 		ptr[i++] = *s2++;
 	free(s1);
@@ -40,7 +40,7 @@ char	*get_envvar(const char *txt, t_env *root)
 	i = 0;
 	while (txt[i] && txt[i] != '$')
 		i++;
-	if (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_')
+	if (!txt[i] || !txt[i + 1] || (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_'))
 		return (ft_strdup(txt));
 	new_txt = ft_substr(txt, 0, i);
 	if (!new_txt)

@@ -9,17 +9,18 @@
 # include <string.h>
 # include <unistd.h>
 # include <dirent.h>
+# include <sys/types.h>
 # include "./wildcard/wildcard.h"
 
-typedef enum e_token
-{
-	EMPTY,
-	SPACE,
-	OPER,
-	QUOTE,
-	REDIR,
-	WILD,
-}					t_token;
+// typedef enum e_token
+// {
+// 	EMPTY,
+// 	SPACE,
+// 	OPER,
+// 	QUOTE,
+// 	REDIR,
+// 	WILD
+// }					t_token;
 
 typedef enum e_oper
 {
@@ -84,8 +85,7 @@ char		**inject_string(char **to_arr, char **from_arr, ssize_t *inj_indx);
 /*Commands functions*/
 t_cmd		**parse_text(const char *txt, t_env *root);
 char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
-
-// t_redir	**init_redir(char **tokens, int len);
+char		**get_wildcard(char **tokens);
 void		append_redirnode(t_redir **redir, t_red_sym key,
 				const char *value);
 
@@ -149,6 +149,7 @@ void		*check_tokens(char **tokens);
 /*Utils*/
 int			var_exists(char *arg);
 char		**append_arr_str(char **arr, char *str);
+char		*strjoin_free(char *s1, char const *s2);
 
 /*Terminating*/
 void		terminate_env(t_env *root);

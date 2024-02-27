@@ -1,15 +1,15 @@
 #include "parsing.h"
 
-uint32_t	count_commands(char **txt)
+uint32_t	count_commands(char **token)
 {
 	uint32_t	count;
 
 	count = 1;
-	while (*txt)
+	while (*token)
 	{
-		if (oper_type(*txt))
+		if (oper_type(*token))
 			count++;
-		txt++;
+		token++;
 	}
 	return (count);
 }
@@ -61,68 +61,88 @@ t_cmd	**init_commands(char **tokens)
 	return (commands);
 }
 
-t_tree	*read_directory(void)
+int	spec_case(char c)
 {
-	DIR				*dir;
-	struct dirent	*entry;
-	t_tree			*root;
-
-	root = (t_tree *)ft_calloc(sizeof(t_tree), 1);
-	dir = opendir("./wildcard/test");
-	if (!dir)
-	{
-		perror("wildcard parsing error");
-		return (NULL); // catch it!
-	}
-	entry = readdir(dir);
-	while (entry)
-	{
-		if (entry->d_type == 8) // ??
-			add_branch(root, entry->d_name, entry->d_name);
-		entry = readdir(dir);
-	}
-	return (root);
+	if (c == '?')
+		return (1);
+	else if (c == '$')
+		return (2);
+	else
+		return (0);
 }
 
-char	**get_wildcard(char **tokens)
+char	*case_handler(int key)
 {
-	ssize_t	i;
-	ssize_t	j;
-	char	**str;
-	t_tree	*root;
+	if (key == 1)
+		return (ft_strdup("exit_code"));
+	if (key == 2)
+		return (ft_itoa(getpid()));
+	else
+		return (NULL);
+}
+
+static char *get_case(char *token)
+{
+	char		*new_txt;
+	char		*tmp_1;
+	char		*tmp_2;
+	uint32_t	i;
 
 	i = 0;
-	str = (char **)ft_calloc(sizeof(char *), 1);
-	root = read_directory();
-	if (!str || !root)
-		return (NULL); // free first and catch this error
-	while (tokens[++i])
-	{
-		j = -1;
-		while (tokens[i][++j])
-		{
-			if (tokens[i][j] == 42)
-			{
-				find_wildcard(&str, tokens[i], root);
-				tokens = inject_string(tokens, str, &i);
-				break;
-			}
-		}
-	}
-	return (tokens);
+	while (token[i] && token[i] != '$')
+		i++;
+	if (!token[i] || (!token[i + 1] && !spec_case(token[i + 1])))
+		return (ft_strdup(token));
+	new_txt = ft_substr(token, 0, i);
+	if (!new_txt)
+		return (error_general(new_txt, "get_envvar")); // ?? protect
+	tmp_2 = case_handler(spec_case(token[i + 1])); // exit code goes here!!
+	if (!tmp_2)
+		return (NULL); // ?? protect
+	tmp_1 = new_txt;
+	new_txt = strjoin_free(tmp_1, tmp_2); // protect
+	free(tmp_2);
+	tmp_1 = new_txt;
+	new_txt = strjoin_free(tmp_1, &token[i + 2]);
+	return (new_txt);
 }
 
-t_cmd	**parse_text(const char *txt, t_env *root)
+void	get_special_cases(char **tokens)
+{
+	ssize_t		i;
+	uint32_t	j;
+	char		*tmp;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (!(tokens[i][0] == '\''))
+		{
+			j = 0;
+			while (ft_strchr(tokens[i], '$') && j < ft_strlen(tokens[i])) // a bit inefficient
+			{
+				tmp = tokens[i];
+				tokens[i] = get_case(tmp);
+				free(tmp);
+				j++;
+			}
+		}
+		i++;
+	}
+}
+
+t_cmd	**parse_text(const char *token, t_env *root)
 {
 	t_cmd	**commands;
 	char	**tokens;
 
-	tokens = pars_split(txt);
+	tokens = pars_split(token);
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
-	tokens = get_wildcard(tokens);
+	get_special_cases(tokens);
+	tokens = get_wildcard(tokens); // get wildcards after treating $ sign
 	add_escape(tokens, "\\");
 	trim_quotes(tokens);
 	tokens = pars_merge(tokens);
