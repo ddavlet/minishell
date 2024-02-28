@@ -54,6 +54,7 @@ typedef struct s_cmd
 	enum e_oper		operat;
 	struct s_redir	*redirs;
 	struct s_env	*env;
+    int				context_depth;
 }					t_cmd;
 
 typedef struct s_redir

@@ -14,3 +14,24 @@ START
     pipe
 cmd9 -> cmd10 -> cmd11
 END
+
+execution process: 
+    <pipe>
+    <input_redir> 
+    <output_redir>
+    <cmd> 
+
+program execution with context
+    (context) OR			[exit 0]
+    !(context) OR (context)	[exit 0]
+    !(context) OR !(context)[exit 1]
+
+    !(context) AND			[exit 1]
+    (context) AND !(context)[exit 1]
+    (context) AND (context)	[exit 0]
+
+    context PIPE (subcontext PIPE subcontext) PIPE context
+    
+    (context) PIPE (subcontext PIPE subcontext) PIPE context
+
+    context PIPE (subcontext AND subcontext) PIPE context

@@ -1,61 +1,61 @@
 #include "execution.h"
 
-static int	manage_output_redir(t_executor *exec, int cmd_index)
+static int	manage_output_redir(t_executor *exec, t_context *context)
 {
-	if (exec->cmds[cmd_index + 1] != NULL)
+	if (exec->cmds[exec->command_index]->redirs != NULL)
 	{
-		dup2(exec->pipe_fd[1], STDOUT_FILENO);
-	}
-	if (exec->cmds[cmd_index]->redirs != NULL)
-	{
-		if (exec->out_fd != STDOUT_FILENO)
-			close(exec->out_fd);
-		exec->out_fd = find_last_output_redir(exec, cmd_index);
-		if (exec->out_fd == -1)
+		if (context->output_fd != STDOUT_FILENO)
+			close(context->output_fd);
+		context->output_fd = last_output_redir(exec);
+		if (context->output_fd == -1)
 			return (-1);
 	}
-	ft_printf("out_fd: %d\n", exec->out_fd);
-	dup2(exec->out_fd, STDOUT_FILENO);
-	if (exec->out_fd != STDOUT_FILENO)
-		close(exec->out_fd);
+	ft_printf("out_fd: %d\n", context->output_fd);
+	dup2(context->output_fd, STDOUT_FILENO);
+	if (context->output_fd != STDOUT_FILENO)
+		close(context->output_fd);
 	return (0);
 }
 
-static int	manage_input_redir(t_executor *exec, int cmd_index)
+static int	manage_input_redir(t_executor *exec, t_context *context)
 {
-	if (exec->cmds[cmd_index]->redirs != NULL)
+    t_cmd   *cmd;
+
+    cmd = exec->cmds[exec->command_index];
+	if (cmd->redirs != NULL)
 	{
-		if (exec->in_fd != STDIN_FILENO)
-			close(exec->in_fd);
-		exec->in_fd = find_last_input_redir(exec, cmd_index);
-		if (exec->in_fd == -1)
+		if (context->input_fd != STDIN_FILENO)
+			close(context->input_fd);
+		context->input_fd = last_input_redir(exec);
+		if (context->input_fd == -1)
 			return (-1);
 	}
-	ft_printf("in_fd: %d\n", exec->in_fd);
-	dup2(exec->in_fd, STDIN_FILENO);
-	if (exec->in_fd != STDIN_FILENO)
-		close(exec->in_fd);
+	ft_printf("in_fd: %d\n", context->input_fd);
+	dup2(context->input_fd, STDIN_FILENO);
+	if (context->input_fd != STDIN_FILENO)
+		close(context->input_fd);
 	return (0);
 }
 
-int	child_process(t_executor *exec, int cmd_index)
+int	child_process(t_executor *exec, t_context *context)
 {
     char    **argv;
     char    **envp;
-
-    if (!exec || !exec->cmds || !exec->cmds[cmd_index])
-        return (-1);
-	manage_output_redir(exec, cmd_index);
-	manage_input_redir(exec, cmd_index);
-    close(exec->pipe_fd[1]);
-    argv = exec->cmds[cmd_index]->argv;
-    envp = exec->cmds[cmd_index]->env->envp;
+    t_cmd   *cmd;
+    
+    if (!exec || !exec->cmds || !exec->cmds[exec->command_index])
+        return (-1); // Protect with exit handler
+	cmd = exec->cmds[exec->command_index];
+    if (cmd->operat == PIPE)
+		dup2(context->pipe->write, STDOUT_FILENO);
+	manage_output_redir(exec, context);
+	manage_input_redir(exec, context);
+    if (cmd->operat == PIPE)
+        close(context->pipe->write);
+    argv = exec->cmds[exec->command_index]->argv;
+    envp = exec->cmds[exec->command_index]->env->envp;
 	execute_command(argv, envp);
 	return (0);
-}
-
-void    configure_execution(t_executor *exec, int cmd_index)
-{
 }
 
     // ft_printf("DEBUG::child_process\n");
