@@ -144,12 +144,12 @@ t_cmd	**parse_text(const char *token, t_env *root)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
 	get_special_cases(tokens);
-	tokens = get_wildcard(tokens); // get wildcards after treating $ sign
+	tokens = get_wildcard(tokens, root); // get wildcards after treating $ sign
 	add_escape(tokens, "\\");
 	trim_quotes(tokens);
 	tokens = pars_merge(tokens);
 	tokens = parse_delspace(tokens);
-	debug_print_array_strings(tokens);
+	// debug_print_array_strings(tokens);
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);

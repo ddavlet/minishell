@@ -1,13 +1,15 @@
 #include "parsing.h"
 
-static t_tree	*read_directory(void)
+static t_tree	*read_directory(t_env	*env)
 {
 	DIR				*dir;
 	struct dirent	*entry;
 	t_tree			*root;
+	char			*tmp;
 
 	root = (t_tree *)ft_calloc(sizeof(t_tree), 1);
-	dir = opendir("./wildcard/test");
+	tmp = find_var(env, "PWD"); // change to what we need
+	dir = opendir(tmp);
 	if (!dir)
 	{
 		perror("wildcard parsing error");
@@ -23,7 +25,7 @@ static t_tree	*read_directory(void)
 	return (root);
 }
 
-char	**get_wildcard(char **tokens)
+char	**get_wildcard(char **tokens, t_env *env)
 {
 	ssize_t	i;
 	ssize_t	j;
@@ -32,7 +34,7 @@ char	**get_wildcard(char **tokens)
 
 	i = 0;
 	str = (char **)ft_calloc(sizeof(char *), 1);
-	root = read_directory();
+	root = read_directory(env);
 	if (!str || !root)
 		return (NULL); // free first and catch this error
 	while (tokens[++i])

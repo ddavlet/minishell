@@ -84,7 +84,7 @@ char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
 /*Commands functions*/
 t_cmd		**parse_text(const char *txt, t_env *root);
 char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
-char		**get_wildcard(char **tokens);
+char		**get_wildcard(char **tokens, t_env *root);
 void		append_redirnode(t_redir **redir, t_red_sym key,
 				const char *value);
 
