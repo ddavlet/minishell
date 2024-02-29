@@ -56,7 +56,7 @@ char	**parse_delspace(char **tokens)
 	return (new_arr);
 }
 
-int	ft_isbrackets(char *txt)
+int	ft_isparenthesis(char *txt)
 {
 	if (!ft_strncmp(txt, "(", 2))
 		return (1);
@@ -75,9 +75,9 @@ int	count_brackets(char **arr)
 	count = 0;
 	while (arr[i])
 	{
-		if (ft_isbrackets(arr[i]) == 1)
+		if (ft_isparenthesis(arr[i]) == 1)
 			count++;
-		else if (ft_isbrackets(arr[i]) == 2)
+		else if (ft_isparenthesis(arr[i]) == 2)
 			count--;
 		i++;
 	}

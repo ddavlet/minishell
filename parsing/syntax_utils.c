@@ -66,5 +66,7 @@ void	*check_tokens(char **tokens)
 			return (error_near_tocken(tokens[i + 1]));
 		i++;
 	}
+	if (oper_type(tokens[i]) && !tokens[i + 1])
+			return (error_near_tocken(tokens[i]));
 	return (tokens);
 }

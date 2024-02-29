@@ -14,19 +14,91 @@ uint32_t	count_commands(char **token)
 	return (count);
 }
 
+void	change_priority(t_cmd **commands)
+{
+	ssize_t	i;
+	int		lvl;
+	int		tmp;
+
+	i = -1;
+	lvl = 0;
+	while (commands[++i])
+	{
+		if (commands[i]->priority < 0)
+		{
+			tmp = commands[i]->priority;
+			commands[i]->priority = lvl;
+			lvl += tmp;
+		}
+		else if (commands[i]->priority > 0)
+		{
+			lvl += commands[i]->priority;
+			commands[i]->priority = lvl;
+		}
+		else
+			commands[i]->priority = lvl;
+	}
+}
+
+int	check_priority(char **tokens, ssize_t prev, ssize_t next)
+{
+	while (prev < next)
+	{
+		if (ft_isparenthesis(tokens[prev]) == 1)
+		{
+			if (prev != 0)
+				return (1);
+		}
+		else if (ft_isparenthesis(tokens[prev]) == 2)
+		{
+			if (prev != next - 1)
+				return (1);
+		}
+		prev++;
+	}
+	return (0);
+}
+
+int	set_priority(char **tokens, ssize_t prev, ssize_t next)
+{
+	int		count;
+
+	count = 0;
+	while (prev < next)
+	{
+		if (ft_isparenthesis(tokens[prev]) == 1)
+		{
+			if (prev != 0)
+				;
+			else
+				count++;
+		}
+		else if (ft_isparenthesis(tokens[prev]) == 2)
+		{
+			if (prev != next - 1)
+				;
+			else
+				count--;
+		}
+		prev++;
+	}
+	return (count);
+}
+
 t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 {
 	t_cmd	*cmd;
 
-	// if (prev == next)
-	// 	return (error_near_tocken(tokens[prev])); // catch it! error already printed
-	// else if (prev == 1)
+	if (prev == 1)
 		prev--;
 	cmd = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
 	if (!cmd)
 		return (error_general(cmd, "cmd")); // protection
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
+	if (check_priority(tokens, prev, next))
+		return (error_syntax(cmd));
+	cmd->priority = set_priority(tokens, prev, next);
 	cmd->argv = create_argv(tokens, prev, next + 1);
 	if (cmd->argv)
 	{
@@ -81,6 +153,8 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
+	if (commands)
+		change_priority(commands);
 	terminate_ptr_str(tokens);
 	return (commands);
 }

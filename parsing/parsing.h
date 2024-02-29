@@ -52,6 +52,7 @@ typedef struct s_cmd
 	char			*com;
 	char			**argv;
 	enum e_oper		operat;
+	int				priority;
 	struct s_redir	*redirs;
 	struct s_env	*env;
 }					t_cmd;
@@ -104,7 +105,7 @@ t_oper		oper_type(char *txt);
 void		trim_quotes(char **tokens);
 ssize_t		find_next_cmd(char **tokens, ssize_t i);
 char		**parse_delspace(char **tokens);
-int			ft_isbrackets(char *txt);
+int			ft_isparenthesis(char *txt);
 int			count_brackets(char **arr);
 
 
@@ -119,6 +120,8 @@ void		*terminate_cmd(t_cmd *cmd);
 void		*error_quot_tockens(char **tokens);
 void		*error_general(void *ptr, const char *str);
 void		*error_near_tocken(char *token);
+void		*error_syntax(t_cmd *ptr);
+
 
 /*Debuging*/
 void		debug_print_cmd(t_cmd **commands);

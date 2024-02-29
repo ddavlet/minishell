@@ -28,13 +28,9 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 	while (++i < next || (tokens[i] && ft_isexeption(tokens[i])))
 	{
 		if (ft_isredir(tokens[i]))
-		{
-			if (sytax_redir(tokens[++i])) // EDGE CASES HANDLER
-			{
-				terminate_ptr_str(argv);
-				return (error_near_tocken(tokens[i])); // catch! MORE ERRORS? EDGE CASES
-			}
-		}
+			i++;
+		else if (ft_isparenthesis(tokens[i]))
+			;
 		else if (oper_type(tokens[i]))
 			break ;
 		else
