@@ -2,15 +2,17 @@
 
 int	ft_isignored(char *txt)
 {
-	if (!ft_strncmp(txt, "(", 2))
-		return (1);
-	if (!ft_strncmp(txt, ")", 2))
-		return (1);
 	if (!ft_strncmp(txt, ";", 2))
 		return (1);
 	if (!ft_strncmp(txt, "!", 2))
 		return (1);
 	if (oper_type(txt) == BCKGR)
+		return (1);
+	if (!ft_strncmp(txt, "{", 2) || !ft_strncmp(txt, "}", 2))
+		return (1);
+	if (!ft_strncmp(txt, "!", 2))
+		return (1);
+	if (!ft_strncmp(txt, "[", 2) || !ft_strncmp(txt, "]", 2))
 		return (1);
 	if (!ft_strncmp(txt, "\\", 2)) // 1 or 2?
 	{
@@ -52,6 +54,8 @@ void	*check_tokens(char **tokens)
 	ssize_t	i;
 
 	i = 0;
+	if (count_brackets(tokens))
+		return (NULL);
 	while (tokens[i + 1])
 	{
 		if (ft_isignored(tokens[i])) // is ignored

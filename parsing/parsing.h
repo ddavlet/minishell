@@ -78,9 +78,7 @@ ssize_t		ft_commandlen(char **tokens);
 char		**add_escape(char **token, const char *esc);
 ssize_t		ft_arr_len(char **arr);
 ssize_t		arrlen_nosspace(char **arr);
-char		**inject_string(char **to_arr, char **from_arr, ssize_t *inj_indx);
-
-
+char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
 
 /*Commands functions*/
 t_cmd		**parse_text(const char *txt, t_env *root);
@@ -95,6 +93,7 @@ char		**pars_merge(char **arr);
 char		**merge_quotations(char **tokens);
 char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
 char		*find_var(t_env *root, char *search);
+void		get_special_cases(char **tokens);
 
 /*Utils*/
 t_oper		ft_isexeption(char *txt);
@@ -105,6 +104,9 @@ t_oper		oper_type(char *txt);
 void		trim_quotes(char **tokens);
 ssize_t		find_next_cmd(char **tokens, ssize_t i);
 char		**parse_delspace(char **tokens);
+int			ft_isbrackets(char *txt);
+int			count_brackets(char **arr);
+
 
 /*Terminating*/
 void		*terminate_commands(t_cmd **commands);

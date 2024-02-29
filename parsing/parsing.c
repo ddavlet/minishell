@@ -61,76 +61,6 @@ t_cmd	**init_commands(char **tokens)
 	return (commands);
 }
 
-int	spec_case(char c)
-{
-	if (c == '?')
-		return (1);
-	else if (c == '$')
-		return (2);
-	else
-		return (0);
-}
-
-char	*case_handler(int key)
-{
-	if (key == 1)
-		return (ft_strdup("exit_code"));
-	if (key == 2)
-		return (ft_itoa(getpid()));
-	else
-		return (NULL);
-}
-
-static char *get_case(char *token)
-{
-	char		*new_txt;
-	char		*tmp_1;
-	char		*tmp_2;
-	uint32_t	i;
-
-	i = 0;
-	while (token[i] && token[i] != '$')
-		i++;
-	if (!token[i] || (!token[i + 1] && !spec_case(token[i + 1])))
-		return (ft_strdup(token));
-	new_txt = ft_substr(token, 0, i);
-	if (!new_txt)
-		return (error_general(new_txt, "get_envvar")); // ?? protect
-	tmp_2 = case_handler(spec_case(token[i + 1])); // exit code goes here!!
-	if (!tmp_2)
-		return (NULL); // ?? protect
-	tmp_1 = new_txt;
-	new_txt = strjoin_free(tmp_1, tmp_2); // protect
-	free(tmp_2);
-	tmp_1 = new_txt;
-	new_txt = strjoin_free(tmp_1, &token[i + 2]);
-	return (new_txt);
-}
-
-void	get_special_cases(char **tokens)
-{
-	ssize_t		i;
-	uint32_t	j;
-	char		*tmp;
-
-	i = 0;
-	while (tokens[i])
-	{
-		if (!(tokens[i][0] == '\''))
-		{
-			j = 0;
-			while (ft_strchr(tokens[i], '$') && j < ft_strlen(tokens[i])) // a bit inefficient
-			{
-				tmp = tokens[i];
-				tokens[i] = get_case(tmp);
-				free(tmp);
-				j++;
-			}
-		}
-		i++;
-	}
-}
-
 t_cmd	**parse_text(const char *token, t_env *root)
 {
 	t_cmd	**commands;
@@ -154,6 +84,3 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	terminate_ptr_str(tokens);
 	return (commands);
 }
-
-// test purmose main:
-

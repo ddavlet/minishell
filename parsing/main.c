@@ -38,24 +38,9 @@ int	main(int argc, const char *argv[], const char *envp[])
 	append_envp(env, "ZZZ", "test1");
 	append_envp(env, "LOGNAME", "test");
 	if (!argv[1])
-		commands = parse_text("file1 test* *h* this_is_$?_for_minihell $$", env);
+		commands = parse_text("echo test {& ;", env);
 	else
 		commands = parse_text(argv[1], env);
-	// debug_print_env(env, commands[0]->argv[1]);
-	// builtin_export(commands[0]->argv, env);
-	// debug_print_env(env, commands[0]->argv[1]);
-	// builtin_unset(commands[0]->argv, env);
-	// debug_print_env(env, commands[0]->argv[1]);
-	// builtin_pwd(commands[0]->argv, env);
-	// builtin_env(commands[0]->argv, env);
-	// builtin_echo(commands[0]->argv, env);
-	// builtin_cd(commands[0]->argv, env);
-	// char	**matches;
-	// matches = (char **)ft_calloc(sizeof(char *), 1);
-	// char	letters[] = "*****t*****";
-	// t_tree *tree = init_tree((const char **)commands[0]->argv);
-	// find_wildcard(&matches, letters, tree);
-	// debug_print_array_strings(matches);
 	terminate_commands(commands);
 	terminate_env(env);
 	(void)argc;

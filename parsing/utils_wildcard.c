@@ -38,12 +38,12 @@ char	**get_wildcard(char **tokens)
 	while (tokens[++i])
 	{
 		j = -1;
-		while (tokens[i][++j])
+		while (!ft_isquotation(tokens[i][0]) && tokens[i][++j]) // and no quotatin
 		{
 			if (tokens[i][j] == 42)
 			{
 				find_wildcard(&str, tokens[i], root);
-				tokens = inject_string(tokens, str, &i);
+				tokens = inject_string(tokens, str, i); // split an deject from here
 				break;
 			}
 		}

@@ -55,3 +55,42 @@ char	**parse_delspace(char **tokens)
 	terminate_ptr_str(tokens);
 	return (new_arr);
 }
+
+int	ft_isbrackets(char *txt)
+{
+	if (!ft_strncmp(txt, "(", 2))
+		return (1);
+	if (!ft_strncmp(txt, ")", 2))
+		return (2);
+	else
+		return (0);
+}
+
+int	count_brackets(char **arr)
+{
+	ssize_t	count;
+	ssize_t	i;
+
+	i = 0;
+	count = 0;
+	while (arr[i])
+	{
+		if (ft_isbrackets(arr[i]) == 1)
+			count++;
+		else if (ft_isbrackets(arr[i]) == 2)
+			count--;
+		i++;
+	}
+	if (count < 0)
+	{
+		error_near_tocken(")");
+		return (1);
+	}
+	else if (count > 0)
+	{
+		error_near_tocken("(");
+		return (1);
+	}
+	else
+		return (0);
+}

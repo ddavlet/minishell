@@ -1,5 +1,15 @@
 #include "parsing.h"
 
+static int	check_merge(char **arr, ssize_t i)
+{
+	if (arr[i + 1] && arr[i][0] != 0 && arr[i + 1][0] != 0)
+		if (!oper_type(arr[i]) && !oper_type(arr[i + 1]))
+			if (!ft_isbrackets(arr[i]) && !ft_isbrackets(arr[i + 1]))
+				if (!ft_isredir(arr[i]))
+					return (1);
+	return (0);
+}
+
 char	**realoc_merge(char **arr, char *new, ssize_t i)
 {
 	char	**new_arr;
@@ -25,9 +35,7 @@ char	**pars_merge(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		if (arr[i + 1] && arr[i][0] != 0 && arr[i + 1][0] != 0
-			&& !oper_type(arr[i]) && !oper_type(arr[i + 1])
-			&& !ft_isredir(arr[i]))
+		if (check_merge(arr, i))
 		{
 			tmp = ft_strjoin(arr[i], arr[i + 1]);
 			arr = realoc_merge(arr, tmp, i);
