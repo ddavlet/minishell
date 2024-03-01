@@ -40,46 +40,41 @@ void	change_priority(t_cmd **commands)
 	}
 }
 
-int	check_priority(char **tokens, ssize_t prev, ssize_t next)
-{
-	while (prev < next)
-	{
-		if (ft_isparenthesis(tokens[prev]) == 1)
-		{
-			if (prev != 0)
-				return (1);
-		}
-		else if (ft_isparenthesis(tokens[prev]) == 2)
-		{
-			if (prev != next - 1)
-				return (1);
-		}
-		prev++;
-	}
-	return (0);
-}
+// int	check_priority(char **tokens, ssize_t prev, ssize_t next)
+// {
+// 	while (prev < next)
+// 	{
+// 		if (ft_isparenthesis(tokens[prev]) == 1)
+// 		{
+// 			if (prev != 0)
+// 				return (1);
+// 		}
+// 		else if (ft_isparenthesis(tokens[prev]) == 2)
+// 		{
+// 			if (prev != next - 1)
+// 				return (1);
+// 		}
+// 		prev++;
+// 	}
+// 	return (0);
+// }
 
 int	set_priority(char **tokens, ssize_t prev, ssize_t next)
 {
 	int		count;
 
 	count = 0;
+	while (ft_isparenthesis(tokens[prev++]) == 1)
+		count++;
+	next--;
+	while (ft_isparenthesis(tokens[next--]) == 2)
+		count--;
 	while (prev < next)
 	{
 		if (ft_isparenthesis(tokens[prev]) == 1)
-		{
-			if (prev != 0)
-				;
-			else
-				count++;
-		}
+			return (INT32_MAX);
 		else if (ft_isparenthesis(tokens[prev]) == 2)
-		{
-			if (prev != next - 1)
-				;
-			else
-				count--;
-		}
+			return (INT32_MAX);
 		prev++;
 	}
 	return (count);
@@ -96,9 +91,9 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 		return (error_general(cmd, "cmd")); // protection
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
-	if (check_priority(tokens, prev, next))
-		return (error_syntax(cmd));
 	cmd->priority = set_priority(tokens, prev, next);
+	if (cmd->priority == INT32_MAX)
+		return (error_syntax(cmd));
 	cmd->argv = create_argv(tokens, prev, next + 1);
 	if (cmd->argv)
 	{

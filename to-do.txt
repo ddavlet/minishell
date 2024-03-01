@@ -2,6 +2,6 @@ Have to fix:
 
 1. wildcard with directories + special cases
 
-2. several parenthesis
+2. several parenthesis - solved
 
-3. command with no arguments "echo " was giving segfault
+3. command with no arguments "echo " was giving segfault ??
