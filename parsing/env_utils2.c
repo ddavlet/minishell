@@ -40,17 +40,18 @@ char	*get_envvar(const char *txt, t_env *root)
 	i = 0;
 	while (txt[i] && txt[i] != '$')
 		i++;
-	if (!txt[i] || !txt[i + 1] || (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_'))
+	if (!txt[i] || !txt[i + 1]
+		|| (!ft_isalnum(txt[i + 1]) && txt[i + 1] != '_'))
 		return (ft_strdup(txt));
 	new_txt = ft_substr(txt, 0, i);
 	if (!new_txt)
 		return (error_general(new_txt, "get_envvar")); // ?? protect
 	tmp_1 = ft_substr(txt, i + 1, del_pos(&txt[i + 1]));
 	if (!tmp_1)
-		return (NULL); // ?? protect
+		return (error_general(new_txt, "get_envvar")); // ?? protect  allocated memory not freed
 	tmp_2 = find_var(root, tmp_1);
 	if (!tmp_2)
-		return (NULL); // ?? protect
+		return (error_general(new_txt, "get_envvar")); // ?? protect allocated memory not freed
 	tmp_1 = new_txt;
 	new_txt = strjoin_free(tmp_1, tmp_2); // protect
 	free(tmp_2);

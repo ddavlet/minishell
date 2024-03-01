@@ -8,7 +8,7 @@ static void	add_node(t_tree **list_p, char c, const char *content)
 	last = *list_p;
 	new_node = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	if (!new_node)
-		return ; //dela with this return
+		return ; // dela with this return
 	new_node->letter = c;
 	if (content)
 	{
