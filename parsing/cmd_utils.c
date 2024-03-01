@@ -20,10 +20,8 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 {
 	char	**argv;
 	ssize_t	i;
-	// ssize_t	j;
 
 	i = prev - 1;
-	// j = 0;
 	argv = (char **)ft_calloc(sizeof(char *), 1); // protect
 	while (++i < next || (tokens[i] && ft_isexeption(tokens[i])))
 	{

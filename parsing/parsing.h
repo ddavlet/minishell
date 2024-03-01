@@ -121,6 +121,8 @@ void		*error_quot_tockens(char **tokens);
 void		*error_general(void *ptr, const char *str);
 void		*error_near_tocken(char *token);
 void		*error_syntax(t_cmd *ptr);
+void		*undefined_error(char *ptr);
+
 
 
 /*Debuging*/
