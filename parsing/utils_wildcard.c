@@ -4,25 +4,28 @@ static t_tree	*read_directory(t_env	*env)
 {
 	DIR				*dir;
 	struct dirent	*entry;
-	t_tree			*root;
+	t_tree			*tree;
 	char			*tmp;
 
-	root = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	tmp = find_var(env, "PWD"); // change to what we need
 	dir = opendir(tmp);
+	free(tmp);
 	if (!dir)
 	{
 		perror("wildcard parsing error");
+		closedir(dir);
 		return (NULL); // catch it!
 	}
+	tree = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	entry = readdir(dir);
 	while (entry)
 	{
 		if (entry->d_type == 8) // ??
-			add_branch(root, entry->d_name, entry->d_name);
+			add_branch(tree, entry->d_name, entry->d_name);
 		entry = readdir(dir);
 	}
-	return (root);
+	closedir(dir);
+	return (tree);
 }
 
 char	**get_wildcard(char **tokens, t_env *env)
@@ -30,12 +33,12 @@ char	**get_wildcard(char **tokens, t_env *env)
 	ssize_t	i;
 	ssize_t	j;
 	char	**str;
-	t_tree	*root;
+	t_tree	*tree;
 
 	i = 0;
 	str = (char **)ft_calloc(sizeof(char *), 1);
-	root = read_directory(env);
-	if (!str || !root)
+	tree = read_directory(env);
+	if (!str || !tree)
 		return (NULL); // free first and catch this error
 	while (tokens[++i])
 	{
@@ -44,11 +47,13 @@ char	**get_wildcard(char **tokens, t_env *env)
 		{
 			if (tokens[i][j] == 42)
 			{
-				find_wildcard(&str, tokens[i], root);
+				find_wildcard(&str, tokens[i], tree);
 				tokens = inject_string(tokens, str, i); // split an deject from here
+				terminate_ptr_str(str);
 				break;
 			}
 		}
 	}
+	terminate_tree(tree);
 	return (tokens);
 }

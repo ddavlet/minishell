@@ -37,10 +37,8 @@ int	main(int argc, const char *argv[], const char *envp[])
 	append_envp(env, "MZZZ", "");
 	append_envp(env, "ZZZ", "test1");
 	append_envp(env, "LOGNAME", "test");
-	if (!argv[1])
-		commands = parse_text("(echo <testin >testout test && echo < testin > testout test)| echo test", env);
-	else
-		commands = parse_text(argv[1], env);
+	// commands = parse_text("(echo <testin >testout test && echo < testin > testout test)| echo test", env);
+	commands = parse_text("echo ", env);
 	debug_print_cmd(commands);
 	terminate_commands(commands);
 	terminate_env(env);
