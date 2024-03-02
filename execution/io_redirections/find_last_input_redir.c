@@ -1,6 +1,6 @@
 #include "../execution.h"
 
-int	last_input_redir(t_executor *exec)
+int	last_input_redir(t_executor *exec, t_context *context)
 {
 	t_redir	*redir;
 	int		in_fd;
@@ -17,7 +17,8 @@ int	last_input_redir(t_executor *exec)
 		if (redir->redir_sym == RED_INP)
 			in_fd = handle_input_redirection(redir->redir_name);
 		else if (redir->redir_sym == HEAR_DOC)
-			in_fd = handle_here_document(redir->redir_name, exec->cmds[exec->command_index]->env, exec);
+			in_fd = handle_here_document(redir->redir_name,
+					exec->cmds[exec->command_index]->env, context);
 		redir = redir->next;
 	}
 	return (in_fd);

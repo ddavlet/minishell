@@ -2,7 +2,10 @@
 
 static int	manage_output_redir(t_executor *exec, t_context *context)
 {
-	if (exec->cmds[exec->command_index]->redirs != NULL)
+    t_cmd   *cmd;
+
+    cmd = exec->cmds[exec->command_index];
+	if (cmd->redirs != NULL)
 	{
 		if (context->output_fd != STDOUT_FILENO)
 			close(context->output_fd);
@@ -26,7 +29,7 @@ static int	manage_input_redir(t_executor *exec, t_context *context)
 	{
 		if (context->input_fd != STDIN_FILENO)
 			close(context->input_fd);
-		context->input_fd = last_input_redir(exec);
+		context->input_fd = last_input_redir(exec, context);
 		if (context->input_fd == -1)
 			return (-1);
 	}
@@ -37,21 +40,23 @@ static int	manage_input_redir(t_executor *exec, t_context *context)
 	return (0);
 }
 
-int	cmd(t_executor *exec, t_context *context)
+int	cmd_process(t_executor *exec, t_context *context)
 {
     char    **argv;
     char    **envp;
     t_cmd   *cmd;
     
     if (!exec || !exec->cmds || !exec->cmds[exec->command_index])
-        return (-1); // Protect with exit handler
+    {
+        terminate(NULL, NULL, EXIT_FAILURE);
+    }
 	cmd = exec->cmds[exec->command_index];
     if (cmd->operat == PIPE)
-		dup2(context->pipe->write, STDOUT_FILENO);
+		dup2(context->pipe->write->fd, STDOUT_FILENO);
 	manage_output_redir(exec, context);
 	manage_input_redir(exec, context);
     if (cmd->operat == PIPE)
-        close(context->pipe->write);
+        close(context->pipe->write->fd);
     argv = exec->cmds[exec->command_index]->argv;
     envp = exec->cmds[exec->command_index]->env->envp;
 	execute_cmd(argv, envp);

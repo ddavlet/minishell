@@ -32,8 +32,12 @@ program execution with context
 
     context PIPE (subcontext PIPE subcontext) PIPE context
     
-    (context) PIPE (subcontext PIPE subcontext) PIPE context
+    (context) AND (subcontext AND subcontext) PIPE context
 
-    context PIPE (builtin AND subcontext) PIPE context
+    context AND (builtin AND subcontext) PIPE context
     
-    ((context)) PIPE context AND context PIPE context
+    ((context)) AND ((context) AND (context)) AND context PIPE context
+
+
+
+

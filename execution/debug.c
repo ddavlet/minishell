@@ -173,15 +173,16 @@ t_cmd   **mockup_empty_cmds(void)
     return (cmds);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], const char **envp)
 {
 	t_cmd	**cmds;
 
     (void)argc;
 	(void)argv;
 	// cmds = mockup_three_cmds();
-    cmds = mockup_single_cmd(envp);
-	execution(cmds, envp);
+    // cmds = mockup_single_cmd(envp);
+    cmds = parse_text("pwd", init_env(envp));
+	execution(cmds);
     free_mockup_cmds(cmds);
 	return (0);
 }

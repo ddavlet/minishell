@@ -9,7 +9,6 @@ static int	same_depth(t_context *subcontext, t_cmd *cmd)
 
 static int	set_before_after(t_executor *exec, t_context *subcontext)
 {
-	t_cmd	*first_cmd;
 	int		next;
 
 	if (!exec || !exec->cmds || !subcontext)
@@ -18,7 +17,6 @@ static int	set_before_after(t_executor *exec, t_context *subcontext)
 		subcontext->oper_before = RUN;
 	else
 		subcontext->oper_before = exec->cmds[exec->command_index - 1]->operat;
-	first_cmd = exec->cmds[exec->command_index];
 	next = exec->command_index + 1;
 	while (exec->cmds[next] != NULL && subcontext->context_depth > 0
 		&& same_depth(subcontext, exec->cmds[next]))
@@ -27,26 +25,26 @@ static int	set_before_after(t_executor *exec, t_context *subcontext)
 	return (0);
 }
 
-static int	set_input_output(t_executor *exec, t_context *subcontext,
-		t_context *context)
+static int	set_input_output(t_context *subcontext, t_context *context)
 {
 	// Add seqfault protections
 	if (subcontext->oper_before == PIPE)
-    {
-        if (context->pipe == NULL)
-            return (-1);
+	{
+		if (context->pipe == NULL)
+			return (-1);
 		subcontext->input_fd = context->pipe->read->fd;
-    }
+	}
 	else
 		subcontext->input_fd = STDIN_FILENO;
 	if (subcontext->oper_after == PIPE)
-    {
-        if (context->pipe == NULL)
-            return (-1);
+	{
+		if (context->pipe == NULL)
+			return (-1);
 		subcontext->output_fd = context->pipe->write->fd;
-    }
+	}
 	else
 		subcontext->output_fd = STDOUT_FILENO;
+	return (0);
 }
 
 t_context	*create_subcontext(t_executor *exec, t_context *context)
@@ -56,8 +54,12 @@ t_context	*create_subcontext(t_executor *exec, t_context *context)
 	subcontext = (t_context *)ft_calloc(1, sizeof(t_context));
 	if (!subcontext)
 		return (NULL);
-	if (set_before_after(exec, subcontext) == -1
-		|| set_input_output(exec, subcontext, context) == -1)
+	if (context->context_depth == 0)
+		subcontext->context_depth = exec->cmds[exec->command_index]->context_depth;
+	else
+		subcontext->context_depth = context->context_depth - 1;
+	if (set_before_after(exec, subcontext) == -1 || set_input_output(subcontext,
+			context) == -1)
 	{
 		free(subcontext);
 		return (NULL);
@@ -68,15 +70,11 @@ t_context	*create_subcontext(t_executor *exec, t_context *context)
 		free(subcontext);
 		return (NULL);
 	}
-	if (context->context_depth == 0)
-		subcontext->context_depth = exec->cmds[exec->command_index]->context_depth;
-	else
-		subcontext->context_depth = context->context_depth - 1;
 	subcontext->pid = -1;
 	return (subcontext);
 }
 
-t_context	*initialize_context(t_executor *exec)
+t_context	*initialize_context(void)
 {
 	t_context	*context;
 
@@ -95,5 +93,6 @@ t_context	*initialize_context(t_executor *exec)
 	context->oper_before = RUN;
 	context->pid = -1;
 	// context->pipe = NULL;
-	context->context_depth = -1;
+	context->context_depth = 0;
+	return (context);
 }

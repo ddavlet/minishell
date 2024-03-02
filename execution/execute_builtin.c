@@ -1,18 +1,28 @@
 #include "execution.h"
 
-int	builtin_execution(t_executor *exec, t_context *context)
+int	execute_builtin(t_executor *exec, t_context *context)
 {
 	char	*path;
 	char	**argv;
 	char	**envp;
 
+    (void)context;
 	// Test if it actually executes on main envp;
 	argv = exec->cmds[exec->command_index]->argv;
-	argv = exec->cmds[exec->command_index]->env->envp;
+	envp = exec->cmds[exec->command_index]->env->envp;
 	path = get_path(argv[0], envp);
 	if (path == NULL)
-		return (path_error(argv[0]));
+    {
+        free(path);
+        ft_putstr_fd("pipex: execve", 2);
+        ft_putendl_fd(argv[0], 2);
+        return (-1);
+    }
 	if (execve(path, argv, envp) == -1)
-		return ((execve_error(path, argv[0])));
+    {
+        ft_putstr_fd("pipex: command not found: ", 2);
+        ft_putendl_fd(argv[0], 2);
+        return (-1);
+    }
 	return (0);
 }

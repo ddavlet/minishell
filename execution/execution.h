@@ -55,9 +55,10 @@ int				ft_mkstemp(char *template);
 int				cmd_process(t_executor *exec, t_context *context);
 t_pipe			*create_pipe(void);
 t_context		*create_subcontext(t_executor *exec, t_context *context);
-t_context		*initialize_context(t_executor *exec);
+t_context		*initialize_context(void);
 int				is_last(t_executor *exec);
 int				has_finished(t_executor *exec);
+int				execute_builtin(t_executor *exec, t_context *context);
 
 /*
  *	utils
@@ -76,9 +77,9 @@ int				is_builtin(t_executor *exec);
  *   io_redirections
  */
 int				last_output_redir(t_executor *exec);
-int				last_input_redir(t_executor *exec);
+int				last_input_redir(t_executor *exec, t_context *context);
 int				handle_here_document(const char *delimiter, t_env *env,
-					t_executor *exec);
+					t_context *context);
 int				handle_truncate_redirection(const char *file_name);
 int				handle_append_redirection(const char *file_name);
 int				handle_input_redirection(const char *file_name);
