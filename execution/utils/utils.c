@@ -44,8 +44,11 @@ void	terminate(t_executor *exec, t_context *context, int status)
         free(exec);
     if (context)
     {
-        close(context->pipe->read);
-        close(context->pipe->write);
+        close(context->pipe->read->fd);
+        free(context->pipe->read);
+        close(context->pipe->write->fd);
+        free(context->pipe->write);
+        free(context->pipe);
         free(context);
     }
 	exit_handler(status);
