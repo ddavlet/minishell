@@ -64,6 +64,8 @@ int	set_priority(char **tokens, ssize_t prev, ssize_t next)
 	int		count;
 
 	count = 0;
+	if (prev == next)
+		return (0);
 	while (ft_isparenthesis(tokens[prev++]) == 1)
 		count++;
 	next--;

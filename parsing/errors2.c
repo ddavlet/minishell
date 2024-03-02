@@ -11,4 +11,5 @@ void	*undefined_error(char *ptr)
 {
 	free(ptr);
 	ft_putendl_fd("malloc: allocation error", 2);
+	return (NULL);
 }

@@ -4,4 +4,4 @@ Have to fix:
 
 2. several parenthesis - solved
 
-3. command with no arguments "echo " was giving segfault ??
+3. command with no arguments "echo " was giving segfault - sloved
