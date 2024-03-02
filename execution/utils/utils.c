@@ -40,10 +40,14 @@ void	exit_handler(int status)
 
 void	terminate(t_executor *exec, t_context *context, int status)
 {
-	// Finish this function
-	// Free all the memory
-	(void)exec;
-	(void)context;
+	if (exec)
+        free(exec);
+    if (context)
+    {
+        close(context->pipe->read);
+        close(context->pipe->write);
+        free(context);
+    }
 	exit_handler(status);
 }
 
