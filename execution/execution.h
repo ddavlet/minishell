@@ -9,6 +9,13 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+typedef enum e_signal
+{
+	BUILTIN,
+	SUBSHELL,
+	EXECUTE
+}				t_signal;
+
 typedef struct s_fd_state
 {
 	int			fd;
@@ -27,7 +34,6 @@ typedef struct s_context
 	int			context_depth;
 	int			input_fd;
 	int			output_fd;
-	int			status;
 	pid_t		pid;
 	t_pipe		*pipe;
 	t_oper		oper_before;
@@ -37,28 +43,34 @@ typedef struct s_context
 typedef struct s_executor
 {
 	int			command_index;
+	int			status;
+	int			signal;
 	t_cmd		**cmds;
 }				t_executor;
 
 int				execution(t_cmd **cmds);
-int				execute_command(char *argv[], char *envp[]);
+int				execute_cmd(char *argv[], char *envp[]);
 int				execute_context(t_executor *exec, t_context *context);
 int				ft_mkstemp(char *template);
-int				child_process(t_executor *exec, t_context *context);
+int				cmd_process(t_executor *exec, t_context *context);
 t_pipe			*create_pipe(void);
 t_context		*create_subcontext(t_executor *exec, t_context *context);
+t_context		*initialize_context(t_executor *exec);
+int				is_last(t_executor *exec);
+int				has_finished(t_executor *exec);
 
 /*
  *	utils
  */
+void			exit_handler(int status);
 char			*get_path(char *cmd, char *envp[]);
 void			msg_error(char *err);
 void			free_arr2d(void **arr2d);
 unsigned long	rand_simple(void);
 int				cmds_size(void **cmds);
-t_logic_op		*initialize_priority_stack(t_cmd **cmds);
-t_logic_op		*push_stack(t_logic_op *priority_stack, t_logic_op op);
-t_logic_op		pop_stack(t_logic_op *priority_stack);
+void			terminate(t_executor *exec, t_context *context, int status);
+char			*get_name(char *cmd_path);
+int				is_builtin(t_executor *exec);
 
 /*
  *   io_redirections

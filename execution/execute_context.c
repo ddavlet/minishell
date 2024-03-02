@@ -1,19 +1,19 @@
 #include "execution.h"
 
-int	setup_pipe(t_executor *exec, t_context *context)
+static int	has_finished_context(t_executor *exec, t_context *context)
 {
-	if (exec->cmds[exec->command_index]->operat != PIPE)
-		return (0);
-	if (pipe(context->pipe->pipe_fd) == -1)
-	{
-        // Protect with exit
-		perror("pipe");
-		return (-1);
-	}
+	t_cmd	*current_cmd;
+	t_cmd	*next_cmd;
+
+	current_cmd = exec->cmds[exec->command_index];
+	next_cmd = exec->cmds[exec->command_index + 1];
+	if (next_cmd == NULL
+		|| next_cmd->context_depth < current_cmd->context_depth)
+		return (1);
 	return (0);
 }
 
-static int	check_child_status(t_executor *exec, t_context *content)
+static int	check_execution_status(t_executor *exec, t_context *content)
 {
 	/*
 		if (WIFEXITED(exec->status))
@@ -33,7 +33,7 @@ static int	check_child_status(t_executor *exec, t_context *content)
 				return (128 + WTERMSIG(exec->status));
 		}
 	*/
-	ft_printf("DEBUG::parent.c: exec->status: %d\n", content->status);   
+	ft_printf("DEBUG::parent.c: exec->status: %d\n", content->status);
 	if (content->status != 0)
 	{
 		ft_putstr_fd("pipex: ", 2);
@@ -59,31 +59,35 @@ static int	close_file_descriptors(t_executor *exec, t_context *context)
 	return (0);
 }
 
-static int	prepare_next_execution(t_executor *exec, t_context *context)
+static int	prepare_next(t_executor *exec, t_context *context)
 {
 	if (!exec || !context)
 		return (-1);
-	ft_printf("DEBUG::prepare_next_execution\n");
+	ft_printf("DEBUG::prepare_next\n");
 	close_file_descriptors(exec, context);
-	check_child_status(exec, context);
+	check_execution_status(exec, context);
 	return (0);
 }
- 
-int execute_context(t_executor *exec, t_context *context)
+
+int	execute_context(t_executor *exec, t_context *context)
 {
-    setup_pipe(exec, context);
-    while (!context_has_terminated(context))
-    {
-		context->pid = fork();
-		if (context->pid == -1)
-			return (-1); // Protect with exit handler
-		if (context->pid == 0)
-            exit(child_process(exec, context));
+	while (!has_finished_context(exec, context))
+	{
+		if (is_buildin(exec))
+			exec->signal = BUILTIN;
 		else
-            prepare_next_execution(exec, context);
-    }
+		{
+			context->pid = fork();
+			if (context->pid == -1)
+				terminate(NULL, context, EXIT_FAILURE);
+			if (context->pid == 0)
+				exit(cmd(exec, context));
+			else
+				prepare_next(exec, context);
+		}
+	}
+	terminate(NULL, context, EXIT_SUCCESS);
 }
 
-
-		// ft_printf("DEBUG:loop.c: pipe_fd[0]: %d\n", exec->pipe_fd[0]);
-		// ft_printf("DEBUG:loop.c: pipe_fd[1]: %d\n", exec->pipe_fd[1]);
+// ft_printf("DEBUG:loop.c: pipe_fd[0]: %d\n", exec->pipe_fd[0]);
+// ft_printf("DEBUG:loop.c: pipe_fd[1]: %d\n", exec->pipe_fd[1]);

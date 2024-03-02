@@ -1,6 +1,14 @@
 
 #include "execution.h"
 
+static void	end_session(t_executor *exec, t_context *context)
+{
+	if (is_last(exec))
+		waitpid(context->pid, &(exec->status), 0);
+	check_exit_status(exec);
+	exit(0);
+}
+
 t_executor	*initialize_executor(t_cmd **cmds)
 {
 	t_executor	*exec;
@@ -21,45 +29,43 @@ int	execution(t_cmd **cmds)
 	t_context	*context;
 
 	if (!cmds)
-		return (-1);
+		terminate(NULL, NULL, EXIT_FAILURE);
 	if (cmds[0] == NULL)
-		return (0);
+		terminate(NULL, NULL, EXIT_SUCCESS);
 	exec = initialize_executor(cmds);
 	if (!exec)
-		return (-1);
-	context = initialize_context();
+		terminate(NULL, NULL, EXIT_FAILURE);
+	context = initialize_context(exec);
 	if (!context)
-		exit_handler();
-	execute_in_subshell(exec, context);
-	return (0);
+		terminate(exec, NULL, EXIT_FAILURE);
+	while (!has_finished(exec))
+	{
+		if (exec->signal == BUILTIN)
+			execute_builtin(exec, context);
+		else
+			execute_in_subshell(exec, context);
+	}
+	terminate(exec, context, EXIT_SUCCESS);
 }
 
 int	execute_in_subshell(t_executor *exec, t_context *context)
 {
 	t_context	*subcontext;
-	t_cmd	*current_cmd;
 
-	current_cmd = exec->cmds[exec->command_index];
+	if (!exec || !exec->cmds || !context)
+		terminate(NULL, NULL, EXIT_FAILURE);
 	subcontext = create_subcontext(exec, context);
+	if (subcontext == NULL)
+		terminate(NULL, NULL, EXIT_FAILURE);
 	subcontext->pid = fork();
 	if (subcontext->pid == -1)
-		exit_handler();
+		terminate(exec, subcontext, EXIT_FAILURE);
 	if (subcontext->pid == 0)
 	{
 		if (subcontext->context_depth > 0)
-			exit(execute_in_subshell(exec, context));
+			execute_in_subshell(exec, subcontext);
 		exit(execute_context(exec, context));
 	}
 	else
-		exit_value(exec, subcontext);
-}
-
-void	exit_value(t_executor *exec, t_context *context)
-{
-	waitpid(context->pid, &(context->status), 0);
-}
-
-void	exit_handler(void)
-{
-	return ;
+		end_session(exec, context);
 }
