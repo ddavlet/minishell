@@ -2,7 +2,7 @@ NAME=debug
 SRCS = ./*.c ./io_redirections/*.c ./utils/*.c ../parsing/*.c ../parsing/wildcard/*.c
 INC = -I../parsing/ -I../libft/
 LIB = -lreadline
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS =  -g #-Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(NAME).c

@@ -44,7 +44,7 @@ typedef struct s_executor
 {
 	int			command_index;
 	int			status;
-	int			signal;
+	t_signal	signal;
 	t_cmd		**cmds;
 }				t_executor;
 
@@ -92,7 +92,8 @@ void			terminate_execution(t_executor *exec);
 /*
  *   debugging
  */
-t_cmd			**mockup_three_cmds(void);
+void			print_exit_info(int status);
+t_cmd			**mockup_three_cmds(t_env *env);
 t_cmd			**mockup_single_cmd(char *env[]);
 t_cmd			**mockup(void);
 

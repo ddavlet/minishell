@@ -9,7 +9,7 @@ static t_fd_state	*initialize_fd_state(int fd)
 		return (NULL);
 	fd_state->fd = fd;
 	fd_state->is_open = 1;
-	return (0);
+	return (fd_state);
 }
 
 static t_pipe  *initialize_pipe(void)

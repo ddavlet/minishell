@@ -37,7 +37,7 @@ void free_mockup_cmds(t_cmd **cmds)
 }
 
 
-t_cmd   **mockup_three_cmds(void)
+t_cmd   **mockup_three_cmds(t_env *env)
 {
     t_cmd   **cmds;
     t_cmd   *cmd1;
@@ -59,6 +59,7 @@ t_cmd   **mockup_three_cmds(void)
     redir1->next = NULL;
     cmd1->redirs = redir1;
     cmd1->context_depth = 0;
+    cmd1->env = env;
 
 
 // Second
@@ -76,6 +77,7 @@ t_cmd   **mockup_three_cmds(void)
     redir2->next = NULL;
     cmd2->redirs = redir2;
     cmd2->context_depth = 0;
+    cmd2->env = env;
 
 // Third
     cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
@@ -91,6 +93,7 @@ t_cmd   **mockup_three_cmds(void)
     redir3->redir_name = NULL;
     redir3->next = NULL;
     cmd3->redirs = redir3;
+    cmd3->env = env;
 
     cmd3->context_depth = 0;
 
@@ -173,15 +176,32 @@ t_cmd   **mockup_empty_cmds(void)
     return (cmds);
 }
 
+void print_exit_info(int status)
+{
+    if (WIFEXITED(status))
+    {
+        ft_putstr_fd("exit status: ", 1);
+        ft_putnbr_fd(WEXITSTATUS(status), 1);
+        ft_putchar_fd('\n', 1);
+    }
+    else if (WIFSIGNALED(status))
+    {
+        ft_putstr_fd("exit signal: ", 1);
+        ft_putnbr_fd(WTERMSIG(status), 1);
+        ft_putchar_fd('\n', 1);
+    }
+}
+
 int	main(int argc, char *argv[], const char **envp)
 {
 	t_cmd	**cmds;
 
     (void)argc;
 	(void)argv;
-	// cmds = mockup_three_cmds();
+    t_env *env = init_env(envp);
+	cmds = mockup_three_cmds(env);
     // cmds = mockup_single_cmd(envp);
-    cmds = parse_text("pwd", init_env(envp));
+    // cmds = parse_text("pwd", init_env(envp)); // wildcard parsing error: No such file or directory
 	execution(cmds);
     free_mockup_cmds(cmds);
 	return (0);

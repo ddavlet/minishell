@@ -19,6 +19,8 @@ t_executor	*initialize_executor(t_cmd **cmds)
 		return (NULL);
 	exec->command_index = 0;
 	exec->cmds = cmds;
+    exec->signal = EXECUTE;
+    exec->status = 0;
 	return (exec);
 }
 
@@ -41,7 +43,10 @@ static int	execute_in_subshell(t_executor *exec, t_context *context)
 		exit(execute_context(exec, context));
 	}
 	else
-		end_session(exec, context);
+    {
+        waitpid(subcontext->pid, &(exec->status), 0);
+        print_exit_info(exec->status);
+    }
     return (0);
 }
 

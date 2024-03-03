@@ -51,12 +51,12 @@ int	cmd_process(t_executor *exec, t_context *context)
         terminate(NULL, NULL, EXIT_FAILURE);
     }
 	cmd = exec->cmds[exec->command_index];
-    if (cmd->operat == PIPE)
-		dup2(context->pipe->write->fd, STDOUT_FILENO);
-	manage_output_redir(exec, context);
-	manage_input_redir(exec, context);
-    if (cmd->operat == PIPE)
-        close(context->pipe->write->fd);
+    // if (cmd->operat == PIPE)
+	// 	dup2(context->pipe->write->fd, STDOUT_FILENO);
+	// manage_output_redir(exec, context);
+	// manage_input_redir(exec, context);
+    // if (cmd->operat == PIPE)
+    //     close(context->pipe->write->fd);
     argv = exec->cmds[exec->command_index]->argv;
     envp = exec->cmds[exec->command_index]->env->envp;
 	execute_cmd(argv, envp);

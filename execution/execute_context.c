@@ -4,8 +4,8 @@ static int	has_finished_context(t_executor *exec, t_context *context)
 {
 	t_cmd	*current_cmd;
 	t_cmd	*next_cmd;
-
     (void)context;
+    return (1);
 	current_cmd = exec->cmds[exec->command_index];
 	next_cmd = exec->cmds[exec->command_index + 1];
     // Logic still flawed
@@ -31,6 +31,7 @@ static int	prepare_next(t_executor *exec, t_context *context)
 	if (!exec || !context)
 		return (-1);
 	waitpid(context->pid, &(exec->status), 0);
+    print_exit_info(exec->status);
 	if (exec->status != 0)
 	{
 		ft_putstr_fd("pipex: ", 2);
@@ -57,13 +58,17 @@ int	execute_context(t_executor *exec, t_context *context)
 				terminate(NULL, context, EXIT_FAILURE);
 			if (context->pid == 0)
 				exit(cmd_process(exec, context));
-			else if (prepare_next(exec, context) == -1)
-				break;
+			else
+            {
+                if (prepare_next(exec, context) == -1)
+                    break;
+            }
 		}
 	}
 	terminate(NULL, context, exec->status);
     return (0);
 }
+
 
 // ft_printf("DEBUG:loop.c: pipe_fd[0]: %d\n", exec->pipe_fd[0]);
 // ft_printf("DEBUG:loop.c: pipe_fd[1]: %d\n", exec->pipe_fd[1]);
