@@ -1,14 +1,14 @@
 #include "../execution.h"
 
-int	find_last_output_redir(t_executor *exec, int cmd_index)
+int	last_output_redir(t_executor *exec)
 {
 	t_redir *redir;
     int     out_fd;
 
-	if (!exec || !exec->cmds || !exec->cmds[cmd_index])
+	if (!exec || !exec->cmds || !exec->cmds[exec->command_index])
 		return (-1);
     out_fd = 1;
-	redir = exec->cmds[cmd_index]->redirs;
+	redir = exec->cmds[exec->command_index]->redirs;
 	if (redir == NULL)
 		return (out_fd);
 	while (redir)

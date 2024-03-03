@@ -50,7 +50,7 @@ t_cmd   **mockup_three_cmds(void)
     cmd1->operat = PIPE;
     cmd1->argv = (char **)malloc(sizeof(char *) * 3);
     cmd1->argv[0] = ft_strdup("ls");
-    cmd1->argv[1] = ft_strdup("-l");
+    cmd1->argv[1] = NULL;
     cmd1->argv[2] = NULL;
 
     t_redir *redir1 = malloc(sizeof(t_redir));
@@ -58,14 +58,16 @@ t_cmd   **mockup_three_cmds(void)
     redir1->redir_name = NULL;
     redir1->next = NULL;
     cmd1->redirs = redir1;
+    cmd1->context_depth = 0;
+
 
 // Second
     cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
     cmd2->operat = PIPE;
-    cmd2->com = ft_strdup("grep");
+    cmd2->com = ft_strdup("wc");
     cmd2->argv = (char **)malloc(sizeof(char *) * 3);
-    cmd2->argv[0] = ft_strdup("grep");
-    cmd2->argv[1] = ft_strdup("exe*");
+    cmd2->argv[0] = ft_strdup("wc");
+    cmd2->argv[1] = ft_strdup("-c");
     cmd2->argv[2] = NULL;
 
     t_redir *redir2 = malloc(sizeof(t_redir));
@@ -73,6 +75,7 @@ t_cmd   **mockup_three_cmds(void)
     redir2->redir_name = NULL;
     redir2->next = NULL;
     cmd2->redirs = redir2;
+    cmd2->context_depth = 0;
 
 // Third
     cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
@@ -80,7 +83,7 @@ t_cmd   **mockup_three_cmds(void)
     cmd3->com = ft_strdup("wc");
     cmd3->argv = (char **)malloc(sizeof(char *) * 3);
     cmd3->argv[0] = ft_strdup("wc");
-    cmd3->argv[1] = ft_strdup("-l");
+    cmd3->argv[1] = ft_strdup("-c");
     cmd3->argv[2] = NULL;
 
     t_redir *redir3 = malloc(sizeof(t_redir));
@@ -88,6 +91,8 @@ t_cmd   **mockup_three_cmds(void)
     redir3->redir_name = NULL;
     redir3->next = NULL;
     cmd3->redirs = redir3;
+
+    cmd3->context_depth = 0;
 
 // Assign to array
     cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
@@ -168,15 +173,16 @@ t_cmd   **mockup_empty_cmds(void)
     return (cmds);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], const char **envp)
 {
 	t_cmd	**cmds;
 
     (void)argc;
 	(void)argv;
 	// cmds = mockup_three_cmds();
-    cmds = mockup_single_cmd(envp);
-	execution(cmds, envp);
+    // cmds = mockup_single_cmd(envp);
+    cmds = parse_text("pwd", init_env(envp));
+	execution(cmds);
     free_mockup_cmds(cmds);
 	return (0);
 }

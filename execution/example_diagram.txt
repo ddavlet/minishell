@@ -1,0 +1,43 @@
+START 
+-> cmd0 -> cmd1 -> cmd2
+    -> open_parenthesis 1
+        cmd3 -> cmd4
+        -> open_parenthesis 2
+                open_parenthesis 3
+                        -> cmd5
+                closing_parenthesis 3
+                pipe
+                -> cmd6
+        -> close_parenthesis 2
+        cmd7 -> cmd8
+    close_parenthesis 1
+    pipe
+cmd9 -> cmd10 -> cmd11
+END
+
+execution process: 
+    <pipe>
+    <input_redir> 
+    <output_redir>
+    <cmd> 
+
+program execution with context
+    (context) OR			[exit 0]
+    !(context) OR (context)	[exit 0]
+    !(context) OR !(context)[exit 1]
+
+    !(context) AND			[exit 1]
+    (context) AND !(context)[exit 1]
+    (context) AND (context)	[exit 0]
+
+    context PIPE (subcontext PIPE subcontext) PIPE context
+    
+    (context) AND (subcontext AND subcontext) PIPE context
+
+    context AND (builtin AND subcontext) PIPE context
+    
+    ((context)) AND ((context) AND (context)) AND context PIPE context
+
+
+
+

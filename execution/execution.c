@@ -1,45 +1,72 @@
 
 #include "execution.h"
 
-t_executor	*initialize_executor(t_cmd **cmds, char *envp[])
+static void	end_session(t_executor *exec, t_context *context)
 {
-    t_executor    *exec;
-    e_logic_op    *priority_stack;
-
-	if (!cmds || !envp)
-		return (NULL);
-	exec = (t_executor *)calloc(sizeof(t_executor));
-	if (!exec)
-		return (NULL);
-    priority_stack = initialize_priority_stack(cmds);
-    if (!priority_stack)
-    {
-        free(exec);
-        return (NULL);
-    }
-	exec->cmds = cmds;
-	exec->fd_count = 0;
-	exec->in_fd = 0;
-	exec->out_fd = 1;
-	exec->pid = 0;
-    exec->priority_stack = priority_stack;
-	exec->status = 0;
-	return (exec);
+	// if (is_last(exec))
+    waitpid(context->pid, &(exec->status), 0);
+	exit(exec->status);
 }
 
-int	execution(t_cmd **cmds, char *envp[])
+t_executor	*initialize_executor(t_cmd **cmds)
 {
 	t_executor	*exec;
 
-	exec = initialize_executor(cmds, envp);
+	if (!cmds)
+		return (NULL);
+	exec = (t_executor *)ft_calloc(1, sizeof(t_executor));
 	if (!exec)
-		return (-1);
-	if (!cmds || cmds[0] == NULL)
+		return (NULL);
+	exec->command_index = 0;
+	exec->cmds = cmds;
+	return (exec);
+}
+
+static int	execute_in_subshell(t_executor *exec, t_context *context)
+{
+	t_context	*subcontext;
+
+	if (!exec || !exec->cmds || !context)
+		terminate(NULL, NULL, EXIT_FAILURE);
+	subcontext = create_subcontext(exec, context);
+	if (subcontext == NULL)
+		terminate(NULL, NULL, EXIT_FAILURE);
+	subcontext->pid = fork();
+	if (subcontext->pid == -1)
+		terminate(NULL, subcontext, EXIT_FAILURE);
+	if (subcontext->pid == 0)
 	{
-		terminate_execution(exec);
-		return (-1);
+		if (subcontext->context_depth > 0)
+			execute_in_subshell(exec, subcontext);
+		exit(execute_context(exec, context));
 	}
-	execute_loop(exec);
-	terminate_execution(exec);
-	return (0);
+	else
+		end_session(exec, context);
+    return (0);
+}
+
+int	execution(t_cmd **cmds)
+{
+	t_executor	*exec;
+	t_context	*context;
+
+	if (!cmds)
+		terminate(NULL, NULL, EXIT_FAILURE);
+	if (cmds[0] == NULL)
+		terminate(NULL, NULL, EXIT_SUCCESS);
+	exec = initialize_executor(cmds);
+	if (!exec)
+		terminate(NULL, NULL, EXIT_FAILURE);
+	context = initialize_context();
+	if (!context)
+		terminate(exec, NULL, EXIT_FAILURE);
+	while (!has_finished(exec))
+	{
+		if (exec->signal == BUILTIN)
+			execute_builtin(exec, context);
+		else
+			execute_in_subshell(exec, context);
+	}
+	terminate(exec, context, EXIT_SUCCESS);
+    return (0);
 }
