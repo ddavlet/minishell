@@ -12,16 +12,6 @@
 # include <sys/types.h>
 # include "./wildcard/wildcard.h"
 
-// typedef enum e_token
-// {
-// 	EMPTY,
-// 	SPACE,
-// 	OPER,
-// 	QUOTE,
-// 	REDIR,
-// 	WILD
-// }					t_token;
-
 typedef enum e_oper
 {
 	RUN,
