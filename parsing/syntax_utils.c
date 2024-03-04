@@ -56,6 +56,8 @@ void	*check_tokens(char **tokens)
 	i = 0;
 	if (count_brackets(tokens))
 		return (NULL);
+	if (!ft_strncmp(tokens[0], ")", 2))
+		return (NULL);
 	while (tokens[i + 1])
 	{
 		if (ft_isignored(tokens[i])) // is ignored
@@ -67,6 +69,6 @@ void	*check_tokens(char **tokens)
 		i++;
 	}
 	if (oper_type(tokens[i]) && !tokens[i + 1])
-			return (error_near_tocken(tokens[i]));
+		return (error_near_tocken(tokens[i]));
 	return (tokens);
 }

@@ -71,6 +71,9 @@ ssize_t		ft_arr_len(char **arr);
 ssize_t		arrlen_nosspace(char **arr);
 char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
 char		**arrstr_copy(const char **envp);
+int			*ft_intarrdup(int *arr);
+int			id_gen(int seed);
+
 
 
 /*Commands functions*/

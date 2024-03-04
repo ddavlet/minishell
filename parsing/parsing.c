@@ -50,7 +50,7 @@ int	*add_scope(int *scope)
 		return (NULL);
 	}
 	i = scope[0];
-	new_scope[0] = i + 1;
+	new_scope[0] = id_gen(i);
 	i = -1;
 	while (scope[++i])
 		new_scope[i + 1] = scope[i];
@@ -61,15 +61,20 @@ int	*add_scope(int *scope)
 int	*set_priority(char **tokens, ssize_t prev, ssize_t next, int *scope)
 {
 	int		count;
+	ssize_t	tmp;
 
 	count = 0;
+	tmp = prev;
 	if (prev == next)
 		return (0);
+	scope = ft_intarrdup(scope);
 	while (ft_isparenthesis(tokens[prev++]) == 1)
-		count++;
-	next--;
-	while (ft_isparenthesis(tokens[next--]) == 2)
-		count--;
+		scope = add_scope(scope);
+	if (tmp-- > 2)
+		while (ft_isparenthesis(tokens[--tmp]) == 2)
+			scope = remove_scope(scope);
+	while (ft_isparenthesis(tokens[next--]))
+		;
 	while (prev < next)
 	{
 		if (ft_isparenthesis(tokens[prev]) == 1)
@@ -78,14 +83,10 @@ int	*set_priority(char **tokens, ssize_t prev, ssize_t next, int *scope)
 			return (NULL);
 		prev++;
 	}
-	while (count-- > 0)
-		scope = add_scope(scope);
-	while (count++ < 0)
-		scope = remove_scope(scope);
 	return (scope);
 }
 
-t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next, int *scope)
+t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next, int **scope)
 {
 	t_cmd	*cmd;
 
@@ -96,7 +97,8 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next, int *scope)
 		return (error_general(cmd, "cmd")); // protection
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
-	cmd->context_stack = set_priority(tokens, prev, next, scope);
+	cmd->context_stack = set_priority(tokens, prev, next, *scope);
+	*scope = cmd->context_stack;
 	if (!cmd->context_stack)
 		return (error_syntax(cmd));
 	cmd->argv = create_argv(tokens, prev, next + 1);
@@ -121,14 +123,15 @@ t_cmd	**init_commands(char **tokens)
 	i = 0;
 	j = 0;
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
-	scope = (int *)ft_calloc(sizeof(int), 1);
+	scope = (int *)ft_calloc(sizeof(int), 2);
+	scope[0] = 1;
 	if (!commands)
 		return (error_general(commands, "commands structure")); // catch it!
 	while (i < count_commands(tokens)) // incrase efficiency
 	{
 		k = j + 1;
 		j = find_next_cmd(tokens, k); // protect prom segfault
-		commands[i] = init_cmd(tokens, k, j, scope);
+		commands[i] = init_cmd(tokens, k, j, &scope);
 		if (!commands[i++])
 			return (terminate_commands(commands));
 	}
