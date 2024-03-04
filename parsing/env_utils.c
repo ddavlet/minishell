@@ -53,21 +53,6 @@ static void	add_envvar(t_env *root, const char *envvar, const char *content)
 	}
 }
 
-static char	**env_copy(const char **envp)
-{
-	char		**copy_envp;
-	int32_t		len;
-
-	len = 0;
-	while (envp[len])
-		len++;
-	copy_envp = (char **)ft_calloc(sizeof (char *), len + 1);
-	len = -1;
-	while (envp[++len])
-		copy_envp[len] = ft_strdup(envp[len]);
-	return (copy_envp);
-}
-
 t_env	*init_env(const char **envp)
 {
 	t_env		*root;
@@ -89,7 +74,7 @@ t_env	*init_env(const char **envp)
 		free(tmp);
 		i++;
 	}
-	root->envp = env_copy(envp);
+	root->envp = arrstr_copy(envp);
 	return (root);
 }
 

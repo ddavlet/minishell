@@ -7,7 +7,8 @@ void	debug_print(t_cmd *com)
 	if (com->com)
 		ft_printf("Cmd_name: %s\n", com->com);
 	ft_printf("Operation code: %d\n", com->operat);
-	ft_printf("Priority: %i\n", com->priority);
+	for (size_t i = 0; com->context_stack[i]; i++)
+		ft_printf("Priority: %i\n", com->context_stack[i]);
 	int	i = 0;
 	if (com->argv)
 		while ((com->argv)[i])
