@@ -7,6 +7,7 @@ void	debug_print(t_cmd *com)
 	if (com->com)
 		ft_printf("Cmd_name: %s\n", com->com);
 	ft_printf("Operation code: %d\n", com->operat);
+	ft_printf("Priority: %i\n", com->priority);
 	int	i = 0;
 	if (com->argv)
 		while ((com->argv)[i])
@@ -36,7 +37,6 @@ void	debug_print_array_strings(char **tokens)
 
 	i = -1;
 	while (tokens[++i])
-		// ft_printf("String %d: %s\n", i, tokens[i]);
 		ft_printf("String %d: %s\n", i, tokens[i]);
 }
 

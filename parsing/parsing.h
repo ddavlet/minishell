@@ -52,9 +52,9 @@ typedef struct s_cmd
 	char			*com;
 	char			**argv;
 	enum e_oper		operat;
+	int				priority;
 	struct s_redir	*redirs;
 	struct s_env	*env;
-    int				context_depth;
 }					t_cmd;
 
 typedef struct s_redir
@@ -79,14 +79,12 @@ ssize_t		ft_commandlen(char **tokens);
 char		**add_escape(char **token, const char *esc);
 ssize_t		ft_arr_len(char **arr);
 ssize_t		arrlen_nosspace(char **arr);
-char		**inject_string(char **to_arr, char **from_arr, ssize_t *inj_indx);
-
-
+char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
 
 /*Commands functions*/
 t_cmd		**parse_text(const char *txt, t_env *root);
 char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
-char		**get_wildcard(char **tokens);
+char		**get_wildcard(char **tokens, t_env *root);
 void		append_redirnode(t_redir **redir, t_red_sym key,
 				const char *value);
 
@@ -96,6 +94,7 @@ char		**pars_merge(char **arr);
 char		**merge_quotations(char **tokens);
 char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
 char		*find_var(t_env *root, char *search);
+void		get_special_cases(char **tokens);
 
 /*Utils*/
 t_oper		ft_isexeption(char *txt);
@@ -106,6 +105,9 @@ t_oper		oper_type(char *txt);
 void		trim_quotes(char **tokens);
 ssize_t		find_next_cmd(char **tokens, ssize_t i);
 char		**parse_delspace(char **tokens);
+int			ft_isparenthesis(char *txt);
+int			count_brackets(char **arr);
+
 
 /*Terminating*/
 void		*terminate_commands(t_cmd **commands);
@@ -118,6 +120,10 @@ void		*terminate_cmd(t_cmd *cmd);
 void		*error_quot_tockens(char **tokens);
 void		*error_general(void *ptr, const char *str);
 void		*error_near_tocken(char *token);
+void		*error_syntax(t_cmd *ptr);
+void		*undefined_error(char *ptr);
+
+
 
 /*Debuging*/
 void		debug_print_cmd(t_cmd **commands);

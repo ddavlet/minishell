@@ -12,6 +12,8 @@ static int	ft_istoken(char c)
 		return (3);
 	if (c == '<' || c == '>')
 		return (4);
+	if (c == '(' || c == ')')
+		return (5);
 	return (0);
 }
 
@@ -37,6 +39,8 @@ static uint32_t	ft_count_len(char const **str)
 		return (1);
 	else if (ft_isredir(&s[i]))
 		return (2);
+	else if (ft_istoken(s[i]) == 5)
+		return (1);
 	else
 		while (s[i] && !ft_istoken(s[i]))
 			i++;

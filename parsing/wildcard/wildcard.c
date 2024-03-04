@@ -45,7 +45,7 @@ static void	f_3(char	***matches, t_tree *root)
 	{
 		f_3(matches, child->child);
 		if (child->exists)
-			*matches = append_arr_str(*matches, ft_strdup(child->name)); // match found
+			*matches = append_arr_str(*matches, ft_strdup(child->name));
 		child = child->next;
 	}
 }
@@ -58,8 +58,6 @@ static void	router(char	***matches, char *letters, t_tree *root)
 	{
 		if (!letters[1])
 			return (f_3(matches, root)); // any value with the last *
-		else if (letters[1] == 42) // this this not exeptable!
-			return ;
 		else
 			f_2(matches, &letters[0], root->child); // find char after *
 	}
@@ -73,7 +71,7 @@ static void	router(char	***matches, char *letters, t_tree *root)
 	else
 	{
 		if (root->exists)
-			*matches = append_arr_str(*matches, ft_strdup(root->name)); // match found
+			*matches = append_arr_str(*matches, ft_strdup(root->name));
 	}
 }
 
