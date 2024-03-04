@@ -1,3 +1,1 @@
 always check what is the first char in input before even parsing!
-stress test on split function
-name of env var passed to append_envvar must contain = sign
