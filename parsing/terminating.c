@@ -6,6 +6,8 @@ void	*terminate_cmd(t_cmd *cmd)
 		return (NULL); // ERROR!
 	if (cmd->com)
 		free(cmd->com);
+	if (cmd->context_stack)
+		free(cmd->context_stack);
 	terminate_ptr_str(cmd->argv);
 	terminate_redirs(cmd->redirs);
 	free(cmd);

@@ -14,52 +14,51 @@ uint32_t	count_commands(char **token)
 	return (count);
 }
 
-void	change_priority(t_cmd **commands)
+int	*remove_scope(int *scope)
 {
-	ssize_t	i;
-	int		lvl;
-	int		tmp;
+	int32_t	i;
+	int		*new_scope;
 
-	i = -1;
-	lvl = 0;
-	while (commands[++i])
+	i = 0;
+	while (scope[i])
+		i++;
+	new_scope = (int *)ft_calloc(sizeof(int), i - 1);
+	if (!new_scope)
 	{
-		if (commands[i]->priority < 0)
-		{
-			tmp = commands[i]->priority;
-			commands[i]->priority = lvl;
-			lvl += tmp;
-		}
-		else if (commands[i]->priority > 0)
-		{
-			lvl += commands[i]->priority;
-			commands[i]->priority = lvl;
-		}
-		else
-			commands[i]->priority = lvl;
+		free(scope);
+		return (NULL);
 	}
+	i = -1;
+	while (scope[++i + 1])
+		new_scope[i] = scope[i + 1];
+	free(scope);
+	return (new_scope);
 }
 
-// int	check_priority(char **tokens, ssize_t prev, ssize_t next)
-// {
-// 	while (prev < next)
-// 	{
-// 		if (ft_isparenthesis(tokens[prev]) == 1)
-// 		{
-// 			if (prev != 0)
-// 				return (1);
-// 		}
-// 		else if (ft_isparenthesis(tokens[prev]) == 2)
-// 		{
-// 			if (prev != next - 1)
-// 				return (1);
-// 		}
-// 		prev++;
-// 	}
-// 	return (0);
-// }
+int	*add_scope(int *scope)
+{
+	int32_t	i;
+	int		*new_scope;
 
-int	set_priority(char **tokens, ssize_t prev, ssize_t next)
+	i = 0;
+	while (scope[i])
+		i++;
+	new_scope = (int *)ft_calloc(sizeof(int), i + 2);
+	if (!new_scope)
+	{
+		free(scope);
+		return (NULL);
+	}
+	i = scope[0];
+	new_scope[0] = i + 1;
+	i = -1;
+	while (scope[++i])
+		new_scope[i + 1] = scope[i];
+	free(scope);
+	return (new_scope);
+}
+
+int	*set_priority(char **tokens, ssize_t prev, ssize_t next, int *scope)
 {
 	int		count;
 
@@ -74,15 +73,19 @@ int	set_priority(char **tokens, ssize_t prev, ssize_t next)
 	while (prev < next)
 	{
 		if (ft_isparenthesis(tokens[prev]) == 1)
-			return (INT32_MAX);
+			return (NULL);
 		else if (ft_isparenthesis(tokens[prev]) == 2)
-			return (INT32_MAX);
+			return (NULL);
 		prev++;
 	}
-	return (count);
+	while (count-- > 0)
+		scope = add_scope(scope);
+	while (count++ < 0)
+		scope = remove_scope(scope);
+	return (scope);
 }
 
-t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
+t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next, int *scope)
 {
 	t_cmd	*cmd;
 
@@ -93,8 +96,8 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 		return (error_general(cmd, "cmd")); // protection
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
-	cmd->priority = set_priority(tokens, prev, next);
-	if (cmd->priority == INT32_MAX)
+	cmd->context_stack = set_priority(tokens, prev, next, scope);
+	if (!cmd->context_stack)
 		return (error_syntax(cmd));
 	cmd->argv = create_argv(tokens, prev, next + 1);
 	if (cmd->argv)
@@ -113,17 +116,19 @@ t_cmd	**init_commands(char **tokens)
 	uint32_t		i;
 	ssize_t			j;
 	ssize_t			k;
+	int				*scope;
 
 	i = 0;
 	j = 0;
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
+	scope = (int *)ft_calloc(sizeof(int), 1);
 	if (!commands)
 		return (error_general(commands, "commands structure")); // catch it!
 	while (i < count_commands(tokens)) // incrase efficiency
 	{
 		k = j + 1;
 		j = find_next_cmd(tokens, k); // protect prom segfault
-		commands[i] = init_cmd(tokens, k, j);
+		commands[i] = init_cmd(tokens, k, j, scope);
 		if (!commands[i++])
 			return (terminate_commands(commands));
 	}
@@ -150,8 +155,8 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
-	if (commands)
-		change_priority(commands);
+	// if (commands)
+	// 	change_priority(commands);
 	terminate_ptr_str(tokens);
 	return (commands);
 }

@@ -70,6 +70,8 @@ char		**add_escape(char **token, const char *esc);
 ssize_t		ft_arr_len(char **arr);
 ssize_t		arrlen_nosspace(char **arr);
 char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
+char		**arrstr_copy(const char **envp);
+
 
 /*Commands functions*/
 t_cmd		**parse_text(const char *txt, t_env *root);

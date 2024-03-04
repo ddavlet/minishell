@@ -30,3 +30,18 @@ char	**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx)
 	*from_arr = NULL;
 	return (new_arr);
 }
+
+char	**arrstr_copy(const char **envp)
+{
+	char		**copy_envp;
+	int32_t		len;
+
+	len = 0;
+	while (envp[len])
+		len++;
+	copy_envp = (char **)ft_calloc(sizeof (char *), len + 1);
+	len = -1;
+	while (envp[++len])
+		copy_envp[len] = ft_strdup(envp[len]);
+	return (copy_envp);
+}
