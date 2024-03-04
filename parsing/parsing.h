@@ -12,16 +12,6 @@
 # include <sys/types.h>
 # include "./wildcard/wildcard.h"
 
-// typedef enum e_token
-// {
-// 	EMPTY,
-// 	SPACE,
-// 	OPER,
-// 	QUOTE,
-// 	REDIR,
-// 	WILD
-// }					t_token;
-
 typedef enum e_oper
 {
 	RUN,
@@ -52,7 +42,7 @@ typedef struct s_cmd
 	char			*com;
 	char			**argv;
 	enum e_oper		operat;
-	int				priority;
+	int				*context_stack;
 	struct s_redir	*redirs;
 	struct s_env	*env;
 }					t_cmd;
