@@ -34,7 +34,7 @@ typedef struct s_scope
 typedef struct s_executor
 {
 	int			command_index;
-	int			status;
+	int			*status;
 	t_cmd		**cmds;
 }				t_executor;
 
