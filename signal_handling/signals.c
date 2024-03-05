@@ -6,16 +6,16 @@
 /*   By: vketteni <vketteni@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:30:41 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/22 17:15:28 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:40:26 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "signals.h"
 
-void	sigusr_handler(int signo, siginfo_t *info, void *context)
+void	sigusr_handler(int signo, siginfo_t *info, void *scope)
 {
 
-	(void)context;
+	(void)scope;
 	if (signo == SIGQUIT)
 		write(1, "signal SIGQUIT recieved", 23);
 	if (signo == SIGINT)

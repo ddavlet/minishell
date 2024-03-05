@@ -21,23 +21,22 @@ execution process:
     <output_redir>
     <cmd> 
 
-program execution with context
-    (context) OR			[exit 0]
-    !(context) OR (context)	[exit 0]
-    !(context) OR !(context)[exit 1]
+program execution with scope
+    (scope) OR			[exit 0]
+    !(scope) OR (scope)	[exit 0]
+    !(scope) OR !(scope)[exit 1]
 
-    !(context) AND			[exit 1]
-    (context) AND !(context)[exit 1]
-    (context) AND (context)	[exit 0]
+    !(scope) AND			[exit 1]
+    (scope) AND !(scope)[exit 1]
+    (scope) AND (scope)	[exit 0]
 
-    context PIPE (subcontext PIPE subcontext) PIPE context
+    scope PIPE (subscope PIPE subscope) PIPE scope
     
-    (context) AND (subcontext AND subcontext) PIPE context
+    (scope) AND (subscope AND subscope) PIPE scope
 
-    context AND (builtin AND subcontext) PIPE context
+    scope AND ((builtin) AND scope AND scope) PIPE scope
     
-    ((context)) AND ((context) AND (context)) AND context PIPE context
-
+    ((scope) AND (scope AND scope)) AND scope PIPE scope
 
     (cmd0)   ( (cmd1    cmd2)    cmd3)    (cmd4)
 

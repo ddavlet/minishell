@@ -58,7 +58,7 @@ t_cmd   **mockup_three_cmds(t_env *env)
     redir1->redir_name = NULL;
     redir1->next = NULL;
     cmd1->redirs = redir1;
-    cmd1->context_depth = 0;
+    cmd1->scope_depth = 0;
     cmd1->env = env;
 
 
@@ -76,7 +76,7 @@ t_cmd   **mockup_three_cmds(t_env *env)
     redir2->redir_name = NULL;
     redir2->next = NULL;
     cmd2->redirs = redir2;
-    cmd2->context_depth = 0;
+    cmd2->scope_depth = 0;
     cmd2->env = env;
 
 // Third
@@ -95,7 +95,7 @@ t_cmd   **mockup_three_cmds(t_env *env)
     cmd3->redirs = redir3;
     cmd3->env = env;
 
-    cmd3->context_depth = 0;
+    cmd3->scope_depth = 0;
 
 // Assign to array
     cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);

@@ -42,7 +42,7 @@ typedef struct s_cmd
 	char			*com;
 	char			**argv;
 	enum e_oper		operat;
-	int				*context_stack;
+	int				*scope_stack;
 	struct s_redir	*redirs;
 	struct s_env	*env;
 }					t_cmd;

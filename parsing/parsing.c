@@ -97,9 +97,9 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next, int **scope)
 		return (error_general(cmd, "cmd")); // protection
 	cmd->redirs = init_redir(tokens, prev, next);
 	cmd->operat = oper_type(tokens[next]);
-	cmd->context_stack = set_priority(tokens, prev, next, *scope);
-	*scope = cmd->context_stack;
-	if (!cmd->context_stack)
+	cmd->scope_stack = set_priority(tokens, prev, next, *scope);
+	*scope = cmd->scope_stack;
+	if (!cmd->scope_stack)
 		return (error_syntax(cmd));
 	cmd->argv = create_argv(tokens, prev, next + 1);
 	if (cmd->argv)
