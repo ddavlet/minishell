@@ -34,7 +34,7 @@ typedef struct s_scope
 typedef struct s_executor
 {
 	int			command_index;
-	int			*status;
+	int			status;
 	t_cmd		**cmds;
 }				t_executor;
 
@@ -47,6 +47,10 @@ t_pipe			*create_pipe(void);
 t_scope			*create_nested_scope(t_executor *exec, t_scope *scope);
 t_scope			*initialize_scope(void);
 int				check_exit_value(t_executor *exec, t_scope *scope);
+void			evaluate_and_or(t_executor *exec);
+t_oper			operation_after(t_executor *exec, t_scope *scope);
+t_oper			operation_before(t_executor *exec, t_scope *scope);
+int				manage_input_output(t_executor *exec, t_scope *scope);
 
 /*
  *	utils
@@ -56,12 +60,23 @@ void			exit_handler(int status);
 char			*get_path(char *cmd, char *envp[]);
 void			msg_error(char *err);
 void			free_arr2d(void **arr2d);
-unsigned long	rand_simple(void);
-int				cmds_size(void **cmds);
 void			terminate(t_executor *exec, t_scope *scope, int status);
 char			*get_name(char *cmd_path);
 int				is_builtin(t_executor *exec);
-int				inside_scope(t_executor *exec, t_scope *scope);
+int				is_inside_scope(t_executor *exec, t_scope *scope);
+int				has_nested_scope(t_executor *exec, t_scope *scope);
+int				connected_through_operation(t_cmd *comparison, t_cmd *other);
+int				arr_len(char **arr);
+t_cmd			*current_cmd_in_execution(t_executor *exec);
+t_cmd			*previous_cmd_in_execution(t_executor *exec);
+t_cmd			*next_cmd_in_execution(t_executor *exec);
+int				find_nested_id(t_executor *exec, t_scope *scope);
+int				most_inside_scope(int *scope_stack);
+t_cmd			*last_cmd_in_scope(t_executor *exec, t_scope *scope);
+t_cmd			*next_command(t_executor *exec, t_cmd *cmd);
+t_cmd			*last_cmd_in_execution(t_executor *exec);
+int				get_scope(t_cmd *cmd);
+int				get_outside_scope(t_cmd *cmd);
 
 /*
  *   io_redirections
@@ -73,11 +88,6 @@ int				handle_here_document(const char *delimiter, t_env *env,
 int				handle_truncate_redirection(const char *file_name);
 int				handle_append_redirection(const char *file_name);
 int				handle_input_redirection(const char *file_name);
-
-/*
- *   cleaners
- */
-void			terminate_execution(t_executor *exec);
 
 /*
  *   debugging

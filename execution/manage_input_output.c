@@ -45,13 +45,13 @@ int manage_input_output(t_executor *exec, t_scope *scope)
     t_cmd   *cmd;
     
 	cmd = exec->cmds[exec->command_index];
-    (void)exec;
-    (void)scope;
-    (void)cmd;
-    // if (cmd->operat == PIPE)
-	// 	dup2(scope->pipe->write->fd, STDOUT_FILENO);
-	// output_redir(exec, scope);
-	// input_redir(exec, scope);
-    // if (cmd->operat == PIPE)
-    //     close(scope->pipe->write->fd);
+    // (void)exec;
+    // (void)scope;
+    // (void)cmd;
+    if (cmd->operat == PIPE)
+		dup2(scope->pipe->write->fd, STDOUT_FILENO);
+	output_redir(exec, scope);
+	input_redir(exec, scope);
+    if (cmd->operat == PIPE)
+        close(scope->pipe->write->fd);
 }

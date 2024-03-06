@@ -30,6 +30,13 @@ program execution with scope
     (scope) AND !(scope)[exit 1]
     (scope) AND (scope)	[exit 0]
 
+    success AND ~   [success ->, failure -x]
+    failure OR  ~   [success ->, failure -x]
+    failure AND -x
+    success OR  ->
+
+
+
     scope PIPE (subscope PIPE subscope) PIPE scope
     
     (scope) AND (subscope AND subscope) PIPE scope

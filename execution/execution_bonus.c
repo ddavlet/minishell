@@ -1,4 +1,3 @@
-
 #include "execution.h"
 
 t_executor	*initialize_executor(t_cmd **cmds)
@@ -12,7 +11,6 @@ t_executor	*initialize_executor(t_cmd **cmds)
 		return (NULL);
 	exec->command_index = 0;
 	exec->cmds = cmds;
-	exec->signal = EXECUTE;
 	exec->status = 0;
 	return (exec);
 }

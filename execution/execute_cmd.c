@@ -1,7 +1,5 @@
 #include "execution.h"
 
-
-
 static int	handle_cmd_execution(t_executor *exec, t_scope *scope)
 {
 	char	**argv;
@@ -21,6 +19,10 @@ static int	handle_cmd_execution(t_executor *exec, t_scope *scope)
 		ft_putendl_fd("minishell: execution unable to assign input/output", 2);
 		terminate(NULL, NULL, EXIT_FAILURE);
 	}
+
+    printf("DEBUG::execve: %s\n", argv[1]);
+    ft_printf("DEBUG::pipe_fd[0]: %d\n", scope->pipe->read->fd);
+    ft_printf("DEBUG::pipe_fd[1]: %d\n", scope->pipe->write->fd);
 	if (execve(path, argv, envp) == -1)
 	{
 		ft_putendl_fd("minishell: execution failed", 2);
@@ -39,9 +41,5 @@ int	execute_cmd(t_executor *exec, t_scope *scope)
 	if (scope->pid == 0)
 		handle_cmd_execution(exec, scope);
 	else
-		prepare_next(exec, scope);
+		check_exit_value(exec, scope);
 }
-
-// ft_printf("DEBUG::cmd\n");
-// ft_printf("DEBUG::pipe_fd[0]: %d\n", exec->pipe_fd[0]);
-// ft_printf("DEBUG::pipe_fd[1]: %d\n", exec->pipe_fd[1]);
