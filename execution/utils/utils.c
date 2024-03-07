@@ -37,7 +37,7 @@ void	exit_handler(int status)
 		exit(status);
 }
 
-void	terminate(t_executor *exec, t_scope *scope, int status)
+void	terminate(t_executor *exec, t_scope *scope, int status, char *msg)
 {
 	if (exec)
 		free(exec);
@@ -50,6 +50,8 @@ void	terminate(t_executor *exec, t_scope *scope, int status)
 		free(scope->pipe);
 		free(scope);
 	}
+    if (msg)
+        msg_error(msg);
 	exit_handler(status);
 }
 
@@ -186,20 +188,14 @@ int	arr_len(char **arr)
 t_cmd	*current_cmd_in_execution(t_executor *exec)
 {
 	if (!exec)
-	{
-		ft_putendl_fd("executor missing", 2);
-		terminate(NULL, NULL, EXIT_FAILURE);
-	}
+		terminate(NULL, NULL, EXIT_FAILURE, "executor missing");
 	return (exec->cmds[exec->command_index]);
 }
 
 t_cmd	*previous_cmd_in_execution(t_executor *exec)
 {
 	if (!exec)
-	{
-		ft_putendl_fd("executor missing", 2);
-		terminate(NULL, NULL, EXIT_FAILURE);
-	}
+		terminate(NULL, NULL, EXIT_FAILURE, "executor missing");
 	if (exec->command_index == 0)
 		return (NULL);
 	return (exec->cmds[exec->command_index - 1]);
@@ -208,10 +204,7 @@ t_cmd	*previous_cmd_in_execution(t_executor *exec)
 t_cmd	*next_cmd_in_execution(t_executor *exec)
 {
 	if (!exec)
-	{
-		ft_putendl_fd("executor missing", 2);
-		terminate(NULL, NULL, EXIT_FAILURE);
-	}
+		terminate(NULL, NULL, EXIT_FAILURE, "executor missing");
 	if (exec->cmds[exec->command_index] == NULL)
 		return (NULL);
 	return (exec->cmds[exec->command_index + 1]);
@@ -238,7 +231,7 @@ t_cmd	*last_cmd_in_scope(t_executor *exec, t_scope *scope)
 	t_cmd *cmd;
 
 	if (param_check(exec, scope) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	cmd = current_cmd_in_execution(exec);
 	i = 1;
 	while (get_scope(cmd) == scope->scope_id)
@@ -264,4 +257,28 @@ t_cmd   *last_cmd_in_execution(t_executor *exec)
     while (exec->cmds[i])
         i++;
     return (exec->cmds[i - 1]);
+}
+
+void close_pipe_read(struct s_pipe *pipe)
+{
+    if (!pipe)
+        return ;
+
+    if (pipe->read && pipe->read->is_open && pipe->read->fd >= 0)
+    {
+        close(pipe->read->fd);
+        pipe->read->is_open = 0;
+    }
+}
+
+void close_pipe_write(struct s_pipe *pipe)
+{
+    if (!pipe)
+        return ;
+
+    if (pipe->write && pipe->write->is_open && pipe->write->fd >= 0)
+    {
+        close(pipe->write->fd);
+        pipe->read->is_open = 0;
+    }
 }

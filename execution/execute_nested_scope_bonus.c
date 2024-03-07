@@ -3,10 +3,10 @@
 int	execute_nested_scope(t_executor *exec, t_scope *scope)
 {
 	if (param_check(exec, scope) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	scope->pid = fork();
 	if (scope->pid == -1)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, NULL);
 	else if (scope->pid == 0)
 	{
 		scope = create_nested_scope(exec, scope);

@@ -60,7 +60,8 @@ void			exit_handler(int status);
 char			*get_path(char *cmd, char *envp[]);
 void			msg_error(char *err);
 void			free_arr2d(void **arr2d);
-void			terminate(t_executor *exec, t_scope *scope, int status);
+void			terminate(t_executor *exec, t_scope *scope, int status,
+					char *msg);
 char			*get_name(char *cmd_path);
 int				is_builtin(t_executor *exec);
 int				is_inside_scope(t_executor *exec, t_scope *scope);
@@ -77,6 +78,8 @@ t_cmd			*next_command(t_executor *exec, t_cmd *cmd);
 t_cmd			*last_cmd_in_execution(t_executor *exec);
 int				get_scope(t_cmd *cmd);
 int				get_outside_scope(t_cmd *cmd);
+void			close_pipe_read(struct s_pipe *pipe);
+void			close_pipe_write(struct s_pipe *pipe);
 
 /*
  *   io_redirections

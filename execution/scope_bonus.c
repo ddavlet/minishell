@@ -33,12 +33,12 @@ t_scope	*create_nested_scope(t_executor *exec, t_scope *scope)
 		return (NULL);
 	nested_scope->scope_id = find_nested_id(exec, scope);
 	if (!(nested_scope->scope_id))
-		terminate(NULL, nested_scope, EXIT_FAILURE);
+		terminate(NULL, nested_scope, EXIT_FAILURE,
+			"can't create nested scope");
 	if (set_input_output(exec, nested_scope, scope) == -1)
-		terminate(NULL, nested_scope, EXIT_FAILURE);
-	scope->pipe = create_pipe();
-	if (scope->pipe == NULL)
-		terminate(NULL, nested_scope, EXIT_FAILURE);
+		terminate(NULL, nested_scope, EXIT_FAILURE,
+			"can't create nested scope");
+	scope->pipe = NULL;
 	nested_scope->pid = -1;
 	return (nested_scope);
 }
@@ -50,12 +50,13 @@ t_scope	*initialize_scope(void)
 	scope = (t_scope *)ft_calloc(1, sizeof(t_scope));
 	if (!scope)
 		return (NULL);
-	scope->pipe = create_pipe();
-	if (scope->pipe == NULL)
-	{
-		free(scope);
-		return (NULL);
-	}
+	scope->pipe = NULL;
+    //  create_pipe();
+	// if (scope->pipe == NULL)
+	// {
+	// 	free(scope);
+	// 	return (NULL);
+	// }
 	scope->input_fd = STDIN_FILENO;
 	scope->output_fd = STDOUT_FILENO;
 	scope->scope_id = 1;

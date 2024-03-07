@@ -5,8 +5,8 @@ t_oper	operation_after(t_executor *exec, t_scope *scope)
 	t_cmd	*last_cmd;
 	t_cmd	*next_cmd;
 
-	if (param_check(exec, scope))
-		terminate(NULL, NULL, EXIT_FAILURE);
+	if (param_check(exec, scope) == -1)
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	last_cmd = last_cmd_in_scope(exec, scope);
 	next_cmd = next_command(exec, last_cmd);
 	if (next_cmd == NULL)
@@ -24,8 +24,8 @@ t_oper	operation_before(t_executor *exec, t_scope *scope)
 	t_cmd	*first_cmd_in_scope;
 	t_cmd	*previous_cmd;
 
-	if (param_check(exec, scope))
-		terminate(NULL, NULL, EXIT_FAILURE);
+	if (param_check(exec, scope) == -1)
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	first_cmd_in_scope = current_cmd_in_execution(exec);
 	previous_cmd = previous_cmd_in_execution(exec);
 	if (exec->command_index == 0)

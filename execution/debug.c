@@ -48,63 +48,63 @@ t_cmd	**mockup_three_cmds(t_env *env)
 	t_redir	*redir2;
 	t_redir	*redir3;
 	int		scope_stack[] = {1, 0};
-
-	// First
 	cmd1 = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd1->com = ft_strdup("cat");
-	cmd1->operat = PIPE;
 	cmd1->argv = (char **)malloc(sizeof(char *) * 3);
-	cmd1->argv[0] = ft_strdup("cat");
-	cmd1->argv[1] = NULL;
-	cmd1->argv[2] = NULL;
+    cmd1->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
 	redir1 = malloc(sizeof(t_redir));
-	redir1->redir_sym = RED_INP;
+	cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd2->argv = (char **)malloc(sizeof(char *) * 3);
+    cmd2->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
+	redir2 = malloc(sizeof(t_redir));
+	cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
+    cmd3->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
+	cmd3->argv = (char **)malloc(sizeof(char *) * 3);
+	redir3 = malloc(sizeof(t_redir));
+
+	redir1->redir_sym = NO_REDIR; //RED_INP;
 	redir1->redir_name = "misc/infile_A";
 	redir1->next = NULL;
-	cmd1->redirs = redir1;
-	cmd1->env = env;
-    cmd1->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
-	memcpy(cmd1->scope_stack, scope_stack, 3);
-
-	// Second
-	cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd2->operat = PIPE;
-	cmd2->com = ft_strdup("cat");
-	cmd2->argv = (char **)malloc(sizeof(char *) * 3);
-	cmd2->argv[0] = ft_strdup("cat");
-	cmd2->argv[1] = NULL; //ft_strdup("-c");
-	cmd2->argv[2] = NULL;
-	redir2 = malloc(sizeof(t_redir));
 	redir2->redir_sym = NO_REDIR;
 	redir2->redir_name = NULL;
 	redir2->next = NULL;
-	cmd2->redirs = redir2;
-	cmd2->env = env;
-    cmd2->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
-	memcpy(cmd2->scope_stack, scope_stack, 3);
-
-	// Third
-	cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd3->operat = RUN;
-	cmd3->com = ft_strdup("cat");
-	cmd3->argv = (char **)malloc(sizeof(char *) * 3);
-	cmd3->argv[0] = ft_strdup("cat");
-	cmd3->argv[1] = NULL; // ft_strdup("-c");
-	cmd3->argv[2] = NULL;
-	redir3 = malloc(sizeof(t_redir));
 	redir3->redir_sym = NO_REDIR;
 	redir3->redir_name = NULL;
 	redir3->next = NULL;
+	// First
+	cmd1->com = ft_strdup("cat");
+	cmd1->argv[0] = ft_strdup("cat");
+	cmd1->argv[1] = ft_strdup("misc/infile_A");
+	cmd1->argv[2] = NULL;
+	cmd1->operat = PIPE;
+	cmd1->redirs = NULL;//redir1;
+	cmd1->env = env;
+	memcpy(cmd1->scope_stack, scope_stack, 3);
+
+	// Second
+	cmd2->operat = PIPE;
+	cmd2->com = ft_strdup("wc");
+	cmd2->argv[0] = ft_strdup("wc");
+	cmd2->argv[1] = ft_strdup("-c");
+	cmd2->argv[2] = NULL;
+	cmd2->redirs = NULL;//redir2;
+	cmd2->env = env;
+	memcpy(cmd2->scope_stack, scope_stack, 3);
+
+	// Third
+	cmd3->operat = RUN;
+	cmd3->com = ft_strdup("wc");
+	cmd3->argv[0] = ft_strdup("wc");
+	cmd3->argv[1] = ft_strdup("-c");
+	cmd3->argv[2] = NULL;
 	cmd3->redirs = redir3;
 	cmd3->env = env;
-    cmd3->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
     memcpy(cmd3->scope_stack, scope_stack, 3);
 	
     // Assign to array
 	cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
 	cmds[0] = cmd1;
 	cmds[1] = cmd2;
-	cmds[2] = cmd3;
+	cmds[2] = NULL; //cmd3;
 	cmds[3] = NULL;
 	return (cmds);
 }

@@ -34,9 +34,9 @@ static void	evaluate_as_first_operant(t_executor *exec)
 	executed_cmd = current_cmd_in_execution(exec);
 	executed_status = exec->status;
 	if (executed_cmd->operat == OR && executed_status == EXIT_SUCCESS)
-		terminate(NULL, NULL, EXIT_SUCCESS);
+		terminate(NULL, NULL, EXIT_SUCCESS, NULL);
 	if (executed_cmd->operat == AND && executed_status == EXIT_FAILURE)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, NULL);
 }
 
 static void evaluate_as_second_operant(t_executor *exec)
@@ -47,7 +47,7 @@ static void evaluate_as_second_operant(t_executor *exec)
 	executed_cmd = current_cmd_in_execution(exec);
 	executed_status = exec->status;
 	if (executed_status == EXIT_FAILURE)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, NULL);
 }
 
 void	evaluate_and_or(t_executor *exec)
@@ -57,7 +57,7 @@ void	evaluate_and_or(t_executor *exec)
 	t_cmd	*next_cmd;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, NULL);
 	executed_cmd = current_cmd_in_execution(exec);
 	next_cmd = next_cmd_in_execution(exec);
 	previous_cmd = last_cmd_in_execution(exec);

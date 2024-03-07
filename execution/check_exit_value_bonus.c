@@ -7,7 +7,7 @@ static int	execution_has_logic_operation(t_executor *exec, t_scope *scope)
 	t_cmd	*cmd;
 
 	if (param_check(exec, scope) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	prev = previous_cmd_in_execution(exec);
 	next = next_cmd_in_execution(exec);
 	cmd = current_cmd_in_execution(exec);
@@ -23,7 +23,7 @@ static int	execution_has_logic_operation(t_executor *exec, t_scope *scope)
 int	check_exit_value(t_executor *exec, t_scope *scope)
 {
 	if (param_check(exec, scope) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	if (next_cmd_in_execution(exec) == NULL)
 		waitpid(scope->pid, &(exec->status), 0);
 	else if (execution_has_logic_operation(exec, scope))
@@ -33,15 +33,3 @@ int	check_exit_value(t_executor *exec, t_scope *scope)
 	}
 	return (0);
 }
-
-// OLD
-// int	check_exit_value(t_executor *exec, t_scope *scope)
-// {
-// 	waitpid(scope->pid, &(exec->status), 0);
-// 	print_exit_info(exec->status);
-// 	if (exec->status != 0)
-// 	{
-// 		ft_putstr_fd("pipex: ", 2);
-// 		ft_putendl_fd(strerror(exec->status), 2);
-// 	}
-// }

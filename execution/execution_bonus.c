@@ -17,8 +17,8 @@ t_executor	*initialize_executor(t_cmd **cmds)
 
 int	shell(t_executor *exec, t_scope *scope)
 {
-	if (!exec || !exec->cmds || !scope)
-		terminate(NULL, NULL, EXIT_FAILURE);
+	if (param_check(exec, scope) == -1)
+		terminate(NULL, NULL, EXIT_FAILURE, "param check");
 	while (is_inside_scope(exec, scope))
 	{
 		if (has_nested_scope(exec, scope))
@@ -41,16 +41,16 @@ int	execution(t_cmd **cmds)
 	t_scope	*scope;
 
 	if (!cmds)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, NULL);
 	if (cmds[0] == NULL)
-		terminate(NULL, NULL, EXIT_SUCCESS);
+		terminate(NULL, NULL, EXIT_SUCCESS, NULL);
 	exec = initialize_executor(cmds);
 	if (!exec)
-		terminate(NULL, NULL, EXIT_FAILURE);
+		terminate(NULL, NULL, EXIT_FAILURE, NULL);
 	scope = initialize_scope();
 	if (!scope)
-		terminate(exec, NULL, EXIT_FAILURE);
+		terminate(exec, NULL, EXIT_FAILURE, NULL);
 	shell(exec, scope);
-	terminate(exec, scope, EXIT_SUCCESS);
+	terminate(exec, scope, EXIT_SUCCESS, NULL);
 	return (0);
 }
