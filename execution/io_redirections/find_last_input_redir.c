@@ -1,25 +1,26 @@
 #include "../execution.h"
 
-int	last_input_redir(t_executor *exec, t_scope *scope)
+t_fd_state	*last_input_redir(t_executor *exec, t_scope *scope)
 {
-	t_redir	*redir;
-	int		in_fd;
+	t_redir	    *redir;
+    t_fd_state  *input_fd_state;
 
-	if (!exec || !exec->cmds || !exec->cmds[exec->command_index]
-		|| !exec->cmds[exec->command_index]->env)
-		return (-1);
-	in_fd = 0;
-	redir = exec->cmds[exec->command_index]->redirs;
+	if (param_check(exec, scope) == -1)
+		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
+	redir = current_cmd_in_execution(exec)->redirs;
 	if (redir == NULL)
-		return (in_fd);
+		return (exec->input_fd);
+    input_fd_state = NULL;
 	while (redir)
 	{
 		if (redir->redir_sym == RED_INP)
-			in_fd = handle_input_redirection(redir->redir_name);
+			input_fd_state = input_redirection(redir->redir_name);
 		else if (redir->redir_sym == HEAR_DOC)
-			in_fd = handle_here_document(redir->redir_name,
+			input_fd_state = here_document(redir->redir_name,
 					exec->cmds[exec->command_index]->env, scope);
 		redir = redir->next;
 	}
-	return (in_fd);
+    if (!input_fd_state)
+        terminate(NULL, NULL, EXIT_FAILURE, "couldn't find input redirection");
+	return (input_fd_state);
 }

@@ -2,67 +2,41 @@
 
 static int	is_first_operant(t_executor *exec)
 {
-	t_cmd	*executed_cmd;
-	t_cmd	*next_cmd;
-
-	executed_cmd = current_cmd_in_execution(exec);
-	next_cmd = last_cmd_in_execution(exec);
-	if (connected_through_operation(executed_cmd, next_cmd)
-		&& (next_cmd->operat == AND || next_cmd->operat == OR))
+	if (next_cmd_connected_through_operation(exec)
+		&& (next_cmd_in_execution(exec)->operat == AND
+			|| next_cmd_in_execution(exec)->operat == OR))
 		return (1);
 	return (0);
 }
 
 static int	is_second_operant(t_executor *exec)
 {
-	t_cmd	*executed_cmd;
-	t_cmd	*previous_cmd;
-
-	executed_cmd = current_cmd_in_execution(exec);
-	previous_cmd = last_cmd_in_execution(exec);
-	if (connected_through_operation(executed_cmd, previous_cmd)
-		&& (previous_cmd->operat == AND || previous_cmd->operat == OR))
+	if (previous_cmd_connected_through_operation(exec)
+		&& (previous_cmd_in_execution(exec)->operat == AND
+			|| previous_cmd_in_execution(exec)->operat == OR))
 		return (1);
 	return (0);
 }
 
-static void	evaluate_as_first_operant(t_executor *exec)
-{
-	t_cmd	*executed_cmd;
-	int		executed_status;
-
-	executed_cmd = current_cmd_in_execution(exec);
-	executed_status = exec->status;
-	if (executed_cmd->operat == OR && executed_status == EXIT_SUCCESS)
-		terminate(NULL, NULL, EXIT_SUCCESS, NULL);
-	if (executed_cmd->operat == AND && executed_status == EXIT_FAILURE)
-		terminate(NULL, NULL, EXIT_FAILURE, NULL);
-}
-
-static void evaluate_as_second_operant(t_executor *exec)
-{
-	t_cmd	*executed_cmd;
-	int		executed_status;
-
-	executed_cmd = current_cmd_in_execution(exec);
-	executed_status = exec->status;
-	if (executed_status == EXIT_FAILURE)
-		terminate(NULL, NULL, EXIT_FAILURE, NULL);
-}
-
 void	evaluate_and_or(t_executor *exec)
 {
-	t_cmd	*executed_cmd;
-	t_cmd	*previous_cmd;
-	t_cmd	*next_cmd;
+	int	executed_status;
 
 	if (!exec || !exec->cmds)
 		terminate(NULL, NULL, EXIT_FAILURE, NULL);
-	executed_cmd = current_cmd_in_execution(exec);
-	next_cmd = next_cmd_in_execution(exec);
-	previous_cmd = last_cmd_in_execution(exec);
-	if (is_first_operant(exec))
-		evaluate_as_first_operant(exec);
-	if (is_second_operant(exec))
-		evaluate_as_second_operant(exec);
+	executed_status = exec->status;
+	if (is_first_operant(exec) && (current_cmd_in_execution(exec)->operat == OR
+			&& executed_status == EXIT_SUCCESS))
+		terminate(NULL, NULL, EXIT_SUCCESS, "logical OR success");
+	else if (is_first_operant(exec)
+		&& (current_cmd_in_execution(exec)->operat == AND
+			&& executed_status == EXIT_FAILURE))
+		terminate(NULL, NULL, EXIT_SUCCESS, "logical AND failure");
+	if (is_second_operant(exec) && (current_cmd_in_execution(exec)->operat == OR
+			&& executed_status == EXIT_FAILURE))
+		terminate(NULL, NULL, EXIT_SUCCESS, "logical OR failure");
+	else if (is_second_operant(exec)
+		&& (current_cmd_in_execution(exec)->operat == AND
+			&& executed_status == EXIT_FAILURE))
+		terminate(NULL, NULL, EXIT_SUCCESS, "logical AND failure");
 }

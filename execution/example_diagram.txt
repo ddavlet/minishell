@@ -17,8 +17,8 @@ END
 
 execution process: 
     <pipe>
-    <input_redir> 
-    <output_redir>
+    <input_redirection> 
+    <handle_output_redirection>
     <cmd> 
 
 program execution with scope
@@ -37,7 +37,7 @@ program execution with scope
 
 
 
-    scope PIPE (subscope PIPE subscope) PIPE scope
+    scope PIPE (subscope PIPE (subscope)) PIPE scope
     
     (scope) AND (subscope AND subscope) PIPE scope
 

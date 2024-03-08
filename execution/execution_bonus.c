@@ -12,13 +12,17 @@ t_executor	*initialize_executor(t_cmd **cmds)
 	exec->command_index = 0;
 	exec->cmds = cmds;
 	exec->status = 0;
+    exec->input_fd = initialize_fd_state(STDIN_FILENO);
+    exec->output_fd = initialize_fd_state(STDOUT_FILENO);
+    if (!exec->input_fd || !exec->output_fd)
+        terminate(NULL, NULL, EXIT_FAILURE, "failed to initialize executor");
 	return (exec);
 }
 
 int	shell(t_executor *exec, t_scope *scope)
 {
 	if (param_check(exec, scope) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE, "param check");
+		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	while (is_inside_scope(exec, scope))
 	{
 		if (has_nested_scope(exec, scope))
@@ -47,7 +51,7 @@ int	execution(t_cmd **cmds)
 	exec = initialize_executor(cmds);
 	if (!exec)
 		terminate(NULL, NULL, EXIT_FAILURE, NULL);
-	scope = initialize_scope();
+	scope = initialize_scope(exec);
 	if (!scope)
 		terminate(exec, NULL, EXIT_FAILURE, NULL);
 	shell(exec, scope);

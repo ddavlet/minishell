@@ -1,6 +1,6 @@
 #include "../execution/execution.h"
 
-static t_fd_state	*initialize_fd_state(int fd)
+t_fd_state	*initialize_fd_state(int fd)
 {
     t_fd_state  *fd_state;
 

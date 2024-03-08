@@ -1,3 +1,4 @@
+fs cmd
 set follow-fork-mode child
 b execution
 start

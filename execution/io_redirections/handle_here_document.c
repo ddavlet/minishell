@@ -1,6 +1,6 @@
 #include "../execution.h"
 
-int handle_here_document(const char *delimiter, t_env *env, t_scope *scope)
+t_fd_state  *here_document(const char *delimiter, t_env *env, t_scope *scope)
 {
     char    *line;
     char    *tmp;
@@ -22,5 +22,6 @@ int handle_here_document(const char *delimiter, t_env *env, t_scope *scope)
         line = readline("heredoc> ");
     }
     free(line);
-    return (scope->pipe->read->fd);
+    return (scope->pipe->read);
 }
+
