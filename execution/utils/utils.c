@@ -66,7 +66,7 @@ int	execution_has_finished(t_executor *exec)
 {
 	t_cmd	*cmd;
 
-	cmd = exec->cmds[exec->command_index];
+	cmd = current_cmd_in_execution(exec);
 	if (cmd == NULL)
 		return (1);
 	return (0);
@@ -89,7 +89,7 @@ int	is_builtin(t_executor *exec)
 {
 	char	*cmd;
 
-	cmd = exec->cmds[exec->command_index]->com;
+	cmd = current_cmd_in_execution(exec)->com;
 	if (ft_strchr(cmd, '/'))
 	{
 		cmd = get_name(cmd);
@@ -139,7 +139,7 @@ int	has_nested_scope(t_executor *exec, t_scope *scope)
 
 int	param_check(t_executor *exec, t_scope *scope)
 {
-	if (!exec || !exec->cmds || !exec->cmds[exec->command_index] || !scope)
+	if (!exec || !exec->cmds  || !scope)
 		return (-1);
 	return (0);
 }
@@ -189,7 +189,7 @@ t_cmd	*next_cmd_in_execution(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
 		terminate(NULL, NULL, EXIT_FAILURE, "missing or incomplete exec");
-	if (exec->cmds[exec->command_index] == NULL)
+	if (current_cmd_in_execution(exec) == NULL)
 		return (NULL);
 	return (exec->cmds[exec->command_index + 1]);
 }
@@ -236,11 +236,11 @@ t_cmd   *next_cmd(t_executor *exec, t_cmd *cmd)
 void close_fd(t_fd_state *fd_state)
 {
     if (!fd_state)
-        terminate(NULL, NULL, EXIT_FAILURE, "couldn't close_fd pipe end");
+        terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close_fd pipe end");
     if (fd_state->is_open &&fd_state->fd >= 0)
     {
         if (close(fd_state->fd) == -1)
-            terminate(NULL, NULL, EXIT_FAILURE, "couldn't close_fd pipe end");
+            terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close_fd pipe end");
         fd_state->is_open = 0;
     }
 }

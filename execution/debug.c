@@ -73,7 +73,7 @@ t_cmd	**mockup_three_cmds(t_env *env)
 	// First
 	cmd1->com = ft_strdup("cat");
 	cmd1->argv[0] = ft_strdup("cat");
-	cmd1->argv[1] = ft_strdup("misc/infile_A");
+	cmd1->argv[1] = NULL;//ft_strdup("misc/infile_A");
 	cmd1->argv[2] = NULL;
 	cmd1->operat = PIPE;
 	cmd1->redirs = NULL;//redir1;
@@ -82,9 +82,9 @@ t_cmd	**mockup_three_cmds(t_env *env)
 
 	// Second
 	cmd2->operat = PIPE;
-	cmd2->com = ft_strdup("wc");
-	cmd2->argv[0] = ft_strdup("wc");
-	cmd2->argv[1] = ft_strdup("-c");
+	cmd2->com = ft_strdup("cat");
+	cmd2->argv[0] = ft_strdup("cat");
+	cmd2->argv[1] = NULL;//ft_strdup("-c");
 	cmd2->argv[2] = NULL;
 	cmd2->redirs = NULL;//redir2;
 	cmd2->env = env;
@@ -92,11 +92,11 @@ t_cmd	**mockup_three_cmds(t_env *env)
 
 	// Third
 	cmd3->operat = RUN;
-	cmd3->com = ft_strdup("wc");
-	cmd3->argv[0] = ft_strdup("wc");
-	cmd3->argv[1] = ft_strdup("-c");
+	cmd3->com = ft_strdup("ls");
+	cmd3->argv[0] = ft_strdup("ls");
+	cmd3->argv[1] = NULL;//ft_strdup("-c");
 	cmd3->argv[2] = NULL;
-	cmd3->redirs = redir3;
+	cmd3->redirs = NULL;
 	cmd3->env = env;
     memcpy(cmd3->scope_stack, scope_stack, 3);
 	
@@ -104,7 +104,7 @@ t_cmd	**mockup_three_cmds(t_env *env)
 	cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
 	cmds[0] = cmd1;
 	cmds[1] = cmd2;
-	cmds[2] = NULL; //cmd3;
+	cmds[2] = cmd3;
 	cmds[3] = NULL;
 	return (cmds);
 }
@@ -118,6 +118,10 @@ t_cmd	**mockup_single_cmd(char *envp[])
 
 	cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 2);
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	int		scope_stack[] = {1, 0};
+    cmd->scope_stack = (int *)(ft_calloc(2, sizeof(int)));
+	memcpy(cmd->scope_stack, scope_stack, 2);
+
 	cmd->com = ft_strdup("cat");
 	cmd->operat = RUN;
 	cmd->argv = (char **)malloc(sizeof(char *) * 3);
@@ -184,15 +188,15 @@ void	print_exit_info(int status)
 	}
 }
 
-int	main(int argc, char *argv[], const char **envp)
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_cmd **cmds;
 
 	(void)argc;
 	(void)argv;
-	t_env *env = init_env(envp);
-	cmds = mockup_three_cmds(env);
-	// cmds = mockup_single_cmd(envp);
+	t_env *env = init_env((const char **)envp);
+	// cmds = mockup_three_cmds(env);
+	cmds = mockup_single_cmd(envp);
 	// cmds = parse_text("pwd", init_env(envp));
 		// wildcard parsing error: No such file or directory
 	execution(cmds);

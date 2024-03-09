@@ -51,6 +51,7 @@ t_scope			*initialize_scope(t_executor *exec);
 int				check_exit_value(t_executor *exec, t_scope *scope);
 void			evaluate_and_or(t_executor *exec);
 t_fd_state		*initialize_fd_state(int fd);
+void			close_pipe(t_pipe *pipe);
 
 /*
  *	utils
@@ -97,7 +98,7 @@ t_fd_state		*input_redirection(const char *file_name);
  */
 void			print_exit_info(int status);
 t_cmd			**mockup_three_cmds(t_env *env);
-t_cmd			**mockup_single_cmd(char *env[]);
+t_cmd			**mockup_single_cmd(char *envp[]);
 t_cmd			**mockup(void);
 
 #endif

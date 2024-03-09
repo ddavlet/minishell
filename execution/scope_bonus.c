@@ -70,10 +70,10 @@ t_scope	*create_nested_scope(t_executor *exec, t_scope *scope)
 	nested_scope->scope_id = find_nested_id(exec, scope);
 	if (!(nested_scope->scope_id))
 		terminate(NULL, nested_scope, EXIT_FAILURE,
-			"couldn't create nested scope");
+			"Couldn't create nested scope");
 	if (set_input_output(exec, nested_scope, scope) == -1)
 		terminate(NULL, nested_scope, EXIT_FAILURE,
-			"couldn't create nested scope");
+			"Couldn't create nested scope");
 	nested_scope->pid = -1;
 	nested_scope->pipe = NULL;
 	return (nested_scope);

@@ -19,6 +19,7 @@ int	check_exit_value(t_executor *exec, t_scope *scope)
 {
 	if (param_check(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
+	close_fd(scope->pipe->write);
 	if (next_cmd_in_execution(exec) == NULL)
 		waitpid(scope->pid, &(exec->status), 0);
 	else if (logic_operation_in_execution(exec, scope))

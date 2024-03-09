@@ -2,15 +2,15 @@
 
 t_fd_state	*last_output_redir(t_executor *exec)
 {
-	t_redir     *redir;
-    t_fd_state  *output_fd_state;
+	t_redir		*redir;
+	t_fd_state	*output_fd_state;
 
-	if (!exec || !exec->cmds || !exec->cmds[exec->command_index])
+	if (!exec || !exec->cmds)
 		return (NULL);
-	redir = exec->cmds[exec->command_index]->redirs;
+	output_fd_state = exec->output_fd;
+	redir = current_cmd_in_execution(exec)->redirs;
 	if (redir == NULL)
 		return (exec->output_fd);
-    output_fd_state = NULL;
 	while (redir)
 	{
 		if (redir->redir_sym == RED_OUT)
@@ -18,8 +18,8 @@ t_fd_state	*last_output_redir(t_executor *exec)
 		else if (redir->redir_sym == APP_OUT)
 			output_fd_state = append_redirection(redir->redir_name);
 		redir = redir->next;
+        if (!output_fd_state)
+            terminate(NULL, NULL, EXIT_FAILURE, "Couldn't find output redirection");
 	}
-    if (!output_fd_state)
-        terminate(NULL, NULL, EXIT_FAILURE, "couldn't find output redirection");
-    return (output_fd_state);
+	return (output_fd_state);
 }

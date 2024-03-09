@@ -27,18 +27,18 @@ static int	set_input(t_executor *exec, t_scope *scope)
 {
 	if (current_cmd_in_execution(exec)->redirs != NULL)
 	{
-		if (exec->input_fd != STDIN_FILENO)
+		if (exec->input_fd->fd != STDIN_FILENO)
 			close_fd(exec->input_fd);
 		exec->input_fd = last_input_redir(exec, scope);
 		if (exec->input_fd == NULL)
 			return (-1);
 	}
 	dup2(exec->input_fd->fd, STDIN_FILENO);
-	if (exec->input_fd->fd != STDIN_FILENO)
-		close_fd(exec->input_fd);
+	// if (exec->input_fd->fd != STDIN_FILENO)
+	// 	close_fd(exec->input_fd);
 	// *** DEBUG
 	ft_putstr_fd("DEBUG::in_fd: ", 2);
-	ft_putendl_fd(ft_itoa(scope->input_fd->fd), 2);
+	ft_putendl_fd(ft_itoa(exec->input_fd->fd), 2);
 	// ***
 	return (0);
 }
@@ -51,19 +51,20 @@ static int	child_process(t_executor *exec, t_scope *scope)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	path = get_path(argv(exec)[0], envp(exec));
 	if (path == NULL)
-		terminate(NULL, NULL, EXIT_FAILURE, "minishell: couldn't find path");
+		terminate(NULL, NULL, EXIT_FAILURE, "minishell: Couldn't find path");
 	if (set_input(exec, scope) == -1 || set_output(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE,
-			"minishell: unable to assign input/output");
-    if (scope->pipe->write->is_open)
-        close_fd(scope->pipe->write);
-    if (scope->pipe->read->is_open)
-        close_fd(scope->pipe->read);
+			"minishell: unable to set input/output");
+    close_pipe(scope->pipe);
 	// *** DEBUG
-	// ft_putstr_fd("DEBUG::pipe->read: ", 2);
-	// ft_putendl_fd(ft_itoa(scope->pipe->read->fd), 2);
-	// ft_putstr_fd("DEBUG::pipe->write: ", 2);
-	// ft_putendl_fd(ft_itoa(scope->pipe->write->fd), 2);
+	ft_putstr_fd("DEBUG::pipe->read: ", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->read->fd), 2);
+	ft_putstr_fd("DEBUG::pipe->read->open: ", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
+	ft_putstr_fd("DEBUG::pipe->write: ", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->write->fd), 2);
+	ft_putstr_fd("DEBUG::pipe->write->open: ", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
 	ft_putstr_fd("DEBUG::execve: ", 2);
 	ft_putendl_fd(argv(exec)[0], 2);
 	ft_putstr_fd("DEBUG::path: ", 2);
@@ -78,14 +79,13 @@ static void	prepare_next(t_executor *exec, t_scope *scope)
 {
 	exec->input_fd = scope->input_fd;
 	exec->output_fd = scope->output_fd;
-	if (exec->input_fd != STDIN_FILENO && exec->input_fd != scope->input_fd)
+	if (exec->input_fd->fd != STDIN_FILENO && exec->input_fd != scope->input_fd)
 		close_fd(exec->input_fd);
 	if (current_cmd_in_execution(exec)->operat == PIPE
 		&& next_cmd_connected_through_operation(exec))
 		exec->input_fd = scope->pipe->read;
 	else
 		close_fd(scope->pipe->read);
-	close_fd(scope->pipe->write);
 }
 
 int	execute_cmd(t_executor *exec, t_scope *scope)
@@ -94,7 +94,7 @@ int	execute_cmd(t_executor *exec, t_scope *scope)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	scope->pipe = create_pipe();
 	if (scope->pipe == NULL)
-		terminate(NULL, NULL, EXIT_FAILURE, "couldn't create pipe");
+		terminate(NULL, NULL, EXIT_FAILURE, "Couldn't create pipe");
 	scope->pid = fork();
 	if (scope->pid == -1)
 		terminate(NULL, scope, EXIT_FAILURE, NULL);
