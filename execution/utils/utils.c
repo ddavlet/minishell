@@ -18,17 +18,6 @@ void	msg_error(char *err)
 	exit(EXIT_FAILURE);
 }
 
-unsigned long	rand_simple(void)
-{
-	static unsigned long	lcg_prev = 21512345435143;
-	const unsigned long		a = 1103515245;
-	const unsigned long		c = 12345;
-
-	const unsigned long m = 1UL << 31; // 2^31
-	lcg_prev = (a * lcg_prev + c) % m;
-	return (lcg_prev);
-}
-
 void	exit_handler(int status)
 {
 	if (status == 0)
@@ -158,7 +147,6 @@ int	find_nested_id(t_executor *exec, t_scope *scope)
 	return (0);
 }
 
-
 int	arr_len(char **arr)
 {
 	int	i;
@@ -198,6 +186,8 @@ int get_scope(t_cmd *cmd)
 {
     int i;
 
+    if (!cmd)
+        return (-1);
     i = 0;
     while (cmd->scope_stack[i])
         i++;
@@ -216,7 +206,6 @@ int get_outside_scope(t_cmd *cmd)
 
 t_cmd	*final_cmd_in_scope(t_executor *exec, t_scope *scope)
 {
-	int i;
 	t_cmd *cmd;
 	t_cmd *next;
 
@@ -224,9 +213,11 @@ t_cmd	*final_cmd_in_scope(t_executor *exec, t_scope *scope)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	cmd = current_cmd_in_execution(exec);
     next = next_cmd(exec, cmd);
-	i = 0;
 	while (get_scope(next) == scope->scope_id)
-		cmd = next_cmd(exec, cmd);
+    {
+        cmd = next;
+        next = next_cmd(exec, cmd);
+    }
 	return (cmd);
 }
 
@@ -250,7 +241,7 @@ void close_fd(t_fd_state *fd_state, t_executor *exec)
         terminate(NULL, NULL, EXIT_FAILURE, "close_fd: couldn't close file descriptor");
         if (close(fd_state->fd) == -1)
         {
-            ft_putstr_fd("DEBUG::cmd index: ", 2);
+            ft_putstr_fd("DEBUG::close_fd:command-index::", 2);
             ft_putendl_fd(ft_itoa(exec->command_index), 2);
             msg_error(ft_itoa(fd_state->fd));
             terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close file descriptor");

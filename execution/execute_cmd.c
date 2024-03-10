@@ -1,7 +1,8 @@
 #include "execution.h"
 
-static void  debugging_print(t_executor *exec, t_scope *scope, char *path)
+static void  debug_child_process(t_executor *exec, t_scope *scope, char *path)
 {
+	ft_putendl_fd("::::::::::::::::::::::::", 2);
 
 	ft_putstr_fd("DEBUG::execve::", 2);
 	ft_putendl_fd(argv(exec)[0], 2);
@@ -9,18 +10,19 @@ static void  debugging_print(t_executor *exec, t_scope *scope, char *path)
 	ft_putendl_fd(path, 2);
 	ft_putstr_fd("DEBUG::out_fd::", 2);
 	ft_putendl_fd(ft_itoa(exec->output_fd->fd), 2);
-	ft_putstr_fd("DEBUG::out_fd->is_open::", 2);
-	ft_putendl_fd(ft_itoa(exec->output_fd->is_open), 2);
 	ft_putstr_fd("DEBUG::in_fd::", 2);
 	ft_putendl_fd(ft_itoa(exec->input_fd->fd), 2);
-	ft_putstr_fd("DEBUG::in_fd->is_open::", 2);
-	ft_putendl_fd(ft_itoa(exec->input_fd->is_open), 2);
 	ft_putstr_fd("DEBUG::pipe->read::", 2);
 	ft_putendl_fd(ft_itoa(scope->pipe->read->fd), 2);
-	ft_putstr_fd("DEBUG::pipe->read->is_open::", 2);
-	ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
 	ft_putstr_fd("DEBUG::pipe->write::", 2);
 	ft_putendl_fd(ft_itoa(scope->pipe->write->fd), 2);
+	ft_putendl_fd("::fd_state before execve::", 2);
+	ft_putstr_fd("DEBUG::out_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->output_fd->is_open), 2);
+	ft_putstr_fd("DEBUG::in_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->input_fd->is_open), 2);
+	ft_putstr_fd("DEBUG::pipe->read->is_open::", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
 	ft_putstr_fd("DEBUG::pipe->write->is_open::", 2);
 	ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
 
@@ -81,24 +83,39 @@ static int	child_process(t_executor *exec, t_scope *scope)
 			"minishell: unable to set input/output");
     close_pipe(scope->pipe, exec);
 	// *** DEBUG
-    debugging_print(exec, scope, path);
+    debug_child_process(exec, scope, path);
 	// ***
 	if (execve(path, argv(exec), envp(exec)) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "minishell: execution failure");
 	return (0);
 }
 
+static void debug_prepare_next(t_executor *exec, t_scope *scope)
+{
+    ft_putstr_fd("execute_cmd::cmd[", 2);
+    ft_putnbr_fd(exec->command_index, 2);
+    ft_putstr_fd("]::pid::", 2);
+    ft_putnbr_fd(scope->pid, 2);
+    ft_putstr_fd("::scope_id::", 2);
+    ft_putnbr_fd(scope->scope_id, 2);
+    ft_putstr_fd("::EXIT_SUCCESS::", 2);
+    ft_putchar_fd('\n', 2);
+}
+
 static void	prepare_next(t_executor *exec, t_scope *scope)
 {
 	exec->input_fd = scope->input_fd;
 	exec->output_fd = scope->output_fd;
-	if (exec->input_fd->fd != STDIN_FILENO && exec->input_fd != scope->input_fd)
-		close_fd(exec->input_fd, exec);
+	// if (exec->input_fd->fd != STDIN_FILENO && exec->input_fd != scope->input_fd)
+	// 	close_fd(exec->input_fd, exec);
 	if (current_cmd_in_execution(exec)->operat == PIPE
 		&& next_cmd_connected_through_operation(exec))
 		exec->input_fd = scope->pipe->read;
 	else
 		close_fd(scope->pipe->read, exec);
+    // *** DEBUG INFO ***
+    debug_prepare_next(exec, scope);
+    // *** DEBUG INFO ***
 }
 
 int	execute_cmd(t_executor *exec, t_scope *scope)
@@ -118,4 +135,5 @@ int	execute_cmd(t_executor *exec, t_scope *scope)
 		check_exit_value(exec, scope);
 		prepare_next(exec, scope);
 	}
+    return (0);
 }

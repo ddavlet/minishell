@@ -149,8 +149,9 @@ t_cmd	**mockup_three_cmds(t_env *env)
 	// in_redir = mockup_redir(HEAR_DOC, "EOF", NULL);
 	// out_redir = mockup_redir(RED_INP, "misc/infile_A", NULL);
 	char	**argv_0 = mockup_argv("cat", "misc/infile_A", NULL);
-	char	**argv_1 = mockup_argv("wc", "-c", NULL);
-	char	**argv_2 = mockup_argv("wc", "-c", NULL);
+	// char	**argv_1 = mockup_argv("wc", "-c", NULL);
+	char	**argv_1 = mockup_argv("cat", NULL, NULL);
+	char	**argv_2 = mockup_argv("cat", NULL, NULL);
 	t_cmd	*cmd_0 = mockup_cmd(argv_0, PIPE, scope_stack, NULL, env);
 	t_cmd	*cmd_1 = mockup_cmd(argv_1, PIPE, scope_stack, NULL, env);
 	t_cmd	*cmd_2 = mockup_cmd(argv_2, RUN, scope_stack, NULL, env);
