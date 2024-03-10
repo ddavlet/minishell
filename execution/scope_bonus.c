@@ -13,7 +13,7 @@ static t_oper	operation_after(t_executor *exec, t_scope *scope)
 		return (RUN);
 	else if (get_outside_scope(final_cmd) == get_scope(next)
 		|| get_outside_scope(final_cmd) == get_outside_scope(next))
-		return (next->operat);
+		return (final_cmd->operat);
 	else
 		return (RUN);
 }

@@ -1,25 +1,53 @@
 #include "execution.h"
 
+static void  debugging_print(t_executor *exec, t_scope *scope, char *path)
+{
+
+	ft_putstr_fd("DEBUG::execve::", 2);
+	ft_putendl_fd(argv(exec)[0], 2);
+	ft_putstr_fd("DEBUG::path::", 2);
+	ft_putendl_fd(path, 2);
+	ft_putstr_fd("DEBUG::out_fd::", 2);
+	ft_putendl_fd(ft_itoa(exec->output_fd->fd), 2);
+	ft_putstr_fd("DEBUG::out_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->output_fd->is_open), 2);
+	ft_putstr_fd("DEBUG::in_fd::", 2);
+	ft_putendl_fd(ft_itoa(exec->input_fd->fd), 2);
+	ft_putstr_fd("DEBUG::in_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->input_fd->is_open), 2);
+	ft_putstr_fd("DEBUG::pipe->read::", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->read->fd), 2);
+	ft_putstr_fd("DEBUG::pipe->read->is_open::", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
+	ft_putstr_fd("DEBUG::pipe->write::", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->write->fd), 2);
+	ft_putstr_fd("DEBUG::pipe->write->is_open::", 2);
+	ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
+
+}
+
 static int	set_output(t_executor *exec, t_scope *scope)
 {
 	if (current_cmd_in_execution(exec)->operat == PIPE
 		&& next_cmd_connected_through_operation(exec))
-		exec->output_fd = scope->pipe->write;
+    {
+        exec->output_fd = scope->pipe->write;
+        if (dup2(exec->output_fd->fd, STDOUT_FILENO) == -1)
+            terminate(NULL, NULL, EXIT_FAILURE, "minishell: unable to set pipe to output");
+        close_fd(exec->output_fd, exec);
+    }
 	if (current_cmd_in_execution(exec)->redirs != NULL)
 	{
-		if (exec->output_fd->fd != STDOUT_FILENO)
-			close_fd(exec->output_fd);
+		// if (exec->output_fd->fd != STDOUT_FILENO)
+		// 	close_fd(exec->output_fd);
 		exec->output_fd = last_output_redir(exec);
 		if (exec->output_fd == NULL)
 			return (-1);
+        if (dup2(exec->output_fd->fd, STDOUT_FILENO) == -1)
+            terminate(NULL, NULL, EXIT_FAILURE, "minishell: unable to set output");
+        if (exec->output_fd->fd != STDOUT_FILENO)
+            close_fd(exec->output_fd, exec);
 	}
-	dup2(exec->output_fd->fd, STDOUT_FILENO);
-	if (exec->output_fd->fd != STDOUT_FILENO)
-		close_fd(exec->output_fd);
-	// *** DEBUG
-	ft_putstr_fd("DEBUG::out_fd: ", 2);
-	ft_putendl_fd(ft_itoa(exec->output_fd->fd), 2);
-	// ***
 	return (0);
 }
 
@@ -28,18 +56,14 @@ static int	set_input(t_executor *exec, t_scope *scope)
 	if (current_cmd_in_execution(exec)->redirs != NULL)
 	{
 		if (exec->input_fd->fd != STDIN_FILENO)
-			close_fd(exec->input_fd);
+			close_fd(exec->input_fd, exec);
 		exec->input_fd = last_input_redir(exec, scope);
 		if (exec->input_fd == NULL)
 			return (-1);
 	}
 	dup2(exec->input_fd->fd, STDIN_FILENO);
-	// if (exec->input_fd->fd != STDIN_FILENO)
-	// 	close_fd(exec->input_fd);
-	// *** DEBUG
-	ft_putstr_fd("DEBUG::in_fd: ", 2);
-	ft_putendl_fd(ft_itoa(exec->input_fd->fd), 2);
-	// ***
+	if (exec->input_fd->fd != STDIN_FILENO)
+		close_fd(exec->input_fd,exec);
 	return (0);
 }
 
@@ -51,24 +75,13 @@ static int	child_process(t_executor *exec, t_scope *scope)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	path = get_path(argv(exec)[0], envp(exec));
 	if (path == NULL)
-		terminate(NULL, NULL, EXIT_FAILURE, "minishell: Couldn't find path");
+		terminate(NULL, NULL, EXIT_FAILURE, "minishell: couldn't find path");
 	if (set_input(exec, scope) == -1 || set_output(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE,
 			"minishell: unable to set input/output");
-    close_pipe(scope->pipe);
+    close_pipe(scope->pipe, exec);
 	// *** DEBUG
-	ft_putstr_fd("DEBUG::pipe->read: ", 2);
-	ft_putendl_fd(ft_itoa(scope->pipe->read->fd), 2);
-	ft_putstr_fd("DEBUG::pipe->read->open: ", 2);
-	ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
-	ft_putstr_fd("DEBUG::pipe->write: ", 2);
-	ft_putendl_fd(ft_itoa(scope->pipe->write->fd), 2);
-	ft_putstr_fd("DEBUG::pipe->write->open: ", 2);
-	ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
-	ft_putstr_fd("DEBUG::execve: ", 2);
-	ft_putendl_fd(argv(exec)[0], 2);
-	ft_putstr_fd("DEBUG::path: ", 2);
-	ft_putendl_fd(path, 2);
+    debugging_print(exec, scope, path);
 	// ***
 	if (execve(path, argv(exec), envp(exec)) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "minishell: execution failure");
@@ -80,12 +93,12 @@ static void	prepare_next(t_executor *exec, t_scope *scope)
 	exec->input_fd = scope->input_fd;
 	exec->output_fd = scope->output_fd;
 	if (exec->input_fd->fd != STDIN_FILENO && exec->input_fd != scope->input_fd)
-		close_fd(exec->input_fd);
+		close_fd(exec->input_fd, exec);
 	if (current_cmd_in_execution(exec)->operat == PIPE
 		&& next_cmd_connected_through_operation(exec))
 		exec->input_fd = scope->pipe->read;
 	else
-		close_fd(scope->pipe->read);
+		close_fd(scope->pipe->read, exec);
 }
 
 int	execute_cmd(t_executor *exec, t_scope *scope)

@@ -44,11 +44,11 @@ program execution with scope
     scope PIPE ((builtin) AND scope AND scope) PIPE scope
     {1} AND {1,2,3} AND {1,2} AND {1,2} PIPE {1}
 
-    "cat file" PIPE "wc -c"
+    "cat file" PIPE "wc -c" PIPE "wc -c"
     cat:    input:0         output:pipe[1]
     wc:     input:pipe[0]   output:1
 
-    (cmd0 PIPE cmd1 AND cmd2)
+    (<infile cat PIPE wc -c PIPE wc -c)
 
     ((scope) AND (scope PIPE scope)) PIPE scope PIPE scope
 

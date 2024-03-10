@@ -34,6 +34,7 @@ int	shell(t_executor *exec, t_scope *scope)
             else
                 execute_cmd(exec, scope);
             exec->command_index++;
+            ft_putendl_fd(ft_itoa(exec->command_index), 2);
         }
 	}
 	return (EXIT_SUCCESS);

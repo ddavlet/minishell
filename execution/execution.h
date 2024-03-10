@@ -51,7 +51,7 @@ t_scope			*initialize_scope(t_executor *exec);
 int				check_exit_value(t_executor *exec, t_scope *scope);
 void			evaluate_and_or(t_executor *exec);
 t_fd_state		*initialize_fd_state(int fd);
-void			close_pipe(t_pipe *pipe);
+void			close_pipe(t_pipe *pipe, t_executor *exec);
 
 /*
  *	utils
@@ -78,7 +78,7 @@ t_cmd			*final_cmd_in_scope(t_executor *exec, t_scope *scope);
 t_cmd			*next_cmd(t_executor *exec, t_cmd *cmd);
 int				get_scope(t_cmd *cmd);
 int				get_outside_scope(t_cmd *cmd);
-void			close_fd(t_fd_state *pipe_end);
+void			close_fd(t_fd_state *fd_state, t_executor *exec);
 char			**argv(t_executor *exec);
 char			**envp(t_executor *exec);
 
@@ -98,7 +98,14 @@ t_fd_state		*input_redirection(const char *file_name);
  */
 void			print_exit_info(int status);
 t_cmd			**mockup_three_cmds(t_env *env);
-t_cmd			**mockup_single_cmd(char *envp[]);
-t_cmd			**mockup(void);
+t_cmd			**mockup_single_cmd(t_env *env);
+t_cmd			**mockup_empty_cmds(void);
+t_cmd			**mockup_cmds_with_scopes(t_env *env);
+t_cmd			*mockup_cmd(char **argv, t_oper operat, int *scope_stack,
+					t_redir *redir, t_env *env);
+char			**mockup_argv(char *cmd, char *arg1, char *arg2);
+t_redir			*mockup_redir(t_red_sym redir_sym, char *redir_name,
+					t_redir *next);
+int				*mockup_scope_stack(int id_0, int id_1, int id_2);
 
 #endif

@@ -58,12 +58,12 @@ t_pipe	*create_pipe(void)
 	return (pipe);
 }
 
-void    close_pipe(t_pipe *pipe)
+void    close_pipe(t_pipe *pipe, t_executor *exec)
 {
     if (!pipe || !pipe->write || !pipe->read)
         terminate(NULL, NULL, EXIT_FAILURE, "Failed to close pipe.");
     if (pipe->write->is_open)
-        close_fd(pipe->write);
+        close_fd(pipe->write, exec);
     if (pipe->read->is_open)
-        close_fd(pipe->read);
+        close_fd(pipe->read, exec);
 }

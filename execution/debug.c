@@ -6,6 +6,22 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+void	print_exit_info(int status)
+{
+	if (WIFEXITED(status))
+	{
+		ft_putstr_fd("exit status: ", 1);
+		ft_putnbr_fd(WEXITSTATUS(status), 1);
+		ft_putchar_fd('\n', 1);
+	}
+	else if (WIFSIGNALED(status))
+	{
+		ft_putstr_fd("exit signal: ", 1);
+		ft_putnbr_fd(WTERMSIG(status), 1);
+		ft_putchar_fd('\n', 1);
+	}
+}
+
 void	free_mockup_cmds(t_cmd **cmds)
 {
 	int		i;
@@ -38,129 +54,62 @@ void	free_mockup_cmds(t_cmd **cmds)
 	free(cmds);
 }
 
-t_cmd	**mockup_three_cmds(t_env *env)
+int	*mockup_scope_stack(int id_0, int id_1, int id_2)
 {
-	t_cmd	**cmds;
-	t_cmd	*cmd1;
-	t_cmd	*cmd2;
-	t_cmd	*cmd3;
-	t_redir	*redir1;
-	t_redir	*redir2;
-	t_redir	*redir3;
-	int		scope_stack[] = {1, 0};
-	cmd1 = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd1->argv = (char **)malloc(sizeof(char *) * 3);
-    cmd1->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
-	redir1 = malloc(sizeof(t_redir));
-	cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd2->argv = (char **)malloc(sizeof(char *) * 3);
-    cmd2->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
-	redir2 = malloc(sizeof(t_redir));
-	cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd3->scope_stack = (int *)(ft_calloc(3, sizeof(int)));
-	cmd3->argv = (char **)malloc(sizeof(char *) * 3);
-	redir3 = malloc(sizeof(t_redir));
+	int	*scope_stack;
 
-	redir1->redir_sym = NO_REDIR; //RED_INP;
-	redir1->redir_name = "misc/infile_A";
-	redir1->next = NULL;
-	redir2->redir_sym = NO_REDIR;
-	redir2->redir_name = NULL;
-	redir2->next = NULL;
-	redir3->redir_sym = NO_REDIR;
-	redir3->redir_name = NULL;
-	redir3->next = NULL;
-	// First
-	cmd1->com = ft_strdup("cat");
-	cmd1->argv[0] = ft_strdup("cat");
-	cmd1->argv[1] = NULL;//ft_strdup("misc/infile_A");
-	cmd1->argv[2] = NULL;
-	cmd1->operat = PIPE;
-	cmd1->redirs = NULL;//redir1;
-	cmd1->env = env;
-	memcpy(cmd1->scope_stack, scope_stack, 3);
-
-	// Second
-	cmd2->operat = PIPE;
-	cmd2->com = ft_strdup("cat");
-	cmd2->argv[0] = ft_strdup("cat");
-	cmd2->argv[1] = NULL;//ft_strdup("-c");
-	cmd2->argv[2] = NULL;
-	cmd2->redirs = NULL;//redir2;
-	cmd2->env = env;
-	memcpy(cmd2->scope_stack, scope_stack, 3);
-
-	// Third
-	cmd3->operat = RUN;
-	cmd3->com = ft_strdup("ls");
-	cmd3->argv[0] = ft_strdup("ls");
-	cmd3->argv[1] = NULL;//ft_strdup("-c");
-	cmd3->argv[2] = NULL;
-	cmd3->redirs = NULL;
-	cmd3->env = env;
-    memcpy(cmd3->scope_stack, scope_stack, 3);
-	
-    // Assign to array
-	cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
-	cmds[0] = cmd1;
-	cmds[1] = cmd2;
-	cmds[2] = cmd3;
-	cmds[3] = NULL;
-	return (cmds);
+	scope_stack = (int *)ft_calloc(4, sizeof(int));
+	scope_stack[0] = id_0;
+	scope_stack[1] = id_1;
+	scope_stack[2] = id_2;
+	scope_stack[3] = 0;
+	return (scope_stack);
 }
 
-t_cmd	**mockup_single_cmd(char *envp[])
+t_redir	*mockup_redir(t_red_sym redir_sym, char *redir_name, t_redir *next)
 {
-	t_cmd	**cmds;
-	t_cmd	*cmd;
-	t_env	*env;
 	t_redir	*redir;
 
-	cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 2);
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	int		scope_stack[] = {1, 0};
-    cmd->scope_stack = (int *)(ft_calloc(2, sizeof(int)));
-	memcpy(cmd->scope_stack, scope_stack, 2);
+	redir = ft_calloc(1, sizeof(t_redir));
+	if (redir_sym == NO_REDIR)
+		return (NULL);
+	redir->redir_sym = redir_sym;
+	redir->redir_name = redir_name;
+	redir->next = next;
+	return (redir);
+}
 
-	cmd->com = ft_strdup("cat");
-	cmd->operat = RUN;
-	cmd->argv = (char **)malloc(sizeof(char *) * 3);
-	cmd->argv[0] = ft_strdup("cat");
-	cmd->argv[1] = NULL;
-	cmd->argv[2] = NULL;
-	env = malloc(sizeof(t_env));
-	env->envp = envp;
+t_cmd	*mockup_cmd(char **argv, t_oper operat, int *scope_stack, t_redir *redir, t_env *env)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	cmd->argv = argv;
+	cmd->com = argv[0];
 	cmd->env = env;
-	// NO_REDIR,
-	// RED_INP,
-	// RED_OUT,
-	// HEAR_DOC,
-	// APP_OUT
-	redir = malloc(sizeof(t_redir));
-	// t_redir *redir_2 = malloc(sizeof(t_redir));
-	// t_redir *redir_3 = malloc(sizeof(t_redir));
-	// t_redir *handle_output_redirection = malloc(sizeof(t_redir));
-	// t_redir *output_redir2 = malloc(sizeof(t_redir));
-	redir->redir_sym = HEAR_DOC;
-	redir->redir_name = ft_strdup("end");
-	redir->next = NULL;
-	// redir_2->redir_sym = RED_INP;
-	// redir_2->redir_name = ft_strdup("infile1");
-	// redir_2->next = handle_output_redirection;
-	// redir_3->redir_sym = RED_INP;
-	// redir_3->redir_name = ft_strdup("infile2");
-	// redir_3->next = output_redir2;
-	// // redir_3->next = handle_output_redirection;
-	// handle_output_redirection->redir_sym = RED_OUT;
-	// handle_output_redirection->redir_name = ft_strdup("outfile");
-	// handle_output_redirection->next = redir_3;
-	// output_redir2->redir_sym = RED_OUT;
-	// output_redir2->redir_name = ft_strdup("outfile1");
-	// output_redir2->next = NULL;
+	cmd->operat = operat;
 	cmd->redirs = redir;
-	cmds[0] = cmd;
-	cmds[1] = NULL;
-	return (cmds);
+	cmd->scope_stack = scope_stack;
+
+	return (cmd);
+}
+
+char	**mockup_argv(char *cmd, char *arg1, char *arg2)
+{
+	char	**argv;
+
+	argv = (char **)malloc(sizeof(char *) * 4);
+	argv[0] = ft_strdup(cmd);
+	if (arg1)
+		argv[1] = ft_strdup(arg1);
+	else
+		argv[1] = NULL;
+	if (arg2)
+		argv[2] = ft_strdup(arg2);
+	else
+		argv[2] = NULL;
+	argv[3] = NULL;
+	return (argv);
 }
 
 t_cmd	**mockup_empty_cmds(void)
@@ -172,20 +121,76 @@ t_cmd	**mockup_empty_cmds(void)
 	return (cmds);
 }
 
-void	print_exit_info(int status)
+t_cmd	**mockup_single_cmd(t_env *env)
 {
-	if (WIFEXITED(status))
-	{
-		ft_putstr_fd("exit status: ", 1);
-		ft_putnbr_fd(WEXITSTATUS(status), 1);
-		ft_putchar_fd('\n', 1);
-	}
-	else if (WIFSIGNALED(status))
-	{
-		ft_putstr_fd("exit signal: ", 1);
-		ft_putnbr_fd(WTERMSIG(status), 1);
-		ft_putchar_fd('\n', 1);
-	}
+	t_cmd	**cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 2);
+	int	*scope_stack = mockup_scope_stack(1, 0, 0);
+	t_redir	*in_redir_0;
+	t_redir	*in_redir_1;
+	t_redir	*in_redir_2;
+	t_redir	*out_redir_0;
+	in_redir_0 = mockup_redir(HEAR_DOC, "EOF", in_redir_1);
+	in_redir_1 = mockup_redir(RED_INP, "misc/infile_A", in_redir_2);
+	in_redir_2 = mockup_redir(RED_INP, "misc/infile_B", out_redir_0);
+	out_redir_0 = mockup_redir(RED_OUT, "misc/outfile_A", NULL);
+	char	**argv = mockup_argv("cat", "misc/infile_A", NULL);
+	t_cmd	*cmd = mockup_cmd(argv, RUN, scope_stack, in_redir_0, env);
+	cmds[0] = cmd;
+	cmds[1] = NULL;
+	return (cmds);
+}
+
+t_cmd	**mockup_three_cmds(t_env *env)
+{
+	t_cmd	**cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
+	int	*scope_stack = mockup_scope_stack(1, 0, 0);
+	// t_redir	*in_redir_0;
+	// t_redir	*out_redir_0;
+	// in_redir = mockup_redir(HEAR_DOC, "EOF", NULL);
+	// out_redir = mockup_redir(RED_INP, "misc/infile_A", NULL);
+	char	**argv_0 = mockup_argv("cat", "misc/infile_A", NULL);
+	char	**argv_1 = mockup_argv("wc", "-c", NULL);
+	char	**argv_2 = mockup_argv("wc", "-c", NULL);
+	t_cmd	*cmd_0 = mockup_cmd(argv_0, PIPE, scope_stack, NULL, env);
+	t_cmd	*cmd_1 = mockup_cmd(argv_1, PIPE, scope_stack, NULL, env);
+	t_cmd	*cmd_2 = mockup_cmd(argv_2, RUN, scope_stack, NULL, env);
+	cmds[0] = cmd_0;
+	cmds[1] = cmd_1;
+	cmds[2] = cmd_2;
+	cmds[3] = NULL;
+	return (cmds);
+}
+
+t_cmd	**mockup_cmds_with_scope(t_env *env)
+{
+	t_cmd	**cmds = (t_cmd **)ft_calloc(4, sizeof(t_cmd *));
+	t_redir	*in_redir_0;
+	t_redir	*in_redir_1;
+	t_redir	*in_redir_2;
+	t_redir	*out_redir_0;
+	in_redir_0 = mockup_redir(HEAR_DOC, "EOF", in_redir_1);
+	in_redir_1 = mockup_redir(RED_INP, "misc/infile_A", in_redir_2);
+	in_redir_2 = mockup_redir(RED_INP, "misc/infile_B", out_redir_0);
+	out_redir_0 = mockup_redir(RED_OUT, "misc/outfile_A", NULL);
+	//	{1, 2, 0} AND {1, 3, 0} PIPE {1, 0}
+	//	(cmd0) AND (cmd1 PIPE cmd2) PIPE cmd3
+	int		*scope_stack_A = mockup_scope_stack(1, 0, 0);
+	int		*scope_stack_B = mockup_scope_stack(1, 2, 0);
+	int		*scope_stack_C = mockup_scope_stack(1, 3, 0);
+	char 	**argv_0 = mockup_argv("cat", "misc/infile_A", NULL);
+	char 	**argv_1 = mockup_argv("cat", "misc/infile_B", NULL);
+	char 	**argv_2 = mockup_argv("cat", NULL, NULL);
+	char 	**argv_3 = mockup_argv("cat", NULL, NULL);
+	t_cmd	*cmd_0 = mockup_cmd(argv_0, AND, scope_stack_B, NULL, env);
+	t_cmd	*cmd_1 = mockup_cmd(argv_1, PIPE, scope_stack_C, NULL, env);
+	t_cmd	*cmd_2 = mockup_cmd(argv_2, PIPE, scope_stack_C, NULL, env);
+	t_cmd	*cmd_3 = mockup_cmd(argv_3, RUN, scope_stack_A, NULL, env);
+	cmds[0] = cmd_0;
+	cmds[1] = cmd_1;
+	cmds[2] = cmd_2;
+	cmds[3] = cmd_3;
+	cmds[4] = NULL;
+	return (cmds);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -195,8 +200,9 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	t_env *env = init_env((const char **)envp);
-	// cmds = mockup_three_cmds(env);
-	cmds = mockup_single_cmd(envp);
+	cmds = mockup_three_cmds(env);
+	// cmds = mockup_cmds_with_scope(env);
+	// cmds = mockup_single_cmd(env);
 	// cmds = parse_text("pwd", init_env(envp));
 		// wildcard parsing error: No such file or directory
 	execution(cmds);

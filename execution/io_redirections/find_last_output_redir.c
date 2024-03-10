@@ -13,6 +13,9 @@ t_fd_state	*last_output_redir(t_executor *exec)
 		return (exec->output_fd);
 	while (redir)
 	{
+		if ((redir->redir_sym == RED_OUT || redir->redir_sym == APP_OUT)
+			&& output_fd_state->fd != STDOUT_FILENO)
+			close_fd(output_fd_state, exec);
 		if (redir->redir_sym == RED_OUT)
 			output_fd_state = truncate_redirection(redir->redir_name);
 		else if (redir->redir_sym == APP_OUT)

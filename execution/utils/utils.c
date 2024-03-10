@@ -43,9 +43,9 @@ void	terminate(t_executor *exec, t_scope *scope, int status, char *msg)
 		free(exec);
 	if (scope)
 	{
-		close_fd(scope->pipe->read);
+		close_fd(scope->pipe->read, exec);
 		free(scope->pipe->read);
-		close_fd(scope->pipe->write);
+		close_fd(scope->pipe->write, exec);
 		free(scope->pipe->write);
 		free(scope->pipe);
 		free(scope);
@@ -172,14 +172,14 @@ int	arr_len(char **arr)
 t_cmd	*current_cmd_in_execution(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE, "missing or incomplete exec");
+		terminate(NULL, NULL, EXIT_FAILURE, "current_cmd_in_execution: missing or incomplete exec");
 	return (exec->cmds[exec->command_index]);
 }
 
 t_cmd	*previous_cmd_in_execution(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE, "missing or incomplete exec");
+		terminate(NULL, NULL, EXIT_FAILURE, "previous_cmd_in_execution: missing or incomplete exec");
 	if (exec->command_index == 0)
 		return (NULL);
 	return (exec->cmds[exec->command_index - 1]);
@@ -188,7 +188,7 @@ t_cmd	*previous_cmd_in_execution(t_executor *exec)
 t_cmd	*next_cmd_in_execution(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE, "missing or incomplete exec");
+		terminate(NULL, NULL, EXIT_FAILURE, "next_cmd_in_execution: missing or incomplete exec");
 	if (current_cmd_in_execution(exec) == NULL)
 		return (NULL);
 	return (exec->cmds[exec->command_index + 1]);
@@ -201,25 +201,32 @@ int get_scope(t_cmd *cmd)
     i = 0;
     while (cmd->scope_stack[i])
         i++;
-    return (i - 1);
+    return (cmd->scope_stack[i - 1]);
 }
 
 int get_outside_scope(t_cmd *cmd)
 {
-    return (get_scope(cmd) - 1);
+    int i;
+
+    i = 0;
+    while (cmd->scope_stack[i])
+        i++;
+    return (cmd->scope_stack[i - 2]);
 }
 
 t_cmd	*final_cmd_in_scope(t_executor *exec, t_scope *scope)
 {
 	int i;
 	t_cmd *cmd;
+	t_cmd *next;
 
 	if (param_check(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	cmd = current_cmd_in_execution(exec);
-	i = 1;
-	while (get_scope(cmd) == scope->scope_id)
-		cmd = exec->cmds[exec->command_index + (i++)];
+    next = next_cmd(exec, cmd);
+	i = 0;
+	while (get_scope(next) == scope->scope_id)
+		cmd = next_cmd(exec, cmd);
 	return (cmd);
 }
 
@@ -227,22 +234,28 @@ t_cmd   *next_cmd(t_executor *exec, t_cmd *cmd)
 {
     int i;
 
+    if (!exec || !exec->cmds)
+        terminate(NULL, NULL, EXIT_FAILURE, "next_cmd: missing or incomplete exec");
     i = 0;
-    while (exec->cmds[i] && exec->cmds[i] != cmd)
+    if (cmd == NULL)
+        return (NULL);
+    while (exec->cmds[i] != cmd && exec->cmds[i + 1] != NULL)
         i++;
-    return (exec->cmds[i]);
+    return (exec->cmds[i + 1]);
 }
 
-void close_fd(t_fd_state *fd_state)
+void close_fd(t_fd_state *fd_state, t_executor *exec)
 {
     if (!fd_state)
-        terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close_fd pipe end");
-    if (fd_state->is_open &&fd_state->fd >= 0)
-    {
+        terminate(NULL, NULL, EXIT_FAILURE, "close_fd: couldn't close file descriptor");
         if (close(fd_state->fd) == -1)
-            terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close_fd pipe end");
+        {
+            ft_putstr_fd("DEBUG::cmd index: ", 2);
+            ft_putendl_fd(ft_itoa(exec->command_index), 2);
+            msg_error(ft_itoa(fd_state->fd));
+            terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close file descriptor");
+        }
         fd_state->is_open = 0;
-    }
 }
 
 char **argv(t_executor *exec)
