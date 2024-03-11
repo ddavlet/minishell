@@ -1,106 +1,82 @@
-#include "execution.h"
 #include "../libft/libft.h"
+#include "execution.h"
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h> // For memcpy
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
-void free_mockup_cmds(t_cmd **cmds)
+void	print_exit_info(int status)
 {
-    int i;
-    int j;
-
-    i = 0;
-    while (cmds[i])
-    {
-        j = 0;
-        while (cmds[i]->argv[j])
-        {
-            free(cmds[i]->argv[j]);
-            j++;
-        }
-        // free redirs
-        while (cmds[i]->redirs)
-        {
-            t_redir *tmp = cmds[i]->redirs;
-            cmds[i]->redirs = cmds[i]->redirs->next;
-            free(tmp->redir_name);
-            free(tmp);
-        }
-        free(cmds[i]->env);
-        free(cmds[i]->argv);
-        free(cmds[i]->com);
-        free(cmds[i]);
-        i++;
-    }
-    free(cmds);
+	if (WIFEXITED(status))
+	{
+		ft_putstr_fd("exit status: ", 1);
+		ft_putnbr_fd(WEXITSTATUS(status), 1);
+		ft_putchar_fd('\n', 1);
+	}
+	else if (WIFSIGNALED(status))
+	{
+		ft_putstr_fd("exit signal: ", 1);
+		ft_putnbr_fd(WTERMSIG(status), 1);
+		ft_putchar_fd('\n', 1);
+	}
 }
 
-
-t_cmd   **mockup_three_cmds(void)
+void	free_mockup_cmds(t_cmd **cmds)
 {
-    t_cmd   **cmds;
-    t_cmd   *cmd1;
-    t_cmd   *cmd2;
-    t_cmd   *cmd3;
+	int		i;
+	int		j;
+	t_redir	*tmp;
 
-// First
-    cmd1 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd1->com = ft_strdup("ls");
-    cmd1->operat = PIPE;
-    cmd1->argv = (char **)malloc(sizeof(char *) * 3);
-    cmd1->argv[0] = ft_strdup("ls");
-    cmd1->argv[1] = NULL;
-    cmd1->argv[2] = NULL;
+	i = 0;
+	while (cmds[i])
+	{
+		j = 0;
+		while (cmds[i]->argv[j])
+		{
+			free(cmds[i]->argv[j]);
+			j++;
+		}
+		// free redirs
+		while (cmds[i]->redirs)
+		{
+			tmp = cmds[i]->redirs;
+			cmds[i]->redirs = cmds[i]->redirs->next;
+			free(tmp->redir_name);
+			free(tmp);
+		}
+		free(cmds[i]->env);
+		free(cmds[i]->argv);
+		free(cmds[i]->com);
+		free(cmds[i]);
+		i++;
+	}
+	free(cmds);
+}
 
-    t_redir *redir1 = malloc(sizeof(t_redir));
-    redir1->redir_sym = NO_REDIR;
-    redir1->redir_name = NULL;
-    redir1->next = NULL;
-    cmd1->redirs = redir1;
-    cmd1->context_depth = 0;
+int	*mockup_scope_stack(int id_0, int id_1, int id_2)
+{
+	int	*scope_stack;
 
+	scope_stack = (int *)ft_calloc(4, sizeof(int));
+	scope_stack[0] = id_0;
+	scope_stack[1] = id_1;
+	scope_stack[2] = id_2;
+	scope_stack[3] = 0;
+	return (scope_stack);
+}
 
-// Second
-    cmd2 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd2->operat = PIPE;
-    cmd2->com = ft_strdup("wc");
-    cmd2->argv = (char **)malloc(sizeof(char *) * 3);
-    cmd2->argv[0] = ft_strdup("wc");
-    cmd2->argv[1] = ft_strdup("-c");
-    cmd2->argv[2] = NULL;
+t_redir	*mockup_redir(t_red_sym redir_sym, char *redir_name, t_redir *next)
+{
+	t_redir	*redir;
 
-    t_redir *redir2 = malloc(sizeof(t_redir));
-    redir2->redir_sym = NO_REDIR;
-    redir2->redir_name = NULL;
-    redir2->next = NULL;
-    cmd2->redirs = redir2;
-    cmd2->context_depth = 0;
-
-// Third
-    cmd3 = (t_cmd *)malloc(sizeof(t_cmd));
-    cmd3->operat = PIPE;
-    cmd3->com = ft_strdup("wc");
-    cmd3->argv = (char **)malloc(sizeof(char *) * 3);
-    cmd3->argv[0] = ft_strdup("wc");
-    cmd3->argv[1] = ft_strdup("-c");
-    cmd3->argv[2] = NULL;
-
-    t_redir *redir3 = malloc(sizeof(t_redir));
-    redir3->redir_sym = NO_REDIR;
-    redir3->redir_name = NULL;
-    redir3->next = NULL;
-    cmd3->redirs = redir3;
-
-    cmd3->context_depth = 0;
-
-// Assign to array
-    cmds = (t_cmd **)malloc(sizeof(t_cmd *) * 4);
-    cmds[0] = cmd1;
-    cmds[1] = cmd2;
-    cmds[2] = cmd3;
-    cmds[3] = NULL;
-    return (cmds);
+	redir = ft_calloc(1, sizeof(t_redir));
+	if (redir_sym == NO_REDIR)
+		return (NULL);
+	redir->redir_sym = redir_sym;
+	redir->redir_name = redir_name;
+	redir->next = next;
+	return (redir);
 }
 
 t_cmd **mockup_single_cmd(char *envp[])
@@ -164,13 +140,13 @@ t_cmd **mockup_single_cmd(char *envp[])
     return (cmds);
 }
 
-t_cmd   **mockup_empty_cmds(void)
+t_cmd	**mockup_empty_cmds(void)
 {
-    t_cmd   **cmds;
+	t_cmd	**cmds;
 
-    cmds = (t_cmd **)malloc(sizeof(t_cmd *));
-    cmds[0] = NULL;
-    return (cmds);
+	cmds = (t_cmd **)malloc(sizeof(t_cmd *));
+	cmds[0] = NULL;
+	return (cmds);
 }
 
 t_cmd	**mockup_single_cmd(t_env *env)
@@ -251,7 +227,7 @@ int	main(int argc, char *argv[],const char *envp[])
 {
 	t_cmd **cmds;
 
-    (void)argc;
+	(void)argc;
 	(void)argv;
 	t_env *env = init_env((const char **)envp);
 	// cmds = mockup_three_cmds(env);

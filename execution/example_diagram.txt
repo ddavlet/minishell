@@ -21,14 +21,14 @@ execution process:
     <handle_output_redirection>
     <cmd>
 
-program execution with context
-    (context) OR			[exit 0]
-    !(context) OR (context)	[exit 0]
-    !(context) OR !(context)[exit 1]
+program execution with scope
+    (scope) OR			[exit 0]
+    !(scope) OR (scope)	[exit 0]
+    !(scope) OR !(scope)[exit 1]
 
-    !(context) AND			[exit 1]
-    (context) AND !(context)[exit 1]
-    (context) AND (context)	[exit 0]
+    !(scope) AND			[exit 1]
+    (scope) AND !(scope)[exit 1]
+    (scope) AND (scope)	[exit 0]
 
     success AND ~   [success ->, failure -x]
     failure OR  ~   [success ->, failure -x]
@@ -53,13 +53,6 @@ program execution with context
     ((scope) AND (scope PIPE scope)) PIPE scope PIPE scope
 
     (cmd0)   ( (cmd1    cmd2)    cmd3)    (cmd4)
-
-
-
-
-
-//	{ cat PIPE cat } // PIPE cat }
-
 
 
 

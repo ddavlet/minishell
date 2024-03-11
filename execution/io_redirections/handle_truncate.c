@@ -1,11 +1,18 @@
 #include "../execution.h"
 
-int	handle_truncate_redirection(const char *file_name)
+t_fd_state	*truncate_redirection(const char *file_name)
 {
-	int	fd;
+	int	        fd;
+    t_fd_state  *fd_state;
 
 	fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		msg_error("open");
-	return (fd);
+    fd_state = initialize_fd_state(fd);
+    if (!fd_state)
+    {
+        close(fd);
+        terminate(NULL, NULL, EXIT_FAILURE, "truncate redirection failure");
+    }
+	return (fd_state);
 }

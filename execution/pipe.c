@@ -1,6 +1,6 @@
 #include "../execution/execution.h"
 
-static t_fd_state	*initialize_fd_state(int fd)
+t_fd_state	*initialize_fd_state(int fd)
 {
     t_fd_state  *fd_state;
 
@@ -9,7 +9,7 @@ static t_fd_state	*initialize_fd_state(int fd)
 		return (NULL);
 	fd_state->fd = fd;
 	fd_state->is_open = 1;
-	return (0);
+	return (fd_state);
 }
 
 static t_pipe  *initialize_pipe(void)
@@ -56,4 +56,14 @@ t_pipe	*create_pipe(void)
 		return (NULL);
 	}
 	return (pipe);
+}
+
+void    close_pipe(t_pipe *pipe, t_executor *exec)
+{
+    if (!pipe || !pipe->write || !pipe->read)
+        terminate(NULL, NULL, EXIT_FAILURE, "Failed to close pipe.");
+    if (pipe->write->is_open)
+        close_fd(pipe->write, exec);
+    if (pipe->read->is_open)
+        close_fd(pipe->read, exec);
 }

@@ -1,23 +1,28 @@
 #include "../execution.h"
 
-int	last_output_redir(t_executor *exec)
+t_fd_state	*last_output_redir(t_executor *exec)
 {
-	t_redir *redir;
-    int     out_fd;
+	t_redir		*redir;
+	t_fd_state	*output_fd_state;
 
-	if (!exec || !exec->cmds || !exec->cmds[exec->command_index])
-		return (-1);
-    out_fd = 1;
-	redir = exec->cmds[exec->command_index]->redirs;
+	if (!exec || !exec->cmds)
+		return (NULL);
+	output_fd_state = exec->output_fd;
+	redir = current_cmd_in_execution(exec)->redirs;
 	if (redir == NULL)
-		return (out_fd);
+		return (exec->output_fd);
 	while (redir)
 	{
+		if ((redir->redir_sym == RED_OUT || redir->redir_sym == APP_OUT)
+			&& output_fd_state->fd != STDOUT_FILENO)
+			close_fd(output_fd_state, exec);
 		if (redir->redir_sym == RED_OUT)
-			out_fd = handle_truncate_redirection(redir->redir_name);
+			output_fd_state = truncate_redirection(redir->redir_name);
 		else if (redir->redir_sym == APP_OUT)
-			out_fd = handle_append_redirection(redir->redir_name);
+			output_fd_state = append_redirection(redir->redir_name);
 		redir = redir->next;
+        if (!output_fd_state)
+            terminate(NULL, NULL, EXIT_FAILURE, "Couldn't find output redirection");
 	}
-    return (out_fd);
+	return (output_fd_state);
 }

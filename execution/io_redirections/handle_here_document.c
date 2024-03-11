@@ -1,6 +1,6 @@
 #include "../execution.h"
 
-int handle_here_document(const char *delimiter, t_env *env, t_context *context)
+t_fd_state  *here_document(const char *delimiter, t_env *env, t_scope *scope)
 {
     char    *line;
     char    *tmp;
@@ -16,11 +16,12 @@ int handle_here_document(const char *delimiter, t_env *env, t_context *context)
         // free(line);
         // line = tmp;
         // ft_printf("line: %s\n", line);
-        write(context->pipe->write->fd, line, strlen(line));
-        write(context->pipe->write->fd, "\n", 1);
+        write(scope->pipe->write->fd, line, strlen(line));
+        write(scope->pipe->write->fd, "\n", 1);
         free(line);
         line = readline("heredoc> ");
     }
     free(line);
-    return (context->pipe->read->fd);
+    return (scope->pipe->read);
 }
+

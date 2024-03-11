@@ -1,3 +1,4 @@
-b cmd
-b handle_here_document
+fs cmd
 set follow-fork-mode child
+b execution
+start
