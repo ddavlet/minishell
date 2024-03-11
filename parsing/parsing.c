@@ -158,8 +158,6 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
-	// if (commands)
-	// 	change_priority(commands);
 	terminate_ptr_str(tokens);
 	return (commands);
 }
