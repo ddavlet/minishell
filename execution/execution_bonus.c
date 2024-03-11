@@ -21,6 +21,11 @@ t_executor	*initialize_executor(t_cmd **cmds)
 
 int	shell(t_executor *exec, t_scope *scope)
 {
+    ft_putstr_fd("DEBUG::execution begins", STDERR_FILENO);
+    ft_putstr_fd("::scope_id::", STDERR_FILENO);
+    ft_putnbr_fd(scope->scope_id, STDERR_FILENO);
+    ft_putchar_fd('\n', STDERR_FILENO);
+
 	if (param_check(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	while (is_inside_scope(current_cmd_in_execution(exec), scope->scope_id))
@@ -35,6 +40,10 @@ int	shell(t_executor *exec, t_scope *scope)
                 execute_cmd(exec, scope);
         }
 	}
+    ft_putstr_fd("DEBUG::execution ends", STDERR_FILENO);
+    ft_putstr_fd("::scope_id::", STDERR_FILENO);
+    ft_putnbr_fd(scope->scope_id, STDERR_FILENO);
+    ft_putchar_fd('\n', STDERR_FILENO);
 	return (EXIT_SUCCESS);
 }
 

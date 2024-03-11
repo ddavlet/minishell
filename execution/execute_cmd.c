@@ -31,6 +31,7 @@ static void  debug_child_process(t_executor *exec, t_scope *scope, char *path)
 	ft_putstr_fd("DEBUG::pipe->write->is_open::", 2);
 	ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
 
+	ft_putendl_fd("::::::::::::::::::::::::", 2);
 }
 
 static int	set_output(t_executor *exec, t_scope *scope)
