@@ -177,7 +177,8 @@ t_cmd	**mockup_cmds_with_scope(t_env *env)
 	int		*scope_stack_B = mockup_scope_stack(1, 2, 0);
 	int		*scope_stack_C = mockup_scope_stack(1, 3, 0);
 	//	{1, 2, 0} AND {1, 3, 0} PIPE {1, 0}
-	//	(cmd0) AND (cmd1 PIPE cmd2) PIPE cmd3
+	//	{ (cmd0) AND (cmd1 PIPE cmd2) PIPE cmd3 }
+	//	{ (cmd0) AND (cmd1 PIPE cmd2) AND cmd3 }
 	char 	**argv_0 = mockup_argv("cat", "misc/infile_A", NULL);
 	char 	**argv_1 = mockup_argv("pwd", NULL, NULL);
 	char 	**argv_2 = mockup_argv("ls", "misc/infile_B", NULL);

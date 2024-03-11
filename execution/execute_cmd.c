@@ -4,8 +4,13 @@ static void  debug_child_process(t_executor *exec, t_scope *scope, char *path)
 {
 	ft_putendl_fd("::::::::::::::::::::::::", 2);
 
-	ft_putstr_fd("DEBUG::execve::", 2);
-	ft_putendl_fd(argv(exec)[0], 2);
+	ft_putstr_fd("DEBUG::child_process::", 2);
+	ft_putstr_fd(argv(exec)[0], 2);
+    ft_putstr_fd("::command_index:", 2);
+    ft_putnbr_fd(exec->command_index, 2);
+    ft_putstr_fd("::scope_id::", 2);
+    ft_putnbr_fd(scope->scope_id, 2);
+    ft_putchar_fd('\n', 2);
 	ft_putstr_fd("DEBUG::path::", 2);
 	ft_putendl_fd(path, 2);
 	ft_putstr_fd("DEBUG::out_fd::", 2);
