@@ -65,7 +65,7 @@ void			terminate(t_executor *exec, t_scope *scope, int status,
 					char *msg);
 char			*get_name(char *cmd_path);
 int				is_builtin(t_executor *exec);
-int				is_inside_scope(t_executor *exec, t_scope *scope);
+int				is_inside_scope(t_cmd *cmd, int scope_id);
 int				has_nested_scope(t_executor *exec, t_scope *scope);
 int				previous_cmd_connected_through_operation(t_executor *exec);
 int				next_cmd_connected_through_operation(t_executor *exec);
@@ -73,7 +73,7 @@ int				arr_len(char **arr);
 t_cmd			*current_cmd_in_execution(t_executor *exec);
 t_cmd			*previous_cmd_in_execution(t_executor *exec);
 t_cmd			*next_cmd_in_execution(t_executor *exec);
-int				find_nested_id(t_executor *exec, t_scope *scope);
+int				get_nested_id(t_executor *exec, int scope_id);
 t_cmd			*final_cmd_in_scope(t_executor *exec, t_scope *scope);
 t_cmd			*next_cmd(t_executor *exec, t_cmd *cmd);
 int				get_scope(t_cmd *cmd);
@@ -81,6 +81,7 @@ int				get_outside_scope(t_cmd *cmd);
 void			close_fd(t_fd_state *fd_state, t_executor *exec);
 char			**argv(t_executor *exec);
 char			**envp(t_executor *exec);
+int				scope_length(t_executor *exec, int scope_id);
 
 /*
  *   io_redirections

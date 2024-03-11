@@ -173,14 +173,14 @@ t_cmd	**mockup_cmds_with_scope(t_env *env)
 	in_redir_1 = mockup_redir(RED_INP, "misc/infile_A", in_redir_2);
 	in_redir_2 = mockup_redir(RED_INP, "misc/infile_B", out_redir_0);
 	out_redir_0 = mockup_redir(RED_OUT, "misc/outfile_A", NULL);
-	//	{1, 2, 0} AND {1, 3, 0} PIPE {1, 0}
-	//	(cmd0) AND (cmd1 PIPE cmd2) PIPE cmd3
 	int		*scope_stack_A = mockup_scope_stack(1, 0, 0);
 	int		*scope_stack_B = mockup_scope_stack(1, 2, 0);
 	int		*scope_stack_C = mockup_scope_stack(1, 3, 0);
+	//	{1, 2, 0} AND {1, 3, 0} PIPE {1, 0}
+	//	(cmd0) AND (cmd1 PIPE cmd2) PIPE cmd3
 	char 	**argv_0 = mockup_argv("cat", "misc/infile_A", NULL);
-	char 	**argv_1 = mockup_argv("cat", "misc/infile_B", NULL);
-	char 	**argv_2 = mockup_argv("cat", NULL, NULL);
+	char 	**argv_1 = mockup_argv("pwd", NULL, NULL);
+	char 	**argv_2 = mockup_argv("ls", "misc/infile_B", NULL);
 	char 	**argv_3 = mockup_argv("cat", NULL, NULL);
 	t_cmd	*cmd_0 = mockup_cmd(argv_0, AND, scope_stack_B, NULL, env);
 	t_cmd	*cmd_1 = mockup_cmd(argv_1, PIPE, scope_stack_C, NULL, env);
@@ -201,8 +201,8 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	t_env *env = init_env((const char **)envp);
-	cmds = mockup_three_cmds(env);
-	// cmds = mockup_cmds_with_scope(env);
+	// cmds = mockup_three_cmds(env);
+	cmds = mockup_cmds_with_scope(env);
 	// cmds = mockup_single_cmd(env);
 	// cmds = parse_text("pwd", init_env(envp));
 		// wildcard parsing error: No such file or directory

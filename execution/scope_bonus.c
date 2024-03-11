@@ -67,7 +67,7 @@ t_scope	*create_nested_scope(t_executor *exec, t_scope *scope)
 	nested_scope = (t_scope *)ft_calloc(1, sizeof(t_scope));
 	if (!nested_scope)
 		return (NULL);
-	nested_scope->scope_id = find_nested_id(exec, scope);
+	nested_scope->scope_id = get_nested_id(exec, scope->scope_id);
 	if (!(nested_scope->scope_id))
 		terminate(NULL, nested_scope, EXIT_FAILURE,
 			"Couldn't create nested scope");

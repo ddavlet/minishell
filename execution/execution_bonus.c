@@ -23,7 +23,7 @@ int	shell(t_executor *exec, t_scope *scope)
 {
 	if (param_check(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
-	while (is_inside_scope(exec, scope))
+	while (is_inside_scope(current_cmd_in_execution(exec), scope->scope_id))
 	{
 		if (has_nested_scope(exec, scope))
             execute_nested_scope(exec, scope);
@@ -33,7 +33,6 @@ int	shell(t_executor *exec, t_scope *scope)
                 execute_builtin(exec, scope);
             else
                 execute_cmd(exec, scope);
-            exec->command_index++;
         }
 	}
 	return (EXIT_SUCCESS);

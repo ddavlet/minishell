@@ -95,18 +95,18 @@ int	is_builtin(t_executor *exec)
 	return (0);
 }
 
-int	is_inside_scope(t_executor *exec, t_scope *scope)
+int	is_inside_scope(t_cmd *cmd, int scope_id)
 {
-	t_cmd	*cmd;
 	int		i;
 
-	i = 0;
-	cmd = current_cmd_in_execution(exec);
+    if (scope_id < 1)
+        terminate(NULL, NULL, EXIT_FAILURE, "is_inside_scope: invalid scope_id");
+    i = 0;
     if (cmd)
     {
-        while (cmd->scope_stack[i] && cmd->scope_stack[i] != scope->scope_id)
+        while (cmd->scope_stack[i] && cmd->scope_stack[i] != scope_id)
             i++;
-        if (cmd->scope_stack[i] == scope->scope_id)
+        if (cmd->scope_stack[i] == scope_id)
             return (1);
     }
 	return (0);
@@ -117,6 +117,8 @@ int	has_nested_scope(t_executor *exec, t_scope *scope)
 	t_cmd	*cmd;
 	int		i;
 
+    if (param_check(exec, scope) == -1)
+        terminate(NULL, NULL, EXIT_FAILURE, "has_nested_scope: parameter check failed");
 	i = 0;
 	cmd = current_cmd_in_execution(exec);
 	while (cmd->scope_stack[i])
@@ -126,6 +128,23 @@ int	has_nested_scope(t_executor *exec, t_scope *scope)
 	return (0);
 }
 
+int scope_length(t_executor *exec, int scope_id)
+{
+    t_cmd   *cmd;
+    int     len;
+
+    if (!exec || !exec->cmds || scope_id == 0)
+        terminate(NULL, NULL, EXIT_FAILURE, "scope_length: parameter check failed");
+    len = 1;
+    cmd = next_cmd_in_execution(exec);
+    while (is_inside_scope(cmd, scope_id))
+    {
+        len++;
+        cmd = next_cmd(exec, cmd);
+    }
+    return (len);
+}
+
 int	param_check(t_executor *exec, t_scope *scope)
 {
 	if (!exec || !exec->cmds  || !scope)
@@ -133,14 +152,14 @@ int	param_check(t_executor *exec, t_scope *scope)
 	return (0);
 }
 
-int	find_nested_id(t_executor *exec, t_scope *scope)
+int	get_nested_id(t_executor *exec, int scope_id)
 {
-	t_cmd	*cmd;
 	int		i;
+    t_cmd   *cmd;
 
-	cmd = current_cmd_in_execution(exec);
 	i = 0;
-	while (cmd->scope_stack[i] != scope->scope_id)
+    cmd = current_cmd_in_execution(exec);
+	while (cmd->scope_stack[i] != scope_id)
 		i++;
 	if (cmd->scope_stack[i] && cmd->scope_stack[i + 1])
 		return (cmd->scope_stack[i + 1]);
@@ -239,14 +258,25 @@ void close_fd(t_fd_state *fd_state, t_executor *exec)
 {
     if (!fd_state)
         terminate(NULL, NULL, EXIT_FAILURE, "close_fd: couldn't close file descriptor");
-        if (close(fd_state->fd) == -1)
-        {
-            ft_putstr_fd("DEBUG::close_fd:command-index::", 2);
-            ft_putendl_fd(ft_itoa(exec->command_index), 2);
-            msg_error(ft_itoa(fd_state->fd));
-            terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close file descriptor");
-        }
-        fd_state->is_open = 0;
+    if (fd_state->is_open == 0)
+    {
+        ft_putstr_fd("DEBUG::fd: ", 2);
+        ft_putstr_fd(ft_itoa(fd_state->fd), 2);
+        ft_putstr_fd("::already closed", 2);
+        // ft_putstr_fd("::argv:", 2);
+        // ft_putstr_fd((char *)exec->cmds[exec->command_index]->argv, 2);
+        ft_putstr_fd("::command_index:", 2);
+        ft_putendl_fd(ft_itoa(exec->command_index), 2);
+        // terminate(NULL, NULL, EXIT_FAILURE, "close_fd: file descriptor already closed");
+    }
+    else if (close(fd_state->fd) == -1)
+    {
+        ft_putstr_fd("DEBUG::close_fd:command_index::", 2);
+        ft_putendl_fd(ft_itoa(exec->command_index), 2);
+        msg_error(ft_itoa(fd_state->fd));
+        terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close file descriptor");
+    }
+    fd_state->is_open = 0;
 }
 
 char **argv(t_executor *exec)
