@@ -179,18 +179,19 @@ t_cmd	**mockup_cmds_with_scope(t_env *env)
 	//	{1, 2, 0} AND {1, 3, 0} PIPE {1, 0}
 	//	{ (cmd0) AND (cmd1 PIPE cmd2) PIPE cmd3 }
 	//	{ (cmd0) AND (cmd1 PIPE cmd2) AND cmd3 }
+	//	{ (cmd0) PIPE (cmd1) }
 	char 	**argv_0 = mockup_argv("cat", "misc/infile_A", NULL);
-	char 	**argv_1 = mockup_argv("pwd", NULL, NULL);
+	char 	**argv_1 = mockup_argv("cat", NULL, NULL);
 	char 	**argv_2 = mockup_argv("ls", "misc/infile_B", NULL);
 	char 	**argv_3 = mockup_argv("cat", NULL, NULL);
-	t_cmd	*cmd_0 = mockup_cmd(argv_0, AND, scope_stack_B, NULL, env);
-	t_cmd	*cmd_1 = mockup_cmd(argv_1, PIPE, scope_stack_C, NULL, env);
-	t_cmd	*cmd_2 = mockup_cmd(argv_2, PIPE, scope_stack_C, NULL, env);
+	t_cmd	*cmd_0 = mockup_cmd(argv_0, PIPE, scope_stack_B, NULL, env);
+	t_cmd	*cmd_1 = mockup_cmd(argv_1, RUN, scope_stack_C, NULL, env);
+	t_cmd	*cmd_2 = mockup_cmd(argv_2, RUN, scope_stack_C, NULL, env);
 	t_cmd	*cmd_3 = mockup_cmd(argv_3, RUN, scope_stack_A, NULL, env);
 	cmds[0] = cmd_0;
 	cmds[1] = cmd_1;
-	cmds[2] = cmd_2;
-	cmds[3] = cmd_3;
+	cmds[2] = NULL;//cmd_2;
+	cmds[3] = NULL;//cmd_3;
 	cmds[4] = NULL;
 	return (cmds);
 }

@@ -15,9 +15,9 @@ static int	is_part_of_logic_operation(t_executor *exec, t_scope *scope)
 	return (0);
 }
 
-void	debug_check_exit_value(t_executor *exec, t_scope *scope)
+void	debug_check_exit_value_1(t_executor *exec, t_scope *scope)
 {
-	ft_putendl_fd("::::::::::::::::::::::::", 2);
+	ft_putendl_fd("::::::::::::::::::::::::::::::::", 2);
 	ft_putendl_fd("DEBUG::check_exit_value", 2);
 	ft_putstr_fd("DEBUG::pid: ", 2);
 	ft_putnbr_fd(scope->pid, 2);
@@ -42,39 +42,32 @@ void	debug_check_exit_value(t_executor *exec, t_scope *scope)
 	else
 		ft_putendl_fd("DEBUG::pipe::NULL", 2);
 
+    ft_putendl_fd("::fd_state before waitpid::", 2);
+	ft_putstr_fd("DEBUG::out_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->output_fd->is_open), 2);
+	ft_putstr_fd("DEBUG::in_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->input_fd->is_open), 2);
+
+    ft_putstr_fd("DEBUG::pipe->read->is_open::", 2);
+    ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
+    ft_putstr_fd("DEBUG::pipe->write->is_open::", 2);
+    ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
+    
+    ft_putendl_fd("::::::::::::::::::::::::::::::::", 2);
+}
+void    debug_exit_value_2(t_executor *exec, t_scope *scope)
+{
+	ft_putendl_fd("::fd_state before waitpid::", 2);
+	ft_putstr_fd("DEBUG::out_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->output_fd->is_open), 2);
+	ft_putstr_fd("DEBUG::in_fd->is_open::", 2);
+	ft_putendl_fd(ft_itoa(exec->input_fd->is_open), 2);
 }
 
 int	check_exit_value(t_executor *exec, t_scope *scope)
 {
 	if (param_check(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
-	if (scope->pipe && current_cmd_in_execution(exec) != NULL)
-	{
-		close_fd(scope->pipe->write, exec);
-		debug_check_exit_value(exec, scope);
-	ft_putendl_fd("::fd_state before waitpid::", 2);
-	ft_putstr_fd("DEBUG::out_fd->is_open::", 2);
-	ft_putendl_fd(ft_itoa(exec->output_fd->is_open), 2);
-	ft_putstr_fd("DEBUG::in_fd->is_open::", 2);
-	ft_putendl_fd(ft_itoa(exec->input_fd->is_open), 2);
-	if (scope->pipe)
-	{
-		ft_putstr_fd("DEBUG::pipe->read->is_open::", 2);
-		ft_putendl_fd(ft_itoa(scope->pipe->read->is_open), 2);
-		ft_putstr_fd("DEBUG::pipe->write->is_open::", 2);
-		ft_putendl_fd(ft_itoa(scope->pipe->write->is_open), 2);
-	}
-	else
-		ft_putendl_fd("DEBUG::pipe::NULL", 2);
-
-		// ft_putstr_fd("DEBUG::cmd[", 2);
-		// ft_putnbr_fd(exec->command_index, 2);
-		// ft_putendl_fd("]", 2);
-		// ft_putstr_fd("DEBUG::close_fd::pipe->write: ", 2);
-		// ft_putendl_fd(ft_itoa(scope->pipe->write->fd), 2);
-	}
-	else
-		debug_check_exit_value(exec, scope);
 	if (is_part_of_logic_operation(exec, scope))
 	{
 		waitpid(scope->pid, &(exec->status), 0);

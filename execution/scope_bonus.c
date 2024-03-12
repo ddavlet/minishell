@@ -67,6 +67,10 @@ t_scope	*create_nested_scope(t_executor *exec, t_scope *scope)
 	nested_scope = (t_scope *)ft_calloc(1, sizeof(t_scope));
 	if (!nested_scope)
 		return (NULL);
+	nested_scope->pipe = create_pipe();
+	if (!(nested_scope->pipe))
+		terminate(NULL, nested_scope, EXIT_FAILURE,
+			"Couldn't create pipe for nested scope");
 	nested_scope->scope_id = get_nested_id(exec, scope->scope_id);
 	if (!(nested_scope->scope_id))
 		terminate(NULL, nested_scope, EXIT_FAILURE,
@@ -75,7 +79,6 @@ t_scope	*create_nested_scope(t_executor *exec, t_scope *scope)
 		terminate(NULL, nested_scope, EXIT_FAILURE,
 			"Couldn't create nested scope");
 	nested_scope->pid = 0;
-	nested_scope->pipe = NULL;
 	return (nested_scope);
 }
 
@@ -89,7 +92,9 @@ t_scope	*initialize_scope(t_executor *exec)
 	scope->input_fd = exec->input_fd;
 	scope->output_fd = exec->output_fd;
 	scope->pid = -1;
-	scope->pipe = NULL;
+	scope->pipe = create_pipe();
+    if (!scope->pipe)
+        terminate(NULL, scope, EXIT_FAILURE, "Couldn't create scope");
 	scope->scope_id = 1;
 	return (scope);
 }

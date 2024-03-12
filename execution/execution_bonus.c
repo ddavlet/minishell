@@ -1,5 +1,25 @@
 #include "execution.h"
 
+void    debug_shell_1(t_executor *exec, t_scope *scope)
+{
+    ft_putendl_fd("::::::::::::::::::::::::::::::::", 2);
+    ft_putendl_fd("DEBUG::execution begins", STDERR_FILENO);
+    ft_putstr_fd("DEBUG::scope_id::", STDERR_FILENO);
+    ft_putnbr_fd(scope->scope_id, STDERR_FILENO);
+    ft_putchar_fd('\n', STDERR_FILENO);
+    ft_putendl_fd("::::::::::::::::::::::::::::::::", 2);
+}
+
+void    debug_shell_2(t_executor *exec, t_scope *scope)
+{
+    ft_putendl_fd("::::::::::::::::::::::::::::::::", 2);
+    ft_putendl_fd("DEBUG::execution ends", STDERR_FILENO);
+    ft_putstr_fd("DEBUG::scope_id::", STDERR_FILENO);
+    ft_putnbr_fd(scope->scope_id, STDERR_FILENO);
+    ft_putchar_fd('\n', STDERR_FILENO);
+    ft_putendl_fd("::::::::::::::::::::::::::::::::", 2);
+}
+
 t_executor	*initialize_executor(t_cmd **cmds)
 {
 	t_executor	*exec;
@@ -21,11 +41,7 @@ t_executor	*initialize_executor(t_cmd **cmds)
 
 int	shell(t_executor *exec, t_scope *scope)
 {
-    ft_putstr_fd("DEBUG::execution begins", STDERR_FILENO);
-    ft_putstr_fd("::scope_id::", STDERR_FILENO);
-    ft_putnbr_fd(scope->scope_id, STDERR_FILENO);
-    ft_putchar_fd('\n', STDERR_FILENO);
-
+    debug_shell_1(exec, scope);
 	if (param_check(exec, scope) == -1)
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
 	while (is_inside_scope(current_cmd_in_execution(exec), scope->scope_id))
@@ -40,10 +56,7 @@ int	shell(t_executor *exec, t_scope *scope)
                 execute_cmd(exec, scope);
         }
 	}
-    ft_putstr_fd("DEBUG::execution ends", STDERR_FILENO);
-    ft_putstr_fd("::scope_id::", STDERR_FILENO);
-    ft_putnbr_fd(scope->scope_id, STDERR_FILENO);
-    ft_putchar_fd('\n', STDERR_FILENO);
+    debug_shell_2(exec, scope);
 	return (EXIT_SUCCESS);
 }
 

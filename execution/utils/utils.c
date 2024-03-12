@@ -32,11 +32,11 @@ void	terminate(t_executor *exec, t_scope *scope, int status, char *msg)
 		free(exec);
 	if (scope)
 	{
-		close_fd(scope->pipe->read, exec);
-		free(scope->pipe->read);
-		close_fd(scope->pipe->write, exec);
-		free(scope->pipe->write);
-		free(scope->pipe);
+		// close_fd(scope->pipe->read, exec);
+		// free(scope->pipe->read);
+		// close_fd(scope->pipe->write, exec);
+		// free(scope->pipe->write);
+		// free(scope->pipe);
 		free(scope);
 	}
     if (msg)
