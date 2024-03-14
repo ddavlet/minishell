@@ -2,11 +2,11 @@
 
 void	handle_pipe_output(t_executor *exec)
 {
-	t_pipe	*pipe;
+	// t_pipe	*pipe;
 
-	pipe = create_pipe();
-	if (enqueue_pipe(exec->pipe_queue, pipe) == -1)
-		terminate(NULL, EXIT_FAILURE, "Failed to set pipe to output");
+	// pipe = create_pipe();
+	// if (enqueue_pipe(exec->pipe_queue, pipe) == -1)
+	// 	terminate(NULL, EXIT_FAILURE, "Failed to set pipe to output");
 	if (dup2(pipe->write->fd, STDOUT_FILENO) == -1)
 		terminate(NULL, EXIT_FAILURE,
 			"minishell: unable to set pipe to output");
@@ -37,7 +37,7 @@ void	handle_pipe_input(t_executor *exec)
 		terminate(NULL, EXIT_FAILURE, "Failed to set pipe to input");
 	if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
 		terminate(NULL, EXIT_FAILURE,
-			"minishell: unable to set pipe to output");
+			"minishell: unable to set pipe to input");
 	close_pipe(pipe);
 }
 
@@ -65,12 +65,18 @@ void	set_io_streams(t_executor *exec)
 	cmd = current_cmd(exec);
 	prev = previous_cmd(exec, cmd);
 	next = next_cmd(exec, cmd);
-	if (prev->operat == PIPE && connected_through_operation(cmd, prev))
-		handle_pipe_input(exec);
+    if (prev)
+    {
+        if (prev->operat == PIPE && connected_through_operation(cmd, prev))
+            handle_pipe_input(exec);
+    }
 	if (cmd->redirs != NULL)
 		handle_redir_input(exec);
-	if (cmd->operat == PIPE && connected_through_operation(cmd, next))
-		handle_pipe_output(exec);
+    if (next)
+    {
+        if (cmd->operat == PIPE && connected_through_operation(cmd, next))
+            handle_pipe_output(exec);
+    }
 	if (cmd->redirs != NULL)
 		handle_redir_output(exec);
 }

@@ -42,10 +42,9 @@ int	is_final(t_executor *exec)
 	if (!exec || !exec->cmds)
 		terminate(NULL, EXIT_FAILURE,
 			"is_final: missing or incomplete exec");
-	if (is_nested_scope(exec))
-		cmd = final_cmd_in_scope(exec, current_cmd(exec)->scope_stack[1]);
-	else
-		cmd = current_cmd(exec);
+    cmd = current_cmd(exec);
+	if (is_nested_scope(cmd))
+		cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
 	if (next_cmd(exec, cmd) == NULL)
 		return (1);
 	return (0);
@@ -113,16 +112,11 @@ int	is_inside_scope(t_cmd *cmd, int scope)
 	return (0);
 }
 
-int	is_nested_scope(t_executor *exec)
+int	is_nested_scope(t_cmd *cmd)
 {
-	t_cmd	*cmd;
 	int		i;
 
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"is_nested_scope: parameter check failed");
 	i = 0;
-	cmd = current_cmd(exec);
 	while (cmd->scope_stack[i])
 		i++;
 	if (cmd->scope_stack[i - 1] > SCOPE)
@@ -259,6 +253,8 @@ t_cmd    *previous_cmd(t_executor *exec, t_cmd *cmd)
             "previous_cmd: missing or incomplete exec");
     i = 0;
     if (cmd == NULL)
+        return (NULL);
+    if (exec->command_index == 0)
         return (NULL);
     while (exec->cmds[i] != cmd && exec->cmds[i + 1] != NULL)
         i++;

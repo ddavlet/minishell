@@ -1,12 +1,20 @@
 #include "../execution.h"
 
-t_queue	*initialize_queue(int size)
+t_queue	*initialize_queue(t_executor *exec)
 {
 	t_queue	*queue;
+    int     pipe_count;
+    t_pipe  *pipe;
 
-    queue = (t_queue *)ft_calloc(size, sizeof(t_queue));
+    pipe_count = count_pipes(exec, false);
+    queue = (t_queue *)ft_calloc(pipe_count, sizeof(t_queue));
     if (!queue)
         return NULL;
+    while (pipe_count)
+    {
+        pipe = create_pipe();
+        enqueue_pipe(queue, pipe);
+    }
     queue->front = NULL;
     queue->rear = NULL;
 	return queue;

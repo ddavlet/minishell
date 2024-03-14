@@ -67,3 +67,20 @@ void    close_pipe(t_pipe *pipe)
     if (pipe->read->is_open)
         close_fd(pipe->read);
 }
+
+int count_pipes(t_executor *exec, bool include_nested_scopes)
+{
+    t_cmd   *cmd;
+    int     count;
+
+    count = 0;
+    cmd = exec->cmds[0];
+    while (cmd)
+    {
+        if (is_nested_scope(cmd))
+            cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
+        if (cmd->operat == PIPE)
+            count++;
+        cmd = next_cmd(exec, cmd);
+    }
+}

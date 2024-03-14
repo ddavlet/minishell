@@ -9,10 +9,15 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 	exec = (t_executor *)ft_calloc(1, sizeof(t_executor));
 	if (!exec)
 		return (NULL);
+	exec->cmds = cmds;
 	exec->envp = envp;
 	exec->command_index = 0;
-	exec->cmds = cmds;
 	exec->status = 0;
+    exec->pipe_queue = initialize_queue(exec);
+    if (!exec->pipe_queue)
+    {
+        terminate(exec, EXIT_FAILURE, "failed to initialize pipe queue");
+    }
 	return (exec);
 }
 

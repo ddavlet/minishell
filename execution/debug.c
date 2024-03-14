@@ -16,7 +16,7 @@ int	main(int argc, char *argv[],const char *envp[])
 	(void)argv;
 	t_env *env = init_env((const char **)envp);
 
-	cmds = parse_text("echo test", env);
+	cmds = parse_text("echo 'hello' | cat", env);
 		// wildcard parsing error: No such file or directory
 	execution(cmds, (char **)envp);
 	return (0);
