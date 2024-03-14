@@ -6,6 +6,7 @@ t_fd_state  *here_document(t_executor *exec, const char *delimiter)
     char    *tmp;
     // (void)env;
     (void)tmp;
+    (void)exec;
     t_pipe  *pipe;
 
     pipe = create_pipe();
@@ -18,13 +19,13 @@ t_fd_state  *here_document(t_executor *exec, const char *delimiter)
         // free(line);
         // line = tmp;
         // ft_printf("line: %s\n", line);
-        write(pipe->write, line, strlen(line));
-        write(pipe->write, "\n", 1);
+        write(pipe->write->fd, line, strlen(line));
+        write(pipe->write->fd, "\n", 1);
         free(line);
         line = readline("heredoc> ");
     }
     free(line);
-    close_fd(pipe->read->fd);
-    return (pipe->read->fd);
+    close_fd(pipe->write);
+    return (pipe->read);
 }
 

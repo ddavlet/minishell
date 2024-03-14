@@ -26,19 +26,10 @@ void	exit_handler(int status)
 		exit(status);
 }
 
-void	terminate(t_executor *exec, t_scope *scope, int status, char *msg)
+void	terminate(t_executor *exec, int status, char *msg)
 {
 	if (exec)
 		free(exec);
-	if (scope)
-	{
-		// close_fd(scope->pipe->read, exec);
-		// free(scope->pipe->read);
-		// close_fd(scope->pipe->write, exec);
-		// free(scope->pipe->write);
-		// free(scope->pipe);
-		free(scope);
-	}
 	if (msg)
 		msg_error(msg);
 	exit_handler(status);
@@ -49,7 +40,7 @@ int	is_final(t_executor *exec)
 	t_cmd	*cmd;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"is_final: missing or incomplete exec");
 	if (is_nested_scope(exec))
 		cmd = final_cmd_in_scope(exec, current_cmd(exec)->scope_stack[1]);
@@ -110,7 +101,7 @@ int	is_inside_scope(t_cmd *cmd, int scope)
 	int	i;
 
 	if (scope < 1)
-		terminate(NULL, NULL, EXIT_FAILURE, "is_inside_scope: invalid scope");
+		terminate(NULL, EXIT_FAILURE, "is_inside_scope: invalid scope");
 	i = 0;
 	if (cmd)
 	{
@@ -128,7 +119,7 @@ int	is_nested_scope(t_executor *exec)
 	int		i;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"is_nested_scope: parameter check failed");
 	i = 0;
 	cmd = current_cmd(exec);
@@ -145,7 +136,7 @@ int	scope_length(t_executor *exec, int scope)
 	int		len;
 
 	if (!exec || !exec->cmds || scope == 0)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"scope_length: parameter check failed");
 	len = 1;
 	cmd = next_cmd_in_execution(exec);
@@ -163,7 +154,7 @@ int	get_nested_scope(t_executor *exec)
 
 	cmd = current_cmd(exec);
 	if (!cmd->scope_stack[1])
-        terminate(NULL, NULL, EXIT_FAILURE, "get_nested_scope: no nested scope");
+        terminate(NULL, EXIT_FAILURE, "get_nested_scope: no nested scope");
 	return (cmd->scope_stack[1]);
 }
 
@@ -180,7 +171,7 @@ int	arr_len(char **arr)
 t_cmd	*current_cmd(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"current_cmd: missing or incomplete exec");
 	return (exec->cmds[exec->command_index]);
 }
@@ -188,7 +179,7 @@ t_cmd	*current_cmd(t_executor *exec)
 t_cmd	*previous_cmd_in_execution(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"previous_cmd_in_execution: missing or incomplete exec");
 	if (exec->command_index == 0)
 		return (NULL);
@@ -198,7 +189,7 @@ t_cmd	*previous_cmd_in_execution(t_executor *exec)
 t_cmd	*next_cmd_in_execution(t_executor *exec)
 {
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"next_cmd_in_execution: missing or incomplete exec");
 	if (current_cmd(exec) == NULL)
 		return (NULL);
@@ -232,8 +223,8 @@ t_cmd	*final_cmd_in_scope(t_executor *exec, int scope)
 	t_cmd	*cmd;
 	t_cmd	*next;
 
-	if (param_check(exec, scope) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
+	if (!exec)
+		terminate(NULL, EXIT_FAILURE, "parameter check failed");
 	cmd = current_cmd(exec);
 	next = next_cmd(exec, cmd);
 	while (is_inside_scope(next, scope))
@@ -249,7 +240,7 @@ t_cmd	*next_cmd(t_executor *exec, t_cmd *cmd)
 	int	i;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"next_cmd: missing or incomplete exec");
 	i = 0;
 	if (cmd == NULL)
@@ -264,7 +255,7 @@ t_cmd    *previous_cmd(t_executor *exec, t_cmd *cmd)
     int	i;
 
     if (!exec || !exec->cmds)
-        terminate(NULL, NULL, EXIT_FAILURE,
+        terminate(NULL, EXIT_FAILURE,
             "previous_cmd: missing or incomplete exec");
     i = 0;
     if (cmd == NULL)
@@ -277,13 +268,13 @@ t_cmd    *previous_cmd(t_executor *exec, t_cmd *cmd)
 void	close_fd(t_fd_state *fd_state)
 {
 	if (!fd_state)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"close_fd: couldn't close file descriptor");
 	if (fd_state->is_open == 0)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"close_fd: file descriptor already closed");
 	else if (close(fd_state->fd) == -1)
-		terminate(NULL, NULL, EXIT_FAILURE, "Couldn't close file descriptor");
+		terminate(NULL, EXIT_FAILURE, "Couldn't close file descriptor");
 	fd_state->is_open = 0;
 }
 

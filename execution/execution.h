@@ -9,6 +9,9 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+typedef struct s_fd_state t_fd_state;
+typedef struct s_pipe t_pipe;
+
 typedef struct s_node
 {
 	t_pipe			*pipe;
@@ -21,19 +24,19 @@ typedef struct s_queue
 	t_node			*rear;
 }					t_queue;
 
-typedef struct s_fd_state
-{
-	int				fd;
-	int				is_open;
-	t_pipe			*pipe;
-}					t_fd_state;
-
 typedef struct s_pipe
 {
 	int				*pipe_fd;
 	t_fd_state		*read;
 	t_fd_state		*write;
 }					t_pipe;
+
+typedef struct s_fd_state
+{
+	int				fd;
+	int				is_open;
+	t_pipe			*pipe;
+}					t_fd_state;
 
 typedef struct s_executor
 {
@@ -48,15 +51,14 @@ typedef struct s_executor
 int					execution(t_cmd **cmds, char **envp);
 void				set_io_streams(t_executor *exec);
 int					execute(char **argv, char **envp);
-int					execute_cmd(t_executor *exec);
 int					execute_builtin(t_executor *exec);
-int					execute_nested_scope(t_executor *exec);
 t_pipe				*create_pipe(void);
-t_scope				*create_nested_scope(t_executor *exec);
-t_scope				*initialize_scope(t_executor *exec);
 int					check_exit_value(t_executor *exec);
 void				evaluate_logic_operator(t_executor *exec);
 t_fd_state			*initialize_fd_state(int fd);
+int	is_logic(t_executor *exec);
+char	**reverse_pars(t_cmd **cmds_tojoin, int commands);
+
 
 /*
  *	utils
@@ -70,13 +72,11 @@ int					enqueue_pipe(t_queue *queue, t_pipe *pipe);
 t_pipe				*dequeue_pipe(t_queue *queue);
 void				close_pipe(t_pipe *pipe);
 
-int					param_check(t_executor *exec, t_scope *scope);
 void				exit_handler(int status);
 char				*get_path(char *cmd, char *envp[]);
 void				msg_error(char *err);
 void				free_arr2d(void **arr2d);
-void				terminate(t_executor *exec, t_scope *scope, int status,
-						char *msg);
+void				terminate(t_executor *exec, int status, char *msg);
 char				*get_name(char *cmd_path);
 int					is_builtin(t_executor *exec);
 int					is_inside_scope(t_cmd *cmd, int scope);
