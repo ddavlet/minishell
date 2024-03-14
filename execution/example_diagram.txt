@@ -1,4 +1,4 @@
-START 
+START
 -> cmd0 -> cmd1 -> cmd2
     -> open_parenthesis 1
         cmd3 -> cmd4
@@ -15,11 +15,11 @@ START
 cmd9 -> cmd10 -> cmd11
 END
 
-execution process: 
+execution process:
     <pipe>
-    <input_redirection> 
+    <input_redirection>
     <handle_output_redirection>
-    <cmd> 
+    <cmd>
 
 program execution with scope
     (scope) OR			[exit 0]
@@ -38,7 +38,7 @@ program execution with scope
 
 
     scope PIPE (subscope PIPE (subscope)) PIPE scope
-    
+
     (scope) AND (subscope AND subscope) PIPE scope
 
     scope PIPE ((builtin) AND scope AND scope) PIPE scope
