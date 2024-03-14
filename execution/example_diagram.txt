@@ -1,58 +1,95 @@
-START 
--> cmd0 -> cmd1 -> cmd2
-    -> open_parenthesis 1
-        cmd3 -> cmd4
-        -> open_parenthesis 2
-                open_parenthesis 3
-                        -> cmd5
-                closing_parenthesis 3
-                pipe
-                -> cmd6
-        -> close_parenthesis 2
-        cmd7 -> cmd8
-    close_parenthesis 1
-    pipe
-cmd9 -> cmd10 -> cmd11
-END
-
-execution process: 
-    <pipe>
-    <input_redirection> 
-    <handle_output_redirection>
-    <cmd> 
-
-program execution with scope
-    (scope) OR			[exit 0]
-    !(scope) OR (scope)	[exit 0]
-    !(scope) OR !(scope)[exit 1]
-
-    !(scope) AND			[exit 1]
-    (scope) AND !(scope)[exit 1]
-    (scope) AND (scope)	[exit 0]
-
-    success AND ~   [success ->, failure -x]
-    failure OR  ~   [success ->, failure -x]
-    failure AND -x
-    success OR  ->
-
-
-
-    scope PIPE (subscope PIPE (subscope)) PIPE scope
     
-    (scope) AND (subscope AND subscope) PIPE scope
+    
+    
+    
+    {	CMD_0   PIPE_0	(CMD_1	PIPE_1 CMD_2)    PIPE_2    CMD_3}
 
-    scope PIPE ((builtin) AND scope AND scope) PIPE scope
-    {1} AND {1,2,3} AND {1,2} AND {1,2} PIPE {1}
 
-    "cat file" PIPE "wc -c" PIPE "wc -c"
-    cat:    input:0         output:pipe[1]
-    wc:     input:pipe[0]   output:1
 
-    (<infile cat PIPE wc -c PIPE wc -c)
+    { 	CMD_0	PIPE_0   (CMD_1	 PIPE_2	  CMD_3	 PIPE_3	  CMD_4)    }
 
-    ((scope) AND (scope PIPE scope)) PIPE scope PIPE scope
 
-    (cmd0)   ( (cmd1    cmd2)    cmd3)    (cmd4)
+
+	shell_a	(cmds) STND_IN: 0 STND_OUT: 1
+	=>	first cmd: CMD_0
+		=>	subscope?	no
+		=>	builtin?	no
+		=>	operation?	PIPE
+			=>	create PIPE
+		=>	fork child_a
+		=>	last command or AND/OR? no
+	=>	second cmd: CMD_1
+		=>	subscope? yes
+			=>	fork child_b
+			=>	skip cmds inside subscope
+			=>	last scope or AND/OR? yes
+				=> waitpid child_b
+				=> AND/OR? no
+	=>	end
+
+	child_a
+	=>	subscope? no
+	=>	operation before? RUN
+	=>	operation?	PIPE
+		=>  dup2 (PIPE, STDOUT_FILENO) STND_IN: 0 STND_OUT: PIPE
+	=>  close read_fd of PIPE_0
+	=>  execve CMD_0
+
+	child_b
+	=>	subscope? yes
+		create subscope_cmds
+	=>	operation before? PIPE
+		=>  dup2 (PIPE, STDIN_FILENO) STND_IN: PIPE STND_OUT: 1
+		=>	close write_fd of PIPE
+	=>	operation ? PIPE
+        =>  create PIPE
+	=>	execve shell_b(subscope_cmds)
+   
+	shell_b (subscope_cmds) STND_IN: PIPE STND_OUT: 1
+	=>	first cmd: CMD_1
+		=>	subscope? no
+		=>	operation? PIPE
+			=> create pipe
+		=>	fork child_c
+		=>	last command or AND/OR? no
+	=>	second cmd: CMD_2
+		=>	subscope? no
+		=>	operation? RUN
+		=>	fork child_d
+		=>	last command or AND/OR? yes
+			=>	waitpid child_d
+			=>	AND/OR? no
+	=>	end
+
+	child_c
+	=>	subscope? no
+	=>	operation before? RUN
+	=>	operaiton? PIPE
+		dup2 (PIPE, STDOUT_FILENO) STND_IN: 0 STND_OUT: PIPE
+		close read_fd of PIPE
+	=>	execve CMD_1
+
+	child_d
+	=>	subscope? no
+	=>	operation before? PIPE
+		=> dup2 (PIPE, STDIN_FILENO) STND_IN: PIPE STND_OUT: 1
+		=> close write_fd of PIPE
+	=>	operation? RUN
+	=>	execve CMD_2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

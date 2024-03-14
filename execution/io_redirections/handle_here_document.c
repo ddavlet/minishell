@@ -1,12 +1,14 @@
 #include "../execution.h"
 
-t_fd_state  *here_document(const char *delimiter, t_env *env, t_scope *scope)
+t_fd_state  *here_document(t_executor *exec, const char *delimiter)
 {
     char    *line;
     char    *tmp;
-
-    (void)env;
+    // (void)env;
     (void)tmp;
+    t_pipe  *pipe;
+
+    pipe = create_pipe();
     line = readline("heredoc> ");
     while ((line ) != NULL)
     {
@@ -16,12 +18,13 @@ t_fd_state  *here_document(const char *delimiter, t_env *env, t_scope *scope)
         // free(line);
         // line = tmp;
         // ft_printf("line: %s\n", line);
-        write(scope->pipe->write->fd, line, strlen(line));
-        write(scope->pipe->write->fd, "\n", 1);
+        write(pipe->write, line, strlen(line));
+        write(pipe->write, "\n", 1);
         free(line);
         line = readline("heredoc> ");
     }
     free(line);
-    return (scope->pipe->read);
+    close_fd(pipe->read->fd);
+    return (pipe->read->fd);
 }
 

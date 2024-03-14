@@ -1,30 +1,44 @@
 #include "../execution.h"
 
-t_fd_state	*last_input_redir(t_executor *exec, t_scope *scope)
+static void	process_redirection(t_executor *exec, t_redir *redir)
+{
+	if (input_fd_state && input_fd_state->fd != STDIN_FILENO
+		&& (redir->redir_sym == RED_INP || redir->redir_sym == HEAR_DOC))
+		close_fd(input_fd_state);
+	if (redir->redir_sym == RED_INP)
+		input_fd_state = input_redirection(redir->redir_name);
+	else if (redir->redir_sym == HEAR_DOC)
+		input_fd_state = here_document(exec, redir->redir_name);
+    if (!input_fd_state)
+        terminate(NULL, NULL, EXIT_FAILURE,
+            "Couldn't find input redirection");
+    redir = redir->next;
+}
+
+t_fd_state	*last_input_redir(t_executor *exec)
 {
 	t_redir		*redir;
 	t_fd_state	*input_fd_state;
 
-	if (param_check(exec, scope) == -1)
+	if (!exec || !current_cmd(exec))
 		terminate(NULL, NULL, EXIT_FAILURE, "parameter check failed");
-	input_fd_state = exec->input_fd;
-	redir = current_cmd_in_execution(exec)->redirs;
-	if (redir == NULL)
-		return (exec->input_fd);
+	redir = current_cmd(exec)->redirs;
+    if (!redir)
+        return (NULL);
+	input_fd_state = NULL;
 	while (redir)
-	{
-		if ((redir->redir_sym == RED_INP || redir->redir_sym == HEAR_DOC)
-			&& input_fd_state->fd != STDIN_FILENO)
-			close_fd(input_fd_state, exec);
-		if (redir->redir_sym == RED_INP)
-			input_fd_state = input_redirection(redir->redir_name);
-		else if (redir->redir_sym == HEAR_DOC)
-			input_fd_state = here_document(redir->redir_name,
-					current_cmd_in_execution(exec)->env, scope);
-		redir = redir->next;
-		if (!input_fd_state)
-			terminate(NULL, NULL, EXIT_FAILURE,
-				"Couldn't find input redirection");
-	}
+    {
+        if (input_fd_state && input_fd_state->fd != STDIN_FILENO
+            && (redir->redir_sym == RED_INP || redir->redir_sym == HEAR_DOC))
+            close_fd(input_fd_state);
+        if (redir->redir_sym == RED_INP)
+            input_fd_state = input_redirection(redir->redir_name);
+        else if (redir->redir_sym == HEAR_DOC)
+            input_fd_state = here_document(exec, redir->redir_name);
+        if (!input_fd_state)
+            terminate(NULL, NULL, EXIT_FAILURE,
+                "Couldn't find input redirection");
+        redir = redir->next;
+    }
 	return (input_fd_state);
 }

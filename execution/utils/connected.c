@@ -1,6 +1,6 @@
-#include "../execution.h"
+ #include "../execution.h"
 
-static int	connected_through_operation(t_cmd *cmd, t_cmd *other)
+int	connected_through_operation(t_cmd *cmd, t_cmd *other)
 {
 	int	last_common_scope;
 	int	cmd_scope;
@@ -20,24 +20,4 @@ static int	connected_through_operation(t_cmd *cmd, t_cmd *other)
 			- last_common_scope < 2 && cmd_scope == last_common_scope))
 		return (1);
 	return (0);
-}
-
-int	previous_cmd_connected_through_operation(t_executor *exec)
-{
-	t_cmd	*cmd;
-	t_cmd	*prev;
-
-	cmd = current_cmd_in_execution(exec);
-	prev = previous_cmd_in_execution(exec);
-	return (connected_through_operation(cmd, prev));
-}
-
-int	next_cmd_connected_through_operation(t_executor *exec)
-{
-	t_cmd *cmd;
-	t_cmd *next;
-
-	cmd = current_cmd_in_execution(exec);
-	next = next_cmd_in_execution(exec);
-	return (connected_through_operation(cmd, next));
 }
