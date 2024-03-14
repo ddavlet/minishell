@@ -15,14 +15,14 @@ t_fd_state	*last_output_redir(t_executor *exec)
 	{
 		if (output_fd_state && output_fd_state->fd != STDOUT_FILENO
 			&& (redir->redir_sym == RED_OUT || redir->redir_sym == APP_OUT))
-			close_fd(output_fd_state, exec);
+			close_fd(output_fd_state);
 		if (redir->redir_sym == RED_OUT)
 			output_fd_state = truncate_redirection(redir->redir_name);
 		else if (redir->redir_sym == APP_OUT)
 			output_fd_state = append_redirection(redir->redir_name);
 		redir = redir->next;
 		if (!output_fd_state)
-			terminate(NULL, NULL, EXIT_FAILURE,
+			terminate(NULL, EXIT_FAILURE,
 				"Couldn't find output redirection");
 	}
 	return (output_fd_state);

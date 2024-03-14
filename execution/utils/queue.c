@@ -4,7 +4,7 @@ t_queue	*initialize_queue(int size)
 {
 	t_queue	*queue;
 
-    queue = (int *)ft_calloc(size, sizeof(int));
+    queue = (t_queue *)ft_calloc(size, sizeof(t_queue));
     if (!queue)
         return NULL;
     queue->front = NULL;

@@ -26,7 +26,7 @@ int	is_logic(t_executor *exec)
 
 	cmd = current_cmd(exec);
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE,
+		terminate(NULL, EXIT_FAILURE,
 			"is_final: missing or incomplete exec");
 	if (is_nested_scope(exec))
 		cmd = final_cmd_in_scope(exec, get_nested_scope(exec));
@@ -43,19 +43,19 @@ void	evaluate_logic_operator(t_executor *exec)
 	int	executed_status;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, NULL, EXIT_FAILURE, NULL);
+		terminate(NULL, EXIT_FAILURE, NULL);
     cmd = current_cmd(exec);
 	executed_status = exec->status;
 	if (is_first_operant(exec, cmd) && (cmd->operat == OR
 			&& executed_status == EXIT_SUCCESS))
-		terminate(NULL, NULL, EXIT_SUCCESS, "logical OR success");
+		terminate(NULL, EXIT_SUCCESS, "logical OR success");
 	else if (is_first_operant(exec, cmd) && (cmd->operat == AND
 			&& executed_status == EXIT_FAILURE))
-		terminate(NULL, NULL, EXIT_SUCCESS, "logical AND failure");
+		terminate(NULL, EXIT_SUCCESS, "logical AND failure");
 	if (is_second_operant(exec, cmd) && (cmd->operat == OR
 			&& executed_status == EXIT_FAILURE))
-		terminate(NULL, NULL, EXIT_SUCCESS, "logical OR failure");
+		terminate(NULL, EXIT_SUCCESS, "logical OR failure");
 	else if (is_second_operant(exec, cmd) && (cmd->operat == AND
 			&& executed_status == EXIT_FAILURE))
-		terminate(NULL, NULL, EXIT_SUCCESS, "logical AND failure");
+		terminate(NULL, EXIT_SUCCESS, "logical AND failure");
 }
