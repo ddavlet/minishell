@@ -44,7 +44,7 @@ typedef struct s_cmd
 	enum e_oper		operat;
 	int				*scope_stack;
 	struct s_redir	*redirs;
-	// struct s_env	*env;
+	struct s_env	*env;
 }					t_cmd;
 
 typedef struct s_redir

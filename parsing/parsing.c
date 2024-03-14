@@ -60,10 +60,8 @@ int	*add_scope(int *scope)
 
 int	*set_priority(char **tokens, ssize_t prev, ssize_t next, int *scope)
 {
-	int		count;
 	ssize_t	tmp;
 
-	count = 0;
 	tmp = prev;
 	if (prev == next)
 		return (0);
@@ -158,6 +156,7 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
+	commands[0]->env = root; // change this
 	terminate_ptr_str(tokens);
 	return (commands);
 }
