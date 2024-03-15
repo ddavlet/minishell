@@ -26,14 +26,12 @@ void	prepare_next(t_executor *exec)
     debug_started("prepare_next");
 
 	t_cmd	*prev;
-	t_pipe	*pipe;
 
 	prev = previous_cmd(exec, current_cmd(exec));
 	if (has_nested_scope(prev))
 		prev = first_cmd_in_scope(exec, get_nested_scope(prev));
-	pipe = last_unclosed_pipe(exec->pipes);
 	if (prev->operat == PIPE)
-		close_fd(pipe->write);
+        close_next_pipe(exec);
 
     debug_ended("prepare_next");
 }
@@ -66,7 +64,7 @@ static void	execute_nested_scope(t_executor *exec)
 static void	execute_cmd(t_executor *exec)
 {
 	debug_started("execute_cmd: parent");
-	//debug_pipe_information(last_unclosed_pipe(exec->pipes));
+	debug_pipe_information(last_unclosed_pipe(exec->pipes));
 
 	char	**argv;
 	char	**envp;
@@ -82,11 +80,10 @@ static void	execute_cmd(t_executor *exec)
         debug_cmd_info(exec);
 
 		set_io_streams(exec);
-		//debug_pipe_information(last_unclosed_pipe(exec->pipes));
+		debug_pipe_information(last_unclosed_pipe(exec->pipes));
 		execute(argv, envp);
 
-		debug_ended("execute_cmd: child");
-		//debug_pipe_information(last_unclosed_pipe(exec->pipes));
+		debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
@@ -97,6 +94,7 @@ static void	execute_cmd(t_executor *exec)
 
 int	execution(t_cmd **cmds, char **envp)
 {
+    debug_started("execution");
 	t_executor	*exec;
 
 	if (!cmds)
@@ -118,7 +116,8 @@ int	execution(t_cmd **cmds, char **envp)
         if (current_cmd(exec) != NULL)
             prepare_next(exec);
         debug_ended("execution loop");
-        //debug_pipe_information(last_unclosed_pipe(exec->pipes));
+        debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
+    debug_ended("execution");
 	return (0);
 }

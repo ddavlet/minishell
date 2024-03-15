@@ -51,7 +51,9 @@ char						**reverse_pars(t_cmd **cmds_tojoin, int commands);
  */
 t_pipe						**initialize_pipes(t_executor *exec);
 t_pipe						*create_pipe(void);
-void						close_pipe(t_pipe *pipe);
+// void						close_pipe(t_pipe *pipe);
+void    close_next_pipe(t_executor *exec);
+t_pipe	*get_next_pipe(t_executor *exec);
 
 /*
  *	utils

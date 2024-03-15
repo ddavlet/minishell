@@ -9,7 +9,6 @@ void	handle_pipe_output(t_executor *exec)
 		terminate(NULL, EXIT_FAILURE,
 			"minishell: unable to set pipe to output");
 	close_fd(pipe->write);
-	// close_fd(pipe->read);
 }
 
 void	handle_redir_output(t_executor *exec)
@@ -37,7 +36,6 @@ void	handle_pipe_input(t_executor *exec)
 	if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
 		terminate(NULL, EXIT_FAILURE,
 			"minishell: unable to set pipe to input");
-	// close_fd(pipe->read);
 }
 
 void	handle_redir_input(t_executor *exec)

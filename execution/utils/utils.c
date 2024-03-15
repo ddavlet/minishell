@@ -295,10 +295,14 @@ void	skip_nested_cmds(t_executor *exec)
 
 t_pipe	*last_unclosed_pipe(t_pipe **pipes)
 {
+    debug_started("last_unclosed_pipe");
+
 	int	i;
 
 	i = 0;
 	while (pipes[i]->read->is_open == 0 && pipes[i]->write->is_open == 0)
 		i++;
-	return (pipes[i]);
+	debug_pipe_information(pipes[i]);
+    debug_ended("last_unclosed_pipe");
+    return (pipes[i]);
 }

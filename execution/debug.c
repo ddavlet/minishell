@@ -14,7 +14,7 @@ int	main(int argc, char *argv[],const char *envp[])
 	(void)argv;
 	t_env *env = init_env((const char **)envp);
 
-	cmds = parse_text("echo 'hello' | cat", env);
+	cmds = parse_text("echo hello | cat | cat", env);
 		// wildcard parsing error: No such file or directory
 	execution(cmds, (char **)envp);
 	return (0);
@@ -76,3 +76,4 @@ void    debug_cmd_info(t_executor *exec)
     ft_putendl_fd("", 2);
     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
 }
+
