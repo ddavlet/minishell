@@ -64,7 +64,7 @@ int	*set_priority(char **tokens, ssize_t prev, ssize_t next, int *scope)
 
 	tmp = prev;
 	if (prev == next)
-		return (0);
+		return (ft_intarrdup(scope));
 	scope = ft_intarrdup(scope);
 	while (ft_isparenthesis(tokens[prev++]) == 1)
 		scope = add_scope(scope);
@@ -156,7 +156,7 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
-	commands[0]->env = root; // change this
+	// commands[0]->env = root; // change this
 	terminate_ptr_str(tokens);
 	return (commands);
 }
