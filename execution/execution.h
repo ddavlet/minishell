@@ -73,7 +73,7 @@ void						terminate(t_executor *exec, int status, char *msg);
 char						*get_name(char *cmd_path);
 int							is_builtin(t_executor *exec);
 int							is_inside_scope(t_cmd *cmd, int scope);
-int							is_nested_scope(t_cmd *cmd);
+int							has_nested_scope(t_cmd *cmd);
 int							arr_len(char **arr);
 int							get_nested_scope(t_cmd *cmd);
 t_cmd						*first_cmd_in_scope(t_executor *exec, int scope);
@@ -103,5 +103,6 @@ void    debug_close_fd(t_fd_state *fd_state);
 void    debug_pipe_information(t_pipe *pipe);
 void    debug_started(char *msg);
 void    debug_ended(char *msg);
+void    debug_cmd_info(t_executor *exec);
 
 #endif

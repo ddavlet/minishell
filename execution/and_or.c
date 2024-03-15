@@ -28,7 +28,7 @@ int	is_logic(t_executor *exec)
 	if (!exec || !exec->cmds)
 		terminate(NULL, EXIT_FAILURE,
 			"is_final: missing or incomplete exec");
-	if (is_nested_scope(cmd))
+	if (has_nested_scope(cmd))
 		cmd = final_cmd_in_scope(exec, get_nested_scope(cmd));
 	if (is_first_operant(exec, cmd) || is_second_operant(exec, cmd))
 		return (1);

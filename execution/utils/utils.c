@@ -42,7 +42,7 @@ int	is_final(t_executor *exec)
 	if (!exec || !exec->cmds)
 		terminate(NULL, EXIT_FAILURE, "is_final: missing or incomplete exec");
 	cmd = current_cmd(exec);
-	if (is_nested_scope(cmd))
+	if (has_nested_scope(cmd))
 		cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
 	if (next_cmd(exec, cmd) == NULL)
 		return (1);
@@ -110,7 +110,7 @@ int	is_inside_scope(t_cmd *cmd, int scope)
 	return (0);
 }
 
-int	is_nested_scope(t_cmd *cmd)
+int	has_nested_scope(t_cmd *cmd)
 {
 	int	i;
 
@@ -266,7 +266,7 @@ int	count_pipes(t_executor *exec, bool include_nested_scopes)
 	cmd = exec->cmds[0];
 	while (cmd)
 	{
-		if (include_nested_scopes && is_nested_scope(cmd))
+		if (include_nested_scopes && has_nested_scope(cmd))
 			cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
 		if (cmd->operat == PIPE)
 			count++;

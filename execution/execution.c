@@ -23,15 +23,19 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 
 void	prepare_next(t_executor *exec)
 {
+    debug_started("prepare_next");
+
 	t_cmd	*prev;
 	t_pipe	*pipe;
 
 	prev = previous_cmd(exec, current_cmd(exec));
-	if (is_nested_scope(prev))
+	if (has_nested_scope(prev))
 		prev = first_cmd_in_scope(exec, get_nested_scope(prev));
 	pipe = last_unclosed_pipe(exec->pipes);
 	if (prev->operat == PIPE)
 		close_fd(pipe->write);
+
+    debug_ended("prepare_next");
 }
 
 static void	execute_nested_scope(t_executor *exec)
@@ -62,7 +66,7 @@ static void	execute_nested_scope(t_executor *exec)
 static void	execute_cmd(t_executor *exec)
 {
 	debug_started("execute_cmd: parent");
-	debug_pipe_information(last_unclosed_pipe(exec->pipes));
+	//debug_pipe_information(last_unclosed_pipe(exec->pipes));
 
 	char	**argv;
 	char	**envp;
@@ -75,20 +79,20 @@ static void	execute_cmd(t_executor *exec)
 	else if (exec->pid == 0)
 	{
 		debug_started("execute_cmd: child");
-		debug_pipe_information(last_unclosed_pipe(exec->pipes));
+        debug_cmd_info(exec);
 
 		set_io_streams(exec);
+		//debug_pipe_information(last_unclosed_pipe(exec->pipes));
 		execute(argv, envp);
 
 		debug_ended("execute_cmd: child");
-		debug_pipe_information(last_unclosed_pipe(exec->pipes));
+		//debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
 	exec->command_index++;
 
 	debug_ended("execute_cmd: parent");
-	debug_pipe_information(last_unclosed_pipe(exec->pipes));
 }
 
 int	execution(t_cmd **cmds, char **envp)
@@ -104,14 +108,17 @@ int	execution(t_cmd **cmds, char **envp)
 		terminate(NULL, EXIT_FAILURE, "failed to initialize executor");
 	while (current_cmd(exec) != NULL)
 	{
-		if (is_nested_scope(current_cmd(exec)))
+        debug_started("execution loop");
+		if (has_nested_scope(current_cmd(exec)))
 			execute_nested_scope(exec);
 		else if (is_builtin(exec))
 			execute_builtin(exec);
 		else
 			execute_cmd(exec);
-		if (current_cmd(exec) != NULL)
-			prepare_next(exec);
+        if (current_cmd(exec) != NULL)
+            prepare_next(exec);
+        debug_ended("execution loop");
+        //debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
 	return (0);
 }
