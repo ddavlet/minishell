@@ -68,19 +68,16 @@ void    close_pipe(t_pipe *pipe)
         close_fd(pipe->read);
 }
 
-int count_pipes(t_executor *exec, bool include_nested_scopes)
+t_pipe **initialize_pipes(t_executor *exec)
 {
-    t_cmd   *cmd;
-    int     count;
+	int		pipe_count;
+	t_pipe **pipes;
 
-    count = 0;
-    cmd = exec->cmds[0];
-    while (cmd)
-    {
-        if (is_nested_scope(cmd))
-            cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
-        if (cmd->operat == PIPE)
-            count++;
-        cmd = next_cmd(exec, cmd);
-    }
+	pipe_count = count_pipes(exec, false);
+	pipes = (t_pipe **)ft_calloc(pipe_count, sizeof(t_pipe *));
+	if (!pipes)
+		return (NULL);
+	while (pipe_count--)
+		pipes[pipe_count] = create_pipe();
+	return (pipes);
 }

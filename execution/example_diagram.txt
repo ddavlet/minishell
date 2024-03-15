@@ -4,7 +4,7 @@
     
     {	CMD_0   PIPE_0	(CMD_1	| CMD_2)    PIPE_1    CMD_3    PIPE_2	(CMD_4	| CMD_5)    PIPE_3    CMD_6 }
 
-    {   PIPE_0, PIPE_1, PIPE_2   }
+  front <- {   PIPE_0, PIPE_1, PIPE_2, PIPE_3   } -> rear
 
     { 	CMD_0	PIPE_0   (CMD_1	 PIPE_2	  CMD_3	 PIPE_3	  CMD_4)    }
 
