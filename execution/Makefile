@@ -7,7 +7,7 @@ all: $(NAME)
 
 $(NAME): $(NAME).c
 	make -C ../libft/
-	gcc -o $(NAME) $(SRCS)  $(INC) ../libft/libft.a  $(LIB) $(FLAGS)
+	cc -o $(NAME) $(SRCS)  $(INC) ../libft/libft.a  $(LIB) $(FLAGS)
 clean:
 	make -C ../libft/ fclean
 	rm -f $(NAME)

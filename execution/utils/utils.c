@@ -40,17 +40,14 @@ int	is_final(t_executor *exec)
 	t_cmd	*cmd;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"is_final: missing or incomplete exec");
-	if (is_nested_scope(exec))
-		cmd = final_cmd_in_scope(exec, current_cmd(exec)->scope_stack[1]);
-	else
-		cmd = current_cmd(exec);
+		terminate(NULL, EXIT_FAILURE, "is_final: missing or incomplete exec");
+	cmd = current_cmd(exec);
+	if (has_nested_scope(cmd))
+		cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
 	if (next_cmd(exec, cmd) == NULL)
 		return (1);
 	return (0);
 }
-
 
 int	execution_has_finished(t_executor *exec)
 {
@@ -113,16 +110,11 @@ int	is_inside_scope(t_cmd *cmd, int scope)
 	return (0);
 }
 
-int	is_nested_scope(t_executor *exec)
+int	has_nested_scope(t_cmd *cmd)
 {
-	t_cmd	*cmd;
-	int		i;
+	int	i;
 
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"is_nested_scope: parameter check failed");
 	i = 0;
-	cmd = current_cmd(exec);
 	while (cmd->scope_stack[i])
 		i++;
 	if (cmd->scope_stack[i - 1] > SCOPE)
@@ -130,31 +122,29 @@ int	is_nested_scope(t_executor *exec)
 	return (0);
 }
 
-int	scope_length(t_executor *exec, int scope)
+int	scope_length(t_executor *exec, t_cmd *cmd, int scope)
 {
-	t_cmd	*cmd;
 	int		len;
 
-	if (!exec || !exec->cmds || scope == 0)
-		terminate(NULL, EXIT_FAILURE,
-			"scope_length: parameter check failed");
-	len = 1;
-	cmd = next_cmd_in_execution(exec);
+	if (!exec || !cmd || scope == 0)
+		terminate(NULL, EXIT_FAILURE, "scope_length: parameter check failed");
+	len = 0;
 	while (is_inside_scope(cmd, scope))
 	{
 		len++;
 		cmd = next_cmd(exec, cmd);
 	}
+	if (!len)
+	{
+		terminate(NULL, EXIT_FAILURE, "scope_length: command not inside scope");
+	}
 	return (len);
 }
 
-int	get_nested_scope(t_executor *exec)
+int	get_nested_scope(t_cmd *cmd)
 {
-	t_cmd	*cmd;
-
-	cmd = current_cmd(exec);
 	if (!cmd->scope_stack[1])
-        terminate(NULL, EXIT_FAILURE, "get_nested_scope: no nested scope");
+		terminate(NULL, EXIT_FAILURE, "get_nested_scope: no nested scope");
 	return (cmd->scope_stack[1]);
 }
 
@@ -176,26 +166,6 @@ t_cmd	*current_cmd(t_executor *exec)
 	return (exec->cmds[exec->command_index]);
 }
 
-t_cmd	*previous_cmd_in_execution(t_executor *exec)
-{
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"previous_cmd_in_execution: missing or incomplete exec");
-	if (exec->command_index == 0)
-		return (NULL);
-	return (exec->cmds[exec->command_index - 1]);
-}
-
-t_cmd	*next_cmd_in_execution(t_executor *exec)
-{
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"next_cmd_in_execution: missing or incomplete exec");
-	if (current_cmd(exec) == NULL)
-		return (NULL);
-	return (exec->cmds[exec->command_index + 1]);
-}
-
 int	get_scope(t_cmd *cmd)
 {
 	int	i;
@@ -206,16 +176,6 @@ int	get_scope(t_cmd *cmd)
 	while (cmd->scope_stack[i])
 		i++;
 	return (cmd->scope_stack[i - 1]);
-}
-
-int	get_outside_scope(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->scope_stack[i])
-		i++;
-	return (cmd->scope_stack[i - 2]);
 }
 
 t_cmd	*final_cmd_in_scope(t_executor *exec, int scope)
@@ -235,13 +195,29 @@ t_cmd	*final_cmd_in_scope(t_executor *exec, int scope)
 	return (cmd);
 }
 
+t_cmd	*first_cmd_in_scope(t_executor *exec, int scope)
+{
+	t_cmd	*cmd;
+	t_cmd	*prev;
+
+	if (!exec)
+		terminate(NULL, EXIT_FAILURE, "parameter check failed");
+	cmd = previous_cmd(exec, current_cmd(exec));
+	prev = previous_cmd(exec, cmd);
+	while (is_inside_scope(prev, scope))
+	{
+		cmd = prev;
+		prev = previous_cmd(exec, cmd);
+	}
+	return (cmd);
+}
+
 t_cmd	*next_cmd(t_executor *exec, t_cmd *cmd)
 {
 	int	i;
 
 	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"next_cmd: missing or incomplete exec");
+		terminate(NULL, EXIT_FAILURE, "next_cmd: missing or incomplete exec");
 	i = 0;
 	if (cmd == NULL)
 		return (NULL);
@@ -250,19 +226,21 @@ t_cmd	*next_cmd(t_executor *exec, t_cmd *cmd)
 	return (exec->cmds[i + 1]);
 }
 
-t_cmd    *previous_cmd(t_executor *exec, t_cmd *cmd)
+t_cmd	*previous_cmd(t_executor *exec, t_cmd *cmd)
 {
-    int	i;
+	int	i;
 
-    if (!exec || !exec->cmds)
-        terminate(NULL, EXIT_FAILURE,
-            "previous_cmd: missing or incomplete exec");
-    i = 0;
-    if (cmd == NULL)
-        return (NULL);
-    while (exec->cmds[i] != cmd && exec->cmds[i + 1] != NULL)
-        i++;
-    return (exec->cmds[i - 1]);
+	if (!exec || !exec->cmds)
+		terminate(NULL, EXIT_FAILURE,
+			"previous_cmd: missing or incomplete exec");
+	i = 0;
+	if (cmd == NULL)
+		return (NULL);
+	if (exec->command_index == 0)
+		return (NULL);
+	while (exec->cmds[i] != cmd && exec->cmds[i + 1] != NULL)
+		i++;
+	return (exec->cmds[i - 1]);
 }
 
 void	close_fd(t_fd_state *fd_state)
@@ -270,31 +248,61 @@ void	close_fd(t_fd_state *fd_state)
 	if (!fd_state)
 		terminate(NULL, EXIT_FAILURE,
 			"close_fd: couldn't close file descriptor");
+	debug_close_fd(fd_state);
 	if (fd_state->is_open == 0)
 		terminate(NULL, EXIT_FAILURE,
 			"close_fd: file descriptor already closed");
-	else if (close(fd_state->fd) == -1)
+    else if (close(fd_state->fd) == -1)
 		terminate(NULL, EXIT_FAILURE, "Couldn't close file descriptor");
 	fd_state->is_open = 0;
 }
 
-char	**argv(t_executor *exec)
+int	count_pipes(t_executor *exec, bool include_nested_scopes)
 {
 	t_cmd	*cmd;
+	int		count;
 
-	if (!exec || !exec->cmds)
-		return (NULL);
-	cmd = current_cmd(exec);
-	return (cmd->argv);
+	count = 0;
+	cmd = exec->cmds[0];
+	while (cmd)
+	{
+		if (include_nested_scopes && has_nested_scope(cmd))
+			cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
+		if (cmd->operat == PIPE)
+			count++;
+		cmd = next_cmd(exec, cmd);
+	}
+	return (count);
 }
 
-char	**envp(t_executor *exec)
+void	skip_nested_cmds(t_executor *exec)
 {
-	t_cmd *cmd;
+	int		i;
+	t_cmd	*cmd;
+	t_cmd	*next;
 
-	if (!exec || !exec->cmds)
-		return (NULL);
+	i = 1;
 	cmd = current_cmd(exec);
-	return (cmd->env->envp);
+	next = next_cmd(exec, cmd);
+	while (is_inside_scope(next, get_nested_scope(cmd)))
+	{
+		cmd = next;
+		next = next_cmd(exec, cmd);
+		i++;
+	}
+	exec->command_index += i;
 }
 
+t_pipe	*last_unclosed_pipe(t_pipe **pipes)
+{
+    debug_started("last_unclosed_pipe");
+
+	int	i;
+
+	i = 0;
+	while (pipes[i]->read->is_open == 0 && pipes[i]->write->is_open == 0)
+		i++;
+	debug_pipe_information(pipes[i]);
+    debug_ended("last_unclosed_pipe");
+    return (pipes[i]);
+}

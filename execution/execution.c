@@ -9,44 +9,52 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 	exec = (t_executor *)ft_calloc(1, sizeof(t_executor));
 	if (!exec)
 		return (NULL);
+	exec->cmds = cmds;
 	exec->envp = envp;
 	exec->command_index = 0;
-	exec->cmds = cmds;
 	exec->status = 0;
+	exec->pipes = initialize_pipes(exec);
+	if (!exec->pipes)
+	{
+		terminate(exec, EXIT_FAILURE, "minishell: failed to initialize pipes");
+	}
 	return (exec);
 }
 
-void	skip_nested_cmds(t_executor *exec)
+void	prepare_next(t_executor *exec)
 {
-	int		i;
-	t_cmd	*cmd;
-	t_cmd	*next;
+    debug_started("prepare_next");
 
-	i = 1;
-	cmd = current_cmd(exec);
-	next = next_cmd(exec, cmd);
-	while (is_inside_scope(next, get_nested_scope(exec)))
-	{
-		cmd = next;
-		next = next_cmd(exec, cmd);
-		i++;
-	}
-	exec->command_index += i;
+	t_cmd	*prev;
+
+	prev = previous_cmd(exec, current_cmd(exec));
+	if (has_nested_scope(prev))
+		prev = first_cmd_in_scope(exec, get_nested_scope(prev));
+	if (prev->operat == PIPE)
+        close_next_pipe(exec);
+
+    debug_ended("prepare_next");
 }
 
 static void	execute_nested_scope(t_executor *exec)
 {
 	char	**argv;
+	char	**envp;
+	t_cmd	**scope_ptr;
+	int		scope_len;
 
+	scope_ptr = exec->cmds + exec->command_index;
+	scope_len = scope_length(exec, current_cmd(exec),
+			get_nested_scope(current_cmd(exec)));
+	argv = reverse_pars(scope_ptr, scope_len);
+	envp = exec->envp;
 	exec->pid = fork();
 	if (exec->pid == -1)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
 	else if (exec->pid == 0)
 	{
 		set_io_streams(exec);
-		argv = reverse_pars(exec->cmds + exec->command_index, scope_length(exec,
-					get_nested_scope(exec)));
-		execute(argv, envp(exec));
+		execute(argv, envp);
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
@@ -55,21 +63,38 @@ static void	execute_nested_scope(t_executor *exec)
 
 static void	execute_cmd(t_executor *exec)
 {
+	debug_started("execute_cmd: parent");
+	debug_pipe_information(last_unclosed_pipe(exec->pipes));
+
+	char	**argv;
+	char	**envp;
+
+	envp = exec->envp;
+	argv = current_cmd(exec)->argv;
 	exec->pid = fork();
 	if (exec->pid == -1)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
 	else if (exec->pid == 0)
 	{
+		debug_started("execute_cmd: child");
+        debug_cmd_info(exec);
+
 		set_io_streams(exec);
-		execute(argv(exec), envp(exec));
+		debug_pipe_information(last_unclosed_pipe(exec->pipes));
+		execute(argv, envp);
+
+		debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
 	exec->command_index++;
+
+	debug_ended("execute_cmd: parent");
 }
 
 int	execution(t_cmd **cmds, char **envp)
 {
+    debug_started("execution");
 	t_executor	*exec;
 
 	if (!cmds)
@@ -81,12 +106,18 @@ int	execution(t_cmd **cmds, char **envp)
 		terminate(NULL, EXIT_FAILURE, "failed to initialize executor");
 	while (current_cmd(exec) != NULL)
 	{
-		if (is_nested_scope(exec))
+        debug_started("execution loop");
+		if (has_nested_scope(current_cmd(exec)))
 			execute_nested_scope(exec);
 		else if (is_builtin(exec))
 			execute_builtin(exec);
 		else
 			execute_cmd(exec);
+        if (current_cmd(exec) != NULL)
+            prepare_next(exec);
+        debug_ended("execution loop");
+        debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
+    debug_ended("execution");
 	return (0);
 }
