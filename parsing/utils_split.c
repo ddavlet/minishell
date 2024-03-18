@@ -42,7 +42,7 @@ static uint32_t	ft_count_len(char const **str)
 	else if (ft_istoken(s[i]) == 5)
 		return (1);
 	else
-		while (s[i] && !ft_istoken(s[i]))
+		while (s[i] && !ft_istoken(s[i]) && !ft_isignored((char *)&s[i]))
 			i++;
 	return (i);
 }

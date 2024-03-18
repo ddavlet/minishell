@@ -15,7 +15,7 @@ int	main(int argc, char *argv[],const char *envp[])
 	(void)argc;
 	(void)argv;
 	t_env *env = init_env((const char **)envp);
-	cmds = parse_text("echo test | echo test2 || echo test 3", env);
-	debug_print_array_strings(reverse_pars(cmds, 3));
+	cmds = parse_text("< *.txt Makefile \"\"'cat'\"\" || echo \"$pwd 'hola'\" ~/src | 'tr' -d &", env);
+	// debug_print_array_strings(reverse_pars(cmds, 3));
 	return (0);
 }
