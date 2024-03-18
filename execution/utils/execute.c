@@ -9,7 +9,7 @@ int execute(char **argv, char **envp)
 	path = get_path(argv[0], envp);
 	if (path == NULL)
 		terminate(NULL, EXIT_FAILURE, "minishell: couldn't find path");
-	debug_ended("execute_cmd: child");
+	// debug_ended("execute_cmd: child");
 	if (execve(path, argv, envp) == -1)
 		terminate(NULL, EXIT_FAILURE, "minishell: execution failure");
 	return (0);

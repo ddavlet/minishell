@@ -25,7 +25,7 @@ static t_pipe  *initialize_pipe(void)
 	{
 		free(pipe_fd);
 		return (NULL);
-	}    
+	}
 	if (pipe(pipe_fd) == -1)
 	{
 		free(pipe_fd);
@@ -70,7 +70,7 @@ t_pipe	*create_pipe(void)
 
 t_pipe	*get_next_pipe(t_executor *exec)
 {
-	debug_started("get_next_pipe");
+	// debug_started("get_next_pipe");
 
     t_pipe  *pipe;
     int     i;
@@ -79,14 +79,14 @@ t_pipe	*get_next_pipe(t_executor *exec)
     while(exec->pipes[i] && exec->pipes[i]->write->is_open == 0)
         i++;
     pipe = exec->pipes[i];
-	debug_pipe_information(pipe);
-	debug_ended("get_next_pipe");
-	return (pipe);	
+	// debug_pipe_information(pipe);
+	// debug_ended("get_next_pipe");
+	return (pipe);
 }
 
 void    close_next_pipe(t_executor *exec)
 {
-	debug_started("close_next_pipe");
+	// debug_started("close_next_pipe");
 
     t_pipe  *pipe;
     int     i;
@@ -97,8 +97,8 @@ void    close_next_pipe(t_executor *exec)
     pipe = exec->pipes[i];
 
 	close_fd(pipe->write);
-	debug_pipe_information(pipe);
-	debug_ended("close_next_pipe");
+	// debug_pipe_information(pipe);
+	// debug_ended("close_next_pipe");
 }
 
 t_pipe **initialize_pipes(t_executor *exec)

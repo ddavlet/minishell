@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:27:43 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/02/24 14:13:32 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/18 14:02:37 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,7 @@ char	*get_next_line(int fd);
 int		ft_atoi_binar(const char *nptr, int i);
 
 size_t	ft_lstlen(t_list **list);
+
+char	*ft_strjoin_free(char *s1, char const *s2);
 
 #endif

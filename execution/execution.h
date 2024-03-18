@@ -8,6 +8,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <stdio.h>
 
 typedef struct s_fd_state	t_fd_state;
 typedef struct s_pipe		t_pipe;

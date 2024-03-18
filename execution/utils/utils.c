@@ -248,7 +248,7 @@ void	close_fd(t_fd_state *fd_state)
 	if (!fd_state)
 		terminate(NULL, EXIT_FAILURE,
 			"close_fd: couldn't close file descriptor");
-	debug_close_fd(fd_state);
+	// debug_close_fd(fd_state);
 	if (fd_state->is_open == 0)
 		terminate(NULL, EXIT_FAILURE,
 			"close_fd: file descriptor already closed");
@@ -295,14 +295,14 @@ void	skip_nested_cmds(t_executor *exec)
 
 t_pipe	*last_unclosed_pipe(t_pipe **pipes)
 {
-    debug_started("last_unclosed_pipe");
+    // debug_started("last_unclosed_pipe");
 
 	int	i;
 
 	i = 0;
 	while (pipes[i]->read->is_open == 0 && pipes[i]->write->is_open == 0)
 		i++;
-	debug_pipe_information(pipes[i]);
-    debug_ended("last_unclosed_pipe");
+	// debug_pipe_information(pipes[i]);
+    // debug_ended("last_unclosed_pipe");
     return (pipes[i]);
 }

@@ -1,25 +1,5 @@
 #include "parsing.h"
 
-char	*strjoin_free(char *s1, char const *s2)
-{
-	ssize_t	i;
-	ssize_t	j;
-	char	*ptr;
-
-	i = -1;
-	j = ft_strlen(s1) + ft_strlen(s2);
-	ptr = (char *)malloc((j + 1) * sizeof(char));
-	if (!ptr)
-		return (0);
-	while (s1[++i])
-		ptr[i] = s1[i];
-	while (*s2)
-		ptr[i++] = *s2++;
-	free(s1);
-	ptr[i] = '\0';
-	return (ptr);
-}
-
 int	var_exists(char *arg)
 {
 	while (*arg && *arg != '=')
@@ -53,10 +33,10 @@ char	*get_envvar(const char *txt, t_env *root)
 	if (!tmp_2)
 		return (error_general(new_txt, "get_envvar")); // ?? protect allocated memory not freed
 	tmp_1 = new_txt;
-	new_txt = strjoin_free(tmp_1, tmp_2); // protect
+	new_txt = ft_strjoin_free(tmp_1, tmp_2); // protect
 	free(tmp_2);
 	tmp_1 = new_txt;
-	new_txt = strjoin_free(tmp_1, &txt[i + del_pos(&txt[i + 1]) + 1]);
+	new_txt = ft_strjoin_free(tmp_1, &txt[i + del_pos(&txt[i + 1]) + 1]);
 	return (new_txt);
 }
 
