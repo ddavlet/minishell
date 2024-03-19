@@ -15,7 +15,7 @@ int	execute_builtin(t_executor *exec)
     else if (ft_strncmp(builtin, "env", ft_strlen("env")) == 0)
         builtin_env(cmd->argv, cmd->env);
     else if (ft_strncmp(builtin, "exit", ft_strlen("exit")) == 0)
-        builtin_exit(cmd->argv, cmd->env);
+        builtin_exit(cmd->argv, cmd->env, exec);
     else if (ft_strncmp(builtin, "pwd", ft_strlen("pwd")) == 0)
         builtin_pwd(cmd->argv, cmd->env);
     else if (ft_strncmp(builtin, "unset", ft_strlen("unset")) == 0)
