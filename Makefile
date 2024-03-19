@@ -18,27 +18,26 @@ PAR_SOURCE := cmd_utils.c env_utils.c env_utils2.c errors.c errors2.c general_ut
 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c speccase_utils.c syntax_utils.c terminating.c \
 				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
-BUL_SOURCE := *.C
+BUL_SOURCE := builtin_utils.c cd.c echo.c env.c error_messages.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c
-INC := -Iparsing/ -Ilibft/ -Iexecution/
+INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/
 LIB_DIR := libft/
 LIB := -lft -lreadline
 FLAGS := -g -Wall -Wextra -Werror
-OBJ = $(EXE_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(MAIN:.c=.o)
+OBJ = $(BUL_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(EXE_SRCS:.c=.o) $(MAIN:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	make -C $(LIB_DIR)
-	$(CC) $(FLAGS) $(INC) -L$(LIB_DIR) $(LIB) $(OBJ) -o $(NAME)
+	$(CC) $(FLAGS) $(INC) $(OBJ) -L$(LIB_DIR) $(LIB) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(FLAGS) $(LIB) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)
 	make -C libft/ fclean
-
 
 fclean: clean
 	$(RM) $(NAME)

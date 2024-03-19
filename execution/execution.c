@@ -23,9 +23,14 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 
 void	prepare_next(t_executor *exec)
 {
-
+    t_cmd   *cmd;
 	t_cmd	*prev;
 
+    cmd = current_cmd(exec);
+    if (next_cmd(exec, cmd) == NULL)
+    {
+        return ;
+    }
 	prev = previous_cmd(exec, current_cmd(exec));
 	if (has_nested_scope(prev))
 		prev = first_cmd_in_scope(exec, get_nested_scope(prev));
@@ -100,8 +105,7 @@ int	execution(t_cmd **cmds, char **envp)
 			execute_builtin(exec);
 		else
 			execute_cmd(exec);
-        if (current_cmd(exec) != NULL)
-            prepare_next(exec);
+        prepare_next(exec);
 	}
 	return (0);
 }

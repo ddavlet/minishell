@@ -83,12 +83,12 @@ int	is_builtin(t_executor *exec)
 		if (!cmd)
 			return (0);
 	}
-	if (ft_strncmp(cmd, "cd", ft_strlen(cmd) == 0) || ft_strncmp(cmd, "echo",
-			ft_strlen(cmd) == 0) || ft_strncmp(cmd, "env", ft_strlen(cmd) == 0)
-		|| ft_strncmp(cmd, "exit", ft_strlen(cmd) == 0) || ft_strncmp(cmd,
-			"export", ft_strlen(cmd) == 0) || ft_strncmp(cmd, "pwd",
-			ft_strlen(cmd) == 0) || ft_strncmp(cmd, "unset",
-			ft_strlen(cmd) == 0))
+	if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0 || ft_strncmp(cmd, "echo",
+			ft_strlen(cmd)) == 0 || ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0
+		|| ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0 || ft_strncmp(cmd,
+			"export", ft_strlen(cmd)) == 0 || ft_strncmp(cmd, "pwd",
+			ft_strlen(cmd)) == 0 || ft_strncmp(cmd, "unset",
+			ft_strlen(cmd)) == 0)
 		return (1);
 	return (0);
 }
@@ -115,10 +115,13 @@ int	has_nested_scope(t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd->scope_stack[i])
-		i++;
-	if (cmd->scope_stack[i - 1] > SCOPE)
-		return (1);
+    if (cmd)
+    {
+        while (cmd->scope_stack[i])
+            i++;
+        if (cmd->scope_stack[i - 1] > SCOPE)
+            return (1);
+    }
 	return (0);
 }
 
