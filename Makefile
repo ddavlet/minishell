@@ -18,7 +18,7 @@ PAR_SOURCE := cmd_utils.c env_utils.c env_utils2.c errors.c errors2.c general_ut
 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c speccase_utils.c syntax_utils.c terminating.c \
 				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
-BUL_SOURCE := *.C
+BUL_SOURCE := *.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c
 INC := -Iparsing/ -Ilibft/ -Iexecution/
@@ -26,7 +26,7 @@ LIB_DIR := libft/
 LIBFT := $(LIB_DIR)libft.a
 LIB := -lft -lreadline
 FLAGS := -g -Wall -Wextra -Werror
-OBJ = $(EXE_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(MAIN:.c=.o)
+OBJ = $(EXE_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(BUL_SRCS) $(MAIN:.c=.o)
 
 all: $(NAME)
 
