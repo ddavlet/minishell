@@ -1,7 +1,8 @@
 #ifndef WILDCARD_H
 # define WILDCARD_H
 
-# include "../parsing.h"
+# include "../../libft/libft.h"
+# include <stdbool.h>
 
 typedef struct s_tree
 {

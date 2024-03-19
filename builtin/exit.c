@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_exit(char **argv, t_env *root, t_executor *executor)
+int	builtin_exit(char **argv, t_env *root, t_executor *exec)
 {
 	int	i;
 
@@ -22,9 +22,9 @@ int	builtin_exit(char **argv, t_env *root, t_executor *executor)
 			ft_putstr_fd(": numeric argument required\n", 2);
 			return (255);
 		}
-		terminate(executor, ft_atoi(argv[1]) % 256, NULL);
+		terminate(exec, ft_atoi(argv[1]) % 256, NULL);
 		// return (ft_atoi(argv[1]) % 256);
 	}
-	terminate(executor, 0, NULL);
-	// return (0);
+	terminate(exec, 0, NULL);
+	return (0);
 }

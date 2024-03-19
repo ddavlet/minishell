@@ -2,15 +2,10 @@
 # define PARSING_H
 
 # include "../libft/libft.h"
-# include <signal.h>
-# include <stdbool.h>
-# include <stdint.h>
+# include "../parsing/wildcard/wildcard.h"
 # include <stdio.h>
-# include <string.h>
-# include <unistd.h>
-# include <dirent.h>
 # include <sys/types.h>
-# include "./wildcard/wildcard.h"
+# include <dirent.h>
 
 typedef enum e_oper
 {

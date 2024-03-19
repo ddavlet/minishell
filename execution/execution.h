@@ -1,15 +1,11 @@
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
-# define SCOPE 1
 # include "../libft/libft.h"
 # include "../parsing/parsing.h"
 # include "../builtin/builtin.h"
-# include <readline/readline.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include <stdio.h>
+
+# define SCOPE 1
 
 typedef struct s_fd_state	t_fd_state;
 typedef struct s_pipe		t_pipe;
