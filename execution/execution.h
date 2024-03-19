@@ -4,6 +4,7 @@
 # define SCOPE 1
 # include "../libft/libft.h"
 # include "../parsing/parsing.h"
+# include "../builtin/builtin.h"
 # include <readline/readline.h>
 # include <sys/types.h>
 # include <sys/wait.h>
