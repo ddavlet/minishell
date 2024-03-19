@@ -22,9 +22,6 @@ t_fd_state	*last_input_redir(t_executor *exec)
             input_fd_state = input_redirection(redir->redir_name);
         else if (redir->redir_sym == HEAR_DOC)
             input_fd_state = here_document(exec, redir->redir_name);
-        if (!input_fd_state)
-            terminate(NULL, EXIT_FAILURE,
-                "Couldn't find input redirection");
         redir = redir->next;
     }
 	return (input_fd_state);

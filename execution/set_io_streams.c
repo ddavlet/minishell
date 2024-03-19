@@ -48,7 +48,7 @@ void	handle_redir_input(t_executor *exec)
 	input_fd = last_input_redir(exec);
 	if (input_fd)
 	{
-		if (dup2(input_fd->fd, STDOUT_FILENO) == -1)
+		if (dup2(input_fd->fd, STDIN_FILENO) == -1)
 			terminate(NULL, EXIT_FAILURE,
 				"minishell: unable to set pipe to output");
 		if (input_fd->fd != STDIN_FILENO)

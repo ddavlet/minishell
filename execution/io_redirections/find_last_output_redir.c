@@ -21,9 +21,6 @@ t_fd_state	*last_output_redir(t_executor *exec)
 		else if (redir->redir_sym == APP_OUT)
 			output_fd_state = append_redirection(redir->redir_name);
 		redir = redir->next;
-		if (!output_fd_state)
-			terminate(NULL, EXIT_FAILURE,
-				"Couldn't find output redirection");
 	}
 	return (output_fd_state);
 }
