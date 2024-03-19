@@ -73,6 +73,7 @@ int	main(int argc, char *argv[],const char *envp[])
 	(void)argc;
 	(void)argv;
 	env = init_env((const char **)envp);
+	append_envp(env, "SHELL", "minishell");
 	line = NULL;
 	while (1)
 	{
