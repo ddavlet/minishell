@@ -1,7 +1,7 @@
 #ifndef BUILTIN_H
 #define BUILTIN_H
 
-# include "../parsing/parsing.h"
+# include "../main.h"
 # include <stddef.h>
 
 int		builtin_export(char **argv, t_env *root);

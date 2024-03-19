@@ -29,10 +29,13 @@ void	exit_handler(int status)
 void	terminate(t_executor *exec, int status, char *msg)
 {
 	if (exec)
+	{
+		terminate_commands(exec->cmds);
 		free(exec);
+	}
 	if (msg)
 		msg_error(msg);
-	exit_handler(status);
+	exit(status);
 }
 
 int	is_final(t_executor *exec)
