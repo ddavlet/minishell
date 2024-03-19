@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_new.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 12:43:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 16:42:32 by ddavlety         ###   ########.fr       */
+/*   Created: 2024/03/18 16:19:56 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/03/18 16:20:05 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	**arrstr_copy(const char **envp)
 {
-	size_t	i;
+	char		**copy_envp;
+	int32_t		len;
 
-	i = 1;
-	if (n == 0)
-		return (0);
- 	while (*s1 && i < n && *s1 == *s2)
-	{
-		i++;
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char) *s2);
+	len = 0;
+	while (envp[len])
+		len++;
+	copy_envp = (char **)ft_calloc(sizeof (char *), len + 1);
+	len = -1;
+	while (envp[++len])
+		copy_envp[len] = ft_strdup(envp[len]);
+	return (copy_envp);
 }

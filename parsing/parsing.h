@@ -151,7 +151,6 @@ void		*check_tokens(char **tokens);
 /*Utils*/
 int			var_exists(char *arg);
 char		**append_arr_str(char **arr, char *str);
-char		*strjoin_free(char *s1, char const *s2);
 
 /*Terminating*/
 void		terminate_env(t_env *root);

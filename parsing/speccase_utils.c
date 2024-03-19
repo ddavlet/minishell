@@ -46,10 +46,10 @@ static char *get_case(char *token)
 	if (!tmp_2)
 		return (NULL); // ?? protect
 	tmp_1 = new_txt;
-	new_txt = strjoin_free(tmp_1, tmp_2); // protect
+	new_txt = ft_strjoin_free(tmp_1, tmp_2); // protect
 	free(tmp_2);
 	tmp_1 = new_txt;
-	new_txt = strjoin_free(tmp_1, &token[i + 2]);
+	new_txt = ft_strjoin_free(tmp_1, &token[i + 2]);
 	return (new_txt);
 }
 

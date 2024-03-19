@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 12:43:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 16:42:32 by ddavlety         ###   ########.fr       */
+/*   Created: 2024/03/18 14:18:40 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/03/18 16:51:14 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MAIN_H
+# define MAIN_H
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
+# include "./execution/execution.h"
+# include <readline/history.h>
 
-	i = 1;
-	if (n == 0)
-		return (0);
- 	while (*s1 && i < n && *s1 == *s2)
-	{
-		i++;
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char) *s2);
-}
+# define HOSTNAME_FILE "/etc/hostname"
+# define HOSTNAME_LENGTH 256
+
+#endif

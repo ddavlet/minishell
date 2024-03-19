@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strjoinfree.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 12:43:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 16:42:32 by ddavlety         ###   ########.fr       */
+/*   Created: 2024/03/18 13:59:29 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/03/18 14:02:34 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_strjoin_free(char *s1, char const *s2)
 {
-	size_t	i;
+	ssize_t	i;
+	ssize_t	j;
+	char	*ptr;
 
-	i = 1;
-	if (n == 0)
+	i = -1;
+	j = ft_strlen(s1) + ft_strlen(s2);
+	ptr = (char *)malloc((j + 1) * sizeof(char));
+	if (!ptr)
 		return (0);
- 	while (*s1 && i < n && *s1 == *s2)
-	{
-		i++;
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char) *s2);
+	while (s1[++i])
+		ptr[i] = s1[i];
+	while (*s2)
+		ptr[i++] = *s2++;
+	free(s1);
+	ptr[i] = '\0';
+	return (ptr);
 }

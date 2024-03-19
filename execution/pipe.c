@@ -25,7 +25,7 @@ static t_pipe  *initialize_pipe(void)
 	{
 		free(pipe_fd);
 		return (NULL);
-	}    
+	}
 	if (pipe(pipe_fd) == -1)
 	{
 		free(pipe_fd);

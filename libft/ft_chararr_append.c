@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_chararr_append.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 12:43:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 16:42:32 by ddavlety         ###   ########.fr       */
+/*   Created: 2024/03/18 16:18:09 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/03/18 16:18:18 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	**append_arr_str(char **arr, char *str)
 {
-	size_t	i;
+	char	**new_arr;
+	ssize_t	i;
 
-	i = 1;
-	if (n == 0)
-		return (0);
- 	while (*s1 && i < n && *s1 == *s2)
-	{
-		i++;
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char) *s2);
+	i = -1;
+	new_arr = (char **)ft_calloc(sizeof(char *), ft_arr_len(arr) + 2);
+	while (arr[++i])
+		new_arr[i] = arr[i];
+	new_arr[i] = str;
+	free(arr);
+	return (new_arr);
 }

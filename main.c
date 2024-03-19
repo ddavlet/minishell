@@ -1,22 +1,94 @@
-#include "../libft/libft.h"
-#include "execution.h"
-#include <stdlib.h>
-#include <string.h> // For memcpy
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include "main.h"
+
+char	*pwd(t_env *env)
+{
+	char	*pwd;
+	char	*home;
+	char	*tmp;
+
+	pwd = find_var(env, "PWD");
+	home = find_var(env, "HOME");
+	if (ft_strnstr(pwd, home, ft_strlen(home)))
+	{
+		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
+		pwd = ft_strjoin("\x1b[32m""~", tmp);
+		free(tmp);
+		free(home);
+		return (pwd);
+	}
+	else
+	{
+		free(home);
+		return (ft_strdup(pwd));
+	}
+}
+
+char	*hostname(void)
+{
+	int		fd;
+	char	hostname[HOSTNAME_LENGTH];
+
+	fd = open(HOSTNAME_FILE, O_RDONLY);
+	ft_bzero(hostname, HOSTNAME_LENGTH);
+	if (fd < 0)
+	{
+		perror("Hostname file open error:");
+		return (NULL);
+	}
+	if (read(fd, hostname, sizeof(hostname)) < 0)
+	{
+		perror("Hostname file read error:");
+		return (NULL);
+	}
+	return (ft_substr(hostname, 0, ft_strchr(hostname, '.') - hostname)); // len?
+}
+
+char	*create_promt(t_env *env)
+{
+	char	*promt;
+	char	*tmp;
+
+	promt = ft_strdup("🤫""\x1b[32m");
+	tmp = find_var(env, "USER");
+	promt = ft_strjoin_free(promt, tmp);
+	free(tmp);
+	promt = ft_strjoin_free(promt, "\x1b[0m""@");
+	promt = ft_strjoin_free(promt, hostname());
+	promt = ft_strjoin(promt, ":");
+	tmp = pwd(env);
+	promt = ft_strjoin_free(promt, tmp);
+	free(tmp);
+	promt = ft_strjoin_free(promt, "\x1b[0m""$ ");
+	return (promt);
+}
 
 int	main(int argc, char *argv[],const char *envp[])
 {
-	t_cmd **cmds;
+	t_cmd	**cmds;
+	char	*line;
+	char	*promt;
+	t_env	*env;
+
 
 	(void)argc;
 	(void)argv;
-	t_env *env = init_env((const char **)envp);
-
-	cmds = parse_text(" cat <misc/infile_A", env);
-		// wildcard parsing error: No such file or directory
-	execution(cmds, (char **)envp);
+	env = init_env((const char **)envp);
+	line = NULL;
+	while (1)
+	{
+		free(line);
+		promt = create_promt(env);
+		line = readline(promt);
+		free(promt);
+		add_history(line);
+		if (!line ||!line[0])
+			continue ;
+		rl_replace_line("echo test1", 0);
+		cmds = parse_text(line, env);
+		if (!cmds)
+			continue ;
+		execution(cmds, cmds[0]->env->envp);
+	}
 	return (0);
 }
 

@@ -248,7 +248,7 @@ void	close_fd(t_fd_state *fd_state)
 	if (!fd_state)
 		terminate(NULL, EXIT_FAILURE,
 			"close_fd: couldn't close file descriptor");
-	debug_close_fd(fd_state);
+	// debug_close_fd(fd_state);
 	if (fd_state->is_open == 0)
 		terminate(NULL, EXIT_FAILURE,
 			"close_fd: file descriptor already closed");
