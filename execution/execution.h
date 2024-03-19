@@ -52,8 +52,8 @@ char						**reverse_pars(t_cmd **cmds_tojoin, int commands);
 t_pipe						**initialize_pipes(t_executor *exec);
 t_pipe						*create_pipe(void);
 // void						close_pipe(t_pipe *pipe);
-void    close_next_pipe(t_executor *exec);
-t_pipe	*get_next_pipe(t_executor *exec);
+void						close_next_pipe(t_executor *exec);
+t_pipe						*get_next_pipe(t_executor *exec);
 
 /*
  *	utils
@@ -84,7 +84,8 @@ int							get_scope(t_cmd *cmd);
 void						close_fd(t_fd_state *fd_state);
 int							scope_length(t_executor *exec, t_cmd *cmd,
 								int scope);
-t_pipe						*last_unclosed_pipe(t_pipe **pipes);
+t_pipe						*next_pipe(t_pipe **pipes);
+t_pipe						*last_pipe(t_pipe **pipes);
 
 /*
  *   io_redirections
@@ -97,14 +98,13 @@ t_fd_state					*truncate_redirection(const char *file_name);
 t_fd_state					*append_redirection(const char *file_name);
 t_fd_state					*input_redirection(const char *file_name);
 
-
 /*
-*   debug
-*/
-void    debug_close_fd(t_fd_state *fd_state);
-void    debug_pipe_information(t_pipe *pipe);
-void    debug_started(char *msg);
-void    debug_ended(char *msg);
-void    debug_cmd_info(t_executor *exec);
+ *   debug
+ */
+void						debug_close_fd(t_fd_state *fd_state);
+void						debug_pipe_information(t_pipe *pipe);
+void						debug_started(char *msg);
+void						debug_ended(char *msg);
+void						debug_cmd_info(t_executor *exec);
 
 #endif

@@ -70,7 +70,6 @@ t_pipe	*create_pipe(void)
 
 t_pipe	*get_next_pipe(t_executor *exec)
 {
-	debug_started("get_next_pipe");
 
     t_pipe  *pipe;
     int     i;
@@ -79,14 +78,11 @@ t_pipe	*get_next_pipe(t_executor *exec)
     while(exec->pipes[i] && exec->pipes[i]->write->is_open == 0)
         i++;
     pipe = exec->pipes[i];
-	debug_pipe_information(pipe);
-	debug_ended("get_next_pipe");
 	return (pipe);	
 }
 
 void    close_next_pipe(t_executor *exec)
 {
-	debug_started("close_next_pipe");
 
     t_pipe  *pipe;
     int     i;
@@ -97,8 +93,6 @@ void    close_next_pipe(t_executor *exec)
     pipe = exec->pipes[i];
 
 	close_fd(pipe->write);
-	debug_pipe_information(pipe);
-	debug_ended("close_next_pipe");
 }
 
 t_pipe **initialize_pipes(t_executor *exec)
@@ -107,7 +101,7 @@ t_pipe **initialize_pipes(t_executor *exec)
 	t_pipe **pipes;
 
 	pipe_count = count_pipes(exec, false);
-	pipes = (t_pipe **)ft_calloc(pipe_count, sizeof(t_pipe *));
+	pipes = (t_pipe **)ft_calloc(pipe_count + 1, sizeof(t_pipe *));
 	if (!pipes)
 		return (NULL);
 	while (pipe_count--)

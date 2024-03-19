@@ -23,7 +23,6 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 
 void	prepare_next(t_executor *exec)
 {
-    debug_started("prepare_next");
 
 	t_cmd	*prev;
 
@@ -33,7 +32,6 @@ void	prepare_next(t_executor *exec)
 	if (prev->operat == PIPE)
         close_next_pipe(exec);
 
-    debug_ended("prepare_next");
 }
 
 static void	execute_nested_scope(t_executor *exec)
@@ -63,8 +61,6 @@ static void	execute_nested_scope(t_executor *exec)
 
 static void	execute_cmd(t_executor *exec)
 {
-	debug_started("execute_cmd: parent");
-	debug_pipe_information(last_unclosed_pipe(exec->pipes));
 
 	char	**argv;
 	char	**envp;
@@ -76,25 +72,17 @@ static void	execute_cmd(t_executor *exec)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
 	else if (exec->pid == 0)
 	{
-		debug_started("execute_cmd: child");
-        debug_cmd_info(exec);
-
 		set_io_streams(exec);
-		debug_pipe_information(last_unclosed_pipe(exec->pipes));
 		execute(argv, envp);
-
-		debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
 	exec->command_index++;
 
-	debug_ended("execute_cmd: parent");
 }
 
 int	execution(t_cmd **cmds, char **envp)
 {
-    debug_started("execution");
 	t_executor	*exec;
 
 	if (!cmds)
@@ -106,7 +94,6 @@ int	execution(t_cmd **cmds, char **envp)
 		terminate(NULL, EXIT_FAILURE, "failed to initialize executor");
 	while (current_cmd(exec) != NULL)
 	{
-        debug_started("execution loop");
 		if (has_nested_scope(current_cmd(exec)))
 			execute_nested_scope(exec);
 		else if (is_builtin(exec))
@@ -115,9 +102,6 @@ int	execution(t_cmd **cmds, char **envp)
 			execute_cmd(exec);
         if (current_cmd(exec) != NULL)
             prepare_next(exec);
-        debug_ended("execution loop");
-        debug_pipe_information(last_unclosed_pipe(exec->pipes));
 	}
-    debug_ended("execution");
 	return (0);
 }

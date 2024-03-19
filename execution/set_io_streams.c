@@ -2,13 +2,15 @@
 
 void	handle_pipe_output(t_executor *exec)
 {
+
 	t_pipe	*pipe;
 
-	pipe = last_unclosed_pipe(exec->pipes);
+	pipe = next_pipe(exec->pipes);
 	if (dup2(pipe->write->fd, STDOUT_FILENO) == -1)
 		terminate(NULL, EXIT_FAILURE,
 			"minishell: unable to set pipe to output");
 	close_fd(pipe->write);
+
 }
 
 void	handle_redir_output(t_executor *exec)
@@ -26,11 +28,12 @@ void	handle_redir_output(t_executor *exec)
 	}
 }
 
+
 void	handle_pipe_input(t_executor *exec)
 {
 	t_pipe	*pipe;
 
-	pipe = last_unclosed_pipe(exec->pipes);
+	pipe = last_pipe(exec->pipes);
 	if (!pipe)
 		terminate(NULL, EXIT_FAILURE, "Failed to set pipe to input");
 	if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
