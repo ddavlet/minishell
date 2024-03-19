@@ -23,7 +23,7 @@ int	ft_isignored(char *txt)
 		return (0);
 }
 
-int	sytax_redir(char *token) // to check what goes after redirection < > << >>
+int	sytax_redir(char *token)
 {
 	if (ft_isredir(token))
 		return (1);
@@ -33,7 +33,7 @@ int	sytax_redir(char *token) // to check what goes after redirection < > << >>
 		return (0);
 }
 
-int	syntax_exeption(char *token) // to check what goes after exeption | || &&
+int	syntax_exeption(char *token)
 {
 	if (oper_type(token))
 		return (1);

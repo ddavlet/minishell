@@ -23,21 +23,25 @@ BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c
 INC := -Iparsing/ -Ilibft/ -Iexecution/
 LIB_DIR := libft/
+LIBFT := $(LIB_DIR)libft.a
 LIB := -lft -lreadline
 FLAGS := -g -Wall -Wextra -Werror
 OBJ = $(EXE_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(MAIN:.c=.o)
+
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	make -C $(LIB_DIR)
-	$(CC) $(FLAGS) $(INC) -L$(LIB_DIR) $(LIB) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(FLAGS) $(INC) $(OBJ) -L$(LIB_DIR) $(LIB) -o $(NAME)
+
+$(LIBFT) :
+	$(MAKE) -C $(LIB_DIR)
 
 %.o: %.c
-	$(CC) $(FLAGS) $(LIB) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)
-	make -C libft/ fclean
+	$(MAKE) -C $(LIB_DIR) fclean
 
 
 fclean: clean

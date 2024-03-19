@@ -10,6 +10,8 @@ static int	spec_case(char c)
 		return (3);
 	else if (ft_isdigit(c))
 		return (4);
+	else
+		return (5);
 	return (0);
 }
 
@@ -22,6 +24,8 @@ static char	*case_handler(int key)
 	if (key == 3)
 		return (ft_strdup("minishell"));
 	if (key == 4)
+		return (ft_strdup(""));
+	if (key == 5)
 		return (ft_strdup(""));
 	else
 		return (NULL);
@@ -70,6 +74,8 @@ void	get_special_cases(char **tokens)
 				tmp = tokens[i];
 				tokens[i] = get_case(tmp);
 				free(tmp);
+				if (!tokens[i])
+					break ;
 				j++;
 			}
 		}

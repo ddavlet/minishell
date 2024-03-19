@@ -1,8 +1,8 @@
 #include "builtin.h"
 
-int builtin_exit(char **argv, t_env *root)
+int	builtin_exit(char **argv, t_env *root)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	(void)root;

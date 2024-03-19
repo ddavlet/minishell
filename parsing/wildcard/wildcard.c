@@ -30,6 +30,7 @@ static void	f_2(char	***matches, char *letters, t_tree *root)
 		f_2(matches, letters, child->child);
 		if (child->letter == letters[1])
 			router(matches, &letters[1], child);
+		if (letters)
 		child = child->next;
 	}
 }
@@ -79,10 +80,10 @@ void	find_wildcard(char	***matches, char *letters, t_tree *root)
 {
 	while (*letters == '*' && *(letters + 1) == '*')
 		letters++;
-	if (*letters == '*')
-		f_2(matches, letters, root->child);
-	else if (!*(letters + 1) && *letters == '*')
+	if (!*(letters + 1) && *letters == '*')
 		f_3(matches, root->child);
+	else if (*letters == '*')
+		f_2(matches, letters, root->child);
 	else
 		f_1(matches, letters, root->child);
 }

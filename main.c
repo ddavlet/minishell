@@ -81,15 +81,18 @@ int	main(int argc, char *argv[],const char *envp[])
 		promt = create_promt(env);
 		line = readline(promt);
 		free(promt);
-		add_history(line);
-		if (!line ||!line[0])
+		if (!line)
+			break ;
+		if (!line[0])
 			continue ;
+		add_history(line);
 		rl_replace_line("echo test1", 0);
 		cmds = parse_text(line, env);
 		if (!cmds)
 			continue ;
 		execution(cmds, cmds[0]->env->envp);
 	}
+	write(1, "exit\n", 5);
 	return (0);
 }
 

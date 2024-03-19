@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:22:47 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 16:24:26 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:47:14 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx)
 
 	indx = -1;
 	to_indx = 0;
-	if (!from_arr)
+	if (!from_arr || !from_arr[0])
 		return (to_arr);
 	if (!to_arr)
 		return (NULL);  // catch
@@ -34,11 +34,12 @@ char	**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx)
 		new_arr[indx++] = from_arr[to_indx++];
 		new_arr[indx++] = ft_strdup("");
 	}
-	free(new_arr[indx--]);
-	while (to_arr[++(inj_indx)])
-		new_arr[indx++] = to_arr[inj_indx];
-	new_arr[indx] = NULL;
+	// free(new_arr[indx--]); ????????????
+	if (!to_arr[++inj_indx])
+		new_arr[--indx] = NULL;
+	while (to_arr[inj_indx])
+		new_arr[indx++] = to_arr[inj_indx++];
 	free(to_arr);
-	*from_arr = NULL;
+	*from_arr = NULL; // ??
 	return (new_arr);
 }
