@@ -5,8 +5,8 @@ int	builtin_echo(char **argv, t_env *root)
 	ssize_t	i;
 
 	(void)root;
-	i = 0;
-	while (argv[i] && !ft_strncmp(argv[i], "-n", 3))
+	i = 1;
+	if (ft_strncmp(argv[i], "-n", 3) == 0)
 		i++;
 	while (argv[i])
 	{

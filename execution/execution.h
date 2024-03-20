@@ -1,11 +1,11 @@
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
+# include "../builtin/builtin.h"
 # include "../libft/libft.h"
 # include "../parsing/parsing.h"
-# include "../builtin/builtin.h"
-# include <sys/wait.h>
 # include <readline/readline.h>
+# include <sys/wait.h>
 
 # define SCOPE 1
 
@@ -39,7 +39,7 @@ typedef struct s_executor
 int							execution(t_cmd **cmds, char **envp);
 void						set_io_streams(t_executor *exec);
 int							execute(char **argv, char **envp);
-int							execute_builtin(t_executor *exec);
+void						execute_builtin(t_executor *exec);
 int							check_exit_value(t_executor *exec);
 void						evaluate_logic_operator(t_executor *exec);
 t_fd_state					*initialize_fd_state(int fd);

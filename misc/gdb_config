@@ -1,4 +1,5 @@
 fs cmd
 set detach-on-fork off
 set follow-fork-mode child
+b execution/execute_builtin.c:12
 start

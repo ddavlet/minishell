@@ -1,11 +1,11 @@
 #include "execution.h"
 
-int	execute_builtin(t_executor *exec)
+void	execute_builtin(t_executor *exec)
 {
 	char	*builtin;
 	t_cmd	*cmd;
 
-	set_io_streams(exec);
+	//set_io_streams(exec);
 	cmd = current_cmd(exec);
 	builtin = cmd->argv[0];
 	if (ft_strncmp(builtin, "cd", ft_strlen("cd")) == 0)
@@ -20,8 +20,9 @@ int	execute_builtin(t_executor *exec)
 		builtin_pwd(cmd->argv, cmd->env);
 	else if (ft_strncmp(builtin, "unset", ft_strlen("unset")) == 0)
 		builtin_unset(cmd->argv, cmd->env);
-	else
+	else if (ft_strncmp(builtin, "export", ft_strlen("export")) == 0)
+		builtin_export(cmd->argv, cmd->env);
+    else
 		terminate(NULL, EXIT_FAILURE, "minishell: not a builtin");
 	exec->command_index++;
-	return (0);
 }

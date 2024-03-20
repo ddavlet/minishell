@@ -49,7 +49,7 @@ typedef struct s_redir
 	struct s_redir	*next;
 }					t_redir;
 
-typedef struct s_env
+typedef struct  s_env
 {
 	char			letter;
 	bool			exists;
