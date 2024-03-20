@@ -13,13 +13,13 @@ t_fd_state  *here_document(t_executor *exec, const char *delimiter)
     line = readline("heredoc> ");
     while ((line ) != NULL)
     {
-        if (strncmp(line, delimiter, ft_strlen(line)) == 0 && line[ft_strlen(line)] == '\0')
+        if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && line[ft_strlen(line)] == '\0')
             break;
         // tmp = get_envvar(line, env);
         // free(line);
         // line = tmp;
         // ft_printf("line: %s\n", line);
-        write(pipe->write->fd, line, strlen(line));
+        write(pipe->write->fd, line, ft_strlen(line));
         write(pipe->write->fd, "\n", 1);
         free(line);
         line = readline("heredoc> ");

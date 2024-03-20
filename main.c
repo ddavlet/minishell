@@ -86,7 +86,6 @@ int	main(int argc, char *argv[],const char *envp[])
 		if (!line[0])
 			continue ;
 		add_history(line);
-		rl_replace_line("echo test1", 0);
 		cmds = parse_text(line, env);
 		if (!cmds)
 			continue ;
