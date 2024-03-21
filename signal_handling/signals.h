@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:39:17 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/21 12:16:56 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/21 18:03:38 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 
-int	signals1(void);
+int	signals(pid_t pid);
+int	signals2(void);
 
 #endif

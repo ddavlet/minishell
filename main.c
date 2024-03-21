@@ -76,9 +76,9 @@ int	main(int argc, char *argv[],const char *envp[])
 	env = init_env((const char **)envp);
 	append_envp(env, "SHELL", "minishell");
 	line = NULL;
-	signals1();
 	while (1)
 	{
+		signals(getpid());
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
@@ -90,6 +90,7 @@ int	main(int argc, char *argv[],const char *envp[])
 			continue ;
 		add_history(line);
 		cmds = parse_text(line, env);
+		signals2();
 		if (!cmds)
 			continue ;
 		execution(cmds, cmds[0]->env->envp);
