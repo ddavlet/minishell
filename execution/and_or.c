@@ -43,7 +43,7 @@ void	evaluate_logic_operator(t_executor *exec)
 	if (!exec || !exec->cmds)
 		terminate(NULL, EXIT_FAILURE, NULL);
     cmd = current_cmd(exec);
-	executed_status = exec->status;
+	executed_status = exec->status_codes[exec->command_index];
 	if (is_first_operant(exec, cmd) && (cmd->operat == OR
 			&& executed_status == EXIT_SUCCESS))
 		terminate(NULL, EXIT_SUCCESS, "logical OR success");

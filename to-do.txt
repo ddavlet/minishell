@@ -1,3 +1,4 @@
 Have to fix:
 
-1. readline text is longer than shell width
+1.
+

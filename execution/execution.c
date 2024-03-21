@@ -12,12 +12,10 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 	exec->cmds = cmds;
 	exec->envp = envp;
 	exec->command_index = 0;
-	exec->status = 0;
-	exec->pipes = initialize_pipes(exec);
-	if (!exec->pipes)
-	{
-		terminate(exec, EXIT_FAILURE, "minishell: failed to initialize pipes");
-	}
+    initialize_execution_size(exec);
+	initialize_status_codes(exec);
+    initialize_pids(exec);
+	initialize_pipes(exec);
 	return (exec);
 }
 
@@ -51,10 +49,10 @@ static void	execute_nested_scope(t_executor *exec)
 			get_nested_scope(current_cmd(exec)));
 	argv = reverse_pars(scope_ptr, scope_len);
 	envp = exec->envp;
-	exec->pid = fork();
-	if (exec->pid == -1)
+	exec->pids[exec->command_index] = fork();
+	if (exec->pids[exec->command_index] == -1)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
-	else if (exec->pid == 0)
+	else if (exec->pids[exec->command_index] == 0)
 	{
 		set_io_streams(exec);
 		execute(argv, envp);
@@ -72,10 +70,10 @@ static void	execute_cmd(t_executor *exec)
 
 	envp = exec->envp;
 	argv = current_cmd(exec)->argv;
-	exec->pid = fork();
-	if (exec->pid == -1)
+	exec->pids[exec->command_index] = fork();
+	if (exec->pids[exec->command_index] == -1)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
-	else if (exec->pid == 0)
+	else if (exec->pids[exec->command_index] == 0)
 	{
 		set_io_streams(exec);
 		execute(argv, envp);
@@ -86,7 +84,7 @@ static void	execute_cmd(t_executor *exec)
 
 }
 
-int	execution(t_cmd **cmds, char **envp)
+int	  execution(t_cmd **cmds, char **envp)
 {
 	t_executor	*exec;
 
@@ -107,5 +105,6 @@ int	execution(t_cmd **cmds, char **envp)
 			execute_cmd(exec);
         prepare_next(exec);
 	}
+    // debug_print_exit_code(exec);
 	return (0);
 }

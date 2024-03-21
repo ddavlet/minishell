@@ -6,10 +6,10 @@ int	check_exit_value(t_executor *exec)
 		terminate(NULL, EXIT_FAILURE, "parameter check failed");
 	if (is_logic(exec))
 	{
-		waitpid(exec->pid, &(exec->status), 0);
+		waitpid(exec->pids[exec->command_index], &(exec->status_codes[exec->command_index]), 0);
 		evaluate_logic_operator(exec);
 	}
 	else if (is_final(exec))
-        waitpid(exec->pid, &(exec->status), 0);
+        waitpid(exec->pids[exec->command_index], &(exec->status_codes[exec->command_index]), 0);
 	return (0);
 }

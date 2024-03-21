@@ -28,10 +28,11 @@ typedef struct s_fd_state
 
 typedef struct s_executor
 {
-	pid_t					pid;
-	int						status;
 	int						command_index;
+	int						size;
+	int						*status_codes;
 	char					**envp;
+	pid_t					*pids;
 	t_cmd					**cmds;
 	t_pipe					**pipes;
 }							t_executor;
@@ -45,6 +46,9 @@ void						evaluate_logic_operator(t_executor *exec);
 t_fd_state					*initialize_fd_state(int fd);
 int							is_logic(t_executor *exec);
 char						**reverse_pars(t_cmd **cmds_tojoin, int commands);
+void						initialize_status_codes(t_executor *exec);
+void						initialize_pids(t_executor *exec);
+void						initialize_execution_size(t_executor *exec);
 
 /*
  *   pipes
@@ -106,5 +110,6 @@ void						debug_pipe_information(t_pipe *pipe);
 void						debug_started(char *msg);
 void						debug_ended(char *msg);
 void						debug_cmd_info(t_executor *exec);
+// void						debug_print_exit_code(t_executor *exec);
 
 #endif
