@@ -52,7 +52,7 @@ Mkfile.old
 dkms.conf
 
 *.json
-
+minishell
 # vscode
 .vscode/
 parsing/main.c
