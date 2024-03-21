@@ -71,6 +71,8 @@ char	*get_name(char *cmd_path)
 	{
 		last = cmd_path;
 		cmd_path = ft_strchr(cmd_path, '/');
+        if (cmd_path)
+            cmd_path++;
 	}
 	return (last);
 }

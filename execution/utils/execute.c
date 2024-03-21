@@ -1,6 +1,6 @@
 #include "../execution.h"
 
-int                                                                                                                                           execute(char **argv, char **envp)
+int	execute(char **argv, char **envp)
 {
 	char	*path;
 
