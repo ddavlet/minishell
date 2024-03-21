@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:30:41 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/21 14:25:51 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:59:29 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	sigusr_handler(int signo, siginfo_t *info, void *scope)
 	{
 		write(1, "\033[K", 3);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (signo == SIGINT)
@@ -43,9 +43,9 @@ int	signals1(void)
 	sa.sa_sigaction = sigusr_handler;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		ft_printf("Error recieving SIGUSR1");
+		ft_printf("Error recieving SIGQUIT");
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		ft_printf("Error recieving SIGUSR2");
+		ft_printf("Error recieving SIGINT");
 	return (0);
 }
 
@@ -58,8 +58,8 @@ int	signals2(void)
 	sa.sa_sigaction = sigusr_handler;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		ft_printf("Error recieving SIGUSR1");
+		ft_printf("Error recieving SIGQUIT");
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		ft_printf("Error recieving SIGUSR2");
+		ft_printf("Error recieving SIGINT");
 	return (0);
 }
