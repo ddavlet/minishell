@@ -11,7 +11,7 @@ char	*pwd(t_env *env)
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
-		pwd = ft_strjoin("\x1b[32m""~", tmp);
+		pwd = ft_strjoin("~", tmp);
 		free(tmp);
 		free(home);
 		return (pwd);
@@ -48,17 +48,18 @@ char	*create_promt(t_env *env)
 	char	*promt;
 	char	*tmp;
 
-	promt = ft_strdup("🤫""\x1b[32m");
+	promt = ft_strdup("");
 	tmp = find_var(env, "USER");
 	promt = ft_strjoin_free(promt, tmp);
 	free(tmp);
-	promt = ft_strjoin_free(promt, "\x1b[0m""@");
+	promt = ft_strjoin_free(promt, "@");
 	promt = ft_strjoin_free(promt, hostname());
 	promt = ft_strjoin(promt, ":");
 	tmp = pwd(env);
 	promt = ft_strjoin_free(promt, tmp);
 	free(tmp);
-	promt = ft_strjoin_free(promt, "\x1b[0m""$ ");
+	promt = ft_strjoin_free(promt, "$ ");
+	// promt = "test";
 	return (promt);
 }
 

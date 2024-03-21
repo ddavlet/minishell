@@ -24,7 +24,7 @@ int	builtin_cd(char **argv, t_env *root)
 	char			*path;
 	char			*cwd;
 
-	if (argv[2])
+	if (argv[1] && argv[2])
 		return (builtin_err_gen("cd", "too many arguments", NULL));
 	if (!argv[1])
 	{
