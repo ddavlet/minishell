@@ -79,14 +79,16 @@ int	main(int argc, char *argv[],const char *envp[])
 	{
 		free(line);
 		promt = create_promt(env);
+		signals1();
+
 		line = readline(promt);
+		// rl_redisplay();
 		free(promt);
 		if (!line)
 			break ;
 		if (!line[0])
 			continue ;
 		add_history(line);
-		rl_replace_line("echo test1", 0);
 		cmds = parse_text(line, env);
 		if (!cmds)
 			continue ;

@@ -22,7 +22,6 @@ static char	*build_path(char *dir)
 int	builtin_cd(char **argv, t_env *root)
 {
 	char			*path;
-	int				ret;
 	char			*cwd;
 
 	if (argv[2])
@@ -37,7 +36,7 @@ int	builtin_cd(char **argv, t_env *root)
 		path = argv[1];
     else
 		path = build_path(argv[1]);
-	ret = chdir(path);
+	chdir(path);
 	cwd = getcwd(NULL, 0);
 	append_envp(root, "OLDPWD", find_var(root, "PWD"));
 	append_envp(root, "PWD", cwd);

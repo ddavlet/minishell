@@ -1,7 +1,3 @@
 Have to fix:
 
-1. wildcard with directories + special cases
-
-2. several parenthesis - solved
-
-3. command with no arguments "echo " was giving segfault - sloved
+1. readline text is longer than shell width

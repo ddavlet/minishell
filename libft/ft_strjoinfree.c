@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:59:29 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 14:02:34 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:34:50 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	char	*ptr;
 
 	i = -1;
+	if (!s1 || !s2)
+	{
+		free(s1);
+		return (NULL);
+	}
 	j = ft_strlen(s1) + ft_strlen(s2);
 	ptr = (char *)malloc((j + 1) * sizeof(char));
 	if (!ptr)

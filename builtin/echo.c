@@ -6,6 +6,8 @@ int	builtin_echo(char **argv, t_env *root)
 
 	(void)root;
 	i = 1;
+	if (!argv[1])
+		return (0);
 	if (ft_strncmp(argv[i], "-n", 3) == 0)
 		i++;
 	while (argv[i])
