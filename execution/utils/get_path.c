@@ -16,6 +16,16 @@ static char	*get_env_all_path(char *envp[])
 
 char	*get_path(char *cmd, char *envp[])
 {
+    if (ft_strchr(cmd, '/') == NULL)
+        return (get_path_from_env(cmd, envp));
+    else if (cmd[0] == '/')
+        return (cmd);
+    else
+        return (get_path_from_relative(cmd));
+}
+
+char	*get_path_from_env(char *cmd, char *envp[])
+{
 	char	**env_all_path;
 	char	*env_path;
 	char	*executable_path;
@@ -39,4 +49,20 @@ char	*get_path(char *cmd, char *envp[])
 	}
 	free_arr2d((void **)env_all_path);
 	return (NULL);
+}
+
+char    *get_path_from_relative(char *path, char *name)
+{
+    char    *path_abs;
+    char    *relative_part;
+
+    path_abs = NULL;
+    if (ft_strncmp(path, "../", 3) == 0)
+        path_abs = build_relativ_from_parent(path);
+    else if (ft_strncmp(path, "./", 2) == 0)
+        path_abs = build_relativ_from_working(path);
+    else if (ft_strncmp(path, "~/", 2) == 0)
+        path_abs = build_relativ_from_tilde(path);
+    else
+        return (NULL);
 }
