@@ -79,7 +79,10 @@ int	main(int argc, char *argv[],const char *envp[])
 	{
 		free(line);
 		promt = create_promt(env);
+		signals1();
+
 		line = readline(promt);
+		// rl_redisplay();
 		free(promt);
 		if (!line)
 			break ;
