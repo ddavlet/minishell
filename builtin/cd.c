@@ -34,7 +34,11 @@ int	builtin_cd(char **argv, t_env *root)
 	}
 	else if (*argv[1] == '/')
 		path = argv[1];
-    else
+	else if (*argv[1] == '~')
+	{
+		path = ft_strjoin_free(find_var(root, "HOME"), &argv[1][1]);
+	}
+	else
 		path = build_path(argv[1]);
 	chdir(path);
 	cwd = getcwd(NULL, 0);
