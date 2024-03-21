@@ -106,5 +106,6 @@ t_pipe **initialize_pipes(t_executor *exec)
 		return (NULL);
 	while (pipe_count--)
 		pipes[pipe_count] = create_pipe();
+    exec->pipes = pipes;
 	return (pipes);
 }

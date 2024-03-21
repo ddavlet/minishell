@@ -96,6 +96,20 @@ int	main(int argc, char *argv[],const char *envp[])
 	return (0);
 }
 
+void    debug_print_exit_code(t_executor *exec)
+{
+    int i;
+
+    i = 0;
+    while (i < exec->size)
+    {
+        ft_putnbr_fd(exec->status_codes[i++], 2);
+        ft_putendl_fd("", 2);
+        // ft_putnbr_fd(WEXITSTATUS(exec->status_codes[i++]), 2);
+        // ft_putendl_fd("", 2);
+    }
+}
+
 void    debug_close_fd(t_fd_state *fd_state)
 {
     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
