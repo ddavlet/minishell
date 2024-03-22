@@ -62,21 +62,6 @@ int	execution_has_finished(t_executor *exec)
 	return (0);
 }
 
-char	*get_name(char *cmd_path)
-{
-	char	*last;
-
-	last = NULL;
-	while (cmd_path)
-	{
-		last = cmd_path;
-		cmd_path = ft_strchr(cmd_path, '/');
-        if (cmd_path)
-            cmd_path++;
-	}
-	return (last);
-}
-
 int	is_builtin(t_executor *exec)
 {
 	char	*cmd;

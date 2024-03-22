@@ -12,6 +12,13 @@
 typedef struct s_fd_state	t_fd_state;
 typedef struct s_pipe		t_pipe;
 
+typedef struct s_path
+{
+	char					*name;
+	char					*child_dir;
+	char					*parent_dir;
+}							t_path;
+
 typedef struct s_pipe
 {
 	int						*pipe_fd;
@@ -76,7 +83,6 @@ char						*get_path(char *cmd, char *envp[]);
 void						msg_error(char *err);
 void						free_arr2d(void **arr2d);
 void						terminate(t_executor *exec, int status, char *msg);
-char						*get_name(char *cmd_path);
 int							is_builtin(t_executor *exec);
 int							is_inside_scope(t_cmd *cmd, int scope);
 int							has_nested_scope(t_cmd *cmd);
@@ -90,6 +96,19 @@ int							scope_length(t_executor *exec, t_cmd *cmd,
 								int scope);
 t_pipe						*next_pipe(t_pipe **pipes);
 t_pipe						*last_pipe(t_pipe **pipes);
+
+/*
+ *   path
+ */
+t_path						*initialize_path(char *str);
+t_path						*new_path(char *name, t_path *parent_dir,
+								t_path *child_dir);
+t_path						*add_path(t_path *path, t_path *next);
+char						*get_name(char *path);
+char						*get_parent_dir(char *path);
+t_path						*get_last_in(t_path *path);
+char						*next_pathname_in_literal(const char *string_literal);
+int							count_paths(const char *string_literal);
 
 /*
  *   io_redirections

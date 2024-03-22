@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:18:40 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/21 17:24:52 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:18:00 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include "./execution/execution.h"
 # include "./builtin/builtin.h"
 # include "./signal_handling/signals.h"
-
 
 # define HOSTNAME_FILE "/etc/hostname"
 # define HOSTNAME_LENGTH 256
