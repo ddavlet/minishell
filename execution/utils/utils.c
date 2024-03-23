@@ -62,23 +62,14 @@ int	execution_has_finished(t_executor *exec)
 	return (0);
 }
 
-int	is_builtin(t_executor *exec)
+int	is_builtin(char *name)
 {
-	char	*cmd;
-
-	cmd = current_cmd(exec)->com;
-	if (ft_strchr(cmd, '/'))
-	{
-		cmd = get_name(cmd);
-		if (!cmd)
-			return (0);
-	}
-	if (ft_strncmp(cmd, "cd", ft_strlen(cmd) + 1) == 0 || ft_strncmp(cmd, "echo",
-			ft_strlen(cmd) + 1) == 0 || ft_strncmp(cmd, "env", ft_strlen(cmd) + 1) == 0
-		|| ft_strncmp(cmd, "exit", ft_strlen(cmd) + 1) == 0 || ft_strncmp(cmd,
-			"export", ft_strlen(cmd) + 1) == 0 || ft_strncmp(cmd, "pwd",
-			ft_strlen(cmd) + 1) == 0 || ft_strncmp(cmd, "unset",
-			ft_strlen(cmd) + 1) == 0)
+	if (ft_strncmp(name, "cd", ft_strlen(name) + 1) == 0 || ft_strncmp(name, "echo",
+			ft_strlen(name) + 1) == 0 || ft_strncmp(name, "env", ft_strlen(name) + 1) == 0
+		|| ft_strncmp(name, "exit", ft_strlen(name) + 1) == 0 || ft_strncmp(name,
+			"export", ft_strlen(name) + 1) == 0 || ft_strncmp(name, "pwd",
+			ft_strlen(name) + 1) == 0 || ft_strncmp(name, "unset",
+			ft_strlen(name) + 1) == 0)
 		return (1);
 	return (0);
 }

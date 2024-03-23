@@ -55,7 +55,7 @@ static void	execute_nested_scope(t_executor *exec)
 	else if (exec->pids[exec->command_index] == 0)
 	{
 		set_io_streams(exec);
-		execute(argv, envp);
+		execute(exec, argv, envp);
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
@@ -76,7 +76,7 @@ static void	execute_cmd(t_executor *exec)
 	else if (exec->pids[exec->command_index] == 0)
 	{
 		set_io_streams(exec);
-		execute(argv, envp);
+		execute(exec, argv, envp);
 	}
 	else if (is_final(exec) || is_logic(exec))
 		check_exit_value(exec);
@@ -99,7 +99,7 @@ int	  execution(t_cmd **cmds, char **envp)
 	{
 		if (has_nested_scope(current_cmd(exec)))
 			execute_nested_scope(exec);
-		else if (is_builtin(exec))
+		else if (is_builtin(current_cmd(exec)->argv[0]))
 			execute_builtin(exec);
 		else
 			execute_cmd(exec);

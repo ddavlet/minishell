@@ -12,13 +12,6 @@
 typedef struct s_fd_state	t_fd_state;
 typedef struct s_pipe		t_pipe;
 
-typedef struct s_path
-{
-	char					*name;
-	char					*child_dir;
-	char					*parent_dir;
-}							t_path;
-
 typedef struct s_pipe
 {
 	int						*pipe_fd;
@@ -46,7 +39,7 @@ typedef struct s_executor
 
 int							execution(t_cmd **cmds, char **envp);
 void						set_io_streams(t_executor *exec);
-int							execute(char **argv, char **envp);
+int							execute(t_executor *exec, char **argv, char **envp);
 void						execute_builtin(t_executor *exec);
 int							check_exit_value(t_executor *exec);
 void						evaluate_logic_operator(t_executor *exec);
@@ -79,11 +72,10 @@ int							count_pipes(t_executor *exec,
 								bool include_nested_scopes);
 void						skip_nested_cmds(t_executor *exec);
 void						exit_handler(int status);
-char						*get_path(char *cmd, char *envp[]);
 void						msg_error(char *err);
 void						free_arr2d(void **arr2d);
 void						terminate(t_executor *exec, int status, char *msg);
-int							is_builtin(t_executor *exec);
+int							is_builtin(char *path);
 int							is_inside_scope(t_cmd *cmd, int scope);
 int							has_nested_scope(t_cmd *cmd);
 int							arr_len(char **arr);
@@ -96,19 +88,6 @@ int							scope_length(t_executor *exec, t_cmd *cmd,
 								int scope);
 t_pipe						*next_pipe(t_pipe **pipes);
 t_pipe						*last_pipe(t_pipe **pipes);
-
-/*
- *   path
- */
-t_path						*initialize_path(char *str);
-t_path						*new_path(char *name, t_path *parent_dir,
-								t_path *child_dir);
-t_path						*add_path(t_path *path, t_path *next);
-char						*get_name(char *path);
-char						*get_parent_dir(char *path);
-t_path						*get_last_in(t_path *path);
-char						*next_pathname_in_literal(const char *string_literal);
-int							count_paths(const char *string_literal);
 
 /*
  *   io_redirections
