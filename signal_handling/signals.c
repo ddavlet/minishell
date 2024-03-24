@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:30:41 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/21 18:05:06 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/24 11:11:39 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ void	sigusr_handler2(int signo, siginfo_t *info, void *scope)
 	{
 		write(1, "\n", 1);
 		// write(1, "\033[K", 3);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		// rl_on_new_line();
+		// rl_replace_line("", 0);
+		// rl_redisplay();
 	}
 	if (signo == SIGINT)
 	{
 		write(1, "\n", 1);
 		// write(1, "\033[K", 3);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		// rl_on_new_line();
+		// rl_replace_line("", 0);
+		// rl_redisplay();
 	}
 	// signals1();
 }

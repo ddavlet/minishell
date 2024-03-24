@@ -13,7 +13,7 @@ static char	*build_path_from_env(char *name)
 	i = -1;
 	while (env_paths[++i])
 	{
-		path = ft_strjoin_free(env_paths[i], "/");
+		path = ft_strjoin(env_paths[i], "/");
 		executable_path = ft_strjoin_free(path, name);
 		if (access(executable_path, F_OK | X_OK) == 0)
 		{

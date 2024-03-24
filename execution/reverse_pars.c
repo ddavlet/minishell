@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 15:07:44 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/14 16:25:37 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/24 07:28:13 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ char	*operation(t_oper type)
 	char	*types[5];
 
 	types[0] = NULL;
-	types[1] = "|";
-	types[2] = "&";
-	types[3] = "||";
-	types[4] = "&&";
+	types[1] = "\\|";
+	types[2] = "\\&";
+	types[3] = "\\||";
+	types[4] = "\\&&";
 	if (type == RUN)
 		return (NULL);
 	return (ft_strdup(types[type]));

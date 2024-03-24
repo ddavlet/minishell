@@ -70,7 +70,8 @@ int	main(int argc, char *argv[],const char *envp[])
 	char	*promt;
 	t_env	*env;
 
-
+	// char *test[] = {"echo", "test", "\\|", "echo", "test2", NULL};
+	// cmds = reparse_text(test);
 	(void)argc;
 	(void)argv;
 	env = init_env((const char **)envp);

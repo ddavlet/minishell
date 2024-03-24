@@ -14,11 +14,8 @@ int	ft_isignored(char *txt)
 		return (1);
 	if (!ft_strncmp(txt, "[", 2) || !ft_strncmp(txt, "]", 2))
 		return (1);
-	if (!ft_strncmp(txt, "\\", 2)) // 1 or 2?
-	{
-		write(2, "escape met, check it", 20); // ??
+	if (!ft_strncmp(txt, "\\", 2))
 		return (1);
-	}
 	else
 		return (0);
 }
@@ -41,23 +38,17 @@ int	syntax_exeption(char *token)
 		return (0);
 }
 
-int	syntax_ignored(char *token)
-{
-	if (ft_isignored(token))
-		return (1);
-	else
-		return (0);
-}
-
 void	*check_tokens(char **tokens)
 {
 	ssize_t	i;
 
 	i = 0;
+	if (!tokens[i])
+		return (NULL);
 	if (count_brackets(tokens))
-		return (NULL);
+		return (error_near_tocken("parenthesis"));
 	if (!ft_strncmp(tokens[0], ")", 2))
-		return (NULL);
+		return (error_near_tocken(tokens[i]));
 	while (tokens[i + 1])
 	{
 		if (ft_isignored(tokens[i])) // is ignored

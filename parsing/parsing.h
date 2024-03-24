@@ -72,6 +72,7 @@ int			id_gen(int seed);
 
 
 /*Commands functions*/
+t_cmd		**reparse_text(char **argv);
 t_cmd		**parse_text(const char *txt, t_env *root);
 char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
 char		**get_wildcard(char **tokens, t_env *root);
@@ -97,7 +98,7 @@ ssize_t		find_next_cmd(char **tokens, ssize_t i);
 char		**parse_delspace(char **tokens);
 int			ft_isparenthesis(char *txt);
 int			count_brackets(char **arr);
-
+uint32_t	count_commands(char **token);
 
 /*Terminating*/
 void		*terminate_commands(t_cmd **commands);
