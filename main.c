@@ -99,60 +99,60 @@ int	main(int argc, char *argv[],const char *envp[])
 	return (0);
 }
 
-void    debug_close_fd(t_fd_state *fd_state)
-{
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-    ft_putstr_fd("DEBUG::closing fd: ", 2);
-    ft_putnbr_fd(fd_state->fd, 2);
-    ft_putendl_fd("", 2);
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-}
+// void    debug_close_fd(t_fd_state *fd_state)
+// {
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+//     ft_putstr_fd("DEBUG::closing fd: ", 2);
+//     ft_putnbr_fd(fd_state->fd, 2);
+//     ft_putendl_fd("", 2);
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+// }
 
-void    debug_pipe_information(t_pipe *pipe)
-{
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-    ft_putendl_fd(":pipe information:", 2);
-    ft_putstr_fd("DEBUG::write fd: ", 2);
-    ft_putnbr_fd(pipe->write->fd, 2);
-    ft_putendl_fd("", 2);
-    ft_putstr_fd("DEBUG::read fd: ", 2);
-    ft_putnbr_fd(pipe->read->fd, 2);
-    ft_putendl_fd("", 2);
-    ft_putstr_fd("DEBUG::write is_open: ", 2);
-    ft_putnbr_fd(pipe->write->is_open, 2);
-    ft_putendl_fd("", 2);
-    ft_putstr_fd("DEBUG::read is_open: ", 2);
-    ft_putnbr_fd(pipe->read->is_open, 2);
-    ft_putendl_fd("", 2);
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-}
+// void    debug_pipe_information(t_pipe *pipe)
+// {
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+//     ft_putendl_fd(":pipe information:", 2);
+//     ft_putstr_fd("DEBUG::write fd: ", 2);
+//     ft_putnbr_fd(pipe->write->fd, 2);
+//     ft_putendl_fd("", 2);
+//     ft_putstr_fd("DEBUG::read fd: ", 2);
+//     ft_putnbr_fd(pipe->read->fd, 2);
+//     ft_putendl_fd("", 2);
+//     ft_putstr_fd("DEBUG::write is_open: ", 2);
+//     ft_putnbr_fd(pipe->write->is_open, 2);
+//     ft_putendl_fd("", 2);
+//     ft_putstr_fd("DEBUG::read is_open: ", 2);
+//     ft_putnbr_fd(pipe->read->is_open, 2);
+//     ft_putendl_fd("", 2);
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+// }
 
-void    debug_started(char *msg)
-{
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-    ft_putstr_fd(msg, 2);
-    ft_putendl_fd(" started", 2);
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-}
+// void    debug_started(char *msg)
+// {
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+//     ft_putstr_fd(msg, 2);
+//     ft_putendl_fd(" started", 2);
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+// }
 
-void    debug_ended(char *msg)
-{
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-    ft_putstr_fd(msg, 2);
-    ft_putendl_fd(" ended", 2);
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-}
+// void    debug_ended(char *msg)
+// {
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+//     ft_putstr_fd(msg, 2);
+//     ft_putendl_fd(" ended", 2);
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+// }
 
-void    debug_cmd_info(t_executor *exec)
-{
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-    ft_putendl_fd(":cmd information:", 2);
-    ft_putstr_fd("DEBUG::cmd: ", 2);
-    ft_putstr_fd(exec->cmds[exec->command_index]->argv[0], 2);
-    ft_putendl_fd("", 2);
-    ft_putstr_fd("DEBUG::index: ", 2);
-    ft_putnbr_fd(exec->command_index, 2);
-    ft_putendl_fd("", 2);
-    ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
-}
+// void    debug_cmd_info(t_executor *exec)
+// {
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+//     ft_putendl_fd(":cmd information:", 2);
+//     ft_putstr_fd("DEBUG::cmd: ", 2);
+//     ft_putstr_fd(exec->cmds[exec->command_index]->argv[0], 2);
+//     ft_putendl_fd("", 2);
+//     ft_putstr_fd("DEBUG::index: ", 2);
+//     ft_putnbr_fd(exec->command_index, 2);
+//     ft_putendl_fd("", 2);
+//     ft_putendl_fd("::::::::::::::::::::::::::::::::::::::::", 2);
+// }
 
