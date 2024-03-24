@@ -62,9 +62,9 @@ void	set_io_streams(t_executor *exec)
 	t_cmd *prev;
 	t_cmd *next;
 
-	cmd = current_cmd(exec);
-	prev = previous_cmd(exec, cmd);
-	next = next_cmd(exec, cmd);
+	cmd = get_current_cmd(exec);
+	prev = get_previous_cmd(exec, cmd);
+	next = get_next_cmd(exec, cmd);
     if (prev)
     {
         if (prev->operat == PIPE && connected_through_operation(cmd, prev))

@@ -44,10 +44,10 @@ int	is_final(t_executor *exec)
 
 	if (!exec || !exec->cmds)
 		terminate(NULL, EXIT_FAILURE, "is_final: missing or incomplete exec");
-	cmd = current_cmd(exec);
+	cmd = get_current_cmd(exec);
 	if (has_nested_scope(cmd))
 		cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
-	if (next_cmd(exec, cmd) == NULL)
+	if (get_next_cmd(exec, cmd) == NULL)
 		return (1);
 	return (0);
 }
@@ -56,20 +56,8 @@ int	execution_has_finished(t_executor *exec)
 {
 	t_cmd	*cmd;
 
-	cmd = current_cmd(exec);
+	cmd = get_current_cmd(exec);
 	if (cmd == NULL)
-		return (1);
-	return (0);
-}
-
-int	is_builtin(char *name)
-{
-	if (ft_strncmp(name, "cd", ft_strlen(name) + 1) == 0 || ft_strncmp(name, "echo",
-			ft_strlen(name) + 1) == 0 || ft_strncmp(name, "env", ft_strlen(name) + 1) == 0
-		|| ft_strncmp(name, "exit", ft_strlen(name) + 1) == 0 || ft_strncmp(name,
-			"export", ft_strlen(name) + 1) == 0 || ft_strncmp(name, "pwd",
-			ft_strlen(name) + 1) == 0 || ft_strncmp(name, "unset",
-			ft_strlen(name) + 1) == 0)
 		return (1);
 	return (0);
 }
@@ -116,7 +104,7 @@ int	scope_length(t_executor *exec, t_cmd *cmd, int scope)
 	while (is_inside_scope(cmd, scope))
 	{
 		len++;
-		cmd = next_cmd(exec, cmd);
+		cmd = get_next_cmd(exec, cmd);
 	}
 	if (!len)
 	{
@@ -142,13 +130,6 @@ int	arr_len(char **arr)
 	return (i);
 }
 
-t_cmd	*current_cmd(t_executor *exec)
-{
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"current_cmd: missing or incomplete exec");
-	return (exec->cmds[exec->command_index]);
-}
 
 int	get_scope(t_cmd *cmd)
 {
@@ -169,12 +150,12 @@ t_cmd	*final_cmd_in_scope(t_executor *exec, int scope)
 
 	if (!exec)
 		terminate(NULL, EXIT_FAILURE, "parameter check failed");
-	cmd = current_cmd(exec);
-	next = next_cmd(exec, cmd);
+	cmd = get_current_cmd(exec);
+	next = get_next_cmd(exec, cmd);
 	while (is_inside_scope(next, scope))
 	{
 		cmd = next;
-		next = next_cmd(exec, cmd);
+		next = get_next_cmd(exec, cmd);
 	}
 	return (cmd);
 }
@@ -186,46 +167,16 @@ t_cmd	*first_cmd_in_scope(t_executor *exec, int scope)
 
 	if (!exec)
 		terminate(NULL, EXIT_FAILURE, "parameter check failed");
-	cmd = previous_cmd(exec, current_cmd(exec));
-	prev = previous_cmd(exec, cmd);
+	cmd = get_previous_cmd(exec, get_current_cmd(exec));
+	prev = get_previous_cmd(exec, cmd);
 	while (is_inside_scope(prev, scope))
 	{
 		cmd = prev;
-		prev = previous_cmd(exec, cmd);
+		prev = get_previous_cmd(exec, cmd);
 	}
 	return (cmd);
 }
 
-t_cmd	*next_cmd(t_executor *exec, t_cmd *cmd)
-{
-	int	i;
-
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE, "next_cmd: missing or incomplete exec");
-	i = 0;
-	if (cmd == NULL)
-		return (NULL);
-	while (exec->cmds[i] != cmd && exec->cmds[i + 1] != NULL)
-		i++;
-	return (exec->cmds[i + 1]);
-}
-
-t_cmd	*previous_cmd(t_executor *exec, t_cmd *cmd)
-{
-	int	i;
-
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE,
-			"previous_cmd: missing or incomplete exec");
-	i = 0;
-	if (cmd == NULL)
-		return (NULL);
-	if (exec->command_index == 0)
-		return (NULL);
-	while (exec->cmds[i] != cmd && exec->cmds[i + 1] != NULL)
-		i++;
-	return (exec->cmds[i - 1]);
-}
 
 void	close_fd(t_fd_state *fd_state)
 {
@@ -254,7 +205,7 @@ int	count_pipes(t_executor *exec, bool include_nested_scopes)
 			cmd = final_cmd_in_scope(exec, cmd->scope_stack[1]);
 		if (cmd->operat == PIPE)
 			count++;
-		cmd = next_cmd(exec, cmd);
+		cmd = get_next_cmd(exec, cmd);
 	}
 	return (count);
 }
@@ -266,12 +217,12 @@ void	skip_nested_cmds(t_executor *exec)
 	t_cmd	*next;
 
 	i = 1;
-	cmd = current_cmd(exec);
-	next = next_cmd(exec, cmd);
+	cmd = get_current_cmd(exec);
+	next = get_next_cmd(exec, cmd);
 	while (is_inside_scope(next, get_nested_scope(cmd)))
 	{
 		cmd = next;
-		next = next_cmd(exec, cmd);
+		next = get_next_cmd(exec, cmd);
 		i++;
 	}
 	exec->command_index += i;
@@ -296,4 +247,34 @@ t_pipe	*last_pipe(t_pipe **pipes)
 	while (pipes[i] && pipes[i]->write->is_open == 0)
 		i++;
     return (pipes[i - 1]);
+}
+
+int get_execution_length(t_executor *exec)
+{
+    int     len;
+    t_cmd   **cmds;
+
+    if (!exec || exec->cmds)
+        terminate(exec, EXIT_FAILURE, "couldn't get execution length");
+    cmds = exec->cmds;
+    len = 0;
+    while (cmds[len])
+        len++;
+    return (len);
+}
+
+
+int	is_builtin(t_executor *exec)
+{
+    char    *name;
+
+    name = get_current_cmd(exec)->argv[0];
+	if (ft_strncmp(name, "cd", ft_strlen(name) + 1) == 0 || ft_strncmp(name, "echo",
+			ft_strlen(name) + 1) == 0 || ft_strncmp(name, "env", ft_strlen(name) + 1) == 0
+		|| ft_strncmp(name, "exit", ft_strlen(name) + 1) == 0 || ft_strncmp(name,
+			"export", ft_strlen(name) + 1) == 0 || ft_strncmp(name, "pwd",
+			ft_strlen(name) + 1) == 0 || ft_strncmp(name, "unset",
+			ft_strlen(name) + 1) == 0)
+		return (1);
+	return (0);
 }

@@ -30,7 +30,7 @@ typedef struct s_executor
 {
 	int						command_index;
 	int						size;
-	int						*status_codes;
+	int						*exit_codes;
 	char					**envp;
 	pid_t					*pids;
 	t_cmd					**cmds;
@@ -39,16 +39,16 @@ typedef struct s_executor
 
 int							execution(t_cmd **cmds, char **envp);
 void						set_io_streams(t_executor *exec);
-int							execute(t_executor *exec, char **argv, char **envp);
+int							child(t_executor *exec);
 void						execute_builtin(t_executor *exec);
-int							check_exit_value(t_executor *exec);
+int							check_exit(t_executor *exec);
 void						evaluate_logic_operator(t_executor *exec);
 t_fd_state					*initialize_fd_state(int fd);
 int							is_logic(t_executor *exec);
 char						**reverse_pars(t_cmd **cmds_tojoin, int commands);
-void						initialize_status_codes(t_executor *exec);
+void						initialize_exit_codes(t_executor *exec);
 void						initialize_pids(t_executor *exec);
-void						initialize_execution_size(t_executor *exec);
+void	execute_cmd(t_executor *exec);
 
 /*
  *   pipes
@@ -62,9 +62,9 @@ t_pipe						*get_next_pipe(t_executor *exec);
 /*
  *	utils
  */
-t_cmd						*current_cmd(t_executor *exec);
-t_cmd						*next_cmd(t_executor *exec, t_cmd *cmd);
-t_cmd						*previous_cmd(t_executor *exec, t_cmd *cmd);
+t_cmd						*get_current_cmd(t_executor *exec);
+t_cmd						*get_next_cmd(t_executor *exec, t_cmd *cmd);
+t_cmd						*get_previous_cmd(t_executor *exec, t_cmd *cmd);
 int							connected_through_operation(t_cmd *cmd,
 								t_cmd *other);
 int							is_final(t_executor *exec);
@@ -88,6 +88,12 @@ int							scope_length(t_executor *exec, t_cmd *cmd,
 								int scope);
 t_pipe						*next_pipe(t_pipe **pipes);
 t_pipe						*last_pipe(t_pipe **pipes);
+pid_t   get_pid(t_executor *exec);
+void    set_pid(t_executor *exec, pid_t pid);
+int get_execution_length(t_executor *exec);
+int   get_exit_code(t_executor *exec, int command_index);
+void    set_exit_code(t_executor *exec, int command_index, int exit_code);
+void    cmds_check(t_cmd **cmds);
 
 /*
  *   io_redirections

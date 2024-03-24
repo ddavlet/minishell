@@ -7,7 +7,7 @@ t_fd_state	*last_output_redir(t_executor *exec)
 
 	if (!exec || !exec->cmds)
 		return (NULL);
-	redir = current_cmd(exec)->redirs;
+	redir = get_current_cmd(exec)->redirs;
 	if (redir == NULL)
 		return (NULL);
 	output_fd_state = NULL;

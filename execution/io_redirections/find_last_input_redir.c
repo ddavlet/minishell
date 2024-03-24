@@ -5,9 +5,9 @@ t_fd_state	*last_input_redir(t_executor *exec)
 	t_redir		*redir;
 	t_fd_state	*input_fd_state;
 
-	if (!exec || !current_cmd(exec))
+	if (!exec || !get_current_cmd(exec))
 		terminate(NULL, EXIT_FAILURE, "parameter check failed");
-	redir = current_cmd(exec)->redirs;
+	redir = get_current_cmd(exec)->redirs;
     if (!redir)
     {
         return (NULL);
