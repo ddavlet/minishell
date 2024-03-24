@@ -5,7 +5,7 @@ void	execute_builtin(t_executor *exec)
 	char	*builtin;
 	t_cmd	*cmd;
 
-	//set_io_streams(exec);
+	set_io_streams(exec);
 	cmd = current_cmd(exec);
 	builtin = cmd->argv[0];
 	if (ft_strncmp(builtin, "cd", ft_strlen("cd") + 1) == 0)
