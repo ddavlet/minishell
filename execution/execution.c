@@ -12,9 +12,9 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 	exec->cmds = cmds;
 	exec->envp = envp;
 	exec->command_index = 0;
-    initialize_execution_size(exec);
+	initialize_execution_size(exec);
 	initialize_status_codes(exec);
-    initialize_pids(exec);
+	initialize_pids(exec);
 	initialize_pipes(exec);
 	return (exec);
 }
@@ -84,7 +84,7 @@ static void	execute_cmd(t_executor *exec)
 
 }
 
-int	  execution(t_cmd **cmds, char **envp)
+int	execution(t_cmd **cmds, char **envp)
 {
 	t_executor	*exec;
 
