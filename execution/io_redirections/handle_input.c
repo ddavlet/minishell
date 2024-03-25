@@ -12,7 +12,7 @@ t_fd_state	*input_redirection(const char *file_name)
     if (!fd_state)
     {
         close(fd);
-        terminate(NULL, EXIT_FAILURE, "input redirection failure");
+        ft_putendl_fd("input redirection failed", 2);
     }
 	return (fd_state);
 }

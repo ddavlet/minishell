@@ -1,6 +1,6 @@
 #include "execution.h"
 
-int	child(t_executor *exec)
+int	child_process(t_executor *exec)
 {
 	char	*path;
 	char	**argv;
@@ -23,12 +23,15 @@ int	child(t_executor *exec)
 
 void	execute_cmd(t_executor *exec)
 {
-	set_pid(exec, fork());
-	if (get_pid(exec) == -1)
+    int index;
+
+    index = exec->command_index;
+	set_pid(exec, index, fork());
+	if (get_pid(exec, index) == -1)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
-	else if (get_pid(exec) == 0)
+	else if (get_pid(exec, index) == 0)
 	{
 		set_io_streams(exec);
-		child(exec);
+		child_process(exec);
 	}
 }

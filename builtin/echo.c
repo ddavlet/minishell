@@ -6,9 +6,7 @@ int	builtin_echo(char **argv, t_env *root)
 
 	(void)root;
 	i = 1;
-	if (!argv[1])
-		return (0);
-	if (ft_strncmp(argv[i], "-n", 3) == 0)
+	if (argv[i] && ft_strncmp(argv[i], "-n", 3) == 0)
 		i++;
 	while (argv[i])
 	{
@@ -17,7 +15,7 @@ int	builtin_echo(char **argv, t_env *root)
 			ft_putstr_fd(" ", 1);
 		i++;
 	}
-	if (ft_strncmp(argv[1], "-n", 3))
+	if (argv[1] == NULL || ft_strncmp(argv[1], "-n", 3))
 		ft_putstr_fd("\n", 1);
-	return (0);
+	return (EXIT_SUCCESS);
 }

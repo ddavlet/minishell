@@ -11,7 +11,7 @@ int	builtin_exit(char **argv, t_env *root)
 	if (i > 2)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	if (i == 2)
 	{
@@ -22,8 +22,8 @@ int	builtin_exit(char **argv, t_env *root)
 			ft_putstr_fd(": numeric argument required\n", 2);
 			return (255);
 		}
-		return (ft_atoi(argv[1]) % 256);
+		exit(ft_atoi(argv[1]) % 256);
 		// return (ft_atoi(argv[1]) % 256);
 	}
-	return (0);
+	exit (EXIT_SUCCESS);
 }

@@ -29,7 +29,6 @@ typedef struct s_fd_state
 typedef struct s_executor
 {
 	int						command_index;
-	int						size;
 	int						*exit_codes;
 	char					**envp;
 	pid_t					*pids;
@@ -39,7 +38,7 @@ typedef struct s_executor
 
 int							execution(t_cmd **cmds, char **envp);
 void						set_io_streams(t_executor *exec);
-int							child(t_executor *exec);
+int							child_process(t_executor *exec);
 void						execute_builtin(t_executor *exec);
 int							check_exit(t_executor *exec);
 void						evaluate_logic_operator(t_executor *exec);
@@ -48,7 +47,9 @@ int							is_logic(t_executor *exec);
 char						**reverse_pars(t_cmd **cmds_tojoin, int commands);
 void						initialize_exit_codes(t_executor *exec);
 void						initialize_pids(t_executor *exec);
-void	execute_cmd(t_executor *exec);
+void						execute_cmd(t_executor *exec);
+char						*build_path_from_env(char *name);
+void						close_pipe(t_executor *exec, t_pipe *pipe);
 
 /*
  *   pipes
@@ -65,35 +66,25 @@ t_pipe						*get_next_pipe(t_executor *exec);
 t_cmd						*get_current_cmd(t_executor *exec);
 t_cmd						*get_next_cmd(t_executor *exec, t_cmd *cmd);
 t_cmd						*get_previous_cmd(t_executor *exec, t_cmd *cmd);
-int							connected_through_operation(t_cmd *cmd,
-								t_cmd *other);
 int							is_final(t_executor *exec);
-int							count_pipes(t_executor *exec,
-								bool include_nested_scopes);
-void						skip_nested_cmds(t_executor *exec);
+int							count_pipes(t_executor *exec);
 void						exit_handler(int status);
 void						msg_error(char *err);
 void						free_arr2d(void **arr2d);
 void						terminate(t_executor *exec, int status, char *msg);
-int							is_builtin(char *path);
-int							is_inside_scope(t_cmd *cmd, int scope);
-int							has_nested_scope(t_cmd *cmd);
+int							is_builtin(t_cmd *cmd);
 int							arr_len(char **arr);
-int							get_nested_scope(t_cmd *cmd);
-t_cmd						*first_cmd_in_scope(t_executor *exec, int scope);
-t_cmd						*final_cmd_in_scope(t_executor *exec, int scope);
-int							get_scope(t_cmd *cmd);
-void						close_fd(t_fd_state *fd_state);
-int							scope_length(t_executor *exec, t_cmd *cmd,
-								int scope);
+void						close_fd(t_executor *exec, t_fd_state *fd_state);
 t_pipe						*next_pipe(t_pipe **pipes);
 t_pipe						*last_pipe(t_pipe **pipes);
-pid_t   get_pid(t_executor *exec);
-void    set_pid(t_executor *exec, pid_t pid);
-int get_execution_length(t_executor *exec);
-int   get_exit_code(t_executor *exec, int command_index);
-void    set_exit_code(t_executor *exec, int command_index, int exit_code);
-void    cmds_check(t_cmd **cmds);
+pid_t						get_pid(t_executor *exec, int command_index);
+void						set_pid(t_executor *exec, int command_index,
+								pid_t pid);
+int							get_execution_length(t_executor *exec);
+int							get_exit_code(t_executor *exec, int command_index);
+void						set_exit_code(t_executor *exec, int command_index,
+								int exit_code);
+void						cmds_check(t_cmd **cmds);
 
 /*
  *   io_redirections

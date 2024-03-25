@@ -31,6 +31,5 @@ void	execute_builtin(t_executor *exec)
 	set_io_streams(exec);
 	cmd = get_current_cmd(exec);
     exit_code = builtin_router(cmd);
-    set_exit_code(exec, exit_code);
-    exec->command_index++;
+    set_exit_code(exec, exit_code, exec->command_index);
 }

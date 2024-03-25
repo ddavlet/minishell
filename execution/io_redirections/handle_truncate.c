@@ -12,7 +12,7 @@ t_fd_state	*truncate_redirection(const char *file_name)
     if (!fd_state)
     {
         close(fd);
-        terminate(NULL, EXIT_FAILURE, "truncate redirection failure");
+        ft_putendl_fd("truncate redirection failed", 2);
     }
 	return (fd_state);
 }

@@ -3,11 +3,12 @@
 t_fd_state  *here_document(t_executor *exec, const char *delimiter)
 {
     char    *line;
+    t_pipe  *pipe;
     char    *tmp;
-    // (void)env;
+    t_env   env;
+    (void)env;
     (void)tmp;
     (void)exec;
-    t_pipe  *pipe;
 
     pipe = create_pipe();
     line = readline("heredoc> ");
@@ -25,7 +26,7 @@ t_fd_state  *here_document(t_executor *exec, const char *delimiter)
         line = readline("heredoc> ");
     }
     free(line);
-    close_fd(pipe->write);
+    close_fd(exec, pipe->write);
     return (pipe->read);
 }
 

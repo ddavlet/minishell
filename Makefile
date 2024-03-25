@@ -9,8 +9,8 @@ UTL_SRC_DIR := utils/
 WC_SRC_DIR := wildcard/
 IO_SOURCE := find_last_input_redir.c find_last_output_redir.c handle_append.c handle_here_document.c handle_input.c \
 				handle_truncate.c
-UTL_SOURCE := connected.c child.c utils.c
-EXE_SOURCE := initialize_exit_codes.c initialize_pids.c initialize_execution_size.c and_or.c check_exit.c execute_builtin.c execution.c pipe.c reverse_pars.c set_io_streams.c \
+UTL_SOURCE := utils.c reverse_pars.c cmds_check.c path.c
+EXE_SOURCE := commands.c exit_codes.c pids.c and_or.c execute_cmd.c execute_builtin.c execution.c pipes.c set_io_streams.c \
 				$(addprefix $(IO_SRC_DIR), $(IO_SOURCE)) $(addprefix $(UTL_SRC_DIR), $(UTL_SOURCE))
 EXE_SRCS = $(addprefix $(EXE_SRC_DIR), $(EXE_SOURCE))
 WC_SOURCE := init_utils.c terminating.c wildcard.c

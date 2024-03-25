@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_pars.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 15:07:44 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/24 07:28:13 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:30:06 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "../execution.h"
 
 char	*operation(t_oper type)
 {

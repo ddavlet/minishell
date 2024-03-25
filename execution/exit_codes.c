@@ -29,7 +29,7 @@ void    set_exit_code(t_executor *exec, int command_index, int exit_code)
 {
     if (!exec || !exec->pids)
         terminate(exec, EXIT_FAILURE, "couldn't set exit code");
-    exec->exit_codes[command_index] = exit_code;
+    exec->exit_codes[command_index] = exit_code>>8;
 }
 
 void	wait_until(t_executor *exec)
@@ -43,26 +43,30 @@ void	wait_until(t_executor *exec)
 		i++;
 	while (i < exec->command_index + 1)
 	{
-		pid = get_pid(exec);
-		waitpid(pid, &exit_code, 0);
-		set_exit_code(exec, i, exit_code);
+        if (is_builtin(exec->cmds[i]))
+        {
+            i++;
+            continue ;
+        }
+        else
+        {
+            pid = get_pid(exec, i);
+            waitpid(pid, &exit_code, 0);
+            set_exit_code(exec, i, exit_code);
+            i++;
+        }
 	}
 }
 
 int	check_exit(t_executor *exec)
 {
-
-	if (!exec || !exec->cmds)
-		terminate(NULL, EXIT_FAILURE, "parameter check failed");
+	if (!exec)
+		terminate(exec, EXIT_FAILURE, "couldn't check exit code");
     if (is_final(exec) || is_logic(exec))
 	{
+        wait_until(exec);
 		if (is_logic(exec))
-		{
-			wait_until(exec);
 			evaluate_logic_operator(exec);
-		}
-		else if (is_final(exec))
-			wait_until(exec);
 	}
 	return (0);
 }
