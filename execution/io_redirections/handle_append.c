@@ -12,7 +12,7 @@ t_fd_state	*append_redirection(const char *file_name)
     if (!fd_state)
     {
         close(fd);
-        terminate(NULL, EXIT_FAILURE, "append redirection failure");
+        ft_putendl_fd("append redirection failed", 2);
     }
 	return (fd_state);
 }

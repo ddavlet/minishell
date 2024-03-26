@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_exit(char **argv, t_env *root, t_executor *exec)
+int	builtin_exit(char **argv, t_env *root)
 {
 	int	i;
 
@@ -11,7 +11,7 @@ int	builtin_exit(char **argv, t_env *root, t_executor *exec)
 	if (i > 2)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	if (i == 2)
 	{
@@ -22,9 +22,8 @@ int	builtin_exit(char **argv, t_env *root, t_executor *exec)
 			ft_putstr_fd(": numeric argument required\n", 2);
 			return (255);
 		}
-		terminate(exec, ft_atoi(argv[1]) % 256, NULL);
+		exit(ft_atoi(argv[1]) % 256);
 		// return (ft_atoi(argv[1]) % 256);
 	}
-	terminate(exec, 0, NULL);
-	return (0);
+	exit (EXIT_SUCCESS);
 }

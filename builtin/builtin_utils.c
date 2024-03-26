@@ -1,5 +1,4 @@
 #include "builtin.h"
-#include "../libft/libft.h"
 
 char	*ft_strcdup(const char *s, int c)
 {
@@ -35,5 +34,19 @@ int	ft_isnumber(char *str)
 			return (0);
 		i++;
 	}
+	return (1);
+}
+
+int	builtin_err_gen(const char *cmd, const char *msg, const char *path)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+	if (path)
+	{
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putendl_fd(msg, 2);
 	return (1);
 }
