@@ -25,8 +25,8 @@ static int	builtin_router(t_cmd *cmd, int out_fd)
 
 void	execute_builtin(t_executor *exec)
 {
-	t_cmd	*cmd;
 	int		exit_code;
+	t_cmd	*cmd;
 	t_pipe	*pipe;
 
 	cmd = get_current_cmd(exec);

@@ -49,14 +49,12 @@ void						initialize_exit_codes(t_executor *exec);
 void						initialize_pids(t_executor *exec);
 void						execute_cmd(t_executor *exec);
 char						*build_path_from_env(char *name);
-void						close_pipe(t_executor *exec, t_pipe *pipe);
 
 /*
  *   pipes
  */
 t_pipe						**initialize_pipes(t_executor *exec);
 t_pipe						*create_pipe(void);
-// void						close_pipe(t_pipe *pipe);
 void						close_next_pipe(t_executor *exec);
 t_pipe						*get_next_pipe(t_executor *exec);
 

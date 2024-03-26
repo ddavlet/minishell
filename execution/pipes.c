@@ -58,15 +58,21 @@ t_pipe	*create_pipe(void)
 	return (pipe);
 }
 
-void    close_pipe(t_executor *exec, t_pipe *pipe)
+t_pipe **initialize_pipes(t_executor *exec)
 {
-    if (!pipe || !pipe->write || !pipe->read)
-        terminate(exec, EXIT_FAILURE, "Failed to close pipe.");
-    if (pipe->write->is_open)
-        close_fd(exec, pipe->write);
-    if (pipe->read->is_open)
-        close_fd(exec, pipe->read);
+	int		pipe_count;
+	t_pipe **pipes;
+
+	pipe_count = count_pipes(exec);
+	pipes = (t_pipe **)ft_calloc(pipe_count + 1, sizeof(t_pipe *));
+	if (!pipes)
+		return (NULL);
+	while (pipe_count--)
+		pipes[pipe_count] = create_pipe();
+    exec->pipes = pipes;
+	return (pipes);
 }
+
 
 t_pipe	*get_next_pipe(t_executor *exec)
 {
@@ -93,19 +99,4 @@ void    close_next_pipe(t_executor *exec)
     pipe = exec->pipes[i];
     if (pipe)
         close_fd(exec, pipe->write);
-}
-
-t_pipe **initialize_pipes(t_executor *exec)
-{
-	int		pipe_count;
-	t_pipe **pipes;
-
-	pipe_count = count_pipes(exec);
-	pipes = (t_pipe **)ft_calloc(pipe_count + 1, sizeof(t_pipe *));
-	if (!pipes)
-		return (NULL);
-	while (pipe_count--)
-		pipes[pipe_count] = create_pipe();
-    exec->pipes = pipes;
-	return (pipes);
 }
