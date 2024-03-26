@@ -19,7 +19,7 @@ PAR_SOURCE := cmd_utils.c env_utils.c env_utils2.c errors.c errors2.c general_ut
 				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c reparsing.c \
 				$(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
-BUL_SOURCE := builtin_utils.c cd.c echo.c env.c error_messages.c exit.c export.c pwd.c unset.c
+BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c ./signal_handling/signals.c
 INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/

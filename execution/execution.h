@@ -96,15 +96,17 @@ t_fd_state					*here_document(t_executor *exec,
 t_fd_state					*truncate_redirection(const char *file_name);
 t_fd_state					*append_redirection(const char *file_name);
 t_fd_state					*input_redirection(const char *file_name);
+void						handle_redir_input(t_executor *exec);
+void						handle_redir_output(t_executor *exec);
 
 /*
  *   debug
  */
-void						debug_close_fd(t_fd_state *fd_state);
-void						debug_pipe_information(t_pipe *pipe);
-void						debug_started(char *msg);
-void						debug_ended(char *msg);
-void						debug_cmd_info(t_executor *exec);
+// void						debug_close_fd(t_fd_state *fd_state);
+// void						debug_pipe_information(t_pipe *pipe);
+// void						debug_started(char *msg);
+// void						debug_ended(char *msg);
+// void						debug_cmd_info(t_executor *exec);
 // void						debug_print_exit_code(t_executor *exec);
 
 #endif

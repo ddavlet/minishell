@@ -91,8 +91,8 @@ void    close_next_pipe(t_executor *exec)
     while(exec->pipes[i] && exec->pipes[i]->write->is_open == 0)
         i++;
     pipe = exec->pipes[i];
-
-	close_fd(exec, pipe->write);
+    if (pipe)
+        close_fd(exec, pipe->write);
 }
 
 t_pipe **initialize_pipes(t_executor *exec)

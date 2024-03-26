@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_env(char **argv, t_env *root)
+int	builtin_env(char **argv, t_env *root, int out_fd)
 {
 	uint32_t	i;
 
@@ -9,6 +9,6 @@ int	builtin_env(char **argv, t_env *root)
 		return (builtin_err_gen("env", \
 		"option(s) or argument(s) are not allowed", NULL));
 	while (root->envp[i])
-		ft_putendl_fd(root->envp[i++], 1);
+		ft_putendl_fd(root->envp[i++], out_fd);
 	return (0);
 }
