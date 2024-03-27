@@ -1,5 +1,15 @@
 #include "parsing.h"
 
+int	ft_isparenthesis(char *txt)
+{
+	if (!ft_strncmp(txt, "(", 2))
+		return (1);
+	if (!ft_strncmp(txt, ")", 2))
+		return (2);
+	else
+		return (0);
+}
+
 t_oper	ft_isexeption(char *txt)
 {
 	if (!ft_strncmp(txt, "||", 2))

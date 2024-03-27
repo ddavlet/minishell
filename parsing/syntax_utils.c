@@ -2,18 +2,18 @@
 
 int	ft_isignored(char *txt)
 {
-	if (!ft_strncmp(txt, ";", 2))
-		return (1);
-	if (!ft_strncmp(txt, "!", 2))
-		return (1);
+	// if (!ft_strncmp(txt, ";", 2))
+	// 	return (1);
+	// if (!ft_strncmp(txt, "!", 2))
+	// 	return (1);
 	if (oper_type(txt) == BCKGR)
 		return (1);
-	if (!ft_strncmp(txt, "{", 2) || !ft_strncmp(txt, "}", 2))
-		return (1);
-	if (!ft_strncmp(txt, "!", 2))
-		return (1);
-	if (!ft_strncmp(txt, "[", 2) || !ft_strncmp(txt, "]", 2))
-		return (1);
+	// if (!ft_strncmp(txt, "{", 2) || !ft_strncmp(txt, "}", 2))
+	// 	return (1);
+	// if (!ft_strncmp(txt, "!", 2))
+	// 	return (1);
+	// if (!ft_strncmp(txt, "[", 2) || !ft_strncmp(txt, "]", 2))
+	// 	return (1);
 	if (!ft_strncmp(txt, "\\", 2))
 		return (1);
 	else
@@ -45,7 +45,7 @@ void	*check_tokens(char **tokens)
 	i = 0;
 	if (!tokens[i])
 		return (NULL);
-	if (count_brackets(tokens))
+	if (count_parenth(tokens))
 		return (error_near_tocken("parenthesis"));
 	if (!ft_strncmp(tokens[0], ")", 2))
 		return (error_near_tocken(tokens[i]));

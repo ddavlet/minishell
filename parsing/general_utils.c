@@ -18,7 +18,8 @@ char	**add_escape(char **token, const char *esc)
 	i = 0;
 	while (token[i])
 	{
-		if (ft_isexeption(token[i]))
+		if (ft_isexeption(token[i]) || ft_isredir(token[i])
+			|| ft_isparenthesis(token[i]))
 		{
 			tmp = token[i];
 			token[i] = ft_strjoin(esc, tmp);

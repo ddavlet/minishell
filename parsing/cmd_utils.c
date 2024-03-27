@@ -23,6 +23,8 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 
 	i = prev - 1;
 	argv = (char **)ft_calloc(sizeof(char *), 1); // protect
+	if (!argv)
+		return (NULL);
 	while (++i < next || (tokens[i] && ft_isexeption(tokens[i])))
 	{
 		if (ft_isredir(tokens[i]))

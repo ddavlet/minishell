@@ -83,3 +83,23 @@ char	**merge_quotations(char **tokens)
 	}
 	return (tokens);
 }
+
+char	**parse_delspace(char **tokens)
+{
+	ssize_t	i;
+	ssize_t	j;
+	char	**new_arr;
+
+	i = 0;
+	j = 0;
+	new_arr = (char **)ft_calloc(sizeof(char *), (arrlen_nosspace(tokens) + 1));
+	while (tokens[i])
+	{
+		if (tokens[i][0] == 0)
+			i++;
+		else
+			new_arr[j++] = ft_strdup(tokens[i++]);
+	}
+	terminate_ptr_str(tokens);
+	return (new_arr);
+}
