@@ -26,6 +26,27 @@ void	exit_handler(int status)
 		exit(status);
 }
 
+void	free_execution(t_executor *exec)
+{
+	int	i;
+
+	free(exec->exit_codes);
+	free(exec->pids);
+	i = 0;
+	while (exec->pipes[i])
+	{
+		if (exec->pipes[i]->write->is_open)
+			close_fd(exec, exec->pipes[i]->write);
+		if (exec->pipes[i]->read->is_open)
+			close_fd(exec, exec->pipes[i]->read);
+		free(exec->pipes[i]->read);
+		free(exec->pipes[i]->write);
+		free(exec->pipes[i]);
+	}
+	free(exec->pipes);
+	free(exec);
+}
+
 void	terminate(t_executor *exec, int status, char *msg)
 {
     int i;

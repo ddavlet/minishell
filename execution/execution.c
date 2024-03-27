@@ -45,5 +45,6 @@ int	execution(t_cmd **cmds, char **envp)
 	if (!exec)
 		terminate(exec, EXIT_FAILURE, "failed to initialize executor");
     loop(exec);
+    free_execution(exec);
 	return (0);
 }

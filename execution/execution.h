@@ -86,6 +86,7 @@ void						set_exit_code(t_executor *exec, int command_index,
 								int exit_code);
 void						cmds_check(t_cmd **cmds);
 void						reset_input_output(t_executor *exec);
+void						free_execution(t_executor *exec);
 
 /*
  *   io_redirections
