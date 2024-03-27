@@ -6,8 +6,8 @@ void	*terminate_cmd(t_cmd *cmd)
 		return (NULL); // ERROR!
 	if (cmd->com)
 		free(cmd->com);
-	if (cmd->scope_stack)
-		free(cmd->scope_stack);
+	// if (cmd->scope_stack)
+	// 	free(cmd->scope_stack);
 	terminate_ptr_str(cmd->argv);
 	terminate_redirs(cmd->redirs);
 	free(cmd);
@@ -26,7 +26,7 @@ void	*terminate_commands(t_cmd **commands)
 		free(commands[i]->com);
 		terminate_ptr_str(commands[i]->argv);
 		terminate_redirs(commands[i]->redirs);
-		terminate_env(commands[i]->env);
+		// terminate_env(commands[i]->env);
 		free(commands[i++]);
 	}
 	free(commands);

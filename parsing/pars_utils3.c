@@ -16,6 +16,31 @@ t_oper	oper_type(char *txt)
 		return (RUN);
 }
 
+int	parenth_type(char *txt)
+{
+	if (!txt)
+		return (0);
+	if (!ft_strncmp(txt, "\\(", 3))
+		return (1);
+	if (!ft_strncmp(txt, "\\)", 3))
+		return (2);
+	return (0);
+}
+
+t_red_sym	redir_type(char *txt)
+{
+	if (!ft_strncmp(txt, "\\<<", 4))
+		return (HEAR_DOC);
+	else if (!ft_strncmp(txt, "\\>>", 4))
+		return (APP_OUT);
+	else if (!ft_strncmp(txt, "\\<", 3))
+		return (RED_INP);
+	else if (!ft_strncmp(txt, "\\>", 3))
+		return (RED_OUT);
+	else
+		return (NO_REDIR);
+}
+
 void	trim_quotes(char **tokens)
 {
 	ssize_t	i;
@@ -36,37 +61,7 @@ void	trim_quotes(char **tokens)
 	}
 }
 
-char	**parse_delspace(char **tokens)
-{
-	ssize_t	i;
-	ssize_t	j;
-	char	**new_arr;
-
-	i = 0;
-	j = 0;
-	new_arr = (char **)ft_calloc(sizeof(char *), (arrlen_nosspace(tokens) + 1));
-	while (tokens[i])
-	{
-		if (tokens[i][0] == 0)
-			i++;
-		else
-			new_arr[j++] = ft_strdup(tokens[i++]);
-	}
-	terminate_ptr_str(tokens);
-	return (new_arr);
-}
-
-int	ft_isparenthesis(char *txt)
-{
-	if (!ft_strncmp(txt, "(", 2))
-		return (1);
-	if (!ft_strncmp(txt, ")", 2))
-		return (2);
-	else
-		return (0);
-}
-
-int	count_brackets(char **arr)
+int	count_parenth(char **arr)
 {
 	ssize_t	count;
 	ssize_t	i;

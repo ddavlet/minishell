@@ -37,7 +37,7 @@ typedef struct s_cmd
 	char			*com;
 	char			**argv;
 	enum e_oper		operat;
-	int				*scope_stack;
+	// int				*scope_stack;
 	struct s_redir	*redirs;
 	struct s_env	*env;
 }					t_cmd;
@@ -78,6 +78,8 @@ char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
 char		**get_wildcard(char **tokens, t_env *root);
 void		append_redirnode(t_redir **redir, t_red_sym key,
 				const char *value);
+t_cmd		**init_commands(char **tokens);
+
 
 /*Tokenization*/
 char		**pars_split(char const *s);
@@ -93,11 +95,12 @@ t_quote		ft_isquotation(char c);
 t_red_sym	ft_isredir(const char *redir);
 uint32_t	del_pos(const char *txt);
 t_oper		oper_type(char *txt);
+int			parenth_type(char *txt);
 void		trim_quotes(char **tokens);
 ssize_t		find_next_cmd(char **tokens, ssize_t i);
 char		**parse_delspace(char **tokens);
 int			ft_isparenthesis(char *txt);
-int			count_brackets(char **arr);
+int			count_parenth(char **arr);
 uint32_t	count_commands(char **token);
 
 /*Terminating*/

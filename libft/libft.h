@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:27:43 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/18 16:23:23 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/03/26 18:03:07 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ ssize_t	ft_arr_len(char **arr);
 char	**append_arr_str(char **arr, char *str);
 char	**arrstr_copy(const char **envp);
 char	**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
+int		*ft_intarrdup(int *arr);
 
 #endif

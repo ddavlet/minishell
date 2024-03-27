@@ -6,8 +6,8 @@ char	*pwd(t_env *env)
 	char	*home;
 	char	*tmp;
 
-	pwd = find_var(env, "PWD");
-	home = find_var(env, "HOME");
+	pwd = find_var(env, ft_strdup("PWD"));
+	home = find_var(env, ft_strdup("HOME"));
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
@@ -49,7 +49,7 @@ char	*create_promt(t_env *env)
 	char	*tmp;
 
 	promt = ft_strdup("");
-	tmp = find_var(env, "USER");
+	tmp = find_var(env, ft_strdup("USER"));
 	promt = ft_strjoin_free(promt, tmp);
 	free(tmp);
 	promt = ft_strjoin_free(promt, "@");
@@ -70,31 +70,46 @@ int	main(int argc, char *argv[],const char *envp[])
 	char	*promt;
 	t_env	*env;
 
-	// char *test[] = {"echo", "test", "\\|", "echo", "test2", NULL};
 	// cmds = reparse_text(test);
 	(void)argc;
 	(void)argv;
 	env = init_env((const char **)envp);
 	append_envp(env, "SHELL", "minishell");
 	line = NULL;
-	while (1)
+	for (int z = 0; z < 3; z++)
 	{
 		signals(getpid());
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
-		line = readline(promt);
+		// line = readline(promt);
+		line = ft_strdup("echo test && (echo test1 && echo test2)");
 		free(promt);
 		if (!line)
 			break ;
 		if (!line[0])
 			continue ;
 		add_history(line);
-		cmds = parse_text(line, env);
+		char *test = find_var(env, ft_strdup("USER"));
+		if (!test[0])
+		{
+			printf("1\n");
+			cmds = init_commands(&argv[1]);
+			for (size_t i = 0; cmds[i]; i++)
+				cmds[i]->env = env;
+		}
+		else
+		{
+			printf("2\n");
+			cmds = parse_text(line, env);
+		}
+		free (test);
+		debug_print_cmd(cmds);
 		signals2();
 		if (!cmds)
 			continue ;
 		execution(cmds, cmds[0]->env->envp);
+		terminate_commands(cmds);
 	}
 	write(1, "exit\n", 5);
 	return (0);

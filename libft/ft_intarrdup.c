@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_intarrdup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 14:18:40 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/26 18:43:29 by ddavlety         ###   ########.fr       */
+/*   Created: 2024/03/26 18:02:40 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/03/26 18:03:28 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdbool.h>
-# include <stddef.h>
-# include <sys/types.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdint.h>
-# include <string.h>
-# include "./execution/execution.h"
-# include "./builtin/builtin.h"
-# include "./signal_handling/signals.h"
+int	*ft_intarrdup(int *arr)
+{
+	int	*new_arr;
+	ssize_t	i;
 
-# define HOSTNAME_FILE "/etc/hostname"
-# define HOSTNAME_LENGTH 256
-
-#endif
+	i = 0;
+	while (arr[i])
+		i++;
+	new_arr = (int *)ft_calloc(sizeof(int), i + 1);
+	i = -1;
+	while (arr[++i])
+		new_arr[i] = arr[i];
+	return (new_arr);
+}

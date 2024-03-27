@@ -2,9 +2,10 @@
 
 int	is_first_operant(t_executor *exec, t_cmd *cmd)
 {
-	t_cmd	*next;
+	// t_cmd	*next;
 
-	next = get_next_cmd(exec, cmd);
+	// next = get_next_cmd(exec, cmd);
+	(void)exec;
 	if (cmd->operat == AND || cmd->operat == OR)
 		return (1);
 	return (0);
@@ -12,9 +13,10 @@ int	is_first_operant(t_executor *exec, t_cmd *cmd)
 
 int	is_second_operant(t_executor *exec, t_cmd *cmd)
 {
-	t_cmd	*prev;
+	// t_cmd	*prev;
 
-	prev = get_previous_cmd(exec, cmd);
+	// prev = get_previous_cmd(exec, cmd);
+	(void)exec;
 	if (cmd->operat == AND || cmd->operat == OR)
 		return (1);
 	return (0);
