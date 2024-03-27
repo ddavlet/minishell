@@ -1,4 +1,7 @@
 Have to fix:
 
-1.
-
+1. "<<" tokens in quotations
+2. parenthesis:
+argv[0] = minishell
+argv[1] = -r
+3.
