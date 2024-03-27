@@ -76,34 +76,21 @@ int	main(int argc, char *argv[],const char *envp[])
 	env = init_env((const char **)envp);
 	append_envp(env, "SHELL", "minishell");
 	line = NULL;
-	for (int z = 0; z < 3; z++)
+	while (true)
 	{
 		signals(getpid());
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
-		// line = readline(promt);
-		line = ft_strdup("echo test && (echo test1 && echo test2)");
+		line = readline(promt);
+		// line = ft_strdup("echo test && (echo test1 && echo test2)");
 		free(promt);
 		if (!line)
 			break ;
 		if (!line[0])
 			continue ;
 		add_history(line);
-		char *test = find_var(env, ft_strdup("USER"));
-		if (!test[0])
-		{
-			printf("1\n");
-			cmds = init_commands(&argv[1]);
-			for (size_t i = 0; cmds[i]; i++)
-				cmds[i]->env = env;
-		}
-		else
-		{
-			printf("2\n");
-			cmds = parse_text(line, env);
-		}
-		free (test);
+        cmds = parse_text(line, env);
 		debug_print_cmd(cmds);
 		signals2();
 		if (!cmds)
