@@ -141,7 +141,6 @@ int			unset_envvar(t_env *root, const char *to_find);
 
 /*Sytax controllers*/
 int			sytax_redir(char *txt);
-int			syntax_exeption(char *token);
 int			ft_isignored(char *txt);
 void		*check_tokens(char **tokens);
 

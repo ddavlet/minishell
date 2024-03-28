@@ -76,14 +76,14 @@ int	main(int argc, char *argv[],const char *envp[])
 	env = init_env((const char **)envp);
 	append_envp(env, "SHELL", "minishell");
 	line = NULL;
-	for (int z = 0; z < 3; z++)
+	for (int z = 0; z < 100; z++)
 	{
 		signals(getpid());
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
-		// line = readline(promt);
-		line = ft_strdup("echo test && (echo test1 && echo test2)");
+		line = readline(promt);
+		// line = ft_strdup("((echo test)) && echo test1 && echo test2 && (echo test3)");
 		free(promt);
 		if (!line)
 			break ;

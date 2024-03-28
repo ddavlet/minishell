@@ -20,9 +20,9 @@ t_cmd	*set_scope(char **tokens, ssize_t *prev)
 	int		count;
 	t_cmd	*cmd;
 
-	i = *prev;
 	if (*prev == 1)
-		i--;
+		(*prev)--;
+	i = *prev;
 	count = 0;
 	if (parenth_type(tokens[i]) == 1)
 	{
@@ -32,8 +32,10 @@ t_cmd	*set_scope(char **tokens, ssize_t *prev)
 		{
 			if (parenth_type(tokens[i]) == 2 && count == 0)
 			{
-				cmd->argv = argv_scope(tokens, *prev, i);
+				cmd->argv = argv_scope(tokens, *prev + 1, i - 1);
 				*prev = i + 2;
+				if (!tokens[i + 1])
+					(*prev)--;
 				cmd->operat = oper_type(tokens[i + 1]);
 				return (cmd);
 			}
@@ -42,7 +44,8 @@ t_cmd	*set_scope(char **tokens, ssize_t *prev)
 			else if (parenth_type(tokens[i]) == 2)
 				count--;
 		}
-		return (0);
+		free(cmd);
+		return (NULL);
 	}
 	return (NULL);
 }
@@ -155,28 +158,34 @@ t_cmd	*init_cmd(char **tokens, ssize_t prev, ssize_t next)
 
 t_cmd	**init_commands(char **tokens)
 {
-	t_cmd			**commands;
-	uint32_t		i;
-	ssize_t			j;
-	ssize_t			k;
+	t_cmd	**commands;
+	ssize_t	i;
+	ssize_t	j;
+	ssize_t	k;
 
 	i = 0;
 	j = 0;
+	k = 1;
 	commands = (t_cmd **)ft_calloc(count_commands(tokens) + 1, sizeof(t_cmd *));
 	if (!commands)
 		return (error_general(commands, "commands structure")); // catch it!
 	while (tokens[j]) // incrase efficiency
 	{
-		k = j + 1;
-		commands[i] = set_scope(tokens, &k);
+		if (parenth_type(tokens[k])
+			|| parenth_type(tokens[k - 1]))
+			commands[i] = set_scope(tokens, &k);
+		j = find_next_cmd(tokens, k); // protect prom segfault
 		if (commands[i])
 			i++;
-		if (!tokens[k - 1] || !tokens[k])
-			break ;
-		j = find_next_cmd(tokens, k); // protect prom segfault
+		if (parenth_type(tokens[k])
+			|| parenth_type(tokens[k - 1]))
+				continue ;
 		commands[i] = init_cmd(tokens, k, j);
 		if (!commands[i++])
 			return (terminate_commands(commands));
+		k = j + 1;
+		if (!tokens[k] || !tokens[k - 1] || !tokens[k + 1])
+			break ;
 	}
 	return (commands);
 }

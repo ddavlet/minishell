@@ -44,9 +44,9 @@ void	*error_near_tocken(char *token)
 	if (!token)
 		write(2, "newline", 7);
 	else if (token[0] == '\\')
-		write(2, &(token[1]), 2);
+		write(2, &(token[1]), ft_strlen(&(token[1])));
 	else
-		write(2, &(token[0]),2);
+		write(2, token,ft_strlen(token));
 	ft_putendl_fd("\'", 2);
 	return (NULL);
 }

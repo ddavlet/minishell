@@ -25,7 +25,7 @@ void	debug_print_cmd(t_cmd **commands)
 	i = 0;
 	if (!commands)
 	{
-		ft_printf("Commands do not exist");
+		ft_printf("Commands do not exist\n");
 		return ;
 	}
 	while (commands[i])
