@@ -74,7 +74,8 @@ void	*check_tokens(char **tokens)
 	{
 		if (ft_isignored(tokens[i])) // is ignored
 			return (error_near_tocken(tokens[i]));
-		if (oper_type(tokens[i]) && oper_type(tokens[i + 1]))
+		if (oper_type(tokens[i])
+			&& (oper_type(tokens[i + 1]) || !tokens[i + 1]))
 			return (error_near_tocken(tokens[i + 1]));
 		if (ft_isredir(tokens[i]) && sytax_redir(tokens[i + 1]))
 			return (error_near_tocken(tokens[i + 1]));

@@ -16,7 +16,7 @@ EXE_SRCS = $(addprefix $(EXE_SRC_DIR), $(EXE_SOURCE))
 WC_SOURCE := init_utils.c terminating.c wildcard.c
 PAR_SOURCE := cmd_utils.c env_utils.c env_utils2.c errors.c errors2.c general_utils.c general_utils2.c pars_utils.c \
 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c speccase_utils.c syntax_utils.c terminating.c \
-				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c reparsing.c \
+				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c reparsing.c scope.c \
 				debug.c $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c

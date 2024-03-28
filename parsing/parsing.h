@@ -69,8 +69,6 @@ char		**arrstr_copy(const char **envp);
 int			*ft_intarrdup(int *arr);
 int			id_gen(int seed);
 
-
-
 /*Commands functions*/
 t_cmd		**reparse_text(char **argv);
 t_cmd		**parse_text(const char *txt, t_env *root);
@@ -79,6 +77,7 @@ char		**get_wildcard(char **tokens, t_env *root);
 void		append_redirnode(t_redir **redir, t_red_sym key,
 				const char *value);
 t_cmd		**init_commands(char **tokens);
+t_cmd		*set_scope(char **tokens, ssize_t *prev);
 
 
 /*Tokenization*/

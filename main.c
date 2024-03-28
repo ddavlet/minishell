@@ -90,8 +90,9 @@ int	main(int argc, char *argv[],const char *envp[])
 		if (!line[0])
 			continue ;
 		add_history(line);
-		char *test = find_var(env, ft_strdup("USER"));
-		if (!test[0])
+		char *test; // testing
+		// if (argv[1] && ft_strncmp(argv[1], "-n", 3)) // uncomment
+		if (!test[0]) // for testing
 		{
 			printf("1\n");
 			cmds = init_commands(&argv[1]);
