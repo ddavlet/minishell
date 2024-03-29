@@ -63,6 +63,17 @@ char	*create_promt(t_env *env)
 	return (promt);
 }
 
+void	subshell(char **tokens, t_env *env)
+{
+	t_cmd	**cmds;
+
+	cmds = init_commands(tokens);
+	for (size_t i = 0; cmds[i]; i++)
+		cmds[i]->env = env;
+	execution(cmds, cmds[0]->env->envp);
+	terminate_commands(cmds);
+}
+
 int	main(int argc, char *argv[],const char *envp[])
 {
 	t_cmd	**cmds;
@@ -70,42 +81,27 @@ int	main(int argc, char *argv[],const char *envp[])
 	char	*promt;
 	t_env	*env;
 
-	// cmds = reparse_text(test);
 	(void)argc;
-	(void)argv;
 	env = init_env((const char **)envp);
 	append_envp(env, "SHELL", "minishell");
+	if (argv[1] && !ft_strncmp(argv[1], "-n", 3))
+		subshell(&argv[2], env);
 	line = NULL;
-	for (int z = 0; z < 100; z++)
+	while (1)
 	{
 		signals(getpid());
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
-		line = readline(promt);
-		// line = ft_strdup("((echo test)) && echo test1 && echo test2 && (echo test3)");
+		// line = readline(promt);
+		line = ft_strdup("echo test1 && (echo test2 || echo test3)");
 		free(promt);
 		if (!line)
 			break ;
 		if (!line[0])
 			continue ;
 		add_history(line);
-		char *test; // testing
-		// if (argv[1] && ft_strncmp(argv[1], "-n", 3)) // uncomment
-		if (!test[0]) // for testing
-		{
-			printf("1\n");
-			cmds = init_commands(&argv[1]);
-			for (size_t i = 0; cmds[i]; i++)
-				cmds[i]->env = env;
-		}
-		else
-		{
-			printf("2\n");
-			cmds = parse_text(line, env);
-		}
-		free (test);
-		debug_print_cmd(cmds);
+		cmds = parse_text(line, env);
 		signals2();
 		if (!cmds)
 			continue ;
