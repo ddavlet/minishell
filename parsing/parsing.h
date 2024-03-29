@@ -95,6 +95,7 @@ t_red_sym	ft_isredir(const char *redir);
 uint32_t	del_pos(const char *txt);
 t_oper		oper_type(char *txt);
 int			parenth_type(char *txt);
+t_red_sym	redir_type(char *txt);
 void		trim_quotes(char **tokens);
 ssize_t		find_next_cmd(char **tokens, ssize_t i);
 char		**parse_delspace(char **tokens);

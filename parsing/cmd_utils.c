@@ -25,11 +25,11 @@ char	**create_argv(char **tokens, ssize_t prev, ssize_t next)
 	argv = (char **)ft_calloc(sizeof(char *), 1); // protect
 	if (!argv)
 		return (NULL);
-	while (++i < next || (tokens[i] && ft_isexeption(tokens[i])))
+	while (++i < next || (tokens[i] && oper_type(tokens[i])))
 	{
-		if (ft_isredir(tokens[i]))
+		if (redir_type(tokens[i]))
 			i++;
-		else if (ft_isparenthesis(tokens[i]))
+		else if (parenth_type(tokens[i]))
 			;
 		else if (oper_type(tokens[i]))
 			break ;

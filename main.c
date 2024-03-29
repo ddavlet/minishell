@@ -94,7 +94,7 @@ int	main(int argc, char *argv[],const char *envp[])
 		promt = create_promt(env);
 		rl_on_new_line();
 		// line = readline(promt);
-		line = ft_strdup("echo test1 && (echo test2 || echo test3)");
+		line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
 		free(promt);
 		if (!line)
 			break ;
@@ -102,6 +102,7 @@ int	main(int argc, char *argv[],const char *envp[])
 			continue ;
 		add_history(line);
 		cmds = parse_text(line, env);
+		debug_print_cmd(cmds);
 		signals2();
 		if (!cmds)
 			continue ;
