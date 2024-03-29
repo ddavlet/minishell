@@ -18,12 +18,9 @@ void	handle_redir_output(t_executor *exec)
 	output_fd = last_output_redir(exec);
 	if (output_fd)
 	{
-		if (!is_builtin(get_current_cmd(exec)))
-		{
-			if (dup2(output_fd->fd, STDOUT_FILENO) == -1)
-				terminate(exec, EXIT_FAILURE,
-					"minishell: unable to set output");
-		}
+        if (dup2(output_fd->fd, STDOUT_FILENO) == -1)
+            terminate(exec, EXIT_FAILURE,
+                "minishell: unable to set output");
 		if (output_fd->fd != STDOUT_FILENO)
 			close_fd(exec, output_fd);
 	}
@@ -47,18 +44,15 @@ void	handle_redir_input(t_executor *exec)
 	input_fd = last_input_redir(exec);
 	if (input_fd)
 	{
-		if (!is_builtin(get_current_cmd(exec)))
-		{
-			if (dup2(input_fd->fd, STDIN_FILENO) == -1)
-				terminate(exec, EXIT_FAILURE,
-					"minishell: unable to set pipe to output");
-		}
+        if (dup2(input_fd->fd, STDIN_FILENO) == -1)
+            terminate(exec, EXIT_FAILURE,
+                "minishell: unable to set pipe to output");
 		if (input_fd->fd != STDIN_FILENO)
 			close_fd(exec, input_fd);
 	}
 }
 
-void	set_io_streams(t_executor *exec)
+void	set_input_output(t_executor *exec)
 {
 	t_cmd *cmd;
 	t_cmd *prev;
@@ -67,12 +61,13 @@ void	set_io_streams(t_executor *exec)
 	cmd = get_current_cmd(exec);
 	prev = get_previous_cmd(exec, cmd);
 	next = get_next_cmd(exec, cmd);
+    if (cmd->redirs)
+    {
+		handle_redir_input(exec);
+        handle_redir_output(exec);
+    }
 	if (prev && prev->operat == PIPE)
         handle_pipe_input(exec);
-	if (cmd->redirs != NULL)
-		handle_redir_input(exec);
 	if (next && cmd->operat == PIPE)
         handle_pipe_output(exec);
-	if (cmd->redirs != NULL)
-		handle_redir_output(exec);
 }

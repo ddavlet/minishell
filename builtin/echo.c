@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_echo(char **argv, t_env *root, int out_fd)
+int	builtin_echo(char **argv, t_env *root)
 {
 	ssize_t	i;
 
@@ -10,12 +10,12 @@ int	builtin_echo(char **argv, t_env *root, int out_fd)
 		i++;
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], out_fd);
+		ft_putstr_fd(argv[i], STDOUT_FILENO);
 		if (argv[i + 1])
-			ft_putstr_fd(" ", out_fd);
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 	if (argv[1] == NULL || ft_strncmp(argv[1], "-n", 3))
-		ft_putstr_fd("\n", out_fd);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }

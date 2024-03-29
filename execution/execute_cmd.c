@@ -30,8 +30,5 @@ void	execute_cmd(t_executor *exec)
 	if (get_pid(exec, index) == -1)
 		terminate(exec, EXIT_FAILURE, "failed to fork");
 	else if (get_pid(exec, index) == 0)
-	{
-		set_io_streams(exec);
 		child_process(exec);
-	}
 }

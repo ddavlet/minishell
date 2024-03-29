@@ -9,8 +9,10 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 	exec = (t_executor *)ft_calloc(1, sizeof(t_executor));
 	if (!exec)
 		return (NULL);
-	exec->cmds = cmds;
+    exec->stdin = dup(STDIN_FILENO);
+    exec->stdout = dup(STDOUT_FILENO);
 	exec->envp = envp;
+	exec->cmds = cmds;
 	exec->command_index = 0;
 	initialize_exit_codes(exec);
 	initialize_pids(exec);
@@ -18,23 +20,19 @@ static t_executor	*initialize_executor(t_cmd **cmds, char **envp)
 	return (exec);
 }
 
-void    loop(t_executor *exec)
+static void    loop(t_executor *exec)
 {
-    t_cmd   *cmd;
-    
-    cmd = get_current_cmd(exec);
-	while (cmd != NULL)
+	while (get_current_cmd(exec))
     {
-        if (is_builtin(cmd))
+        set_input_output(exec);
+        if (is_builtin(get_current_cmd(exec)))
             execute_builtin(exec);
         else
             execute_cmd(exec);
         if (is_final(exec) || is_logic(exec))
-            check_exit(exec);
-        if (cmd->operat == PIPE)
-            close_next_pipe(exec);
+            wait_check(exec);
+        reset_input_output(exec);
         exec->command_index++;
-        cmd = get_current_cmd(exec);
     }
 }
 
@@ -47,5 +45,6 @@ int	execution(t_cmd **cmds, char **envp)
 	if (!exec)
 		terminate(exec, EXIT_FAILURE, "failed to initialize executor");
     loop(exec);
+    free_execution(exec);
 	return (0);
 }

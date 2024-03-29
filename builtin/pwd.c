@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_pwd(char **argv, t_env *root, int out_fd)
+int	builtin_pwd(char **argv, t_env *root)
 {
 	char	*pwd;
 
@@ -16,8 +16,8 @@ int	builtin_pwd(char **argv, t_env *root, int out_fd)
 						2);
 		return (1);
 	}
-	ft_putstr_fd(pwd, out_fd);
-	ft_putstr_fd("\n", out_fd);
+	ft_putstr_fd(pwd, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	free(pwd);
 	return (0);
 }

@@ -20,8 +20,8 @@ t_fd_state	*last_output_redir(t_executor *exec)
 			output_fd_state = truncate_redirection(redir->redir_name);
 		else if (redir->redir_sym == APP_OUT)
 			output_fd_state = append_redirection(redir->redir_name);
-        if (!output_fd_state)
-            terminate(exec, EXIT_FAILURE, "couldn't redirect output");
+        // if (!output_fd_state)
+        //     terminate(exec, EXIT_FAILURE, "couldn't redirect output");
 		redir = redir->next;
 	}
 	return (output_fd_state);

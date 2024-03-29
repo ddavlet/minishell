@@ -7,7 +7,7 @@
 # include <readline/readline.h>
 # include <sys/wait.h>
 
-# define SCOPE 1
+# define HAS_NOT_RUN -1
 
 typedef struct s_fd_state	t_fd_state;
 typedef struct s_pipe		t_pipe;
@@ -29,6 +29,8 @@ typedef struct s_fd_state
 typedef struct s_executor
 {
 	int						command_index;
+	int						stdin;
+	int						stdout;
 	int						*exit_codes;
 	char					**envp;
 	pid_t					*pids;
@@ -37,10 +39,10 @@ typedef struct s_executor
 }							t_executor;
 
 int							execution(t_cmd **cmds, char **envp);
-void						set_io_streams(t_executor *exec);
+void						set_input_output(t_executor *exec);
 int							child_process(t_executor *exec);
 void						execute_builtin(t_executor *exec);
-int							check_exit(t_executor *exec);
+int							wait_check(t_executor *exec);
 void						evaluate_logic_operator(t_executor *exec);
 t_fd_state					*initialize_fd_state(int fd);
 int							is_logic(t_executor *exec);
@@ -49,14 +51,12 @@ void						initialize_exit_codes(t_executor *exec);
 void						initialize_pids(t_executor *exec);
 void						execute_cmd(t_executor *exec);
 char						*build_path_from_env(char *name);
-void						close_pipe(t_executor *exec, t_pipe *pipe);
 
 /*
  *   pipes
  */
 t_pipe						**initialize_pipes(t_executor *exec);
 t_pipe						*create_pipe(void);
-// void						close_pipe(t_pipe *pipe);
 void						close_next_pipe(t_executor *exec);
 t_pipe						*get_next_pipe(t_executor *exec);
 
@@ -85,6 +85,8 @@ int							get_exit_code(t_executor *exec, int command_index);
 void						set_exit_code(t_executor *exec, int command_index,
 								int exit_code);
 void						cmds_check(t_cmd **cmds);
+void						reset_input_output(t_executor *exec);
+void						free_execution(t_executor *exec);
 
 /*
  *   io_redirections

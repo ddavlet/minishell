@@ -14,7 +14,7 @@ void	initialize_exit_codes(t_executor *exec)
 	}
 	i = 0;
 	while (i < len + 1)
-		exit_codes[i++] = -1;
+		exit_codes[i++] = HAS_NOT_RUN;
 	exec->exit_codes = exit_codes;
 }
 
@@ -39,7 +39,7 @@ void	wait_until(t_executor *exec)
 	pid_t	pid;
 
 	i = 0;
-	while (get_exit_code(exec, i) != -1)
+	while (get_exit_code(exec, i) != HAS_NOT_RUN)
 		i++;
 	while (i < exec->command_index + 1)
 	{
@@ -58,7 +58,7 @@ void	wait_until(t_executor *exec)
 	}
 }
 
-int	check_exit(t_executor *exec)
+int	wait_check(t_executor *exec)
 {
 	if (!exec)
 		terminate(exec, EXIT_FAILURE, "couldn't check exit code");
