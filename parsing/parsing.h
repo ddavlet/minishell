@@ -61,7 +61,7 @@ typedef struct  s_env
 
 /*General utils*/
 ssize_t		ft_commandlen(char **tokens);
-char		**add_escape(char **token, const char *esc);
+char		**add_escape(char **token);
 ssize_t		ft_arr_len(char **arr);
 ssize_t		arrlen_nosspace(char **arr);
 char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
@@ -85,7 +85,7 @@ char		**pars_split(char const *s);
 char		**pars_merge(char **arr);
 char		**merge_quotations(char **tokens);
 char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
-char		*find_var(t_env *root, char *search);
+char		*find_var(t_env *root, const char *search);
 void		get_special_cases(char **tokens);
 
 /*Utils*/

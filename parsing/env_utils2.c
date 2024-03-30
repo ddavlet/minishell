@@ -30,6 +30,7 @@ char	*get_envvar(const char *txt, t_env *root)
 	if (!tmp_1)
 		return (error_general(new_txt, "get_envvar")); // ?? protect  allocated memory not freed
 	tmp_2 = find_var(root, tmp_1);
+	free(tmp_1);
 	if (!tmp_2)
 		return (error_general(new_txt, "get_envvar")); // ?? protect allocated memory not freed
 	tmp_1 = new_txt;
@@ -65,7 +66,7 @@ void	get_variable(char **tokens, t_env *root)
 
 }
 
-char	*find_var(t_env	*root, char *search)
+char	*find_var(t_env	*root, const char *search)
 {
 	t_env	*child;
 
@@ -89,6 +90,5 @@ char	*find_var(t_env	*root, char *search)
 		else
 			child = child->next;
 	}
-	free (search);
 	return (ft_strdup(""));
 }

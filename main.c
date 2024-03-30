@@ -6,8 +6,8 @@ char	*pwd(t_env *env)
 	char	*home;
 	char	*tmp;
 
-	pwd = find_var(env, ft_strdup("PWD"));
-	home = find_var(env, ft_strdup("HOME"));
+	pwd = find_var(env, "PWD");
+	home = find_var(env, "HOME");
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
@@ -49,7 +49,7 @@ char	*create_promt(t_env *env)
 	char	*tmp;
 
 	promt = ft_strdup("");
-	tmp = find_var(env, ft_strdup("USER"));
+	tmp = find_var(env, "USER");
 	promt = ft_strjoin_free(promt, tmp);
 	free(tmp);
 	promt = ft_strjoin_free(promt, "@");
@@ -74,6 +74,20 @@ void	subshell(char **tokens, t_env *env)
 	terminate_commands(cmds);
 }
 
+void	envir_setup(t_env *env)
+{
+	char	*tmp;
+	int		i;
+
+	append_envp(env, "SHELL", "minishell");
+	tmp = find_var(env, "SHLVL");
+	i = ft_atoi(tmp);
+	free(tmp);
+	tmp = ft_itoa(i + 1);
+	append_envp(env, "SHLVL", tmp);
+	free(tmp);
+}
+
 int	main(int argc, char *argv[],const char *envp[])
 {
 	t_cmd	**cmds;
@@ -83,7 +97,7 @@ int	main(int argc, char *argv[],const char *envp[])
 
 	(void)argc;
 	env = init_env((const char **)envp);
-	append_envp(env, "SHELL", "minishell");
+	envir_setup(env);
 	if (argv[1] && !ft_strncmp(argv[1], "-n", 3))
 		subshell(&argv[2], env);
 	line = NULL;
@@ -93,8 +107,9 @@ int	main(int argc, char *argv[],const char *envp[])
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
-		// line = readline(promt);
-		line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
+		line = readline(promt);
+		// line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
+		// line = ft_strdup("echo test || echo test2");
 		free(promt);
 		if (!line)
 			break ;

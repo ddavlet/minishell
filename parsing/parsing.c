@@ -3,11 +3,17 @@
 uint32_t	count_commands(char **token)
 {
 	uint32_t	count;
+	uint32_t	cnt_scope;
 
 	count = 1;
+	cnt_scope = 0;
 	while (*token)
 	{
-		if (oper_type(*token))
+		if (parenth_type(*token) == 1)
+			cnt_scope++;
+		else if (parenth_type(*token) == 2)
+			cnt_scope--;
+		else if (oper_type(*token) && cnt_scope == 0)
 			count++;
 		token++;
 	}
@@ -77,17 +83,20 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	uint32_t	i;
 
 	tokens = pars_split(token);
+	debug_print_array_strings(tokens);
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
 	get_variable(tokens, root);
 	get_special_cases(tokens);
 	tokens = get_wildcard(tokens, root); // get wildcards after treating $ sign
-	add_escape(tokens, "\\");
+	if (!tokens)
+		return (NULL);
+	add_escape(tokens);
 	trim_quotes(tokens);
 	tokens = pars_merge(tokens);
 	tokens = parse_delspace(tokens);
-	// debug_print_array_strings(tokens);
+	debug_print_array_strings(tokens);
 	if (!check_tokens(tokens))
 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
 	commands = init_commands(tokens);
