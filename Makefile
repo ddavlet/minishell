@@ -22,10 +22,10 @@ PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c ./signal_handling/signals.c
-INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include
+INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include
 LIB_DIR := libft
 LIBFT := $(LIB_DIR)libft.a
-LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline
+LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib
 FLAGS := -g -Wall -Wextra -Werror
 OBJ = $(EXE_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(BUL_SRCS:.c=.o) $(MAIN:.c=.o)
 
