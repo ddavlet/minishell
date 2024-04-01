@@ -10,7 +10,7 @@ int	child_process(t_executor *exec)
 	argv = get_current_cmd(exec)->argv;
 	if (ft_strchr(argv[0], '/') == NULL)
 	{
-		path = build_path_from_env(argv[0]);
+		path = build_path_from_env(argv[0], get_current_cmd(exec)->env);
 		if (path == NULL)
 			terminate(exec, EXIT_FAILURE, "minishell: couldn't find path");
 	}
