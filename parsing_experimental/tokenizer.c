@@ -13,12 +13,12 @@ t_token	*initialize_token(const char *literal)
 t_token	*get_token(const char *line)
 {
 	const char	*string_literal;
-	const char	*token_end;
+	const char	*end;
 
-	token_end = line;
-	while (is_token(line, token_end))
-		token_end++;
-	string_literal = (const char *)ft_substr(line, 0, token_end - line);
+	end = line;
+	while (is_token(end - line, line))
+		end++;
+	string_literal = (const char *)ft_substr(line, 0, end - line);
 	return (initialize_token(string_literal));
 }
 

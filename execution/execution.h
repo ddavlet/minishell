@@ -64,7 +64,7 @@ t_pipe						*get_next_pipe(t_executor *exec);
  *	utils
  */
 t_cmd						*get_current_cmd(t_executor *exec);
-t_cmd						*get_next_cmd(t_executor *exec, t_cmd *cmd);
+t_cmd						*get_cmd(t_executor *exec, t_cmd *cmd);
 t_cmd						*get_previous_cmd(t_executor *exec, t_cmd *cmd);
 int							is_final(t_executor *exec);
 int							count_pipes(t_executor *exec);

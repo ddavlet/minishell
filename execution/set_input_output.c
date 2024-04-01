@@ -60,7 +60,7 @@ void	set_input_output(t_executor *exec)
 
 	cmd = get_current_cmd(exec);
 	prev = get_previous_cmd(exec, cmd);
-	next = get_next_cmd(exec, cmd);
+	next = get_cmd(exec, cmd);
     if (cmd->redirs)
     {
 		handle_redir_input(exec);

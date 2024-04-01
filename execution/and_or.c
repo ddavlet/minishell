@@ -4,7 +4,7 @@ int	is_first_operant(t_executor *exec, t_cmd *cmd)
 {
 	// t_cmd	*next;
 
-	// next = get_next_cmd(exec, cmd);
+	// next = get_cmd(exec, cmd);
 	(void)exec;
 	if (cmd->operat == AND || cmd->operat == OR)
 		return (1);

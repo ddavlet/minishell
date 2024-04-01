@@ -8,12 +8,12 @@ t_cmd	*get_current_cmd(t_executor *exec)
 	return (exec->cmds[exec->command_index]);
 }
 
-t_cmd	*get_next_cmd(t_executor *exec, t_cmd *cmd)
+t_cmd	*get_cmd(t_executor *exec, t_cmd *cmd)
 {
 	int	i;
 
 	if (!exec || !exec->cmds)
-		terminate(exec, EXIT_FAILURE, "get_next_cmd: missing or incomplete exec");
+		terminate(exec, EXIT_FAILURE, "get_cmd: missing or incomplete exec");
 	i = 0;
 	if (cmd == NULL)
 		return (NULL);

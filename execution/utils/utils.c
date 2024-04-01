@@ -84,7 +84,7 @@ int	is_final(t_executor *exec)
 	if (!exec || !exec->cmds)
 		terminate(exec, EXIT_FAILURE, "is_final: missing or incomplete exec");
 	cmd = get_current_cmd(exec);
-	if (get_next_cmd(exec, cmd) == NULL)
+	if (get_cmd(exec, cmd) == NULL)
 		return (1);
 	return (0);
 }
@@ -134,7 +134,7 @@ int	count_pipes(t_executor *exec)
 	{
 		if (cmd->operat == PIPE)
 			count++;
-		cmd = get_next_cmd(exec, cmd);
+		cmd = get_cmd(exec, cmd);
 	}
 	return (count);
 }
