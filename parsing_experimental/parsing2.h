@@ -44,6 +44,7 @@ t_cmd2					*initialize_command(void);
 /*
  *   utils
  */
+const char				*merge_quotations_(const char *literal);
 int						is_argv_token(t_token *token);
 int						is_token(int pos, const char *line);
 int						is_pipe_token(t_token *token);

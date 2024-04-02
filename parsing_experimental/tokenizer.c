@@ -10,15 +10,36 @@ t_token	*initialize_token(const char *literal)
 	return (token);
 }
 
+const char	*get_parenthesis(const char *line)
+{
+	const char	*end;
+	const char	*string_literal;
+
+	end = line;
+	while (*end && *end != ')')
+		end++;
+	if (*end == 0)
+		return (NULL);
+	string_literal = (const char *)ft_substr(line, 0, (end + 1) - line);
+	return (string_literal);
+}
+
 t_token	*get_token(const char *line)
 {
 	const char	*string_literal;
 	const char	*end;
 
 	end = line;
-	while (is_token(end - line, line))
-		end++;
-	string_literal = (const char *)ft_substr(line, 0, end - line);
+    if (*line == '(')
+        string_literal = get_parenthesis(line);
+    else
+    {
+        while (is_token(end - line, line))
+            end++;
+        string_literal = (const char *)ft_substr(line, 0, end - line);
+    }
+    if (!string_literal)
+        return (NULL);
 	return (initialize_token(string_literal));
 }
 

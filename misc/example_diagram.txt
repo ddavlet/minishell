@@ -22,6 +22,12 @@
 
 
 
+
+
+
+
+
+
   {   PIPE_0, PIPE_1, PIPE_2, PIPE_3   } 
 
     { 	CMD_0	PIPE_0   (CMD_1	 PIPE_2	  CMD_3	 PIPE_3	  CMD_4)    }
@@ -111,3 +117,5 @@
 
 
 
+
+- parse parenthesis missing

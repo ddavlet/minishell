@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    const char  *line = "export a''rg'=''ech''o '2'";
+    const char  *line = "export a''rg'=''ech''o '2 && (pwd | cat <infile)";
     t_cmd2      *cmds = parse_command_line(line);
 
     while (cmds)
@@ -14,16 +14,16 @@ int main(void)
         t_redir *redir = cmds->redirections;
         while (redir)
         {
-            printf("redir name: '%s'\n", redir->redir_name);
+            printf("redir name: '%s'\n", redir->redir_name); 
             redir = redir->next;
         }
         if (cmds->operation == NOTHING)
             printf("operation: %s\n", "NOTHING");
-        else if (cmds->operation == PIPE)
+        else if (cmds->operation == PIPE_)
             printf("operation: %s\n", "PIPE");
-        else if (cmds->operation == AND)
+        else if (cmds->operation == AND_)
             printf("operation: %s\n", "AND");
-        else if (cmds->operation == OR)
+        else if (cmds->operation == OR_)
             printf("operation: %s\n", "OR");
 
         cmds = cmds->next;

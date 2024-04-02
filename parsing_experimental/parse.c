@@ -22,20 +22,21 @@ t_cmd2	*parse_command_line(const char *line)
 	t_cmd2 *cmds;
 	t_cmd2 *new;
 	t_token *tokens;
+	t_token *start;
 	t_token *end;
 
 	tokens = tokenizer(line);
+    start = tokens;
 	cmds = NULL;
-	while (tokens)
+	while (start != NULL)
 	{
-		end = get_final_token(tokens);
-		new = parse_command(tokens, end);
+		end = get_final_token(start);
+		new = parse_command(start, end);
 		if (!new)
 			terminate_parsing(line, cmds, tokens, "failed to parse command");
 		add_cmd(&cmds, new);
-		tokens = end->next;
+		start = end->next;
 	}
 	free_tokens(tokens);
-	free((char *)line);
 	return (cmds);
 }

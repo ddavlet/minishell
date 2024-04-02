@@ -1,5 +1,18 @@
 #include "../parsing2.h"
 
+int	passed_shell_operator(int pos, const char *line)
+{
+	if (ft_isalnum(line[pos]) && pos > 0 && line[pos - 1] == '|')
+		return (1);
+	if (ft_isalnum(line[pos]) && pos > 1 && line[pos - 1] == '|' && line[pos
+		- 2] == '|')
+		return (1);
+	if (ft_isalnum(line[pos]) && pos > 1 && line[pos - 1] == '&' && line[pos
+		- 2] == '&')
+		return (1);
+    return (0);
+}
+
 int	is_between_char(int pos, const char *line, char c)
 {
 	const char	*start;
@@ -32,10 +45,12 @@ int	is_token(int pos, const char *line)
 		ft_putendl_fd("line missing", STDERR_FILENO);
 		return (0);
 	}
-	if (line[pos] == '\0')
+	if (line[pos] == 0)
 		return (0);
-	else if (ft_isalnum(line[pos]))
-        return (1);
+	else if (passed_shell_operator(pos, line))
+		return (0);
+	else if (!ft_isspace(line[pos]) && ft_isprint(line[pos]))
+		return (1);
 	else if (ft_isspace(line[pos]) && is_between_quotes(pos, line))
 		return (1);
 	else

@@ -23,7 +23,7 @@ t_redir	*initialize_redirection(const char *symbol, const char *name)
 		redir->redir_sym = RED_OUT;
 	else if (ft_strncmp(symbol, ">>", ft_strlen(symbol) + 1) == 0)
 		redir->redir_sym = APP_OUT;
-	redir->redir_name = (char *)name;
+	redir->redir_name = ft_strdup((const char *)name);
 	return (redir);
 }
 
@@ -84,7 +84,7 @@ t_redir	*parse_redirections(t_token *start, t_token *end)
 			}
 			add_redirection(&redirs, new);
 		}
-		start = start->next;
+		token = token->next;
 	}
 	return (redirs);
 }
