@@ -137,6 +137,7 @@ void		append_envp(t_env *root, char *name, char *content);
 void		get_variable(char **tokens, t_env *root);
 char		*get_envvar(const char *txt, t_env *root);
 int			unset_envvar(t_env *root, const char *to_find);
+void		add_path(t_env *root, char *path);
 
 
 /*Sytax controllers*/

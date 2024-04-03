@@ -7,3 +7,5 @@ argv[1] = -r
 3. check "test" command
 
 4. Change wildcard $ is one more token
+
+5. export must work with "" too (example: export ARG="test")

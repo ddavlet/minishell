@@ -86,6 +86,9 @@ void	envir_setup(t_env *env)
 	tmp = ft_itoa(i + 1);
 	append_envp(env, "SHLVL", tmp);
 	free(tmp);
+	tmp = find_var(env, "PWD");
+	add_path(env, tmp);
+	free(tmp);
 }
 
 int	main(int argc, char *argv[],const char *envp[])

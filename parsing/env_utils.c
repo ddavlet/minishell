@@ -84,3 +84,14 @@ void	append_envp(t_env *root, char *name, char *content)
 	terminate_ptr_str(root->envp);
 	root->envp = init_envv(root);
 }
+
+void	add_path(t_env *root, char *path)
+{
+	char *old_path;
+	char *new_path;
+
+	old_path = find_var(root, "PATH");
+	new_path = ft_strjoin_free(old_path, ":");
+	new_path = ft_strjoin_free(new_path, path);
+	append_envp(root, "PATH", new_path);
+}
