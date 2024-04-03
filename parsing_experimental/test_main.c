@@ -3,14 +3,14 @@
 
 int main(void)
 {
-    const char  *line = "export a''rg'=''ech''o '2 && (pwd | cat <infile)";
+    const char  *line = "export a\"\"rg\"=\"\"'\"echo\"'\"\" \"2 && (pwd | cat <infile)";
     t_cmd2      *cmds = parse_command_line(line);
 
     while (cmds)
     {
         int i = -1;
         while (cmds->argv[++i])
-            printf("argv[%d]: '%s'\n", i, cmds->argv[i]);
+            printf("argv[%d]: '%s'\n", i, cmds->argv[i]); 
         t_redir *redir = cmds->redirections;
         while (redir)
         {

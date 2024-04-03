@@ -27,6 +27,7 @@ const char	*get_argument(const char *literal)
 	 	arg = merge_quotations_(literal);
 	if (!arg)
 		return (NULL);
+    return ((const char *)arg);
 }
 
 char	**add_argument(char **argv, int i, t_token *token)

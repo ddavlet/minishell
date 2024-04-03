@@ -110,6 +110,9 @@
 
 
 
+- envp 
+- variables
+- wildcards
 
 
 
@@ -118,4 +121,32 @@
 
 
 
-- parse parenthesis missing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
