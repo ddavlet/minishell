@@ -3,7 +3,9 @@
 
 int main(void)
 {
-    const char  *line = "export a\"\"rg\"=\"\"'\"echo\"'\"\" \"2 && (pwd | cat <infile)";
+    // const char  *line = "export a\"\"rg\"=\"\"'\"echo\"'\"\" \"2 && (pwd | cat <infile)";
+    const char  *line = "export arg='echo2' && ( pwd | cat <infile )";
+
     t_cmd2      *cmds = parse_command_line(line);
 
     while (cmds)
