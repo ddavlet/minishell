@@ -120,10 +120,10 @@ void		*undefined_error(char *ptr);
 
 
 /*Debuging*/
-void		debug_print_cmd(t_cmd **commands);
-void		debug_print(t_cmd *com);
+void		debug_print_cmds(t_cmd **commands, int fd);
+void		debug_print(t_cmd *com, int fd);
 void		debug_print_array_strings(char **tokens);
-void		debug_print_redir(t_redir	*redir);
+void		debug_print_redir(t_redir	*redir, int fd);
 
 
 /**************************************************************/
