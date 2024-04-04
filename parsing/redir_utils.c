@@ -48,9 +48,9 @@ t_redir	*init_redir(char **tokens, ssize_t prev, ssize_t next)
 	redir = NULL;
 	while (i < next)
 	{
-		if (ft_isredir(tokens[i]))
+		if (redir_type(tokens[i]))
 		{
-			append_redirnode(&redir, ft_isredir(tokens[i]), tokens[i + 1]);
+			append_redirnode(&redir, redir_type(tokens[i]), tokens[i + 1]);
 			i++;
 		}
 		i++;

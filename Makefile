@@ -16,16 +16,16 @@ EXE_SRCS = $(addprefix $(EXE_SRC_DIR), $(EXE_SOURCE))
 WC_SOURCE := init_utils.c terminating.c wildcard.c
 PAR_SOURCE := cmd_utils.c env_utils.c env_utils2.c errors.c errors2.c general_utils.c general_utils2.c pars_utils.c \
 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c speccase_utils.c syntax_utils.c terminating.c \
-				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c reparsing.c \
+				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c reparsing.c scope.c \
 				debug.c $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c ./signal_handling/signals.c
-INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include
+INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include
 LIB_DIR := libft
 LIBFT := $(LIB_DIR)libft.a
-LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline
+LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib
 FLAGS := -g -Wall -Wextra -Werror
 OBJ = $(EXE_SRCS:.c=.o) $(PAR_SRCS:.c=.o) $(BUL_SRCS:.c=.o) $(MAIN:.c=.o)
 

@@ -1,9 +1,4 @@
 Have to fix:
 
-1. "<<" tokens in quotations
-2. parenthesis:
-argv[0] = minishell
-argv[1] = -r
-3. check "test" command
-
-4. Change wildcard $ is one more token
+1. check "test" command
+2. Change wildcard $ is one more token

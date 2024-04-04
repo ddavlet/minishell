@@ -70,9 +70,9 @@ int	count_parenth(char **arr)
 	count = 0;
 	while (arr[i])
 	{
-		if (ft_isparenthesis(arr[i]) == 1)
+		if (parenth_type(arr[i]) == 1)
 			count++;
-		else if (ft_isparenthesis(arr[i]) == 2)
+		else if (parenth_type(arr[i]) == 2)
 			count--;
 		i++;
 	}

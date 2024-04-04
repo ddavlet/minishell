@@ -60,6 +60,7 @@ typedef struct s_env
 }					t_env;
 
 /*General utils*/
+<<<<<<< HEAD
 ssize_t				ft_commandlen(char **tokens);
 char				**add_escape(char **token, const char *esc);
 ssize_t				ft_arr_len(char **arr);
@@ -100,6 +101,50 @@ char				**parse_delspace(char **tokens);
 int					ft_isparenthesis(char *txt);
 int					count_parenth(char **arr);
 uint32_t			count_commands(char **token);
+=======
+ssize_t		ft_commandlen(char **tokens);
+char		**add_escape(char **token);
+ssize_t		ft_arr_len(char **arr);
+ssize_t		arrlen_nosspace(char **arr);
+char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
+char		**arrstr_copy(const char **envp);
+int			*ft_intarrdup(int *arr);
+int			id_gen(int seed);
+
+/*Commands functions*/
+t_cmd		**reparse_text(char **argv);
+t_cmd		**parse_text(const char *txt, t_env *root);
+char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
+char		**get_wildcard(char **tokens, t_env *root);
+void		append_redirnode(t_redir **redir, t_red_sym key,
+				const char *value);
+t_cmd		**init_commands(char **tokens);
+t_cmd		*set_scope(char **tokens, ssize_t *prev);
+
+
+/*Tokenization*/
+char		**pars_split(char const *s);
+char		**pars_merge(char **arr);
+char		**merge_quotations(char **tokens);
+char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
+char		*find_var(t_env *root, const char *search);
+void		get_special_cases(char **tokens);
+
+/*Utils*/
+t_oper		ft_isexeption(char *txt);
+t_quote		ft_isquotation(char c);
+t_red_sym	ft_isredir(const char *redir);
+uint32_t	del_pos(const char *txt);
+t_oper		oper_type(char *txt);
+int			parenth_type(char *txt);
+t_red_sym	redir_type(char *txt);
+void		trim_quotes(char **tokens);
+ssize_t		find_next_cmd(char **tokens, ssize_t i);
+char		**parse_delspace(char **tokens);
+int			ft_isparenthesis(char *txt);
+int			count_parenth(char **arr);
+uint32_t	count_commands(char **token);
+>>>>>>> 0041f167f979af40eeeadf3ce5d50f27b2c0fec6
 
 /*Terminating*/
 void				*terminate_commands(t_cmd **commands);
@@ -115,10 +160,18 @@ void				*error_syntax(t_cmd *ptr);
 void				*undefined_error(char *ptr);
 
 /*Debuging*/
+<<<<<<< HEAD
 void				debug_print_cmd(t_cmd **commands);
 void				debug_print(t_cmd *com);
 void				debug_print_array_strings(char **tokens);
 void				debug_print_redir(t_redir *redir);
+=======
+void		debug_print_cmds(t_cmd **commands, int fd);
+void		debug_print(t_cmd *com, int fd);
+void		debug_print_array_strings(char **tokens);
+void		debug_print_redir(t_redir	*redir, int fd);
+
+>>>>>>> 0041f167f979af40eeeadf3ce5d50f27b2c0fec6
 
 /**************************************************************/
 
@@ -127,6 +180,7 @@ t_env				*init_env(const char **envp);
 char				**init_envv(t_env *root);
 
 /*Find and set*/
+<<<<<<< HEAD
 void				append_envp(t_env *root, char *name, char *content);
 void				get_variable(char **tokens, t_env *root);
 char				*get_envvar(const char *txt, t_env *root);
@@ -137,6 +191,21 @@ int					sytax_redir(char *txt);
 int					syntax_exeption(char *token);
 int					ft_isignored(char *txt);
 void				*check_tokens(char **tokens);
+=======
+void		append_envp(t_env *root, char *name, char *content);
+void		get_variable(char **tokens, t_env *root);
+char		*get_envvar(const char *txt, t_env *root);
+int			unset_envvar(t_env *root, const char *to_find);
+void		add_path(t_env *root, char *path);
+
+
+/*Sytax controllers*/
+int			sytax_redir(char *txt);
+int			ft_isignored(char *txt);
+void		*check_tokens(char **tokens);
+
+
+>>>>>>> 0041f167f979af40eeeadf3ce5d50f27b2c0fec6
 
 /*Utils*/
 int					var_exists(char *arg);

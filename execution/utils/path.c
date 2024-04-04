@@ -1,13 +1,13 @@
 #include "../execution.h"
 
-char	*build_path_from_env(char *name)
+char	*build_path_from_env(char *name, t_env *env)
 {
     char    **env_paths;
 	char	*path;
 	char	*executable_path;
 	int		i;
 
-    env_paths = ft_split(getenv("PATH"), ':');
+    env_paths = ft_split(find_var(env, "PATH"), ':');
 	if (!env_paths)
         return (NULL);
 	i = -1;

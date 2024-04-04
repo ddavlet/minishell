@@ -10,7 +10,7 @@ ssize_t	ft_commandlen(char **tokens)
 	return (i);
 }
 
-char	**add_escape(char **token, const char *esc)
+char	**add_escape(char **token)
 {
 	size_t	i;
 	char	*tmp;
@@ -22,7 +22,7 @@ char	**add_escape(char **token, const char *esc)
 			|| ft_isparenthesis(token[i]))
 		{
 			tmp = token[i];
-			token[i] = ft_strjoin(esc, tmp);
+			token[i] = ft_strjoin("\\", tmp);
 			if (!token[i])
 				return (NULL); //protect
 			free(tmp);

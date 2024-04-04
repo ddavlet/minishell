@@ -30,12 +30,33 @@ int	sytax_redir(char *token)
 		return (0);
 }
 
-int	syntax_exeption(char *token)
+int	parenthesis_syntax(char **token, ssize_t pos)
 {
-	if (oper_type(token))
-		return (1);
-	else
-		return (0);
+	if (parenth_type(token[pos]) == 1)
+	{
+		if (pos == 0)
+			return (0);
+		else if (parenth_type(token[pos - 1]) == 1
+			|| parenth_type(token[pos + 1]) == 1)
+			return (0);
+		else if (oper_type(token[pos - 1]))
+			return (0);
+		else
+			return (1);
+	}
+	else if (parenth_type(token[pos]) == 2)
+	{
+		if (!token[pos + 1])
+			return (0);
+		else if (parenth_type(token[pos - 1]) == 2
+			|| parenth_type(token[pos + 1]) == 2)
+			return (0);
+		else if (oper_type(token[pos + 1]))
+			return (0);
+		else
+			return (1);
+	}
+	return (0);
 }
 
 void	*check_tokens(char **tokens)
@@ -46,17 +67,20 @@ void	*check_tokens(char **tokens)
 	if (!tokens[i])
 		return (NULL);
 	if (count_parenth(tokens))
-		return (error_near_tocken("parenthesis"));
+		return (NULL);
 	if (!ft_strncmp(tokens[0], ")", 2))
 		return (error_near_tocken(tokens[i]));
 	while (tokens[i + 1])
 	{
 		if (ft_isignored(tokens[i])) // is ignored
 			return (error_near_tocken(tokens[i]));
-		if (oper_type(tokens[i]) && oper_type(tokens[i + 1]))
+		if (oper_type(tokens[i])
+			&& (oper_type(tokens[i + 1]) || !tokens[i + 1]))
 			return (error_near_tocken(tokens[i + 1]));
 		if (ft_isredir(tokens[i]) && sytax_redir(tokens[i + 1]))
 			return (error_near_tocken(tokens[i + 1]));
+		if (parenthesis_syntax(tokens, i))
+			return (error_near_tocken(tokens[i]));
 		i++;
 	}
 	if (oper_type(tokens[i]) && !tokens[i + 1])

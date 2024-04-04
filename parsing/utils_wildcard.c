@@ -13,7 +13,6 @@ static t_tree	*read_directory(t_env	*env)
 	if (!dir)
 	{
 		perror("wildcard parsing error");
-		closedir(dir);
 		return (NULL); // catch it!
 	}
 	tree = (t_tree *)ft_calloc(sizeof(t_tree), 1);
@@ -39,7 +38,10 @@ char	**get_wildcard(char **tokens, t_env *env)
 	str = (char **)ft_calloc(sizeof(char *), 1);
 	tree = read_directory(env);
 	if (!str || !tree)
-		return (NULL); // free first and catch this error
+	{
+		terminate_ptr_str(tokens);
+		return (ft_free_ptr(str, tree)); // free first and catch this error
+	}
 	while (tokens[++i])
 	{
 		j = -1;
