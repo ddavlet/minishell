@@ -74,7 +74,7 @@ void	terminate(t_executor *exec, int status, char *msg)
 	}
 	if (msg)
 	{
-		perror(msg);
+		ft_putendl_fd(msg, STDERR_FILENO);
 	}
 	exit(status);
 }

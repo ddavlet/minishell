@@ -78,7 +78,7 @@ void	subshell(char **tokens, t_env *env)
 	for (size_t i = 0; cmds[i]; i++)
 		cmds[i]->env = env;
 
-    debug_print_to_file(cmds);
+    // debug_print_to_file(cmds);
 	execution(cmds, cmds[0]->env->envp);
 	terminate_commands(cmds);
 }
@@ -119,8 +119,8 @@ int	main(int argc, char *argv[],const char *envp[])
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
-		// line = readline(promt);
-		line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
+		line = readline(promt);
+		// line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
 		// line = ft_strdup("echo test || echo test2");
 		free(promt);
 		if (!line)
