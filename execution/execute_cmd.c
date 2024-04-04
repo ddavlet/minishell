@@ -1,34 +1,35 @@
 #include "execution.h"
 
-int	child_process(t_executor *exec)
+int	child_process(t_cmd2 *cmd)
 {
 	char	*path;
 	char	**argv;
 	char	**envp;
 
-	envp = exec->envp;
-	argv = get_current_cmd(exec)->argv;
+	envp = cmd->shell_env->envp;
+	argv = cmd->argv;
 	if (ft_strchr(argv[0], '/') == NULL)
 	{
-		path = build_path_from_env(argv[0], get_current_cmd(exec)->env);
+		path = build_path_from_env(argv[0], cmd->shell_env);
 		if (path == NULL)
-			terminate(exec, EXIT_FAILURE, "minishell: couldn't find path");
+        {
+            ft_putendl_fd("minishell: couldn't find path", STDERR_FILENO);
+            return (-1);
+        }
 	}
 	else
 		path = argv[0];
-	if (execve(path, argv, envp) == -1)
-		terminate(exec, EXIT_FAILURE, "minishell: execution failure");
-	return (0);
+	return(execve(path, argv, envp));
 }
 
-void	execute_cmd(t_executor *exec)
+int	execute_cmd(t_cmd2 *cmd)
 {
-    int index;
-
-    index = exec->command_index;
-	set_pid(exec, index, fork());
-	if (get_pid(exec, index) == -1)
-		terminate(exec, EXIT_FAILURE, "failed to fork");
-	else if (get_pid(exec, index) == 0)
-		child_process(exec);
+	cmd->pid = fork();
+	if (cmd->pid == -1)
+    {
+        ft_putendl_fd("failed to fork", STDERR_FILENO);
+        return (-1);
+    }
+	else if (cmd->pid == 0)
+		return (child_process(cmd));
 }

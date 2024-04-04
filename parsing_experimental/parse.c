@@ -17,15 +17,13 @@ void	add_cmd(t_cmd2 **cmds_ptr, t_cmd2 *new)
 		*cmds_ptr = new;
 }
 
-t_cmd2	*parse_command_line(const char *line)
+t_cmd2	*parse_command_line(t_token *tokens)
 {
 	t_cmd2 *cmds;
 	t_cmd2 *new;
-	t_token *tokens;
 	t_token *start;
 	t_token *end;
 
-	tokens = tokenizer(line);
     start = tokens;
 	cmds = NULL;
 	while (start != NULL)
@@ -33,7 +31,7 @@ t_cmd2	*parse_command_line(const char *line)
 		end = get_final_token(start);
 		new = parse_command(start, end);
 		if (!new)
-			terminate_parsing(line, cmds, tokens, "failed to parse command");
+			terminate_parsing(cmds, "failed to parse command");
 		add_cmd(&cmds, new);
 		start = end->next;
 	}

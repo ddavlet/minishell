@@ -4,7 +4,7 @@ int	is_first_operant(t_executor *exec, t_cmd *cmd)
 {
 	// t_cmd	*next;
 
-	// next = get_cmd(exec, cmd);
+	// next = get_next_cmd(exec, cmd);
 	(void)exec;
 	if (cmd->operat == AND || cmd->operat == OR)
 		return (1);
@@ -22,27 +22,26 @@ int	is_second_operant(t_executor *exec, t_cmd *cmd)
 	return (0);
 }
 
-int	is_logic(t_executor *exec)
+int	is_and_or(t_cmd2 *cmd, t_cmd2 *cmds)
 {
 	t_cmd	*cmd;
 
-	cmd = get_current_cmd(exec);
-	if (!exec || !exec->cmds)
-		terminate(exec, EXIT_FAILURE,
+	if (!cmd || !cmds)
+		terminate(cmds, EXIT_FAILURE,
 			"is_final: missing or incomplete exec");
-	if (is_first_operant(exec, cmd) || is_second_operant(exec, cmd))
+	if (is_first_operant(cmds, cmd) || is_second_operant(cmds, cmd))
 		return (1);
 	return (0);
 }
 
-void	evaluate_logic_operator(t_executor *exec)
+void	evaluate_logic_operator(t_cmd2 *cmd, t_cmd2 *cmds)
 {
     t_cmd *cmd;
 	int	exit_code;
 
-	if (!exec || !exec->cmds)
-		terminate(exec, EXIT_FAILURE, "failed to evaluate logic");
-    cmd = get_current_cmd(exec);
+	if (!cmd || !cmds)
+		terminate(cmds, EXIT_FAILURE, "failed to evaluate logic");
+    cmd = exec->current_cmd;
 	exit_code = get_exit_code(exec, exec->command_index);
 	if (is_first_operant(exec, cmd) && (cmd->operat == OR
 			&& exit_code == EXIT_SUCCESS))

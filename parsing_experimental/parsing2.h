@@ -20,7 +20,11 @@ typedef struct s_cmd2
 	const char			**argv;
 	t_redir				*redirections;
 	t_oper2				operation;
+    t_env               *shell_env;
+    pid_t               pid;
+    int                 exit_status;
 	t_cmd2				*next;
+    t_cmd2              *cmds;
 }						t_cmd2;
 
 typedef struct s_token
@@ -37,18 +41,18 @@ t_redir					*parse_redirections(t_token *start, t_token *end);
 t_cmd2					*parse_command(t_token *start, t_token *end);
 const char				**parse_argv(t_token *start, t_token *end);
 t_oper2					parse_operation(t_token *end);
-t_cmd2					*parse_command_line(const char *line);
+t_cmd2					*parse_command_line(t_token *tokens);
 t_cmd2					*parse_command(t_token *start, t_token *end);
 t_cmd2					*initialize_command(void);
 
 /*
  *   utils
  */
-char				*merge_quotations_(const char *literal);
+char					*merge_quotations_(const char *literal);
 int						is_argv_token(t_token *token);
 int						is_token(int pos, const char *line);
 int						is_pipe_token(t_token *token);
-int						is_logic_token(t_token *token);
+int						is_and_or_token(t_token *token);
 int						is_redirection_token(t_token *token);
 int						is_between_char(int pos, const char *line, char c);
 int						is_between_quotes(int pos, const char *line);

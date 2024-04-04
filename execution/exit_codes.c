@@ -58,14 +58,14 @@ void	wait_until(t_executor *exec)
 	}
 }
 
-int	wait_check(t_executor *exec)
+int	wait_check(t_cmd2 *cmd, t_cmd2 *cmds)
 {
-	if (!exec)
-		terminate(exec, EXIT_FAILURE, "couldn't check exit code");
-    if (is_final(exec) || is_logic(exec))
+	if (!cmd || !cmds)
+		terminate(cmds, EXIT_FAILURE, "couldn't check exit code");
+    if (cmd->next == NULL || is_and_or(exec))
 	{
         wait_until(exec);
-		if (is_logic(exec))
+		if (is_and_or(exec))
 			evaluate_logic_operator(exec);
 	}
 	return (0);

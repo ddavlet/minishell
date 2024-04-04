@@ -102,10 +102,11 @@ void	envir_setup(t_env *env)
 
 int	main(int argc, char *argv[],const char *envp[])
 {
-	t_cmd	**cmds;
+	t_cmd2	*cmds;
 	char	*line;
 	char	*promt;
 	t_env	*env;
+    t_token *tokens;
 
 	(void)argc;
 	env = init_env((const char **)envp);
@@ -128,14 +129,14 @@ int	main(int argc, char *argv[],const char *envp[])
 		if (!line[0])
 			continue ;
 		add_history(line);
-		cmds = parse_text(line, env);
+        tokens = tokenizer(line);
+		cmds = parse_command_line(tokens);
 		// debug_print_cmds(cmds);
 		// signals2();
 		if (!cmds)
 			continue ;
-        
-		execution(cmds, cmds[0]->env->envp);
-		terminate_commands(cmds);
+		execution(cmds, env->envp);
+		free_cmds(cmds);
 	}
 	write(1, "exit\n", 5);
 	return (0);

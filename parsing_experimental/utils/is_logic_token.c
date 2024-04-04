@@ -1,6 +1,6 @@
 #include "../parsing2.h"
 
-int	is_logic_token(t_token *token)
+int	is_and_or_token(t_token *token)
 {
 	if (!token)
 	{

@@ -79,28 +79,6 @@ void	terminate(t_executor *exec, int status, char *msg)
 	exit(status);
 }
 
-int	is_final(t_executor *exec)
-{
-	t_cmd	*cmd;
-
-	if (!exec || !exec->cmds)
-		terminate(exec, EXIT_FAILURE, "is_final: missing or incomplete exec");
-	cmd = get_current_cmd(exec);
-	if (get_cmd(exec, cmd) == NULL)
-		return (1);
-	return (0);
-}
-
-int	execution_has_finished(t_executor *exec)
-{
-	t_cmd	*cmd;
-
-	cmd = get_current_cmd(exec);
-	if (cmd == NULL)
-		return (1);
-	return (0);
-}
-
 int	arr_len(char **arr)
 {
 	int	i;
@@ -111,17 +89,18 @@ int	arr_len(char **arr)
 	return (i);
 }
 
-void	close_fd(t_executor *exec, t_fd_state *fd_state)
+void	close_fd(t_fd_state *fd_state)
 {
 	if (!fd_state)
-		terminate(exec, EXIT_FAILURE,
-			"close_fd: couldn't close file descriptor");
+    {
+        ft_putendl_fd("can't close file descriptor, missing state", STDERR_FILENO);
+		return ;
+    }
 	// debug_close_fd(fd_state);
 	if (fd_state->is_open == 0)
-		terminate(exec, EXIT_FAILURE,
-			"close_fd: file descriptor already closed");
+        ft_putendl_fd("file descriptor already closed", STDERR_FILENO);
 	else if (close(fd_state->fd) == -1)
-		terminate(exec, EXIT_FAILURE, "Couldn't close file descriptor");
+        ft_putendl_fd("failed to close file descriptor", STDERR_FILENO);
 	fd_state->is_open = 0;
 }
 
@@ -136,7 +115,7 @@ int	count_pipes(t_executor *exec)
 	{
 		if (cmd->operat == PIPE)
 			count++;
-		cmd = get_cmd(exec, cmd);
+		cmd = get_next_cmd(exec, cmd);
 	}
 	return (count);
 }
