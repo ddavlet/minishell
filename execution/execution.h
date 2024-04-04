@@ -50,7 +50,7 @@ char						**reverse_pars(t_cmd **cmds_tojoin, int commands);
 void						initialize_exit_codes(t_executor *exec);
 void						initialize_pids(t_executor *exec);
 void						execute_cmd(t_executor *exec);
-char						*build_path_from_env(char *name);
+char						*build_path_from_env(char *name, t_env *env);
 
 /*
  *   pipes
