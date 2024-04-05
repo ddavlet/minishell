@@ -3,22 +3,27 @@
 int	builtin_router(t_cmd2 *cmd)
 {
 	char	*builtin;
+	t_env	*shell_env;
+	int		exit_status;
 
-	builtin = cmd->argv[0];
-	if (ft_strncmp(builtin, "cd", ft_strlen("cd") + 1) == 0)
-		return (builtin_cd(cmd->argv, cmd->shell_env));
-	else if (ft_strncmp(builtin, "echo", ft_strlen("echo") + 1) == 0)
-		return (builtin_echo(cmd->argv, cmd->shell_env));
-	else if (ft_strncmp(builtin, "env", ft_strlen("env") + 1) == 0)
-		return (builtin_env(cmd->argv, cmd->shell_env));
-	else if (ft_strncmp(builtin, "exit", ft_strlen("exit") + 1) == 0)
-		return (builtin_exit(cmd->argv, cmd->shell_env));
-	else if (ft_strncmp(builtin, "pwd", ft_strlen("pwd") + 1) == 0)
-		return (builtin_pwd(cmd->argv, cmd->shell_env));
-	else if (ft_strncmp(builtin, "unset", ft_strlen("unset") + 1) == 0)
-		return (builtin_unset(cmd->argv, cmd->shell_env));
-	else if (ft_strncmp(builtin, "export", ft_strlen("export") + 1) == 0)
-		return (builtin_export(cmd->argv, cmd->shell_env));
+	cmd_check(cmd);
+	exit_status = cmd->execution->exit_status;
+	shell_env = cmd->execution->shell_env;
+	builtin = cmd->execution->argv;
+	if (ft_strncmp(builtin[0], "cd", ft_strlen("cd") + 1) == 0)
+		exit_status = builtin_cd(builtin, shell_env);
+	else if (ft_strncmp(builtin[0], "echo", ft_strlen("echo") + 1) == 0)
+		exit_status = builtin_echo(builtin, shell_env);
+	else if (ft_strncmp(builtin[0], "env", ft_strlen("env") + 1) == 0)
+		exit_status = builtin_env(builtin, shell_env);
+	else if (ft_strncmp(builtin[0], "exit", ft_strlen("exit") + 1) == 0)
+		exit_status = builtin_exit(builtin, shell_env);
+	else if (ft_strncmp(builtin[0], "pwd", ft_strlen("pwd") + 1) == 0)
+		exit_status = builtin_pwd(builtin, shell_env);
+	else if (ft_strncmp(builtin[0], "unset", ft_strlen("unset") + 1) == 0)
+		exit_status = builtin_unset(builtin, shell_env);
+	else if (ft_strncmp(builtin[0], "export", ft_strlen("export") + 1) == 0)
+		exit_status = builtin_export(builtin, shell_env);
 	else
-		return (EXIT_FAILURE);
+		exit_status = EXIT_FAILURE;
 }

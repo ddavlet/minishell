@@ -11,7 +11,7 @@ t_oper2	parse_operation(t_token *end)
 	}
 	if (is_pipe_token(end))
 		return (PIPE_);
-	if (is_and_or_token(end))
+	if (is_logic_operation_token(end))
 	{
         n = ft_strlen(end->literal) + 1;
 		if (ft_strncmp(end->literal, "&&", n) == 0)

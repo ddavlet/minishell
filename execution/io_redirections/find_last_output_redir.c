@@ -5,9 +5,8 @@ t_fd_state	*last_output_redir(t_cmd2 *cmd)
 	t_redir		*redir;
 	t_fd_state	*output_fd_state;
 
-	if (!cmd)
-		return (NULL);
-	redir = cmd->redirections;
+	cmd_check(cmd);
+	redir = cmd->execution->redirections;
 	if (redir == NULL)
 		return (NULL);
 	output_fd_state = NULL;

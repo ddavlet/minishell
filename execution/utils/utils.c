@@ -46,7 +46,7 @@ void	free_execution(t_executor *exec)
 	free(exec);
 }
 
-void	terminate(t_executor *exec, int status, char *msg)
+void	terminate(t_cmd2 *cmd, int status, char *msg)
 {
 	int	i;
 

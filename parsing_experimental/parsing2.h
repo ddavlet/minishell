@@ -2,6 +2,7 @@
 # define PARSING2_H
 
 # include "../parsing/parsing.h"
+# include "../execution/execution.h"
 
 typedef struct s_token	t_token;
 typedef struct s_cmd2	t_cmd2;
@@ -15,14 +16,20 @@ typedef enum e_oper2
 	NOTHING
 }						t_oper2;
 
+typedef struct s_execution
+{
+    int                 exit_status;
+	const char			**argv;
+    pid_t               pid;
+    t_env               *shell_env;
+	t_oper2				operation;
+    t_pipe              *pipe;
+	t_redir				*redirections;
+}               t_execution;
+
 typedef struct s_cmd2
 {
-	const char			**argv;
-	t_redir				*redirections;
-	t_oper2				operation;
-    t_env               *shell_env;
-    pid_t               pid;
-    int                 exit_status;
+    t_execution			*execution;
 	t_cmd2				*next;
     t_cmd2              *cmds;
 }						t_cmd2;
@@ -52,7 +59,7 @@ char					*merge_quotations_(const char *literal);
 int						is_argv_token(t_token *token);
 int						is_token(int pos, const char *line);
 int						is_pipe_token(t_token *token);
-int						is_and_or_token(t_token *token);
+int						is_logic_operation_token(t_token *token);
 int						is_redirection_token(t_token *token);
 int						is_between_char(int pos, const char *line, char c);
 int						is_between_quotes(int pos, const char *line);

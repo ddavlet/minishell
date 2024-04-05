@@ -130,12 +130,14 @@ int	main(int argc, char *argv[],const char *envp[])
 			continue ;
 		add_history(line);
         tokens = tokenizer(line);
+        free(line);
 		cmds = parse_command_line(tokens);
+        free_tokens(tokens);
 		// debug_print_cmds(cmds);
 		// signals2();
 		if (!cmds)
 			continue ;
-		execution(cmds, env->envp);
+		execution(cmds);
 		free_cmds(cmds);
 	}
 	write(1, "exit\n", 5);
