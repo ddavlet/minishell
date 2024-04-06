@@ -47,30 +47,28 @@ t_redir	*get_redirection(t_token *token)
 	return (redir);
 }
 
-void	add_redirection(t_redir **redirs, t_redir *new)
+void	add_redirection(t_redir **ptr_redirs, t_redir *new)
 {
-	if (!redirs || !new)
+	if (!ptr_redirs || !new)
 	{
 		ft_putendl_fd("failed to add redirection", STDERR_FILENO);
 		return ;
 	}
-	if (*redirs != NULL)
+	if (*ptr_redirs != NULL)
 	{
-		while ((*redirs)->next)
-			redirs = &((*redirs)->next);
-		(*redirs)->next = new;
+		while ((*ptr_redirs)->next)
+			ptr_redirs = &((*ptr_redirs)->next);
+		(*ptr_redirs)->next = new;
 	}
 	else
-		*redirs = new;
+		*ptr_redirs = new;
 }
 
-t_redir	*parse_redirections(t_token *start, t_token *end)
+t_redir	*parse_redirections(t_redir **ptr_redirs, t_token *start, t_token *end)
 {
 	t_redir	*new;
-	t_redir	*redirs;
 	t_token	*token;
 
-	redirs = NULL;
 	token = start;
 	while (token != end->next)
 	{
@@ -79,12 +77,12 @@ t_redir	*parse_redirections(t_token *start, t_token *end)
 			new = get_redirection(token);
 			if (!new)
 			{
-				free_redirections(redirs);
+				free_redirections(*ptr_redirs);
 				return (NULL);
 			}
-			add_redirection(&redirs, new);
+			add_redirection(ptr_redirs, new);
 		}
 		token = token->next;
 	}
-	return (redirs);
+	return (ptr_redirs);
 }

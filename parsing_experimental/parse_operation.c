@@ -1,23 +1,23 @@
 #include "parsing2.h"
 
-t_oper2	parse_operation(t_token *end)
+t_oper2	*parse_operation(t_oper2 *ptr_operation, t_token *end)
 {
     int n;
 
 	if (!end)
 	{
 		ft_putendl_fd("token missing", STDERR_FILENO);
-		return (NOTHING);
+		return (NULL);
 	}
 	if (is_pipe_token(end))
-		return (PIPE_);
+		*ptr_operation = PIPE_;
 	if (is_logic_operation_token(end))
 	{
         n = ft_strlen(end->literal) + 1;
 		if (ft_strncmp(end->literal, "&&", n) == 0)
-			return (AND_);
+            *ptr_operation = AND_;
 		else
-			return (OR_);
+            *ptr_operation = OR_;
 	}
-	return (NOTHING);
+	return (ptr_operation);
 }

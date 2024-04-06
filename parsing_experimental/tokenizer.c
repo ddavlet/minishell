@@ -63,6 +63,8 @@ t_token	*tokenizer(const char *line)
 	t_token	*tokens;
 	t_token	*new;
 
+    if (!line)
+        return (NULL);
 	tokens = NULL;
 	while (*line)
 	{
@@ -75,5 +77,6 @@ t_token	*tokenizer(const char *line)
 			line += ft_strlen(new->literal);
 		}
 	}
+    free(line);
 	return (tokens);
 }

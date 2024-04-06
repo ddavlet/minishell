@@ -30,45 +30,44 @@ const char	*get_argument(const char *literal)
     return ((const char *)arg);
 }
 
-char	**add_argument(char **argv, int i, t_token *token)
+char	**add_argument(char ***ptr_argv, t_token *token, int i)
 {
 	char	*tmp;
 
-	if (!argv)
+	if (!ptr_argv)
 		return (NULL);
 	if (!token)
 	{
-		free_argv(argv);
+		free_argv(ptr_argv);
 		return (NULL);
 	}
-	argv[i] = (char *)get_argument(token->literal);
-	if (!argv[i])
+	ptr_argv[i] = (char *)get_argument(token->literal);
+	if (!ptr_argv[i])
 	{
-		free_argv(argv);
+		free_argv(ptr_argv);
 		return (NULL);
 	}
-	return (argv);
+	return (ptr_argv);
 }
 
-const char	**parse_argv(t_token *start, t_token *end)
+const char	***parse_argv(char ***ptr_argv, t_token *start, t_token *end)
 {
-	char	**argv;
 	int		argc;
 	int		i;
 	t_token	*token;
 
 	argc = get_argc(start, end);
-	argv = (char **)ft_calloc(argc + 1, sizeof(char *));
-	if (!argv)
+	*ptr_argv = (char **)ft_calloc(argc + 1, sizeof(char *));
+	if (!*ptr_argv)
 		return (NULL);
 	i = 0;
 	token = start;
 	while (token != end->next && i < argc)
 	{
 		if (is_argv_token(token))
-			if (add_argument(argv, (i++), token) == NULL)
+			if (add_argument(ptr_argv, token, (i++)) == NULL)
 				return (NULL);
 		token = token->next;
 	}
-	return ((const char **)argv);
+	return ((const char ***)ptr_argv);
 }

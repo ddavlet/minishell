@@ -1,8 +1,8 @@
 #ifndef PARSING2_H
 # define PARSING2_H
 
-# include "../parsing/parsing.h"
 # include "../execution/execution.h"
+# include "../parsing/parsing.h"
 
 typedef struct s_token	t_token;
 typedef struct s_cmd2	t_cmd2;
@@ -13,25 +13,25 @@ typedef enum e_oper2
 	PIPE_,
 	AND_,
 	OR_,
-	NOTHING
+	NONE
 }						t_oper2;
 
 typedef struct s_execution
 {
-    int                 exit_status;
 	const char			**argv;
-    pid_t               pid;
-    t_env               *shell_env;
+	int					exit_status;
+	pid_t				pid;
+	t_env				*shell_env;
 	t_oper2				operation;
-    t_pipe              *pipe;
+	t_pipe				*pipe;
 	t_redir				*redirections;
-}               t_execution;
+}						t_execution;
 
 typedef struct s_cmd2
 {
-    t_execution			*execution;
+	t_execution			*execution;
 	t_cmd2				*next;
-    t_cmd2              *cmds;
+	t_cmd2				*cmds;
 }						t_cmd2;
 
 typedef struct s_token
@@ -44,11 +44,13 @@ t_token					*tokenizer(const char *line);
 t_token					*initialize_token(const char *literal);
 void					add_token(t_token **tokens, t_token *new);
 t_token					*get_token(const char *line);
-t_redir					*parse_redirections(t_token *start, t_token *end);
+t_redir					*parse_redirections(t_redir **ptr_redirs,
+							t_token *start, t_token *end);
 t_cmd2					*parse_command(t_token *start, t_token *end);
-const char				**parse_argv(t_token *start, t_token *end);
-t_oper2					parse_operation(t_token *end);
-t_cmd2					*parse_command_line(t_token *tokens);
+const char				**parse_argv(char ***ptr_argv, t_token *start,
+							t_token *end);
+t_oper2					parse_operation(t_oper2 *ptr_operation, t_token *end);
+t_cmd2					*parse_command_line(t_token *tokens, t_env *shell_env);
 t_cmd2					*parse_command(t_token *start, t_token *end);
 t_cmd2					*initialize_command(void);
 
@@ -64,12 +66,13 @@ int						is_redirection_token(t_token *token);
 int						is_between_char(int pos, const char *line, char c);
 int						is_between_quotes(int pos, const char *line);
 void					free_tokens(t_token *tokens);
-void					terminate_parsing(const char *line, t_cmd2 *cmds,
-							t_token *tokens, char *msg);
+void					terminate_parsing(t_token *tokens, t_env *shell_env,
+							t_cmd2 *cmds, char *msg);
 t_token					*get_final_token(t_token *token);
 void					free_tokens(t_token *tokens);
 void					free_redirections(t_redir *redirs);
 void					free_argv(char **argv);
 void					free_cmds(t_cmd2 *cmds);
+void    parse_check(t_token *tokens, t_env *shell_env);
 
 #endif

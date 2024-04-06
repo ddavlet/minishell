@@ -91,6 +91,8 @@ void	add_path(t_env *root, char *path)
 	char *new_path;
 
 	old_path = find_var(root, "PATH");
+    if (ft_strnstr(old_path, path, ft_strlen(path)))
+        return ;
 	new_path = ft_strjoin_free(old_path, ":");
 	new_path = ft_strjoin_free(new_path, path);
 	append_envp(root, "PATH", new_path);

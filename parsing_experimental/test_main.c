@@ -19,8 +19,8 @@ int main(void)
             printf("redir name: '%s'\n", redir->redir_name); 
             redir = redir->next;
         }
-        if (cmds->operation == NOTHING)
-            printf("operation: %s\n", "NOTHING");
+        if (cmds->operation == NONE)
+            printf("operation: %s\n", "NONE");
         else if (cmds->operation == PIPE_)
             printf("operation: %s\n", "PIPE");
         else if (cmds->operation == AND_)

@@ -14,7 +14,6 @@ void	execution(t_cmd2 *cmds)
     int		stdout;
     t_cmd2  *cmd;
 
-    cmds_check(cmds);
     stdin = dup(STDIN_FILENO);
     stdout = dup(STDOUT_FILENO);
     cmd = cmds;
@@ -30,6 +29,7 @@ void	execution(t_cmd2 *cmds)
         reset_input_output(stdin, stdout);
         cmd = cmd->next;
     }
+    free(cmds);
 	return (0);
 }
  

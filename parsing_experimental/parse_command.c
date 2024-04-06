@@ -1,16 +1,39 @@
 #include "parsing2.h"
 
+t_execution	*initialize_execution_data(void)
+{
+	t_execution	*execution;
+
+	execution = (t_execution *)ft_calloc(1, sizeof(execution));
+	if (!execution)
+		return (NULL);
+	execution->argv = NULL;
+	execution->pipe = NULL;
+	execution->redirections = NULL;
+	execution->shell_env = NULL;
+	execution->exit_status = EXIT_FAILURE;
+	execution->operation = NONE;
+	execution->pid = 0;
+	return (execution);
+}
+
 t_cmd2	*initialize_command(void)
 {
-	t_cmd2	*cmd;
+	t_cmd2		*cmd;
+	t_execution	*execution;
 
+	execution = initialize_execution_data();
+	if (!execution)
+		return (NULL);
 	cmd = (t_cmd2 *)ft_calloc(1, sizeof(t_cmd2));
 	if (!cmd)
+	{
+		free(execution);
 		return (NULL);
-	cmd->argv = NULL;
+	}
+	cmd->execution = execution;
+	cmd->cmds = NULL;
 	cmd->next = NULL;
-	cmd->operation = NOTHING;
-	cmd->redirections = NULL;
 	return (cmd);
 }
 
@@ -20,10 +43,14 @@ t_cmd2	*parse_command(t_token *start, t_token *end)
 	t_token	*token;
 
 	cmd = initialize_command();
-    if (!cmd)
-        return (NULL);
-	cmd->redirections = parse_redirections(start, end);
-	cmd->argv = parse_argv(start, end);
-	cmd->operation = parse_operation(end);
+	if (!cmd)
+		return (NULL);
+	if (parse_redirections(&(cmd->execution->redirections), start, end) == NULL
+		|| parse_argv(&(cmd->execution->argv), start, end) == NULL
+		|| parse_operation(&(cmd->execution->operation), end) == NULL)
+	{
+		free_cmds(cmd);
+		return (NULL);
+	}
 	return (cmd);
 }
