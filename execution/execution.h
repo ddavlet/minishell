@@ -60,7 +60,6 @@ void						msg_error(char *err);
 void						free_arr2d(void **arr2d);
 void						terminate(t_cmd2 *cmd, int status, char *msg);
 int							is_builtin(t_cmd2 *cmd);
-int							arr_len(char **arr);
 void						close_fd(t_fd_state *fd_state);
 t_pipe						*next_pipe(t_pipe **pipes);
 t_pipe						*last_pipe(t_pipe **pipes);

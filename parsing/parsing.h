@@ -85,7 +85,7 @@ char		**pars_split(char const *s);
 char		**pars_merge(char **arr);
 char		**merge_quotations(char **tokens);
 char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
-char		*find_var(t_env *root, const char *search);
+char		*get_shell_variable(t_env *root, const char *search);
 void		get_special_cases(char **tokens);
 
 /*Utils*/
@@ -131,7 +131,7 @@ char				**init_envv(t_env *root);
 
 /*Find and set*/
 void		append_envp(t_env *root, char *name, char *content);
-void		get_variable(char **tokens, t_env *root);
+// void		get_variable(char **tokens, t_env *root);
 char		*get_envvar(const char *txt, t_env *root);
 int			unset_envvar(t_env *root, const char *to_find);
 void		add_path(t_env *root, char *path);

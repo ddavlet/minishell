@@ -6,8 +6,8 @@ char	*pwd(t_env *env)
 	char	*home;
 	char	*tmp;
 
-	pwd = find_var(env, "PWD");
-	home = find_var(env, "HOME");
+	pwd = get_shell_variable(env, "PWD");
+	home = get_shell_variable(env, "HOME");
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
@@ -50,7 +50,7 @@ char	*create_prompt(t_env *shell_env)
 	char	*tmp;
 
 	prompt = ft_strdup("");
-	tmp = find_var(shell_env, "USER");
+	tmp = get_shell_variable(shell_env, "USER");
 	prompt = ft_strjoin_free(prompt, tmp);
 	free(tmp);
 	prompt = ft_strjoin_free(prompt, "@");
@@ -79,13 +79,13 @@ void	initialize_shell(t_env *shell_env)
 	int		i;
 
 	append_envp(shell_env, "SHELL", "minishell");
-	tmp = find_var(shell_env, "SHLVL");
+	tmp = get_shell_variable(shell_env, "SHLVL");
 	i = ft_atoi(tmp);
 	free(tmp);
 	tmp = ft_itoa(i + 1);
 	append_envp(shell_env, "SHLVL", tmp);
 	free(tmp);
-	tmp = find_var(shell_env, "PWD");
+	tmp = get_shell_variable(shell_env, "PWD");
 	add_path(shell_env, tmp);
 	free(tmp);
 }
@@ -114,18 +114,6 @@ int	is_subshell(int argc, char **argv)
 	if (argc == 3 && !ft_strncmp(argv[1], "-n", 3))
 		return (1);
 	return (0);
-}
-
-t_cmd2	*intialize_commands(t_token *tokens, t_env *shell_env)
-{
-	t_cmd2	*cmds;
-
-	parse_check(tokens, shell_env);
-	cmds = parse_command_line(tokens, shell_env);
-	free(tokens);
-	initialize_variables(cmds, shell_env);
-	initialize_wildcards(cmds, shell_env);
-	return (cmds);
 }
 
 int	main(int argc, char *argv[], const char *envp[])

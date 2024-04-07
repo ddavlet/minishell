@@ -7,7 +7,7 @@ static t_tree	*read_directory(t_env	*env)
 	t_tree			*tree;
 	char			*tmp;
 
-	tmp = find_var(env, "PWD"); // change to what we need
+	tmp = get_shell_variable(env, "PWD"); // change to what we need
 	dir = opendir(tmp);
 	free(tmp);
 	if (!dir)

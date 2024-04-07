@@ -87,7 +87,7 @@ t_cmd	**parse_text(const char *token, t_env *root)
 	tokens = merge_quotations(tokens);
 	if (!tokens)
 		return (NULL); // ?? catch it, mein Freund
-	get_variable(tokens, root);
+	// get_variable(tokens, root);
 	get_special_cases(tokens);
 	tokens = get_wildcard(tokens, root); // get wildcards after treating $ sign
 	if (!tokens)

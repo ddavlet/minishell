@@ -79,16 +79,6 @@ void	terminate(t_cmd2 *cmd, int status, char *msg)
 	exit(status);
 }
 
-int	arr_len(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
 void	close_fd(t_fd_state *fd_state)
 {
 	if (!fd_state)

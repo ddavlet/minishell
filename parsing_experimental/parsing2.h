@@ -53,7 +53,8 @@ t_oper2					parse_operation(t_oper2 *ptr_operation, t_token *end);
 t_cmd2					*parse_command_line(t_token *tokens, t_env *shell_env);
 t_cmd2					*parse_command(t_token *start, t_token *end);
 t_cmd2					*initialize_command(void);
-
+t_execution	*initialize_execution_data(void);
+t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env);
 /*
  *   utils
  */
@@ -74,5 +75,14 @@ void					free_redirections(t_redir *redirs);
 void					free_argv(char **argv);
 void					free_cmds(t_cmd2 *cmds);
 void    parse_check(t_token *tokens, t_env *shell_env);
+int	argv_contains_variables(const char **argv);
+static char *get_case(char *literal, t_env *shell_env);
+static int	spec_case(char c);
+const char  *find_variable(const char *literal);
+const char	**replace_argv(t_cmd2 *cmd, const char **argv_new);
+
+
+
+
 
 #endif

@@ -90,7 +90,7 @@ void	add_path(t_env *root, char *path)
 	char *old_path;
 	char *new_path;
 
-	old_path = find_var(root, "PATH");
+	old_path = get_shell_variable(root, "PATH");
     if (ft_strnstr(old_path, path, ft_strlen(path)))
         return ;
 	new_path = ft_strjoin_free(old_path, ":");
