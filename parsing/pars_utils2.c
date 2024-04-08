@@ -3,15 +3,17 @@
 char	*merge_to_char(char **tokens, ssize_t b_q, ssize_t e_q)
 {
 	char	*merged;
-	char	*tmp;
 
 	merged = ft_strdup(tokens[b_q++]);
 	while (b_q <= e_q)
 	{
-		tmp = merged;
-		merged = ft_strjoin(tmp, tokens[b_q]);
-		free(tmp);
-		(b_q)++;
+		if (!tokens[b_q][0])
+		{
+			merged = ft_strjoin_free(merged, " ");
+			b_q++;
+		}
+		else
+			merged = ft_strjoin_free(merged, tokens[b_q++]);
 	}
 	return (merged);
 }
