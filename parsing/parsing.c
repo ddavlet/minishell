@@ -76,33 +76,33 @@ t_cmd	**init_commands(char **tokens)
 	return (commands);
 }
 
-t_cmd	**parse_text(const char *token, t_env *root)
-{
-	t_cmd		**commands;
-	char		**tokens;
-	uint32_t	i;
+// t_cmd	**parse_text(const char *token, t_env *root)
+// {
+// 	t_cmd		**commands;
+// 	char		**tokens;
+// 	uint32_t	i;
 
-	tokens = pars_split(token);
-	// debug_print_array_strings(tokens);
-	tokens = merge_quotations(tokens);
-	if (!tokens)
-		return (NULL); // ?? catch it, mein Freund
-	// get_variable(tokens, root);
-	get_special_cases(tokens);
-	tokens = get_wildcard(tokens, root); // get wildcards after treating $ sign
-	if (!tokens)
-		return (NULL);
-	add_escape(tokens);
-	trim_quotes(tokens);
-	tokens = pars_merge(tokens);
-	tokens = parse_delspace(tokens);
-	// debug_print_array_strings(tokens);
-	if (!check_tokens(tokens))
-		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
-	commands = init_commands(tokens);
-	i = 0;
-	while (commands && commands[i])
-		commands[i++]->env = root; // change this
-	terminate_ptr_str(tokens);
-	return (commands);
-}
+// 	tokens = pars_split(token);
+// 	// debug_print_array_strings(tokens);
+// 	tokens = merge_quotations(tokens);
+// 	if (!tokens)
+// 		return (NULL); // ?? catch it, mein Freund
+// 	// get_variable(tokens, root);
+// 	get_special_cases(tokens);
+// 	tokens = get_wildcard(tokens, root); // get wildcards after treating $ sign
+// 	if (!tokens)
+// 		return (NULL);
+// 	add_escape(tokens);
+// 	trim_quotes(tokens);
+// 	tokens = pars_merge(tokens);
+// 	tokens = parse_delspace(tokens);
+// 	// debug_print_array_strings(tokens);
+// 	if (!check_tokens(tokens))
+// 		return (terminate_ptr_str(tokens)); // ?? catch it, mein Freund
+// 	commands = init_commands(tokens);
+// 	i = 0;
+// 	while (commands && commands[i])
+// 		commands[i++]->env = root; // change this
+// 	terminate_ptr_str(tokens);
+// 	return (commands);
+// }

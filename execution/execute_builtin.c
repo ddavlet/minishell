@@ -1,8 +1,8 @@
 #include "execution.h"
 
-int	builtin_router(t_cmd2 *cmd)
+void	builtin_router(t_cmd2 *cmd)
 {
-	char	*builtin;
+	const char	**builtin;
 	t_env	*shell_env;
 	int		exit_status;
 

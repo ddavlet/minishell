@@ -14,20 +14,16 @@ int	is_first_operant(t_cmd2 *cmd)
 int	is_second_operant(t_cmd2 *cmd)
 {
 	t_cmd2	*prev;
-    t_oper2 operation;
 
 	cmd_check(cmd);
 	prev = get_previous_cmd(cmd);
-    operation = prev->execution->operation;
-	if (operation == AND_ || operation == OR_)
+	if (prev && (prev->execution->operation == AND_ || prev->execution->operation == OR_))
 		return (1);
 	return (0);
 }
 
-int	is_logic_operation(t_cmd2 *cmd, t_cmd2 *cmds)
+int	is_logic_operation(t_cmd2 *cmd)
 {
-	t_cmd2	*cmd;
-
 	cmd_check(cmd);
 	if (is_first_operant(cmd) || is_second_operant(cmd))
 		return (1);

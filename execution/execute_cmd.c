@@ -2,16 +2,16 @@
 
 void	child_process(t_cmd2 *cmd)
 {
-	char	*path;
-	char	**argv;
-	char	**envp;
+	const char 	*path;
+	char 	*const *argv;
+	char 	*const *envp;
 
     cmd_check(cmd);
 	envp = cmd->execution->shell_env->envp;
-	argv = cmd->execution->argv;
+	argv = (char *const*)cmd->execution->argv;
 	if (ft_strchr(argv[0], '/') == NULL)
 	{
-		path = build_path_from_env(argv[0], cmd->execution->shell_env);
+		path = (const char *)build_path_from_env(argv[0], cmd->execution->shell_env);
 		if (path == NULL)
             terminate(cmd, EXIT_FAILURE, "minishell: couldn't find path");
 	}

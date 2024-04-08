@@ -7,7 +7,15 @@ void    free_execution_data(t_execution *execution)
         if (execution->argv)
             free_argv(execution->argv);
         if (execution->pipe)
-            free_pipe(execution->pipe);
+        {
+            if (execution->pipe->write->is_open)
+                close_fd(execution->pipe->write);
+            if (execution->pipe->read->is_open)
+                close_fd(execution->pipe->read);
+            free(execution->pipe->read);
+            free(execution->pipe->write);
+            free(execution->pipe);
+        }
         if (execution->redirections)
             free_redirections(execution->redirections);
         free(execution);

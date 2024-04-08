@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_echo(char **argv, t_env *root)
+int	builtin_echo(const char **argv, t_env *root)
 {
 	ssize_t	i;
 

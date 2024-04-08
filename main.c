@@ -73,6 +73,16 @@ void	debug_print_to_file(t_cmd **cmds)
 	close(debug_fd);
 }
 
+
+void    terminate_shell(t_env *shell_env, int exit_status, char *msg)
+{
+	if (shell_env)
+		terminate_env(shell_env);
+	if (msg)
+		ft_putendl_fd(msg, STDERR_FILENO);
+	exit(exit_status);
+}
+
 void	initialize_shell(t_env *shell_env)
 {
 	char	*tmp;
@@ -107,6 +117,7 @@ char	*shell_prompt(t_env *shell_env)
 		terminate_shell(shell_env, EXIT_FAILURE,
 			"minishell: failed to read line");
 	add_history(line);
+    return (line);
 }
 
 int	is_subshell(int argc, char **argv)
@@ -115,6 +126,7 @@ int	is_subshell(int argc, char **argv)
 		return (1);
 	return (0);
 }
+
 
 int	main(int argc, char *argv[], const char *envp[])
 {

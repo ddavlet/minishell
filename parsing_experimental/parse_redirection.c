@@ -64,7 +64,7 @@ void	add_redirection(t_redir **ptr_redirs, t_redir *new)
 		*ptr_redirs = new;
 }
 
-t_redir	*parse_redirections(t_redir **ptr_redirs, t_token *start, t_token *end)
+int parse_redirections(t_redir **ptr_redirs, t_token *start, t_token *end)
 {
 	t_redir	*new;
 	t_token	*token;
@@ -78,11 +78,11 @@ t_redir	*parse_redirections(t_redir **ptr_redirs, t_token *start, t_token *end)
 			if (!new)
 			{
 				free_redirections(*ptr_redirs);
-				return (NULL);
+				return (-1);
 			}
 			add_redirection(ptr_redirs, new);
 		}
 		token = token->next;
 	}
-	return (ptr_redirs);
+	return (0);
 }

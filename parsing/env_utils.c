@@ -8,7 +8,7 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 	last = *list_p;
 	new_node = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (!new_node)
-		return ; //dela with this return
+		return ; // dela with this return
 	if (content)
 	{
 		new_node->content = ft_strdup(content);
@@ -87,12 +87,12 @@ void	append_envp(t_env *root, char *name, char *content)
 
 void	add_path(t_env *root, char *path)
 {
-	char *old_path;
-	char *new_path;
+	char	*old_path;
+	char	*new_path;
 
 	old_path = get_shell_variable(root, "PATH");
-    if (ft_strnstr(old_path, path, ft_strlen(path)))
-        return ;
+	if (ft_strnstr(old_path, path, ft_strlen(path)))
+		return ;
 	new_path = ft_strjoin_free(old_path, ":");
 	new_path = ft_strjoin_free(new_path, path);
 	append_envp(root, "PATH", new_path);

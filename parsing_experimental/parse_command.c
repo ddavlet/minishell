@@ -2,9 +2,9 @@
 
 t_execution	*initialize_execution_data(void)
 {
-	t_execution	*execution;
+t_execution	*execution;
 
-	execution = (t_execution *)ft_calloc(1, sizeof(execution));
+	execution = (t_execution *)ft_calloc(1, sizeof(t_execution));
 	if (!execution)
 		return (NULL);
 	execution->argv = NULL;
@@ -40,14 +40,13 @@ t_cmd2	*initialize_command(void)
 t_cmd2	*parse_command(t_token *start, t_token *end)
 {
 	t_cmd2	*cmd;
-	t_token	*token;
 
 	cmd = initialize_command();
 	if (!cmd)
 		return (NULL);
-	if (parse_redirections(&(cmd->execution->redirections), start, end) == NULL
-		|| parse_argv(&(cmd->execution->argv), start, end) == NULL
-		|| parse_operation(&(cmd->execution->operation), end) == NULL)
+	if (parse_redirections(&(cmd->execution->redirections), start, end) == -1
+		|| parse_argv((char ***)&(cmd->execution->argv), start, end) == -1
+		|| parse_operation(&(cmd->execution->operation), end) == -1)
 	{
 		free_cmds(cmd);
 		return (NULL);

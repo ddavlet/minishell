@@ -2,7 +2,7 @@
 
 // "export %s=%s\n", <name>, <value>
 
-int	builtin_export(char **argv, t_env *root) // recieve code!
+int	builtin_export(const char **argv, t_env *root) // recieve code!
 {
 	uint32_t	i;
 	char		*key;

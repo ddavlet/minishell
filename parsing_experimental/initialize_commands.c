@@ -6,7 +6,6 @@ t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 
 	parse_check(tokens, shell_env);
 	cmds = parse_command_line(tokens, shell_env);
-	free(tokens);
 	if (!cmds)
 		terminate_parsing(tokens, shell_env, NULL,
 			"minishell: failed to parse command line");

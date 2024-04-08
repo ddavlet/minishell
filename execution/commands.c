@@ -4,12 +4,10 @@ t_cmd2	*get_next_cmd(t_cmd2 *cmd)
 {
 	t_cmd2	*next;
 
-	if (!cmd || !cmd->cmds)
-		terminate(cmd, EXIT_FAILURE, "failed to find command");
+	cmd_check(cmd);
 	next = cmd->cmds;
 	while (next && next != cmd->next)
 		next = next->next;
-    cmd_check(next);
 	return (next);
 }
 

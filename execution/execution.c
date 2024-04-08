@@ -30,6 +30,5 @@ void	execution(t_cmd2 *cmds)
         cmd = cmd->next;
     }
     free(cmds);
-	return (0);
 }
  

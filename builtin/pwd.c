@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_pwd(char **argv, t_env *root)
+int	builtin_pwd(const char **argv, t_env *root)
 {
 	char	*pwd;
 

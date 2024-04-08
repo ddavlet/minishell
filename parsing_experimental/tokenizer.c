@@ -30,16 +30,16 @@ t_token	*get_token(const char *line)
 	const char	*end;
 
 	end = line;
-    if (*line == '(')
-        string_literal = get_parenthesis(line);
-    else
-    {
-        while (is_token(end - line, line))
-            end++;
-        string_literal = (const char *)ft_substr(line, 0, end - line);
-    }
-    if (!string_literal)
-        return (NULL);
+	if (*line == '(')
+		string_literal = get_parenthesis(line);
+	else
+	{
+		while (is_token(end - line, line))
+			end++;
+		string_literal = (const char *)ft_substr(line, 0, end - line);
+	}
+	if (!string_literal)
+		return (NULL);
 	return (initialize_token(string_literal));
 }
 
@@ -63,8 +63,10 @@ t_token	*tokenizer(const char *line)
 	t_token	*tokens;
 	t_token	*new;
 
-    if (!line)
-        return (NULL);
+	if (!line)
+		return (NULL);
+	if (!*line)
+		return (get_token(line));
 	tokens = NULL;
 	while (*line)
 	{
@@ -77,6 +79,6 @@ t_token	*tokenizer(const char *line)
 			line += ft_strlen(new->literal);
 		}
 	}
-    free(line);
+	// free((void *)line);
 	return (tokens);
 }

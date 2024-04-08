@@ -11,41 +11,40 @@ int	var_exists(char *arg)
 		return (1);
 }
 
-const char  *get_variable_name(const char *literal)
+const char	*get_variable_name(const char *literal)
 {
-    const char  *dollar_sign;
-    const char  *len;
+	const char	*dollar_sign;
+	size_t		len;
 
-    dollar_sign = find_variable(literal);
-    if (!dollar_sign)
-        return (NULL);
-    len = 0;
-    while (*dollar_sign && ft_isalpha(++dollar_sign))
-        len++;
-    return (ft_substr(literal, dollar_sign - literal + 1, len));
+	dollar_sign = find_variable(literal);
+	if (!dollar_sign)
+		return (NULL);
+	len = 0;
+	while (*dollar_sign && ft_isalpha(*(++dollar_sign)))
+		len++;
+	return (ft_substr(literal, dollar_sign - literal + 1, len));
 }
 
 char	*get_envvar(const char *literal, t_env *shell_env)
 {
 	char		*new;
-	char		*dollar_sign;
-	char		*tmp_1;
+	const char	*dollar_sign;
+	const char		*tmp_1;
 	char		*tmp_2;
-	char		*variable_name;
 
 	dollar_sign = find_variable(literal);
 	if (!dollar_sign)
-        return (NULL);
-    if (!ft_isalpha(dollar_sign + 1))
-        return (ft_strdup(literal));
+		return (NULL);
+	if (!ft_isalpha(*(dollar_sign + 1)))
+		return (ft_strdup(literal));
 	new = ft_substr(literal, 0, dollar_sign - literal);
 	if (!new)
 		return (error_general(new, "get_envvar"));
 	tmp_1 = get_variable_name(literal);
-    if (!tmp_1)
-        return (NULL);
+	if (!tmp_1)
+		return (NULL);
 	tmp_2 = get_shell_variable(shell_env, tmp_1);
-	free(tmp_1);
+	free((void *)tmp_1);
 	if (!tmp_2)
 		return (error_general(new, "get_envvar"));
 	new = ft_strjoin_free(new, tmp_2);
@@ -53,7 +52,7 @@ char	*get_envvar(const char *literal, t_env *shell_env)
 	return (ft_strjoin_free(new, dollar_sign + 2));
 }
 
-char	*get_shell_variable(t_env	*shell_env, const char *search)
+char	*get_shell_variable(t_env *shell_env, const char *search)
 {
 	t_env	*child;
 

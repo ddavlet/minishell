@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_env(char **argv, t_env *root)
+int	builtin_env(const char **argv, t_env *root)
 {
 	uint32_t	i;
 

@@ -1,11 +1,11 @@
 #include "../parsing2.h"
 
-void    free_argv(char **argv)
+void    free_argv(const char **argv)
 {
     int i;
 
     i = 0;
     while (argv[i])
-        free(argv[i++]);
-    free(argv);
+        free((void *)argv[i++]);
+    free((void *)argv);
 }

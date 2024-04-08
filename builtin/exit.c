@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_exit(char **argv, t_env *root)
+int	builtin_exit(const char **argv, t_env *root)
 {
 	int	i;
 
@@ -15,7 +15,7 @@ int	builtin_exit(char **argv, t_env *root)
 	}
 	if (i == 2)
 	{
-		if (!ft_isnumber(argv[1]))
+		if (!ft_isnumber((char *)argv[1]))
 		{
 			ft_putstr_fd("exit: ", 2);
 			ft_putstr_fd(argv[1], 2);

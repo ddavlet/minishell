@@ -1,6 +1,6 @@
 #include "builtin.h"
 
-int	builtin_unset(char **argv, t_env *root)
+int	builtin_unset(const char **argv, t_env *root)
 {
 	uint32_t	i;
 
