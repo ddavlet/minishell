@@ -5,5 +5,3 @@ Have to fix:
 3. Norminette
 4. Memory leak check
 cases:
-export Arg="echo 1"
-export ARG = $ARG1

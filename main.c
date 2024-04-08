@@ -126,7 +126,7 @@ int	main(int argc, char *argv[],const char *envp[])
 		rl_on_new_line();
 		line = readline(promt);
 		// line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
-		// line = ft_strdup("export ARG='test 1'");
+		// line = ft_strdup("export ARG=$USER2");
 		free(promt);
 		if (!line)
 			break ;
