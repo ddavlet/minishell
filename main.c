@@ -63,6 +63,13 @@ char	*create_promt(t_env *env)
 	return (promt);
 }
 
+void    debug_print_to_file(t_cmd **cmds)
+{
+    int debug_fd = open("debug_log", O_WRONLY | O_CREAT);
+    debug_print_cmds(cmds, debug_fd);
+    close(debug_fd);
+}
+
 void	subshell(char **tokens, t_env *env)
 {
 	t_cmd	**cmds;
@@ -70,6 +77,8 @@ void	subshell(char **tokens, t_env *env)
 	cmds = init_commands(tokens);
 	for (size_t i = 0; cmds[i]; i++)
 		cmds[i]->env = env;
+
+    // debug_print_to_file(cmds);
 	execution(cmds, cmds[0]->env->envp);
 	terminate_commands(cmds);
 }
@@ -85,6 +94,9 @@ void	envir_setup(t_env *env)
 	free(tmp);
 	tmp = ft_itoa(i + 1);
 	append_envp(env, "SHLVL", tmp);
+	free(tmp);
+	tmp = find_var(env, "PWD");
+	add_path(env, tmp);
 	free(tmp);
 	append_envp(env, "TERM_PROGRAM", "minishell");
 	append_envp(env, "TERM_PROGRAM_VERSION", "1");
@@ -108,7 +120,7 @@ int	main(int argc, char *argv[],const char *envp[])
 	line = NULL;
 	while (1)
 	{
-		signals(getpid());
+		// signals(getpid());
 		free(line);
 		promt = create_promt(env);
 		rl_on_new_line();
@@ -122,10 +134,11 @@ int	main(int argc, char *argv[],const char *envp[])
 			continue ;
 		add_history(line);
 		cmds = parse_text(line, env);
-		debug_print_cmd(cmds);
-		signals2();
+		// debug_print_cmds(cmds);
+		// signals2();
 		if (!cmds)
 			continue ;
+
 		execution(cmds, cmds[0]->env->envp);
 		terminate_commands(cmds);
 	}

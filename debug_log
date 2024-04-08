@@ -1,0 +1,16 @@
+
+Command:
+Cmd_name: echo
+Operation code: 3
+Arguments: echo
+Arguments: test2
+Redirections: 
+_________________
+
+Command:
+Cmd_name: echo
+Operation code: 0
+Arguments: echo
+Arguments: test3
+Redirections: 
+_________________
