@@ -101,7 +101,10 @@ int	main(int argc, char *argv[],const char *envp[])
 	env = init_env((const char **)envp);
 	envir_setup(env);
 	if (argv[1] && !ft_strncmp(argv[1], "-n", 3))
+	{
 		subshell(&argv[2], env);
+		return (0);
+	}
 	line = NULL;
 	while (1)
 	{
