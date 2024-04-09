@@ -11,7 +11,9 @@ char	*pwd(t_env *env)
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
+        free(pwd);
 		pwd = ft_strjoin("~", tmp);
+
 		free(tmp);
 		free(home);
 		return (pwd);
@@ -19,7 +21,7 @@ char	*pwd(t_env *env)
 	else
 	{
 		free(home);
-		return (ft_strdup(pwd));
+		return (pwd);
 	}
 }
 
@@ -41,12 +43,12 @@ char	*hostname(void)
 		return (NULL);
 	}
 	return (ft_substr(hostname, 0, ft_strchr(hostname, '.') - hostname));
-	// len?
 }
 
 char	*create_prompt(t_env *shell_env)
 {
 	char	*prompt;
+	char	*host;
 	char	*tmp;
 
 	prompt = ft_strdup("");
@@ -54,13 +56,14 @@ char	*create_prompt(t_env *shell_env)
 	prompt = ft_strjoin_free(prompt, tmp);
 	free(tmp);
 	prompt = ft_strjoin_free(prompt, "@");
-	prompt = ft_strjoin_free(prompt, hostname());
-	prompt = ft_strjoin(prompt, ":");
+    host = hostname();
+	prompt = ft_strjoin_free(prompt, host);
+    free(host);
+	prompt = ft_strjoin_free(prompt, ":");
 	tmp = pwd(shell_env);
 	prompt = ft_strjoin_free(prompt, tmp);
 	free(tmp);
 	prompt = ft_strjoin_free(prompt, "$ ");
-	// prompt = "test";
 	return (prompt);
 }
 
@@ -110,8 +113,6 @@ char	*shell_prompt(t_env *shell_env)
 	if (!prompt)
 		rl_on_new_line();
 	line = readline(prompt);
-	// line = ft_strdup("echo test1 > testfile && (echo test2 || echo test3)");
-	// line = ft_strdup("echo test || echo test2");
 	free(prompt);
 	if (!line)
 		terminate_shell(shell_env, EXIT_FAILURE,
@@ -142,7 +143,11 @@ int	main(int argc, char *argv[], const char *envp[])
 		if (is_subshell(argc, argv))
 			tokens = tokenizer(argv[2]);
 		else
-			tokens = tokenizer(shell_prompt(shell_env));
+        {
+            const char  *prompt = shell_prompt(shell_env);
+			tokens = tokenizer(prompt);
+            free((char *)prompt);
+        }
 		if (!tokens)
 			terminate_shell(shell_env, EXIT_FAILURE,
 				"minishell: failed to tokenize prompt");

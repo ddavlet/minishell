@@ -76,7 +76,7 @@ t_cmd	**init_commands(char **tokens)
 	return (commands);
 }
 
-// t_cmd	**parse_text(const char *token, t_env *root)
+// t_cmd	**parse_text(const char *token, t_env *shell_env)
 // {
 // 	t_cmd		**commands;
 // 	char		**tokens;
@@ -87,9 +87,9 @@ t_cmd	**init_commands(char **tokens)
 // 	tokens = merge_quotations(tokens);
 // 	if (!tokens)
 // 		return (NULL); // ?? catch it, mein Freund
-// 	// get_variable(tokens, root);
+// 	// get_variable(tokens, shell_env);
 // 	get_special_cases(tokens);
-// 	tokens = get_wildcard(tokens, root); // get wildcards after treating $ sign
+// 	tokens = get_wildcard(tokens, shell_env); // get wildcards after treating $ sign
 // 	if (!tokens)
 // 		return (NULL);
 // 	add_escape(tokens);
@@ -102,7 +102,7 @@ t_cmd	**init_commands(char **tokens)
 // 	commands = init_commands(tokens);
 // 	i = 0;
 // 	while (commands && commands[i])
-// 		commands[i++]->env = root; // change this
+// 		commands[i++]->env = shell_env; // change this
 // 	terminate_ptr_str(tokens);
 // 	return (commands);
 // }

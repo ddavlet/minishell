@@ -10,6 +10,7 @@ t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 		terminate_parsing(tokens, shell_env, NULL,
 			"minishell: failed to parse command line");
 	initialize_variables(cmds, shell_env);
+    initialize_quotations(cmds, shell_env);
 	initialize_wildcards(cmds, shell_env);
 	return (cmds);
 }

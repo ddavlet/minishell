@@ -2,7 +2,7 @@
 
 // "export %s=%s\n", <name>, <value>
 
-int	builtin_export(const char **argv, t_env *root) // recieve code!
+int	builtin_export(const char **argv, t_env *shell_env) // recieve code!
 {
 	uint32_t	i;
 	char		*key;
@@ -19,7 +19,7 @@ int	builtin_export(const char **argv, t_env *root) // recieve code!
 			return (1);
 		}
 		value++;
-		append_envp(root, key, value);
+		append_envp(shell_env, key, value);
 		free(key);
 		i++;
 	}

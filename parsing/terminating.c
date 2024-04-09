@@ -46,17 +46,17 @@ void	*terminate_ptr_str(char **ptr)
 	return (NULL);
 }
 
-void	terminate_env(t_env *root)
+void	terminate_env(t_env *shell_env)
 {
 	t_env	*tmp;
 
-	if (!root)
+	if (!shell_env)
 		return ;
-	while (root)
+	while (shell_env)
 	{
-		terminate_env(root->child);
-		tmp = root;
-		root = root->next;
+		terminate_env(shell_env->child);
+		tmp = shell_env;
+		shell_env = shell_env->next;
 		if (tmp->envp)
 			terminate_ptr_str(tmp->envp);
 		if (tmp->content)

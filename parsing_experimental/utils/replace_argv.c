@@ -17,6 +17,7 @@ int	replace_argv(t_cmd2 *cmd, const char **argv_new)
 	execution_new->redirections = cmd->execution->redirections;
 	execution_new->shell_env = cmd->execution->shell_env;
 	free_argv(cmd->execution->argv);
+    free(cmd->execution);
 	cmd->execution = execution_new;
     return (0);
 }

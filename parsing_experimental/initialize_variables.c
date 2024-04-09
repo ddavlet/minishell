@@ -1,25 +1,44 @@
 #include "parsing2.h"
 
+char	*replace(const char *literal, const char *dollar_sign,
+		const char *value)
+{
+	char	*new;
+	const char	*name;
+
+	if (!dollar_sign || !literal || !value)
+		return (NULL);
+	new = ft_substr(literal, 0, dollar_sign - literal);
+	if (!new)
+		return (error_general(new, "get_envvar"));
+	new = ft_strjoin_free(new, value);
+	free((char *)value);
+	name = get_variable_name(dollar_sign);
+    new = ft_strjoin_free(new, dollar_sign + ft_strlen(name) + 1);
+    free((char *)name);
+	return (new);
+}
+
 const char	*replace_variables(const char *literal, t_env *shell_env)
 {
-	char		*old;
-	char		*new;
+	const char		*new;
+	const char		*old;
+	const char		*value;
 	const char	*dollar_sign;
 
-	old = (char *)literal;
-	new = (char *)literal;
-    dollar_sign = find_variable(new);
+	old = literal;
+	new = literal;
+	dollar_sign = find_variable(new);
 	while (dollar_sign)
 	{
-		if (*(dollar_sign + 1) == '?')
-			new = last_exit_status(old, shell_env);
-		else
-			new = get_envvar(old, shell_env);
-		free(old);
+		value = get_envvar(dollar_sign, literal, shell_env);
+		new = replace(literal, dollar_sign, value);
+        if (ft_strncmp(literal, old, ft_strlen(literal) + 1) != 0)
+            free((char *)old);
 		if (!new)
 			return (NULL);
 		old = new;
-        dollar_sign = find_variable(new);
+		dollar_sign = find_variable(new);
 	}
 	return ((const char *)new);
 }

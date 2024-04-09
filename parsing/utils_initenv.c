@@ -32,12 +32,12 @@ static char	*add_char(const char *str, char c)
 	return (new_str);
 }
 
-static void	gen_envv(t_env *root, char ***envv, const char *name)
+static void	gen_envv(t_env *shell_env, char ***envv, const char *name)
 {
 	t_env	*child;
 	char	*tmp;
 
-	child = root->child;
+	child = shell_env->child;
 	while (child)
 	{
 		tmp = add_char(name, child->letter);
@@ -46,16 +46,16 @@ static void	gen_envv(t_env *root, char ***envv, const char *name)
 		child = child->next;
 	}
 	if (!child)
-		if (root->exists == true)
-			*envv = append_arr_str(*envv, strjoin_env(name, root->content));
+		if (shell_env->exists == true)
+			*envv = append_arr_str(*envv, strjoin_env(name, shell_env->content));
 }
 
-char	**init_envv(t_env *root)
+char	**init_envv(t_env *shell_env)
 {
 	char	**envv;
 	// char	*tmp;
 
 	envv = (char **)ft_calloc(sizeof(char *), 1);
-	gen_envv(root, &envv, "");
+	gen_envv(shell_env, &envv, "");
 	return (envv);
 }

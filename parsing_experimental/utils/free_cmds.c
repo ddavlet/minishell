@@ -14,6 +14,7 @@ void    free_execution_data(t_execution *execution)
                 close_fd(execution->pipe->read);
             free(execution->pipe->read);
             free(execution->pipe->write);
+            free(execution->pipe->pipe_fd);
             free(execution->pipe);
         }
         if (execution->redirections)
@@ -28,11 +29,11 @@ void    free_cmds(t_cmd2 *cmds)
     t_cmd2  *cmd;
 
     cmd = cmds;
-    while (cmds)
+    while (cmd)
     {
         tmp = cmd->next; 
         free_execution_data(cmd->execution);
         free(cmd);
-        cmd = tmp->next;
+        cmd = tmp;
     }
 }

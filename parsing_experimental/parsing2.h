@@ -79,6 +79,9 @@ void						initialize_wildcards(t_cmd2 *cmds,
 								t_env *shell_env);
 void						initialize_variables(t_cmd2 *cmds,
 								t_env *shell_env);
+char						*get_envvar(const char *dollar_sign,
+								const char *literal, t_env *shell_env);
+void    initialize_quotations(t_cmd2 *cmds, t_env *shell_env);
 
 /*
  *   utils
@@ -109,5 +112,9 @@ int							replace_argv(t_cmd2 *cmd, const char **argv_new);
 const char					*replace_variables(const char *literal,
 								t_env *shell_env);
 void						close_fd(t_fd_state *fd_state);
+const char	*get_variable_name(const char *dollar_sign);
+int	argv_contains_quotations(const char **argv);
+int contains_quotations(const char *literal);
+
 
 #endif

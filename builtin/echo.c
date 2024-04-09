@@ -1,10 +1,10 @@
 #include "builtin.h"
 
-int	builtin_echo(const char **argv, t_env *root)
+int	builtin_echo(const char **argv, t_env *shell_env)
 {
 	ssize_t	i;
 
-	(void)root;
+	(void)shell_env;
 	i = 1;
 	if (argv[i] && ft_strncmp(argv[i], "-n", 3) == 0)
 		i++;

@@ -54,19 +54,19 @@ void	debug_print_array_strings(char **tokens)
 	}
 }
 
-void	debug_print_env(t_env	*root, const char *search)
+void	debug_print_env(t_env	*shell_env, const char *name)
 {
 	t_env	*child;
 
-	child = root->child;
+	child = shell_env->child;
 	while (child)
 	{
-		if (child->letter == *search && *(search + 1))
+		if (child->letter == *name && *(name + 1))
 		{
 			child = child->child;
-			search++;
+			name++;
 		}
-		else if (child->letter == *search && !*(search + 1))
+		else if (child->letter == *name && !*(name + 1))
 		{
 			if (child->exists == true)
 			{

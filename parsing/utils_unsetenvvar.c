@@ -1,20 +1,20 @@
 #include "parsing.h"
 
-static int	remove_envvar(t_env	*root, const char *search)
+static int	remove_envvar(t_env	*shell_env, const char *name)
 {
 	t_env	*child;
 
-	child = root->child;
-	if (!search)
+	child = shell_env->child;
+	if (!name)
 		return (1);
 	while (child)
 	{
-		if (child->letter == *search && *(search + 1))
+		if (child->letter == *name && *(name + 1))
 		{
 			child = child->child;
-			search++;
+			name++;
 		}
-		else if (child->letter == *search && !*(search + 1))
+		else if (child->letter == *name && !*(name + 1))
 		{
 			if (child->exists == true)
 			{
@@ -29,14 +29,14 @@ static int	remove_envvar(t_env	*root, const char *search)
 	return (1);
 }
 
-int	unset_envvar(t_env *root, const char *to_find)
+int	unset_envvar(t_env *shell_env, const char *to_find)
 {
-	if (remove_envvar(root, to_find))
+	if (remove_envvar(shell_env, to_find))
 		return (1);
 	else
 	{
-		terminate_ptr_str(root->envp);
-		root->envp = init_envv(root);
+		terminate_ptr_str(shell_env->envp);
+		shell_env->envp = init_envv(shell_env);
 	}
 	return (0);
 }

@@ -48,7 +48,7 @@ char	**add_argument(char ***ptr_argv, t_token *token, int i)
 	return (*ptr_argv);
 }
 
-int	parse_argv(char ***ptr_argv, t_token *start, t_token *end)
+int parse_argv(char ***ptr_argv, t_token *start, t_token *end)
 {
 	int		argc;
 	int		i;
@@ -63,8 +63,15 @@ int	parse_argv(char ***ptr_argv, t_token *start, t_token *end)
 	while (token != end->next && i < argc)
 	{
 		if (is_argv_token(token))
-			if (add_argument(ptr_argv, token, (i++)) == NULL)
-				return (-1);
+        {
+            (*ptr_argv)[i] = ft_strdup(token->literal);
+            if (!(*ptr_argv)[i])
+            {
+                free_argv((const char **)*ptr_argv);
+                return (-1);
+            }
+            i++;
+        }
 		token = token->next;
 	}
 	return (0);

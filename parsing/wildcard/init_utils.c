@@ -25,11 +25,11 @@ static void	add_node(t_tree **list_p, char c, const char *content)
 	}
 }
 
-void	add_branch(t_tree *root, const char *name, const char *content)
+void	add_branch(t_tree *shell_env, const char *name, const char *content)
 {
 	t_tree	**child_p;
 
-	child_p = &root->child;
+	child_p = &shell_env->child;
 	while (*name)
 	{
 		while ((*child_p) && *name != (*child_p)->letter)
@@ -55,19 +55,19 @@ void	add_branch(t_tree *root, const char *name, const char *content)
 
 t_tree	*init_tree(const char **name)
 {
-	t_tree		*root;
+	t_tree		*shell_env;
 	uint32_t	i;
 
-	root = (t_tree *)ft_calloc(sizeof(t_tree), 1);
-	if (!root)
+	shell_env = (t_tree *)ft_calloc(sizeof(t_tree), 1);
+	if (!shell_env)
 		return (NULL);
 	i = 0;
 	if (!name)
-		return (root);
+		return (shell_env);
 	while (name[i])
 	{
-		add_branch(root, name[i], name[i]);
+		add_branch(shell_env, name[i], name[i]);
 		i++;
 	}
-	return (root);
+	return (shell_env);
 }

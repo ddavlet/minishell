@@ -14,12 +14,23 @@ int	argv_contains_variables(const char **argv)
 	return (0);
 }
 
-const char  *find_variable(const char *literal)
+static int	edge_case(const char *literal, const char *dollar_sign)
+{
+	if (is_between_char(dollar_sign - literal, literal, '\''))
+		return (1);
+	if (!ft_isalpha(*(dollar_sign + 1)) && *(dollar_sign + 1) != '?')
+		return (1);
+	if ((literal - dollar_sign != 0) && *(dollar_sign - 1) == '\\')
+		return (1);
+	return (0);
+}
+
+const char	*find_variable(const char *literal)
 {
 	const char *sign;
 
-	sign = ft_strchr(literal, '$'); 
-	while (sign && is_between_char(sign - literal, literal, '\''))
+	sign = ft_strchr(literal, '$');
+	while (sign && edge_case(literal, sign))
 		sign = ft_strchr(sign + 1, '$');
 	return (sign);
 }

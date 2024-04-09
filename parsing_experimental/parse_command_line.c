@@ -42,6 +42,6 @@ t_cmd2	*parse_command_line(t_token *tokens, t_env *shell_env)
 		add_cmd(&cmds, new, shell_env);
 		start = end->next;
 	}
-    free(tokens);
+    free_tokens(tokens);
 	return (cmds);
 }

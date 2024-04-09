@@ -71,9 +71,9 @@ int			id_gen(int seed);
 
 /*Commands functions*/
 t_cmd		**reparse_text(char **argv);
-t_cmd		**parse_text(const char *txt, t_env *root);
+t_cmd		**parse_text(const char *txt, t_env *shell_env);
 char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
-char		**get_wildcard(char **tokens, t_env *root);
+char		**get_wildcard(char **tokens, t_env *shell_env);
 void		append_redirnode(t_redir **redir, t_red_sym key,
 				const char *value);
 t_cmd		**init_commands(char **tokens);
@@ -85,7 +85,7 @@ char		**pars_split(char const *s);
 char		**pars_merge(char **arr);
 char		**merge_quotations(char **tokens);
 char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
-char		*get_shell_variable(t_env *root, const char *search);
+char		*get_shell_variable(t_env *shell_env, const char *name);
 void		get_special_cases(char **tokens);
 
 /*Utils*/
@@ -127,14 +127,13 @@ void		debug_print_redir(t_redir	*redir, int fd);
 
 /*Enviroment function*/
 t_env				*init_env(const char **envp);
-char				**init_envv(t_env *root);
+char				**init_envv(t_env *shell_env);
 
 /*Find and set*/
-void		append_envp(t_env *root, char *name, char *content);
-// void		get_variable(char **tokens, t_env *root);
-char		*get_envvar(const char *txt, t_env *root);
-int			unset_envvar(t_env *root, const char *to_find);
-void		add_path(t_env *root, char *path);
+void		append_envp(t_env *shell_env, char *name, char *content);
+// void		get_variable(char **tokens, t_env *shell_env);
+int			unset_envvar(t_env *shell_env, const char *to_find);
+void		add_path(t_env *shell_env, char *path);
 
 
 /*Sytax controllers*/
@@ -149,14 +148,14 @@ int					var_exists(char *arg);
 char				**append_arr_str(char **arr, char *str);
 
 /*Terminating*/
-void				terminate_env(t_env *root);
+void				terminate_env(t_env *shell_env);
 
 /*Error*/
 void				*error_env_init(void);
 void				*error_general(void *ptr, const char *str);
 
 /*Debuging*/
-void				debug_print_env(t_env *root, const char *search);
+void				debug_print_env(t_env *shell_env, const char *name);
 
 /***************************************************************/
 

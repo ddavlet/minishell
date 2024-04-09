@@ -29,6 +29,6 @@ void	execution(t_cmd2 *cmds)
         reset_input_output(stdin, stdout);
         cmd = cmd->next;
     }
-    free(cmds);
+    free_cmds(cmds);
 }
  

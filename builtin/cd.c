@@ -19,7 +19,7 @@ static char	*build_path(char *dir)
 	return (path);
 }
 
-int	builtin_cd(const char **argv, t_env *root)
+int	builtin_cd(const char **argv, t_env *shell_env)
 {
 	char			*path;
 	char			*cwd;
@@ -28,7 +28,7 @@ int	builtin_cd(const char **argv, t_env *root)
 		return (builtin_err_gen("cd", "too many arguments", NULL));
 	if (!argv[1])
 	{
-		path = get_shell_variable(root, "HOME");
+		path = get_shell_variable(shell_env, "HOME");
 		if (!path)
 			return (builtin_err_gen("cd", "HOME not set", NULL));
 	}
@@ -36,14 +36,14 @@ int	builtin_cd(const char **argv, t_env *root)
 		path = (char *)argv[1];
 	else if (*argv[1] == '~')
 	{
-		path = ft_strjoin_free(get_shell_variable(root, "HOME"), &argv[1][1]);
+		path = ft_strjoin_free(get_shell_variable(shell_env, "HOME"), &argv[1][1]);
 	}
 	else
 		path = build_path((char *)argv[1]);
 	chdir(path);
 	cwd = getcwd(NULL, 0);
-	append_envp(root, "OLDPWD", get_shell_variable(root, "PWD"));
-	append_envp(root, "PWD", cwd);
+	append_envp(shell_env, "OLDPWD", get_shell_variable(shell_env, "PWD"));
+	append_envp(shell_env, "PWD", cwd);
 	free(cwd);
 	return (0);
 }

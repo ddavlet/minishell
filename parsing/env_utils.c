@@ -25,11 +25,11 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 	}
 }
 
-static void	add_envvar(t_env *root, const char *envvar, const char *content)
+static void	add_envvar(t_env *shell_env, const char *envvar, const char *content)
 {
 	t_env	**child_p;
 
-	child_p = &root->child;
+	child_p = &shell_env->child;
 	while (*envvar)
 	{
 		while ((*child_p) && *envvar != (*child_p)->letter)
@@ -55,13 +55,13 @@ static void	add_envvar(t_env *root, const char *envvar, const char *content)
 
 t_env	*init_env(const char **envp)
 {
-	t_env		*root;
+	t_env		*shell_env;
 	uint32_t	i;
 	uint32_t	j;
 	char		*tmp;
 
-	root = (t_env *)ft_calloc(sizeof(t_env), 1);
-	if (!root)
+	shell_env = (t_env *)ft_calloc(sizeof(t_env), 1);
+	if (!shell_env)
 		return (error_env_init());
 	i = 0;
 	while (envp[i])
@@ -70,30 +70,31 @@ t_env	*init_env(const char **envp)
 		while (envp[i][j] != '=')
 			j++;
 		tmp = ft_substr(envp[i], 0, j);
-		add_envvar(root, tmp, &(envp[i][j + 1]));
+		add_envvar(shell_env, tmp, &(envp[i][j + 1]));
 		free(tmp);
 		i++;
 	}
-	root->envp = arrstr_copy(envp);
-	return (root);
+	shell_env->envp = arrstr_copy(envp);
+	return (shell_env);
 }
 
-void	append_envp(t_env *root, char *name, char *content)
+void	append_envp(t_env *shell_env, char *name, char *content)
 {
-	add_envvar(root, name, content);
-	terminate_ptr_str(root->envp);
-	root->envp = init_envv(root);
+	add_envvar(shell_env, name, content);
+	terminate_ptr_str(shell_env->envp);
+	shell_env->envp = init_envv(shell_env);
 }
 
-void	add_path(t_env *root, char *path)
+void	add_path(t_env *shell_env, char *path)
 {
 	char	*old_path;
 	char	*new_path;
 
-	old_path = get_shell_variable(root, "PATH");
+	old_path = get_shell_variable(shell_env, "PATH");
 	if (ft_strnstr(old_path, path, ft_strlen(path)))
 		return ;
 	new_path = ft_strjoin_free(old_path, ":");
 	new_path = ft_strjoin_free(new_path, path);
-	append_envp(root, "PATH", new_path);
+	append_envp(shell_env, "PATH", new_path);
+    free(new_path);
 }

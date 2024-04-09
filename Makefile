@@ -18,10 +18,10 @@ WC_SOURCE := init_utils.c terminating.c wildcard.c
 UTL_PAR2_SOURCE := is_argv_token.c is_logic_token.c is_pipe_token.c is_redirection_token.c is_token.c \
 					free_argv.c free_cmds.c free_redirections.c free_tokens.c get_final_token.c  merge_quotations_.c \
 					terminate_parsing.c parse_check.c argv_contains_variables.c speccase_utils.c env_utils2.c \
-					replace_argv.c argv_contains_wildcards.c close_fd.c
+					replace_argv.c argv_contains_wildcards.c close_fd.c argv_contains_quotations.c
 PAR2_SOURCE := parse_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
 				initialize_commands.c initialize_variables.c parse_command_line.c initialize_wildcards.c \
-				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE))
+				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE)) initialize_quotations.c
 PAR_SOURCE := cmd_utils.c env_utils.c errors.c errors2.c general_utils.c general_utils2.c pars_utils.c \
 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c syntax_utils.c terminating.c \
 				utils_initenv.c utils_merge.c utils_split.c utils_unsetenvvar.c utils_wildcard.c reparsing.c scope.c \
