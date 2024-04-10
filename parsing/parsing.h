@@ -98,20 +98,20 @@ int							parse_argv(char ***ptr_argv, t_token *start,
 								t_token *end);
 int							parse_operation(t_oper2 *ptr_operation,
 								t_token *end);
-t_cmd2						*parse_command_line(t_token *tokens,
+t_cmd2						*initialize_commands(t_token *tokens,
 								t_env *shell_env);
 t_cmd2						*parse_command(t_token *start, t_token *end);
 t_cmd2						*initialize_command(void);
 t_execution					*initialize_execution_data(void);
-t_cmd2						*initialize_commands(t_token *tokens,
+t_cmd2						*parser(t_token *tokens,
 								t_env *shell_env);
-void						initialize_wildcards(t_cmd2 *cmds,
+void						expand_wildcards(t_cmd2 *cmds,
 								t_env *shell_env);
-void						initialize_variables(t_cmd2 *cmds,
+void						expand_variables(t_cmd2 *cmds,
 								t_env *shell_env);
 char						*get_shell_variable(const char *dollar_sign,
 								const char *literal, t_env *shell_env);
-void						initialize_quotations(t_cmd2 *cmds,
+void						process_quotations(t_cmd2 *cmds,
 								t_env *shell_env);
 
 /*
@@ -146,6 +146,7 @@ void						close_fd(t_fd_state *fd_state);
 const char					*get_variable_name(const char *dollar_sign);
 int							argv_contains_quotations(const char **argv);
 int							contains_quotations(const char *literal);
+const char  *escape_quotes(const char *literal);
 
 /*Utils*/
 char						**append_arr_str(char **arr, char *str);

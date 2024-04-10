@@ -53,9 +53,8 @@ static void	gen_envv(t_env *shell_env, char ***envv, const char *name)
 char	**init_envv(t_env *shell_env)
 {
 	char	**envv;
-	// char	*tmp;
 
-	envv = (char **)ft_calloc(sizeof(char *), 1);
+	envv = (char **)ft_calloc(sizeof(char *), 1); // TODO: protect this
 	gen_envv(shell_env, &envv, "");
 	return (envv);
 }

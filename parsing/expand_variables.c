@@ -69,7 +69,7 @@ const char	**get_argv_variables(const char **argv, t_env *shell_env)
 	return (new);
 }
 
-void	initialize_variables(t_cmd2 *cmds, t_env *shell_env)
+void	expand_variables(t_cmd2 *cmds, t_env *shell_env)
 {
 	const char	**argv_new;
 	t_cmd2		*cmd;

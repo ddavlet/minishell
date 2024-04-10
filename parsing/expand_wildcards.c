@@ -28,7 +28,7 @@ const char	**get_argv_wildcards(const char **argv, t_env *shell_env)
 	return (NULL);
 }
 
-void	initialize_wildcards(t_cmd2 *cmds, t_env *shell_env)
+void	expand_wildcards(t_cmd2 *cmds, t_env *shell_env)
 {
 	const char  **argv_new;
 	t_cmd2		*cmd;

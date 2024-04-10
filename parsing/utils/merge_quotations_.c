@@ -79,10 +79,14 @@ void	merge_quotations_loop(char **result_ptr, const char *literal)
 char	*merge_quotations_(const char *literal)
 {
 	char	*string_result;
+	char	*tmp;
 
 	string_result = ft_strdup("");
 	if (!string_result)
 		return (NULL);
 	merge_quotations_loop(&string_result, literal);
-	return (string_result);
+    tmp = string_result;
+    string_result = escape_quotes(string_result);
+	free(tmp);
+    return (string_result);
 }

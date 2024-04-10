@@ -1,20 +1,48 @@
 #include "../parsing.h"
 
-int contains_quotations(const char *literal)
+int	is_first_letter(const char *ptr_char, const char *literal)
 {
-    char    *quotes;
+	if (!literal || !ptr_char)
+		return (0);
+	if (literal - ptr_char == 0)
+		return (1);
+	return (0);
+}
 
-    quotes = ft_strchr(literal, '\'');
-    if (quotes && literal - quotes == 0)
-        return (1);
-    else if (quotes && *(quotes - 1) != '\\')
-        return (1);
-    quotes = ft_strchr(literal, '\"');
-    if (quotes && literal - quotes == 0)
-        return (1);
-    else if (quotes && *(quotes - 1) != '\\')
-        return (1);
-    return (0);
+int	is_literal_char(const char *ptr_char, const char *literal)
+{
+	if (!literal || !ptr_char || (literal - ptr_char) == 0)
+		return (0);
+	else if (*(ptr_char - 1) == '\\' && !is_literal_char(ptr_char - 1, literal))
+		return (1);
+	return (0);
+}
+
+int	contains_quotations(const char *literal)
+{
+	char	*quotes;
+
+	if (!literal)
+		return (0);
+	quotes = ft_strchr(literal, '\'');
+	if (quotes)
+	{
+		if (is_first_letter(quotes, literal))
+			return (1);
+		else if (!is_literal_char(quotes, literal) && !is_between_char(quotes
+				- literal, literal, '\"'))
+			return (1);
+	}
+	quotes = ft_strchr(literal, '\"');
+	if (quotes)
+	{
+		if (is_first_letter(quotes, literal))
+			return (1);
+		else if (!is_literal_char(quotes, literal) && !is_between_char(quotes
+				- literal, literal, '\''))
+			return (1);
+	}
+	return (0);
 }
 
 int	argv_contains_quotations(const char **argv)
@@ -24,8 +52,8 @@ int	argv_contains_quotations(const char **argv)
 	i = 0;
 	while (argv[i])
 	{
-        if (contains_quotations(argv[i]))
-            return (1);
+		if (contains_quotations(argv[i]))
+			return (1);
 		i++;
 	}
 	return (0);

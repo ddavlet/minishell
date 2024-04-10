@@ -22,8 +22,8 @@ UTL_PAR2_SOURCE := is_argv_token.c is_logic_token.c is_pipe_token.c is_redirecti
 					env_utils.c utils_unsetenvvar.c utils_wildcard.c utils_initenv.c merge_quotations_.c \
 					get_final_token.c 
 PAR2_SOURCE := parse_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
-				initialize_commands.c initialize_variables.c parse_command_line.c initialize_wildcards.c \
-				initialize_quotations.c \
+				parser.c expand_variables.c initialize_commands.c expand_wildcards.c \
+				process_quotations.c \
 				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE)) $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 # PAR_SOURCE := cmd_utils.c general_utils.c general_utils2.c pars_utils.c \
 # 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c syntax_utils.c terminating.c \
@@ -33,7 +33,7 @@ PAR2_SRCS := $(addprefix $(PAR2_SRC_DIR), $(PAR2_SOURCE))
 # PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
-MAIN := main.c ./signal_handling/signals.c
+MAIN := main.c ./signal_handling/signals.c main_utils.c
 INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include
 LIB_DIR := libft
 LIBFT := $(LIB_DIR)libft.a
