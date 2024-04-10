@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:18:40 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/04 14:45:59 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:51:36 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdint.h>
 # include <string.h>
 # include "./execution/execution.h"
-# include "./parsing_experimental/parsing2.h"
+# include "./parsing/parsing.h"
 # include "./builtin/builtin.h"
 # include "./signal_handling/signals.h"
 

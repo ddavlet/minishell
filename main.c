@@ -6,8 +6,8 @@ char	*pwd(t_env *env)
 	char	*home;
 	char	*tmp;
 
-	pwd = get_shell_variable(env, "PWD");
-	home = get_shell_variable(env, "HOME");
+	pwd = get_variable_value("PWD", env);
+	home = get_variable_value("HOME", env);
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
@@ -52,7 +52,7 @@ char	*create_prompt(t_env *shell_env)
 	char	*tmp;
 
 	prompt = ft_strdup("");
-	tmp = get_shell_variable(shell_env, "USER");
+	tmp = get_variable_value("USER", shell_env);
 	prompt = ft_strjoin_free(prompt, tmp);
 	free(tmp);
 	prompt = ft_strjoin_free(prompt, "@");
@@ -67,20 +67,20 @@ char	*create_prompt(t_env *shell_env)
 	return (prompt);
 }
 
-void	debug_print_to_file(t_cmd **cmds)
-{
-	int	debug_fd;
+// void	debug_print_to_file(t_cmd **cmds)
+// {
+// 	int	debug_fd;
 
-	debug_fd = open("debug_log", O_WRONLY | O_CREAT);
-	debug_print_cmds(cmds, debug_fd);
-	close(debug_fd);
-}
+// 	debug_fd = open("debug_log", O_WRONLY | O_CREAT);
+// 	debug_print_cmds(cmds, debug_fd);
+// 	close(debug_fd);
+// }
 
 
 void    terminate_shell(t_env *shell_env, int exit_status, char *msg)
 {
 	if (shell_env)
-		terminate_env(shell_env);
+		free_env(shell_env);
 	if (msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
 	exit(exit_status);
@@ -92,13 +92,13 @@ void	initialize_shell(t_env *shell_env)
 	int		i;
 
 	append_envp(shell_env, "SHELL", "minishell");
-	tmp = get_shell_variable(shell_env, "SHLVL");
+	tmp = get_variable_value("SHLVL", shell_env);
 	i = ft_atoi(tmp);
 	free(tmp);
 	tmp = ft_itoa(i + 1);
 	append_envp(shell_env, "SHLVL", tmp);
 	free(tmp);
-	tmp = get_shell_variable(shell_env, "PWD");
+	tmp = get_variable_value("PWD", shell_env);
 	add_path(shell_env, tmp);
 	free(tmp);
 }

@@ -8,7 +8,7 @@ char	*build_path_from_env(char *name, t_env *env)
 	char	*executable_path;
 	int		i;
 
-    all_path = get_shell_variable(env, "PATH");
+    all_path = get_variable_value("PATH", env);
     env_paths = ft_split(all_path, ':');
     free(all_path);
 	if (!env_paths)

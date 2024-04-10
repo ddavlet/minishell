@@ -1,27 +1,19 @@
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef parsing_H
+# define parsing_H
 
 # include "../libft/libft.h"
-# include "../parsing/wildcard/wildcard.h"
+# include "wildcard/wildcard.h"
+# include <stdbool.h>
+# include <stdlib.h>
 # include <dirent.h>
-# include <stdio.h>
-# include <sys/types.h>
 
-typedef enum e_oper
-{
-	RUN,
-	PIPE,
-	BCKGR,
-	OR,
-	AND
-}					t_oper;
+typedef struct s_token		t_token;
+typedef struct s_cmd2		t_cmd2;
+typedef enum e_oper2		t_oper2;
+typedef struct s_pipe		t_pipe;
 
-typedef enum e_quote
-{
-	ZERO_Q,
-	SIGNLE_Q,
-	DOUBLE_Q
-}					t_quote;
+typedef struct s_fd_state	t_fd_state;
+typedef struct s_pipe		t_pipe;
 
 typedef enum e_red_sym
 {
@@ -30,136 +22,157 @@ typedef enum e_red_sym
 	RED_OUT,
 	HEAR_DOC,
 	APP_OUT
-}					t_red_sym;
-
-typedef struct s_cmd
-{
-	char			*com;
-	char			**argv;
-	enum e_oper		operat;
-	// int				*scope_stack;
-	struct s_redir	*redirs;
-	struct s_env	*env;
-}					t_cmd;
+}							t_red_sym;
 
 typedef struct s_redir
 {
-	enum e_red_sym	redir_sym;
-	char			*redir_name;
-	struct s_redir	*next;
-}					t_redir;
+	enum e_red_sym			redir_sym;
+	char					*redir_name;
+	struct s_redir			*next;
+}							t_redir;
 
 typedef struct s_env
 {
-	char			letter;
-	bool			exists;
-	char			*content;
-	char			**envp;
-	struct s_env	*child;
-	struct s_env	*next;
-}					t_env;
+	char					letter;
+	bool					exists;
+	char					*content;
+	char					**envp;
+	struct s_env			*child;
+	struct s_env			*next;
+}							t_env;
 
-/*General utils*/
-ssize_t		ft_commandlen(char **tokens);
-char		**add_escape(char **token);
-ssize_t		ft_arr_len(char **arr);
-ssize_t		arrlen_nosspace(char **arr);
-char		**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
-char		**arrstr_copy(const char **envp);
-int			*ft_intarrdup(int *arr);
-int			id_gen(int seed);
+typedef struct s_pipe
+{
+	int						*pipe_fd;
+	t_fd_state				*read;
+	t_fd_state				*write;
+}							t_pipe;
 
-/*Commands functions*/
-t_cmd		**reparse_text(char **argv);
-t_cmd		**parse_text(const char *txt, t_env *shell_env);
-char		**create_argv(char **tokens, ssize_t prev, ssize_t next);
-char		**get_wildcard(char **tokens, t_env *shell_env);
-void		append_redirnode(t_redir **redir, t_red_sym key,
-				const char *value);
-t_cmd		**init_commands(char **tokens);
-t_cmd		*set_scope(char **tokens, ssize_t *prev);
+typedef struct s_fd_state
+{
+	int						fd;
+	int						is_open;
+	t_pipe					*pipe;
+}							t_fd_state;
 
+typedef enum e_oper2
+{
+	PIPE_,
+	AND_,
+	OR_,
+	NONE
+}							t_oper2;
 
-/*Tokenization*/
-char		**pars_split(char const *s);
-char		**pars_merge(char **arr);
-char		**merge_quotations(char **tokens);
-char		**merge_funct(char **tokens, ssize_t b_q, ssize_t e_q);
-char		*get_shell_variable(t_env *shell_env, const char *name);
-void		get_special_cases(char **tokens);
+typedef struct s_execution
+{
+	const char				**argv;
+	int						exit_status;
+	pid_t					pid;
+	t_env					*shell_env;
+	t_oper2					operation;
+	t_pipe					*pipe;
+	t_redir					*redirections;
+}							t_execution;
+
+typedef struct s_cmd2
+{
+	t_execution				*execution;
+	t_cmd2					*next;
+	t_cmd2					*cmds;
+}							t_cmd2;
+
+typedef struct s_token
+{
+	const char				*literal;
+	t_token					*next;
+}							t_token;
+
+t_token						*tokenizer(const char *line);
+t_token						*initialize_token(const char *literal);
+void						add_token(t_token **tokens, t_token *new);
+t_token						*get_token(const char *line);
+int							parse_redirections(t_redir **ptr_redirs,
+								t_token *start, t_token *end);
+t_cmd2						*parse_command(t_token *start, t_token *end);
+int							parse_argv(char ***ptr_argv, t_token *start,
+								t_token *end);
+int							parse_operation(t_oper2 *ptr_operation,
+								t_token *end);
+t_cmd2						*parse_command_line(t_token *tokens,
+								t_env *shell_env);
+t_cmd2						*parse_command(t_token *start, t_token *end);
+t_cmd2						*initialize_command(void);
+t_execution					*initialize_execution_data(void);
+t_cmd2						*initialize_commands(t_token *tokens,
+								t_env *shell_env);
+void						initialize_wildcards(t_cmd2 *cmds,
+								t_env *shell_env);
+void						initialize_variables(t_cmd2 *cmds,
+								t_env *shell_env);
+char						*get_shell_variable(const char *dollar_sign,
+								const char *literal, t_env *shell_env);
+void						initialize_quotations(t_cmd2 *cmds,
+								t_env *shell_env);
+
+/*
+ *   utils
+ */
+char						*merge_quotations_(const char *literal);
+int							is_argv_token(t_token *token);
+int							is_token(int pos, const char *line);
+int							is_pipe_token(t_token *token);
+int							is_logic_operation_token(t_token *token);
+int							is_redirection_token(t_token *token);
+int							is_between_char(int pos, const char *line, char c);
+int							is_between_quotes(int pos, const char *line);
+int							is_special_case(const char *literal);
+void						free_tokens(t_token *tokens);
+void						terminate_parsing(t_token *tokens, t_env *shell_env,
+								t_cmd2 *cmds, char *msg);
+t_token						*get_final_token(t_token *token);
+void						free_tokens(t_token *tokens);
+void						free_redirections(t_redir *redirs);
+void						free_argv(const char **argv);
+void						free_cmds(t_cmd2 *cmds);
+void						parse_check(t_token *tokens, t_env *shell_env);
+int							argv_contains_variables(const char **argv);
+int							argv_contains_wildcards(const char **argv);
+char						*get_case(char *literal, t_env *shell_env);
+const char					*find_variable(const char *literal);
+int							replace_argv(t_cmd2 *cmd, const char **argv_new);
+const char					*replace_variables(const char *literal,
+								t_env *shell_env);
+void						close_fd(t_fd_state *fd_state);
+const char					*get_variable_name(const char *dollar_sign);
+int							argv_contains_quotations(const char **argv);
+int							contains_quotations(const char *literal);
 
 /*Utils*/
-t_oper		ft_isexeption(char *txt);
-t_quote		ft_isquotation(char c);
-t_red_sym	ft_isredir(const char *redir);
-uint32_t	del_pos(const char *txt);
-t_oper		oper_type(char *txt);
-int			parenth_type(char *txt);
-t_red_sym	redir_type(char *txt);
-void		trim_quotes(char **tokens);
-ssize_t		find_next_cmd(char **tokens, ssize_t i);
-char		**parse_delspace(char **tokens);
-int			ft_isparenthesis(char *txt);
-int			count_parenth(char **arr);
-uint32_t	count_commands(char **token);
+char						**append_arr_str(char **arr, char *str);
 
 /*Terminating*/
-void				*terminate_commands(t_cmd **commands);
-void				*terminate_ptr_str(char **ptr);
-void				terminate_redirs(t_redir *redir_l);
-void				*terminate_cmd(t_cmd *cmd);
+void						free_env(t_env *shell_env);
 
 /*Error*/
-void				*error_quot_tockens(char **tokens);
-void				*error_general(void *ptr, const char *str);
-void				*error_near_tocken(char *token);
-void				*error_syntax(t_cmd *ptr);
-void				*undefined_error(char *ptr);
-
-/*Debuging*/
-void		debug_print_cmds(t_cmd **commands, int fd);
-void		debug_print(t_cmd *com, int fd);
-void		debug_print_array_strings(char **tokens);
-void		debug_print_redir(t_redir	*redir, int fd);
-
-
-/**************************************************************/
+void						*error_env_init(void);
 
 /*Enviroment function*/
-t_env				*init_env(const char **envp);
-char				**init_envv(t_env *shell_env);
+t_env						*init_env(const char **envp);
+char						**init_envv(t_env *shell_env);
 
 /*Find and set*/
-void		append_envp(t_env *shell_env, char *name, char *content);
-// void		get_variable(char **tokens, t_env *shell_env);
-int			unset_envvar(t_env *shell_env, const char *to_find);
-void		add_path(t_env *shell_env, char *path);
+void						append_envp(t_env *shell_env, char *name,
+								char *content);
+int							unset_envvar(t_env *shell_env, const char *to_find);
+void						add_path(t_env *shell_env, char *path);
 
+char						**get_wildcard(char **tokens, t_env *shell_env);
 
-/*Sytax controllers*/
-int			sytax_redir(char *txt);
-int			ft_isignored(char *txt);
-void		*check_tokens(char **tokens);
+char						**arrstr_copy(const char **envp);
 
-
-
-/*Utils*/
-int					var_exists(char *arg);
-char				**append_arr_str(char **arr, char *str);
-
-/*Terminating*/
-void				terminate_env(t_env *shell_env);
-
-/*Error*/
-void				*error_env_init(void);
-void				*error_general(void *ptr, const char *str);
-
-/*Debuging*/
-void				debug_print_env(t_env *shell_env, const char *name);
-
-/***************************************************************/
-
-/*Redirection functions*/
-t_redir				*init_redir(char **tokens, ssize_t prev, ssize_t next);
+ssize_t						ft_arr_len(char **arr);
+char						*get_variable_value(const char *name,
+								t_env *shell_env);
+void						*free_ptr_str(char **ptr);
 
 #endif
