@@ -86,7 +86,9 @@ char	*merge_quotations_(const char *literal)
 		return (NULL);
 	merge_quotations_loop(&string_result, literal);
     tmp = string_result;
-    string_result = escape_quotes(string_result);
+    string_result = (char *)replace_sequence(tmp, "'", "\'");
+	free(tmp);
+    string_result = (char *)replace_sequence(tmp, "\"", "\"");
 	free(tmp);
     return (string_result);
 }

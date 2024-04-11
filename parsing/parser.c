@@ -11,6 +11,7 @@ t_cmd2	*parser(t_token *tokens, t_env *shell_env)
 			"minishell: failed to parse command line");
 	expand_variables(cmds, shell_env);
     process_quotations(cmds, shell_env);
+
 	expand_wildcards(cmds, shell_env);
 	return (cmds);
 }
