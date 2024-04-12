@@ -20,8 +20,8 @@ UTL_PAR2_SOURCE := is_argv_token.c is_logic_token.c is_pipe_token.c is_redirecti
 					terminate_parsing.c parse_check.c argv_contains_variables.c speccase_utils.c env_utils2.c \
 					replace_argv.c argv_contains_wildcards.c close_fd.c argv_contains_quotations.c \
 					env_utils.c utils_unsetenvvar.c utils_wildcard.c utils_initenv.c merge_quotations.c \
-					get_final_token.c replace_sequence.c
-PAR2_SOURCE := parse_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
+					get_final_token.c replace_sequence.c 
+PAR2_SOURCE := parse_argv.c parse_nested_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
 				parser.c expand_variables.c initialize_commands.c expand_wildcards.c \
 				process_quotations.c \
 				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE)) $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))

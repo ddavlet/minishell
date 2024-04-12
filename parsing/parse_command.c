@@ -44,7 +44,15 @@ t_cmd2	*parse_command(t_token *start, t_token *end)
 	cmd = initialize_command();
 	if (!cmd)
 		return (NULL);
-	if (parse_redirections(&(cmd->execution->redirections), start, end) == -1
+    if (start->literal[0] == '(')
+    {
+        if (parse_nested_argv((char ***)&(cmd->execution->argv), start, end) == -1)
+        {
+            free_cmds(cmd);
+            return (NULL);
+        }
+    } 
+    else if (parse_redirections(&(cmd->execution->redirections), start, end) == -1
 		|| parse_argv((char ***)&(cmd->execution->argv), start, end) == -1
 		|| parse_operation(&(cmd->execution->operation), end) == -1)
 	{

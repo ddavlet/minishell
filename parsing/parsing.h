@@ -1,14 +1,14 @@
 #ifndef parsing_H
 # define parsing_H
 
-#include <fcntl.h>
-# include <stdio.h>
-# include <stddef.h>
-# include <stdbool.h>
-# include <stdlib.h>
-# include <dirent.h>
 # include "../libft/libft.h"
 # include "wildcard/wildcard.h"
+# include <dirent.h>
+# include <fcntl.h>
+# include <stdbool.h>
+# include <stddef.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 typedef struct s_token		t_token;
 typedef struct s_cmd2		t_cmd2;
@@ -20,11 +20,11 @@ typedef struct s_pipe		t_pipe;
 
 typedef struct s_replacer
 {
-	int		literal_len;
-	int		seq_len;
-	int		rep_len;
-	int		result_len;
-}			t_replacer;
+	int						literal_len;
+	int						seq_len;
+	int						rep_len;
+	int						result_len;
+}							t_replacer;
 
 typedef enum e_red_sym
 {
@@ -114,21 +114,17 @@ t_cmd2						*initialize_commands(t_token *tokens,
 t_cmd2						*parse_command(t_token *start, t_token *end);
 t_cmd2						*initialize_command(void);
 t_execution					*initialize_execution_data(void);
-t_cmd2						*parser(t_token *tokens,
-								t_env *shell_env);
-void						expand_wildcards(t_cmd2 *cmds,
-								t_env *shell_env);
-void						expand_variables(t_cmd2 *cmds,
-								t_env *shell_env);
+t_cmd2						*parser(t_token *tokens, t_env *shell_env);
+void						expand_wildcards(t_cmd2 *cmds, t_env *shell_env);
+void						expand_variables(t_cmd2 *cmds, t_env *shell_env);
 char						*get_shell_variable(const char *dollar_sign,
 								const char *literal, t_env *shell_env);
-void						process_quotations(t_cmd2 *cmds,
-								t_env *shell_env);
+void						process_quotations(t_cmd2 *cmds, t_env *shell_env);
 
 /*
  *   utils
  */
-const char	*merge_quotations(const char *literal);
+const char					*merge_quotations(const char *literal);
 int							is_argv_token(t_token *token);
 int							is_token(int pos, const char *line);
 int							is_pipe_token(t_token *token);
@@ -157,9 +153,11 @@ void						close_fd(t_fd_state *fd_state);
 const char					*get_variable_name(const char *dollar_sign);
 int							argv_contains_quotations(const char **argv);
 int							contains_quotations(const char *literal);
-const char  *escape_quotes(const char *literal);
-const char	*replace_sequence(const char *literal, const char *sequence,
-		const char *replacement);
+const char					*escape_quotes(const char *literal);
+const char					*replace_sequence(const char *literal,
+								const char *sequence, const char *replacement);
+int							parse_nested_argv(char ***ptr_argv,
+								t_token *start, t_token *end);
 
 /*Utils*/
 char						**append_arr_str(char **arr, char *str);
