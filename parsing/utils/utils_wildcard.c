@@ -45,17 +45,15 @@ char	**get_wildcard(char **tokens, t_env *env)
 	while (tokens[++i])
 	{
 		j = -1;
-        (void)j;
-	while (1)//(!ft_isquotation(tokens[i][0]) && tokens[i][++j]) // and no quotatin
+        while (!ft_isquotation(tokens[i][0]) && tokens[i][++j]) // and no quotatin
 		{
-            (void)0;
-			// if (tokens[i][j] == 42)
-			// {
-			// 	find_wildcard(&str, tokens[i], tree);
-			// 	tokens = inject_string(tokens, str, i); // split an deject from here
-			// 	free_ptr_str(str);
-			// 	break;
-			// }
+			if (tokens[i][j] == 42)
+			{
+				find_wildcard(&str, tokens[i], tree);
+				tokens = inject_string(tokens, str, i); // split an deject from here
+				free_ptr_str(str);
+				break;
+			}
 		}
 	}
 	terminate_tree(tree);
