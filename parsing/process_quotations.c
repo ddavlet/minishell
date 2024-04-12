@@ -1,24 +1,5 @@
 #include "parsing.h"
 
-const char *process_quotations_literal(const char *literal)
-{
-    const char  *result;
-    const char  *tmp;
-
-    result = merge_quotations(literal);
-    if (!result)
-        return (NULL);
-    tmp = result;
-    result = replace_sequence(result, "'", "\\'");
-    free((char *)tmp);
-    if (!result)
-        return (NULL);
-    tmp = result;
-    result = replace_sequence(result, "\"", "\"");
-    free((char *)tmp);
-    return (result);
-}
-
 const char	**process_quotations_argv(const char **argv)
 {
 	const char	**new;
@@ -32,7 +13,7 @@ const char	**process_quotations_argv(const char **argv)
 	while (argv[i])
 	{
 		if (contains_quotations(argv[i]))
-			new[i] = process_quotations_literal(argv[i]);
+			new[i] = merge_quotations(argv[i]);
 		else
 			new[i] = ft_strdup(argv[i]);
 		if (!new[i])
