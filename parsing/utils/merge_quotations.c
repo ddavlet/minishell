@@ -27,42 +27,43 @@ const char	*get_opening_quote(const char *literal)
 	return (NULL);
 }
 
-const char *process_until_quote(const char *joined, const char *quote, int *ptr_start_pos, const char *literal)
+const char	*process_until_quote(const char *joined, const char *quote,
+		int *ptr_start_pos, const char *literal)
 {
-    const char *tmp;
+	const char	*tmp;
 
-    tmp = ft_substr(literal, *ptr_start_pos, (quote - 1) - literal);
-    if (!tmp)
-        return (NULL);
-    joined = (const char *)ft_strjoin_free((char *)joined, tmp);
-    free((char *)tmp);
+	tmp = ft_substr(literal, *ptr_start_pos, (quote) - (literal + *ptr_start_pos));
+	if (!tmp)
+		return (NULL);
+	joined = (const char *)ft_strjoin_free((char *)joined, tmp);
+	free((char *)tmp);
 	*ptr_start_pos += ((quote + 1) - literal);
-    return (joined);        
+	return (joined);
 }
 
 const char	*merge_quotations(const char *literal)
 {
-    const char  *next_quote;
-    const char  *joined;
-    int         start_pos;
+	const char	*next_quote;
+	const char	*joined;
+	int			start_pos;
 
-    next_quote = get_opening_quote(literal);
-    if (!next_quote)
-        return (NULL);
-    joined = ft_strdup("");
-    if (!joined)
-        return (NULL);
-    start_pos = 0;
-    while(next_quote)
-    {
-        joined = process_until_quote(joined, next_quote, &start_pos, literal);
-        if (!joined)
-            return (NULL);
-        next_quote = get_closing_quote(literal + start_pos, next_quote);
-        joined = process_until_quote(joined, next_quote, &start_pos, literal);
-        if (!joined)
-            return (NULL);
-        next_quote = get_opening_quote(literal + start_pos);
-    }
-    return (joined);
+	next_quote = get_opening_quote(literal);
+	if (!next_quote)
+		return (NULL);
+	joined = ft_strdup("");
+	if (!joined)
+		return (NULL);
+	start_pos = 0;
+	while (next_quote)
+	{
+		joined = process_until_quote(joined, next_quote, &start_pos, literal);
+		if (!joined)
+			return (NULL);
+		next_quote = get_closing_quote(literal + start_pos, next_quote);
+		joined = process_until_quote(joined, next_quote, &start_pos, literal);
+		if (!joined)
+			return (NULL);
+		next_quote = get_opening_quote(literal + start_pos);
+	}
+	return (joined);
 }

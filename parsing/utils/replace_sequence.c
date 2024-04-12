@@ -13,13 +13,12 @@ int	get_replace_count(const char *literal, const char *sequence,
 
 	count = 0;
 	tmp = literal;
-	needle = NULL;
-	needle = ft_strnstr(tmp, sequence, ft_strlen(sequence));
+	needle = ft_strnstr(tmp, sequence, ft_strlen(tmp));
 	while (needle != NULL)
 	{
 		count++;
-		tmp += replacer.seq_len; // Move past the sequence
-		needle = ft_strnstr(tmp, sequence, ft_strlen(sequence));
+		tmp = needle + replacer.seq_len; // Move past the sequence
+		needle = ft_strnstr(tmp, sequence, ft_strlen(tmp));
 	}
 	return (count);
 }
@@ -62,7 +61,7 @@ const char	*replace_loop(const char *literal, const char *sequence,
         return (NULL);
     result_ptr = result;
 	current = literal;
-	tmp = ft_strnstr(current, sequence, ft_strlen(sequence));
+	tmp = ft_strnstr(current, sequence, ft_strlen(current));
 	while (tmp != NULL)
 	{
 		head_len = tmp - current;
@@ -71,7 +70,7 @@ const char	*replace_loop(const char *literal, const char *sequence,
 		ft_memcpy(result_ptr, replacement, replacer.rep_len);
 		result_ptr += replacer.rep_len;
 		current = tmp + replacer.seq_len;
-		tmp = ft_strnstr(current, sequence, ft_strlen(sequence));
+		tmp = ft_strnstr(current, sequence, ft_strlen(current));
 	}
 	strcpy(result_ptr, current);
     return (result);

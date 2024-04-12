@@ -1,6 +1,25 @@
 #include "parsing.h"
 
-const char	**merge_quotations_argv(const char **argv)
+const char *process_quotations_literal(const char *literal)
+{
+    const char  *result;
+    const char  *tmp;
+
+    result = merge_quotations(literal);
+    if (!result)
+        return (NULL);
+    tmp = result;
+    result = replace_sequence(result, "'", "\\'");
+    free((char *)tmp);
+    if (!result)
+        return (NULL);
+    tmp = result;
+    result = replace_sequence(result, "\"", "\"");
+    free((char *)tmp);
+    return (result);
+}
+
+const char	**process_quotations_argv(const char **argv)
 {
 	const char	**new;
 	int			i;
@@ -13,7 +32,7 @@ const char	**merge_quotations_argv(const char **argv)
 	while (argv[i])
 	{
 		if (contains_quotations(argv[i]))
-			new[i] = merge_quotations(argv[i]);
+			new[i] = process_quotations_literal(argv[i]);
 		else
 			new[i] = ft_strdup(argv[i]);
 		if (!new[i])
@@ -39,7 +58,7 @@ void	process_quotations(t_cmd2 *cmds, t_env *shell_env)
 	{
 		if (argv_contains_quotations(cmd->execution->argv))
 		{
-			argv_new = merge_quotations_argv(cmd->execution->argv);
+			argv_new = process_quotations_argv(cmd->execution->argv);
 			if (!argv_new)
 				terminate_parsing(NULL, shell_env, cmds,
 					"minishell: parser failed to process quotations");

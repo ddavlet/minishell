@@ -8,10 +8,10 @@ void	wait_until(t_cmd2 *cmd)
 
     cmd_check(cmd);
     last = cmd->cmds;
-	while (last->execution->exit_status == EXIT_SUCCESS)
+	while (last && last->execution->exit_status == EXIT_SUCCESS)
 	{
-        last = last->next;
         cmd_check(last);
+        last = last->next;
     }
 	while (last != cmd->next)
 	{
