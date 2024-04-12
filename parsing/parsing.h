@@ -153,6 +153,7 @@ void						close_fd(t_fd_state *fd_state);
 const char					*get_variable_name(const char *dollar_sign);
 int							argv_contains_quotations(const char **argv);
 int							contains_quotations(const char *literal);
+int contains_wildcards(const char *literal);
 const char					*escape_quotes(const char *literal);
 const char					*replace_sequence(const char *literal,
 								const char *sequence, const char *replacement);

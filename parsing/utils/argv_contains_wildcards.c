@@ -2,7 +2,12 @@
 
 int contains_wildcards(const char *literal)
 {
-    if (ft_strchr(literal, '*'))
+    const char  *wildcard;
+
+	wildcard = ft_strchr(literal, '*');
+	while (wildcard && is_between_quotes(wildcard - literal, literal))
+		wildcard = ft_strchr(wildcard + 1, '*');
+    if (wildcard)
         return (1);
     return (0);
 }

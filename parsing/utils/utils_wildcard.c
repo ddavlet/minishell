@@ -27,35 +27,29 @@ static t_tree	*read_directory(t_env	*env)
 	return (tree);
 }
 
-char	**get_wildcard(char **tokens, t_env *env)
+char	**get_wildcard(char **argv, t_env *env)
 {
 	ssize_t	i;
-	ssize_t	j;
-	char	**str;
+	char	**arguments;
 	t_tree	*tree;
 
 	i = 0;
-	str = (char **)ft_calloc(sizeof(char *), 1);
+	arguments = (char **)ft_calloc(sizeof(char *), 1);
 	tree = read_directory(env);
-	if (!str || !tree)
+	if (!arguments || !tree)
 	{
-		free_ptr_str(tokens);
-		return (ft_free_ptr(str, tree)); // free first and catch this error
+		free_ptr_str(argv);
+		return (ft_free_ptr(arguments, tree));
 	}
-	while (tokens[++i])
+	while (argv[++i])
 	{
-		j = -1;
-        while (!ft_isquotation(tokens[i][0]) && tokens[i][++j]) // and no quotatin
+        if (contains_wildcards(argv[i]))
 		{
-			if (tokens[i][j] == 42)
-			{
-				find_wildcard(&str, tokens[i], tree);
-				tokens = inject_string(tokens, str, i); // split an deject from here
-				free_ptr_str(str);
-				break;
-			}
+            find_wildcard(&arguments, argv[i], tree);
+            argv = inject_string(argv, arguments, i);
+            free_ptr_str(arguments);
 		}
 	}
 	terminate_tree(tree);
-	return (tokens);
+	return (argv);
 }
