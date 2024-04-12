@@ -1,11 +1,14 @@
 #ifndef parsing_H
 # define parsing_H
 
-# include "../libft/libft.h"
-# include "wildcard/wildcard.h"
+#include <fcntl.h>
+# include <stdio.h>
+# include <stddef.h>
 # include <stdbool.h>
 # include <stdlib.h>
 # include <dirent.h>
+# include "../libft/libft.h"
+# include "wildcard/wildcard.h"
 
 typedef struct s_token		t_token;
 typedef struct s_cmd2		t_cmd2;
@@ -14,6 +17,14 @@ typedef struct s_pipe		t_pipe;
 
 typedef struct s_fd_state	t_fd_state;
 typedef struct s_pipe		t_pipe;
+
+typedef struct s_replacer
+{
+	int		literal_len;
+	int		seq_len;
+	int		rep_len;
+	int		result_len;
+}			t_replacer;
 
 typedef enum e_red_sym
 {
@@ -117,7 +128,7 @@ void						process_quotations(t_cmd2 *cmds,
 /*
  *   utils
  */
-char						*merge_quotations_(const char *literal);
+const char	*merge_quotations(const char *literal);
 int							is_argv_token(t_token *token);
 int							is_token(int pos, const char *line);
 int							is_pipe_token(t_token *token);

@@ -25,7 +25,7 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-# define HOSTNAME_FILE "/etc/hostname"
+# define HOSTNAME_FILE "/proc/sys/kernel/hostname"
 # define HOSTNAME_LENGTH 256
 
 char	*get_relative_pwd(t_env *env);

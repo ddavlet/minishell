@@ -4,6 +4,7 @@
 # include "../builtin/builtin.h"
 # include "../libft/libft.h"
 # include "../parsing/parsing.h"
+# include <stdio.h>
 # include <readline/readline.h>
 # include <sys/wait.h>
 

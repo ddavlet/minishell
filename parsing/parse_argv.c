@@ -18,16 +18,16 @@ int	get_argc(t_token *start, t_token *end)
 
 const char	*get_argument(const char *literal)
 {
-	char	*arg;
+	const char	*arg;
 
 	arg = NULL;
 	if (!ft_strchr(literal, '\'') && !ft_strchr(literal, '\"'))
-		arg = ft_strdup(literal);
+		arg = (const char *)ft_strdup(literal);
 	else
-	 	arg = merge_quotations_(literal);
+	 	arg = merge_quotations(literal);
 	if (!arg)
 		return (NULL);
-    return ((const char *)arg);
+    return (arg);
 }
 
 char	**add_argument(char ***ptr_argv, t_token *token, int i)

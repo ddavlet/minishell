@@ -45,7 +45,8 @@ char	**get_wildcard(char **tokens, t_env *env)
 	while (tokens[++i])
 	{
 		j = -1;
-		while (1)//(!ft_isquotation(tokens[i][0]) && tokens[i][++j]) // and no quotatin
+        (void)j;
+	while (1)//(!ft_isquotation(tokens[i][0]) && tokens[i][++j]) // and no quotatin
 		{
             (void)0;
 			// if (tokens[i][j] == 42)

@@ -19,7 +19,7 @@ UTL_PAR2_SOURCE := is_argv_token.c is_logic_token.c is_pipe_token.c is_redirecti
 					free_argv.c free_cmds.c free_redirections.c free_tokens.c free_env.c free_ptr_str.c \
 					terminate_parsing.c parse_check.c argv_contains_variables.c speccase_utils.c env_utils2.c \
 					replace_argv.c argv_contains_wildcards.c close_fd.c argv_contains_quotations.c \
-					env_utils.c utils_unsetenvvar.c utils_wildcard.c utils_initenv.c merge_quotations_.c \
+					env_utils.c utils_unsetenvvar.c utils_wildcard.c utils_initenv.c merge_quotations.c \
 					get_final_token.c replace_sequence.c
 PAR2_SOURCE := parse_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
 				parser.c expand_variables.c initialize_commands.c expand_wildcards.c \
@@ -34,11 +34,11 @@ PAR2_SRCS := $(addprefix $(PAR2_SRC_DIR), $(PAR2_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 MAIN := main.c ./signal_handling/signals.c main_utils.c
-INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include
+INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include -I/usr/include/readline -I/usr/include
 LIB_DIR := libft
 LIBFT := $(LIB_DIR)libft.a
-LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib
-FLAGS := -g -Wall -Wextra -Werror
+LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib -L/usr/include/readline
+FLAGS := -g -Wall -Wextra -Werror 
 OBJ = $(EXE_SRCS:.c=.o)  $(PAR2_SRCS:.c=.o) $(BUL_SRCS:.c=.o) $(MAIN:.c=.o)
 
 all: $(NAME)

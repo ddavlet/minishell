@@ -1,29 +1,8 @@
 #include "../parsing.h"
-
-const char	*escape_quotes(const char *literal)
-{
-	return (literal);
-	// const char *end;
-	// const char *quote;
-	// const char *start;
-	// while (contains_quotations(literal))
-	// {
-	// }
-}
-
-//              "hello 'world'" -> "hello \'world\'"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct s_replacer
-{
-	int		literal_len;
-	int		seq_len;
-	int		rep_len;
-	int		result_len;
-}			t_replacer;
 
 int	get_replace_count(const char *literal, const char *sequence,
 		t_replacer replacer)
