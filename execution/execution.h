@@ -4,8 +4,8 @@
 # include "../builtin/builtin.h"
 # include "../libft/libft.h"
 # include "../parsing/parsing.h"
-# include <stdio.h>
 # include <readline/readline.h>
+# include <stdio.h>
 # include <sys/wait.h>
 
 void		execution(t_cmd2 *cmds);
@@ -13,7 +13,7 @@ void		set_input_output(t_cmd2 *cmd);
 void		child_process(t_cmd2 *cmd);
 void		builtin_router(t_cmd2 *cmd);
 int			wait_check(t_cmd2 *cmd);
-void		evaluate_logic_operation(t_cmd2 *cmd);
+int			evaluate_logic_operation(t_cmd2 *cmd);
 t_fd_state	*initialize_fd_state(int fd);
 int			is_logic_operation(t_cmd2 *cmd);
 void		execute_cmd(t_cmd2 *cmd);

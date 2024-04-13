@@ -30,7 +30,7 @@ int	is_logic_operation(t_cmd2 *cmd)
 	return (0);
 }
 
-void	evaluate_logic_operation(t_cmd2 *cmd)
+int	evaluate_logic_operation(t_cmd2 *cmd)
 {
 	int		exit_status;
 	t_oper2	operation;
@@ -40,14 +40,15 @@ void	evaluate_logic_operation(t_cmd2 *cmd)
 	exit_status = cmd->execution->exit_status;
 	if (is_first_operant(cmd) && (operation == OR_
 			&& exit_status == EXIT_SUCCESS))
-		terminate(cmd, EXIT_SUCCESS, "logical OR success");
+		return (1);
 	else if (is_first_operant(cmd) && (operation == AND_
 			&& exit_status == EXIT_FAILURE))
-		terminate(cmd, EXIT_FAILURE, "logical AND failure");
+		return (1);
 	if (is_second_operant(cmd) && (operation == OR_
 			&& exit_status == EXIT_FAILURE))
-		terminate(cmd, EXIT_FAILURE, "logical OR failure");
+		return (1);
 	else if (is_second_operant(cmd) && (operation == AND_
 			&& exit_status == EXIT_FAILURE))
-		terminate(cmd, EXIT_FAILURE, "logical AND failure");
+		return (1);
+    return (0);
 }

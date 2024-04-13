@@ -25,7 +25,8 @@ void	execution(t_cmd2 *cmds)
         else
             execute_cmd(cmd);
         if (cmd->next == NULL || is_logic_operation(cmd))
-            wait_check(cmd);
+            if (wait_check(cmd))
+                break;
         reset_input_output(stdin, stdout);
         cmd = cmd->next;
     }

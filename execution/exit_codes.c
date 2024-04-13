@@ -35,7 +35,8 @@ int	wait_check(t_cmd2 *cmd)
     else if (is_logic_operation(cmd))
     {
         wait_until(cmd);
-		evaluate_logic_operation(cmd);
+        if (evaluate_logic_operation(cmd))
+            return (1);
     }
 	return (0);
 }
