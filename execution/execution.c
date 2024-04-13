@@ -20,7 +20,7 @@ void	execution(t_cmd2 *cmds)
 	while (cmd)
     {
         set_input_output(cmd);
-        if (is_builtin(cmd))
+        if (is_builtin(cmd) && !is_piped(cmd))
             builtin_router(cmd);
         else
             execute_cmd(cmd);

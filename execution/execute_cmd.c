@@ -1,6 +1,6 @@
 #include "execution.h"
 
-void	child_process(t_cmd2 *cmd)
+void	execute_command(t_cmd2 *cmd)
 {
 	const char 	*path;
 	char 	*const *argv;
@@ -30,5 +30,13 @@ void	execute_cmd(t_cmd2 *cmd)
 	if (pid == -1)
         terminate(cmd, EXIT_FAILURE, "minishell: failed to fork");
 	else if (pid == 0)
-		child_process(cmd);
+    {
+        if (is_builtin(cmd))
+        {
+            builtin_router(cmd);
+            exit(cmd->execution->exit_status);
+        }
+        else
+            execute_command(cmd);
+    }
 }
