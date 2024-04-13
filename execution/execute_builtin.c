@@ -15,7 +15,7 @@ void	builtin_router(t_cmd2 *cmd)
 	else if (ft_strncmp(builtin[0], "env", ft_strlen("env") + 1) == 0)
 		cmd->execution->exit_status = builtin_env(builtin, shell_env);
 	else if (ft_strncmp(builtin[0], "exit", ft_strlen("exit") + 1) == 0)
-		cmd->execution->exit_status = builtin_exit(builtin, shell_env);
+		cmd->execution->exit_status = builtin_exit(builtin, cmd->cmds, shell_env);
 	else if (ft_strncmp(builtin[0], "pwd", ft_strlen("pwd") + 1) == 0)
 		cmd->execution->exit_status = builtin_pwd(builtin, shell_env);
 	else if (ft_strncmp(builtin[0], "unset", ft_strlen("unset") + 1) == 0)
