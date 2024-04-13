@@ -1,6 +1,6 @@
 #include "../parsing.h"
 
-static t_tree	*read_directory(t_env	*env)
+static t_tree	*read_directory(t_env *env)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -27,29 +27,46 @@ static t_tree	*read_directory(t_env	*env)
 	return (tree);
 }
 
-char	**get_wildcard(char **argv, t_env *env)
+char	**simple_array(const char *element)
 {
-	ssize_t	i;
-	char	**arguments;
+	char	**arr;
+
+	arr = (char **)ft_calloc(2, sizeof(char *));
+	if (!arr)
+		return (NULL);
+	arr[0] = ft_strdup(element);
+	if (!arr[0])
+	{
+		free(arr);
+		return (NULL);
+	}
+	return (arr);
+}
+
+char	***get_wildcard(const char **argv, t_env *env)
+{
+	char	***argv_expanded;
+	int		i;
 	t_tree	*tree;
 
-	i = 0;
-	arguments = (char **)ft_calloc(sizeof(char *), 1);
+	argv_expanded = (char ***)ft_calloc(ft_arr_len((char **)argv) + 1, sizeof(char **));
 	tree = read_directory(env);
-	if (!arguments || !tree)
-	{
-		free_ptr_str(argv);
-		return (ft_free_ptr(arguments, tree));
-	}
+	if (!argv_expanded || !tree)
+		return (ft_free_ptr(argv_expanded, tree));
+	i = -1;
 	while (argv[++i])
 	{
-        if (contains_wildcards(argv[i]))
+		if (contains_wildcards(argv[i]))
+			find_wildcard(&(argv_expanded[i]), (char *)argv[i], tree);
+		else
+			argv_expanded[i] = simple_array(argv[i]);
+		if (!argv_expanded[i])
 		{
-            find_wildcard(&arguments, argv[i], tree);
-            argv = inject_string(argv, arguments, i);
-            free_ptr_str(arguments);
+			free_array_3d(argv_expanded);
+			terminate_tree(tree);
+			return (NULL);
 		}
 	}
 	terminate_tree(tree);
-	return (argv);
+	return (argv_expanded);
 }

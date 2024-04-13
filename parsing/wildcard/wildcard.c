@@ -1,8 +1,8 @@
 #include "wildcard.h"
 
-static void	router(char	***matches, char *letters, t_tree *shell_env);
+static void	router(char ***matches, char *letters, t_tree *shell_env);
 
-static void	f_1(char	***matches, char *letters, t_tree *shell_env)
+static void	f_1(char ***matches, char *letters, t_tree *shell_env)
 {
 	t_tree	*child;
 
@@ -18,7 +18,7 @@ static void	f_1(char	***matches, char *letters, t_tree *shell_env)
 	return ;
 }
 
-static void	f_2(char	***matches, char *letters, t_tree *shell_env)
+static void	f_2(char ***matches, char *letters, t_tree *shell_env)
 {
 	t_tree	*child;
 
@@ -31,11 +31,11 @@ static void	f_2(char	***matches, char *letters, t_tree *shell_env)
 		if (child->letter == letters[1])
 			router(matches, &letters[1], child);
 		if (letters)
-		child = child->next;
+			child = child->next;
 	}
 }
 
-static void	f_3(char	***matches, t_tree *shell_env)
+static void	f_3(char ***matches, t_tree *shell_env)
 {
 	t_tree	*child;
 
@@ -51,7 +51,7 @@ static void	f_3(char	***matches, t_tree *shell_env)
 	}
 }
 
-static void	router(char	***matches, char *letters, t_tree *shell_env)
+static void	router(char ***matches, char *letters, t_tree *shell_env)
 {
 	while (letters[0] == '*' && letters[1] == '*')
 		letters++;
@@ -76,8 +76,11 @@ static void	router(char	***matches, char *letters, t_tree *shell_env)
 	}
 }
 
-void	find_wildcard(char	***matches, char *letters, t_tree *shell_env)
+void	find_wildcard(char ***matches, char *letters, t_tree *shell_env)
 {
+	*matches = (char **)ft_calloc(1, sizeof(char *));
+	if (!*matches)
+		return ;
 	while (*letters == '*' && *(letters + 1) == '*')
 		letters++;
 	if (!*(letters + 1) && *letters == '*')

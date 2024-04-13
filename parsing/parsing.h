@@ -153,12 +153,13 @@ void						close_fd(t_fd_state *fd_state);
 const char					*get_variable_name(const char *dollar_sign);
 int							argv_contains_quotations(const char **argv);
 int							contains_quotations(const char *literal);
-int contains_wildcards(const char *literal);
+int							contains_wildcards(const char *literal);
 const char					*escape_quotes(const char *literal);
 const char					*replace_sequence(const char *literal,
 								const char *sequence, const char *replacement);
-int							parse_nested_argv(char ***ptr_argv,
-								t_token *start, t_token *end);
+int							parse_nested_argv(char ***ptr_argv, t_token *start,
+								t_token *end);
+void						free_array_3d(char ***arr_3d);
 
 /*Utils*/
 char						**append_arr_str(char **arr, char *str);
@@ -179,7 +180,7 @@ void						append_envp(t_env *shell_env, char *name,
 int							unset_envvar(t_env *shell_env, const char *to_find);
 void						add_path(t_env *shell_env, char *path);
 
-char						**get_wildcard(char **tokens, t_env *shell_env);
+char						***get_wildcard(const char **argv, t_env *env);
 
 char						**arrstr_copy(const char **envp);
 

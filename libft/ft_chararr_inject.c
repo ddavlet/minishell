@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_chararr_inject.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:22:47 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/19 14:47:14 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/13 12:31:31 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx)
 	if (!from_arr || !from_arr[0])
 		return (to_arr);
 	if (!to_arr)
-		return (NULL);  // catch
+		return (NULL);
 	new_arr = (char **)ft_calloc(ft_arr_len(to_arr) + (ft_arr_len(from_arr) * 2 - 1), sizeof(char *));
 	if (!new_arr)
 		return (NULL); // catch
