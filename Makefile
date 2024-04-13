@@ -33,6 +33,7 @@ PAR2_SRCS := $(addprefix $(PAR2_SRC_DIR), $(PAR2_SOURCE))
 # PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
+OBJ_DIR := obj/
 MAIN := main.c ./signal_handling/signals.c main_utils.c
 INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include -I/usr/include/readline -I/usr/include
 LIB_DIR := libft
@@ -40,19 +41,25 @@ LIBFT := $(LIB_DIR)libft.a
 LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib -L/usr/include/readline
 FLAGS := -g -Wall -Wextra -Werror 
 OBJ = $(EXE_SRCS:.c=.o)  $(PAR2_SRCS:.c=.o) $(BUL_SRCS:.c=.o) $(MAIN:.c=.o)
+OBJ := $(addprefix $(OBJ_DIR), $(OBJ))
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT)
+$(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
 	$(CC) $(FLAGS) $(INC) $(OBJ) $(LIB) -o $(NAME)
 
 $(LIBFT) :
 	$(MAKE) -C $(LIB_DIR)
-%.o: %.c
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)%.o: %.c | $(OBJ_DIR)
+	mkdir -p $(dir $@)
 	$(CC) $(FLAGS) $(INC) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) -r $(OBJ_DIR)
 	$(MAKE) -C $(LIB_DIR) fclean
 
 fclean: clean

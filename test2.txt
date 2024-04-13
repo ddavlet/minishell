@@ -1,9 +1,0 @@
-(cmd1 && (cmd2 && cmd3) && cmd4) && ()
-(001 && (002 && 002) && 001) && (cmd6) && (cmd5)
-
-cmd1->scopeid = {001}
-cmd4->scopeid = {001}
-cmd2->scopeid = {002, 001}
-cmd3->scopeid = {002, 001}
-cmd6->scopeid = {003}
-cmd5->scopeid = {004}

@@ -22,15 +22,6 @@ char	*create_prompt(t_env *shell_env)
 	return (prompt);
 }
 
-// void	debug_print_to_file(t_cmd **cmds)
-// {
-// 	int	debug_fd;
-
-// 	debug_fd = open("debug_log", O_WRONLY | O_CREAT);
-// 	debug_print_cmds(cmds, debug_fd);
-// 	close(debug_fd);
-// }
-
 t_env	*initialize_shell(const char *envp[])
 {
 	t_env	*shell_env;
