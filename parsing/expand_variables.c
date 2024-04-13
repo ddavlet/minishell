@@ -3,7 +3,7 @@
 char	*replace(const char *literal, const char *dollar_sign,
 		const char *value)
 {
-	char	*new;
+	char		*new;
 	const char	*name;
 
 	if (!dollar_sign || !literal || !value)
@@ -14,27 +14,29 @@ char	*replace(const char *literal, const char *dollar_sign,
 	new = ft_strjoin_free(new, value);
 	free((char *)value);
 	name = get_variable_name(dollar_sign);
-    new = ft_strjoin_free(new, dollar_sign + ft_strlen(name) + 1);
-    free((char *)name);
+	new = ft_strjoin_free(new, dollar_sign + ft_strlen(name) + 1);
+	free((char *)name);
 	return (new);
 }
 
 const char	*replace_variables(const char *literal, t_env *shell_env)
 {
-	const char		*new;
-	const char		*old;
-	const char		*value;
+	const char	*new;
+	const char	*old;
+	const char	*value;
 	const char	*dollar_sign;
 
 	old = literal;
 	new = literal;
 	dollar_sign = find_variable(new);
+	if (!dollar_sign)
+		return (ft_strdup(literal));
 	while (dollar_sign)
 	{
 		value = get_shell_variable(dollar_sign, literal, shell_env);
 		new = replace(literal, dollar_sign, value);
-        if (ft_strncmp(literal, old, ft_strlen(literal) + 1) != 0)
-            free((char *)old);
+		if (ft_strncmp(literal, old, ft_strlen(literal) + 1) != 0)
+			free((char *)old);
 		if (!new)
 			return (NULL);
 		old = new;
