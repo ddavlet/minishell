@@ -1,5 +1,5 @@
-#ifndef parsing_H
-# define parsing_H
+#ifndef PARSING_H
+# define PARSING_H
 
 # include "../libft/libft.h"
 # include "wildcard/wildcard.h"

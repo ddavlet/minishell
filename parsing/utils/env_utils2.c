@@ -56,7 +56,7 @@ char	*get_shell_variable(const char *dollar_sign, const char *literal,
 	if (!dollar_sign || !literal || !shell_env)
 		return (NULL);
 	if (*(dollar_sign + 1) == '?')
-		value = get_last_exit_status(shell_env);
+		value = get_variable_value("LAST_EXIT_STATUS", shell_env);
 	else
     {
         name = get_variable_name(dollar_sign);

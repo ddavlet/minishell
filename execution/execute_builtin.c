@@ -24,4 +24,5 @@ void	builtin_router(t_cmd2 *cmd)
 		cmd->execution->exit_status = builtin_export(builtin, shell_env);
 	else
 		cmd->execution->exit_status = EXIT_FAILURE;
+    append_envp(shell_env, "LAST_EXIT_STATUS", ft_itoa(cmd->execution->exit_status>>8));
 }

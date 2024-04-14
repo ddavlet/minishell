@@ -22,6 +22,7 @@ void	wait_until(t_cmd2 *cmd)
             pid = last->execution->pid;
             waitpid(pid, &exit_status, 0);
             last->execution->exit_status = exit_status;
+            append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", ft_itoa(exit_status>>8));
             last = last->next;
         }
 	}

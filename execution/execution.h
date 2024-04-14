@@ -4,6 +4,7 @@
 # include "../builtin/builtin.h"
 # include "../libft/libft.h"
 # include "../parsing/parsing.h"
+# include "../signal_handling/signals.h"
 # include <readline/readline.h>
 # include <stdio.h>
 # include <sys/wait.h>
@@ -18,6 +19,8 @@ t_fd_state	*initialize_fd_state(int fd);
 int			is_logic_operation(t_cmd2 *cmd);
 void		execute_cmd(t_cmd2 *cmd);
 char		*build_path_from_env(char *name, t_env *env);
+
+extern int	g_signal;
 
 /*
  *   pipes

@@ -11,13 +11,7 @@ void	cmd_check(t_cmd2 *cmd)
 	if (!cmd->execution->argv)
 		terminate(cmd, EXIT_FAILURE,
 			"failed command check: missing argv");
-	// if (!cmd->execution->pipe)
-	// 	terminate(cmd, EXIT_FAILURE,
-	// 		"failed command check: missing pipe");
 	if (!cmd->execution->shell_env)
 		terminate(cmd, EXIT_FAILURE,
 			"failed command check: missing shell environment");
-	// if (!cmd->execution->redirections)
-	// 	terminate(cmd, EXIT_FAILURE,
-	// 		"failed command check: missing redirections");
 }
