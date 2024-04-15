@@ -1,4 +1,4 @@
-CC := cc -fsanitize=address
+CC := cc #-fsanitize=address
 NAME := minishell
 RM := rm -f
 EXE_SRC_DIR := execution/
@@ -39,7 +39,7 @@ INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readli
 LIB_DIR := libft
 LIBFT := $(LIB_DIR)libft.a
 LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib -L/usr/include/readline
-FLAGS := -g -Wall -Wextra -Werror 
+FLAGS := -g -Wall -Wextra -Werror
 OBJ = $(EXE_SRCS:.c=.o)  $(PAR2_SRCS:.c=.o) $(BUL_SRCS:.c=.o) $(MAIN:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR), $(OBJ))
 

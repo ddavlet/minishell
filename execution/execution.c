@@ -19,7 +19,7 @@ void	execution(t_cmd2 *cmds)
     cmd = cmds;
 	while (cmd)
     {
-        configure_signals_execution();
+        // configure_signals_execution();
         set_input_output(cmd);
         if (is_builtin(cmd) && !is_piped(cmd))
             builtin_router(cmd);
@@ -33,4 +33,3 @@ void	execution(t_cmd2 *cmds)
     }
     free_cmds(cmds);
 }
- 
