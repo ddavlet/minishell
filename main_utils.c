@@ -7,12 +7,17 @@ int	is_subshell(int argc, char **argv)
 	return (0);
 }
 
-void    terminate_shell(t_env *shell_env, int exit_status, char *msg)
+void	terminate_shell(t_env *shell_env, int exit_status, char *msg)
 {
 	if (shell_env)
 		free_env(shell_env);
 	if (msg)
-		ft_putendl_fd(msg, STDERR_FILENO);
+	{
+		if (exit_status != 0)
+			ft_putendl_fd(msg, STDERR_FILENO);
+		else
+			ft_putendl_fd(msg, STDOUT_FILENO);
+	}
 	exit(exit_status);
 }
 
@@ -103,7 +108,7 @@ t_env	*initialize_shell(const char *envp[])
 	tmp = get_variable_value("PWD", shell_env);
 	add_path(shell_env, tmp);
 	free(tmp);
-    return (shell_env);
+	return (shell_env);
 }
 
 char	*shell_prompt(t_env *shell_env)
@@ -118,8 +123,8 @@ char	*shell_prompt(t_env *shell_env)
 	line = readline(prompt);
 	free(prompt);
 	if (!line)
-		terminate_shell(shell_env, EXIT_FAILURE,
-			"minishell: failed to read line");
+		terminate_shell(shell_env, EXIT_SUCCESS,
+			"exit");
 	add_history(line);
 	return (line);
 }

@@ -79,6 +79,5 @@ t_token	*tokenizer(const char *line)
 			line += ft_strlen(new->literal);
 		}
 	}
-	// free((void *)line);
 	return (tokens);
 }

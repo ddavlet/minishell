@@ -22,7 +22,6 @@ int	main(int argc, char *argv[], const char *envp[])
 			free((char *)prompt);
 		}
 		cmds = parser(tokens, shell_env);
-		// signals2();
 		execution(cmds);
 		if (is_subshell(argc, argv))
 			terminate_shell(shell_env, EXIT_SUCCESS, NULL);
