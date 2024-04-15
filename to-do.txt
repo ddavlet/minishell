@@ -12,4 +12,8 @@ echo test1 |
 
 echo test && (echo test 1 || echo test 2) | cat
 
+| echo smth
+
 multiple subshells opened
+
+env | grep "LAST"

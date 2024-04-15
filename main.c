@@ -9,6 +9,7 @@ int	main(int argc, char *argv[], const char *envp[])
 	t_env	*shell_env;
 
 	shell_env = initialize_shell(envp);
+	printf("pid of main: %d\n", getpid());
 	while (1)
 	{
 		g_signal = 0;
@@ -18,6 +19,7 @@ int	main(int argc, char *argv[], const char *envp[])
 		else
 		{
 			const char *prompt = shell_prompt(shell_env);
+			// char *prompt = ft_strdup("ec 412");
 			tokens = tokenizer(prompt);
 			free((char *)prompt);
 		}

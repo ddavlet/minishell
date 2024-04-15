@@ -24,7 +24,7 @@ int	process_path(const char **argv, t_env *shell_env, char **ptr_path)
 			return (builtin_err_gen("cd", "HOME not set", NULL));
 	}
 	else if (*argv[1] == '/')
-		*ptr_path = (char *)argv[1];
+		*ptr_path = ft_strdup((char *)argv[1]);
 	else if (*argv[1] == '~')
 		*ptr_path = ft_strjoin_free(get_variable_value("HOME", shell_env),
 				&argv[1][1]);
