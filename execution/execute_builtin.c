@@ -3,7 +3,8 @@
 void	builtin_router(t_cmd2 *cmd)
 {
 	const char	**builtin;
-	t_env	*shell_env;
+	t_env		*shell_env;
+	char		*tmp;
 
 	cmd_check(cmd);
 	shell_env = cmd->execution->shell_env;
@@ -24,5 +25,7 @@ void	builtin_router(t_cmd2 *cmd)
 		cmd->execution->exit_status = builtin_export(builtin, shell_env);
 	else
 		cmd->execution->exit_status = EXIT_FAILURE;
-    append_envp(shell_env, "LAST_EXIT_STATUS", ft_itoa(cmd->execution->exit_status>>8)); // change this!
+	tmp = ft_itoa(exit_code(cmd->execution->exit_status));
+	append_envp(shell_env, "LAST_EXIT_STATUS", tmp);
+	free(tmp);
 }

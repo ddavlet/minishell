@@ -63,9 +63,9 @@ t_token	*tokenizer(const char *line)
 	t_token	*tokens;
 	t_token	*new;
 
-	if (!line)
-		return (NULL);
-	if (!*line)
+	// if (!line)
+	// 	return (NULL);
+	if (!line || !*line)
 		return (get_token(line));
 	tokens = NULL;
 	while (*line)
@@ -75,9 +75,16 @@ t_token	*tokenizer(const char *line)
 		else
 		{
 			new = get_token(line);
+			if (new == NULL)
+			{
+				free_tokens(tokens);
+				break ;
+			}
 			add_token(&tokens, new);
 			line += ft_strlen(new->literal);
 		}
 	}
+	if (tokens == NULL)
+		return (get_token(line));
 	return (tokens);
 }

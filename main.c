@@ -9,7 +9,7 @@ int	main(int argc, char *argv[], const char *envp[])
 	t_env	*shell_env;
 
 	shell_env = initialize_shell(envp);
-	printf("pid of main: %d\n", getpid());
+	// printf("pid of main: %d\n", getpid());
 	while (1)
 	{
 		g_signal = 0;
