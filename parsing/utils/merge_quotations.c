@@ -37,7 +37,7 @@ const char	*process_until_quote(const char *joined, const char *quote,
 		return (NULL);
 	joined = (const char *)ft_strjoin_free((char *)joined, tmp);
 	free((char *)tmp);
-	*ptr_start_pos += ((quote + 1) - literal);
+	*ptr_start_pos += ((quote + 1) - (literal + *ptr_start_pos));
 	return (joined);
 }
 
