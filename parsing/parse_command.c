@@ -37,6 +37,13 @@ t_cmd2	*initialize_command(void)
 	return (cmd);
 }
 
+int	syntax_check(t_token *start, t_token *end)
+{
+	(void)start;
+	(void)end;
+	 return 0;
+}
+
 t_cmd2	*parse_command(t_token *start, t_token *end)
 {
 	t_cmd2	*cmd;
@@ -44,6 +51,8 @@ t_cmd2	*parse_command(t_token *start, t_token *end)
 	cmd = initialize_command();
 	if (!cmd)
 		return (NULL);
+    if (syntax_check(start, end) == -1)
+        return (NULL);
     if (start->literal[0] == '(')
     {
         if (parse_nested_argv((char ***)&(cmd->execution->argv), start, end) == -1)

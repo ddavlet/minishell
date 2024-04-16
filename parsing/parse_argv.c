@@ -11,68 +11,48 @@ int	get_argc(t_token *start, t_token *end)
 	{
 		if (is_argv_token(token))
 			argc++;
-		token = token->next;
+		if (is_redirection_token_without_name(token))
+			token = token->next->next;
+		else
+			token = token->next;
 	}
 	return (argc);
 }
 
-const char	*get_argument(const char *literal)
+int	add_argument(char **ptr_argument, char **argv, t_token *token)
 {
-	const char	*arg;
-
-	arg = NULL;
-	if (!ft_strchr(literal, '\'') && !ft_strchr(literal, '\"'))
-		arg = (const char *)ft_strdup(literal);
-	else
-	 	arg = merge_quotations(literal);
-	if (!arg)
-		return (NULL);
-    return (arg);
-}
-
-char	**add_argument(char ***ptr_argv, t_token *token, int i)
-{
-	if (!ptr_argv)
-		return (NULL);
-	if (!token)
-	{
-		free_argv((const char **)*ptr_argv);
-		return (NULL);
+    *ptr_argument = ft_strdup(token->literal);
+    if (!*ptr_argument)
+    {
+		free_argv((const char **)argv);
+		return (-1);
 	}
-	(*ptr_argv)[i] = (char *)get_argument(token->literal);
-	if (!(*ptr_argv)[i])
-	{
-		free_argv((const char **)*ptr_argv);
-		return (NULL);
-	}
-	return (*ptr_argv);
+	return (0);
 }
 
 int parse_argv(char ***ptr_argv, t_token *start, t_token *end)
 {
 	int		argc;
 	int		i;
+    char    **argv_new;
 	t_token	*token;
 
 	argc = get_argc(start, end);
-	*ptr_argv = (char **)ft_calloc(argc + 1, sizeof(char *));
-	if (!*ptr_argv)
+	argv_new = (char **)ft_calloc(argc + 1, sizeof(char *));
+	if (!argv_new)
 		return (-1);
 	i = 0;
 	token = start;
 	while (token != end->next && i < argc)
 	{
 		if (is_argv_token(token))
-        {
-            (*ptr_argv)[i] = ft_strdup(token->literal);
-            if (!(*ptr_argv)[i])
-            {
-                free_argv((const char **)*ptr_argv);
-                return (-1);
-            }
-            i++;
-        }
-		token = token->next;
+			if (add_argument(&(argv_new[i++]), argv_new, token) == -1)
+				return (-1);
+        if (is_redirection_token_without_name(token))
+            token = token->next->next;
+		else
+			token = token->next;
 	}
+    *ptr_argv = argv_new;
 	return (0);
 }

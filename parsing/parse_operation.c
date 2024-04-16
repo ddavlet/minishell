@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-int	parse_operation(t_oper2 *ptr_operation, t_token *end)
+int	 parse_operation(t_oper2 *ptr_operation, t_token *end)
 {
 	int	n;
 
