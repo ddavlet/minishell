@@ -5,7 +5,10 @@ t_cmd2	*parser(t_token *tokens, t_env *shell_env)
 	t_cmd2	*cmds;
 
 	if (parse_check(tokens, shell_env))
+	{
+		free_tokens(tokens);
 		return (NULL);
+	}
 	cmds = initialize_commands(tokens, shell_env);
 	if (!cmds)
 	{
