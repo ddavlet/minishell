@@ -24,8 +24,8 @@ void execution(t_cmd2 *cmds)
 	}
 	while (cmd && cmd->execution->argv[0][0])
 	{
-		configure_signals_execution();
 		set_input_output(cmd);
+		configure_signals_execution();
 		if (is_builtin(cmd) && !is_piped(cmd))
 			builtin_router(cmd);
 		else

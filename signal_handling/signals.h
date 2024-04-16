@@ -24,6 +24,7 @@
 
 void	configure_signals_shell_input(void);
 void	configure_signals_execution(void);
+void	configure_signals_heardoc(void);
 
 extern int	g_signal;
 
