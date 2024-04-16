@@ -1,4 +1,4 @@
-CC := cc #-fsanitize=address
+CC := cc -fsanitize=address
 NAME := minishell
 RM := rm -f
 EXE_SRC_DIR := execution/

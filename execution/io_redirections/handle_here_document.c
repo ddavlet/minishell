@@ -2,10 +2,13 @@
 
 void	here_doc_warning(const char *delimiter)
 {
-	write(1, "minishell: warning: here-document "\
-	"delimited by end-of-file (wanted `", 68);
-	write(1, delimiter, ft_strlen(delimiter));
-	write(1, "')\n", 3);
+	if (!g_signal)
+	{
+		write(1, "minishell: warning: here-document "\
+		"delimited by end-of-file (wanted `", 68);
+		write(1, delimiter, ft_strlen(delimiter));
+		write(1, "')\n", 3);
+	}
 }
 
 t_fd_state *here_document(const char *delimiter, t_env *shell_env)
@@ -14,6 +17,7 @@ t_fd_state *here_document(const char *delimiter, t_env *shell_env)
 	t_pipe *pipe;
 	const char *tmp;
 
+	configure_signals_heardoc();
 	pipe = create_pipe();
 	line = (const char *)readline("heredoc> ");
 	while (line && !g_signal)
