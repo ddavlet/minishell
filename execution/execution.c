@@ -14,6 +14,8 @@ void execution(t_cmd2 *cmds)
 	int stdout;
 	t_cmd2 *cmd;
 
+	if (!cmds)
+		return ;
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	cmd = cmds;
@@ -32,7 +34,7 @@ void execution(t_cmd2 *cmds)
 			execute_cmd(cmd);
 		if (cmd->next == NULL || is_logic_operation(cmd))
 			if (wait_check(cmd))
-				break;
+				break ;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
 	}

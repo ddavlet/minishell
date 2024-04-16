@@ -10,7 +10,8 @@ int	main(int argc, char *argv[], const char *envp[])
 	char	*prompt;
 
 	shell_env = initialize_shell(envp);
-	// printf("pid of main: %d\n", getpid());
+	if (!shell_env)
+		exit(1);
 	while (1)
 	{
 		g_signal = 0;

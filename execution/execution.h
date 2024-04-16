@@ -11,7 +11,7 @@
 
 void		execution(t_cmd2 *cmds);
 void		set_input_output(t_cmd2 *cmd);
-void		execute_command(t_cmd2 *cmd);
+int			execute_command(t_cmd2 *cmd);
 void		builtin_router(t_cmd2 *cmd);
 int			wait_check(t_cmd2 *cmd);
 int			evaluate_logic_operation(t_cmd2 *cmd);
@@ -36,7 +36,7 @@ t_cmd2		*get_previous_cmd(t_cmd2 *cmd);
 void		exit_handler(int status);
 void		msg_error(char *err);
 void		free_arr2d(void **arr2d);
-void		terminate(t_cmd2 *cmd, int status, char *msg);
+int			terminate(t_cmd2 *cmd, int status, char *msg);
 int			is_builtin(t_cmd2 *cmd);
 void		cmd_check(t_cmd2 *cmd);
 int			is_piped(t_cmd2 *cmd);

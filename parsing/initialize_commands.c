@@ -29,7 +29,7 @@ t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 	t_token *start;
 	t_token *end;
 
-    parse_check(tokens, shell_env);
+	parse_check(tokens, shell_env);
 	cmds = NULL;
 	start = tokens;
 	while (start != NULL)
@@ -37,8 +37,7 @@ t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 		end = get_final_token(start);
 		new = parse_command(start, end);
 		if (!new)
-			terminate_parsing(tokens, shell_env, cmds,
-				"minishell: failed to parse command");
+			terminate_parsing(tokens, shell_env, cmds, NULL);
 		add_cmd(&cmds, new, shell_env);
 		start = end->next;
 	}
