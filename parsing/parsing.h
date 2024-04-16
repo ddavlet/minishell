@@ -160,6 +160,7 @@ const char					*replace_sequence(const char *literal,
 int							parse_nested_argv(char ***ptr_argv, t_token *start,
 								t_token *end);
 void						free_array_3d(char ***arr_3d);
+int	is_redirection_token_without_name(t_token *token);
 
 /*Utils*/
 char						**append_arr_str(char **arr, char *str);

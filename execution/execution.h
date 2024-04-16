@@ -26,6 +26,7 @@ extern int	g_signal;
  *   pipes
  */
 t_pipe		*create_pipe(void);
+void	close_pipe(t_pipe *pipe);
 
 /*
  *	utils

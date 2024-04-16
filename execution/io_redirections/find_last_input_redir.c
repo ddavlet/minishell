@@ -7,6 +7,18 @@ int	is_input_redir(int fd, t_red_sym symbol)
 	return (0);
 }
 
+void    close_last_redir(t_redir *redir, t_fd_state *input_fd_state)
+{
+	if (input_fd_state && is_input_redir(input_fd_state->fd,
+            redir->redir_sym))
+    {
+        if (input_fd_state->pipe)
+            close_pipe(input_fd_state->pipe);
+		else
+			close_fd(input_fd_state);
+    }
+}
+
 t_fd_state	*last_input_redir(t_cmd2 *cmd)
 {
 	t_redir		*redir;
@@ -21,14 +33,13 @@ t_fd_state	*last_input_redir(t_cmd2 *cmd)
 	input_fd_state = NULL;
 	while (redir)
 	{
-		if (input_fd_state && is_input_redir(input_fd_state->fd,
-				redir->redir_sym))
-			close_fd(input_fd_state);
 		if (redir->redir_sym == RED_INP)
 			input_fd_state = input_redirection(redir->redir_name);
 		else if (redir->redir_sym == HEAR_DOC)
 			input_fd_state = here_document(redir->redir_name, shell_env);
 		redir = redir->next;
+        if (redir)
+            close_last_redir(redir, input_fd_state);
 	}
 	return (input_fd_state);
 }

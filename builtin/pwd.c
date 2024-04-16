@@ -12,7 +12,7 @@ int	builtin_pwd(const char **argv, t_env *shell_env)
 	{
 		ft_putstr_fd("pwd: error retrieving current directory:"
 						" getcwd: cannot access parent directories:"
-						" No such file or directory\n",
+						" No such file or directiory\n",
 						2);
 		return (1);
 	}
