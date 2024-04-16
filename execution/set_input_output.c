@@ -41,7 +41,7 @@ void	handle_redir_input(t_cmd2 *cmd)
 			terminate(cmd, EXIT_FAILURE,
 				"minishell: failed dup2 for input redirection");
 		if (input_fd->fd != STDIN_FILENO)
-			close_fd(input_fd);
+			close_redir(input_fd);
 	}
 }
 
@@ -57,7 +57,7 @@ void	handle_redir_output(t_cmd2 *cmd)
 			terminate(cmd, EXIT_FAILURE,
 				"minishell: dup2 for output redirection failed");
 		if (output_fd->fd != STDOUT_FILENO)
-			close_fd(output_fd);
+			close_redir(output_fd);
 	}
 }
 

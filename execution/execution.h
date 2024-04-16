@@ -27,6 +27,8 @@ extern int	g_signal;
  */
 t_pipe		*create_pipe(void);
 void	close_pipe(t_pipe *pipe);
+void    close_redir(t_fd_state *input_fd_state);
+
 
 /*
  *	utils

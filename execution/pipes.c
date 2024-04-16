@@ -55,6 +55,8 @@ t_pipe	*create_pipe(void)
 		free (pipe);
 		return (NULL);
 	}
+    pipe->write->pipe = pipe;
+    pipe->read->pipe = pipe;
 	return (pipe);
 }
 
