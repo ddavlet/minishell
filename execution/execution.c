@@ -17,6 +17,11 @@ void execution(t_cmd2 *cmds)
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	cmd = cmds;
+	if (!cmd->execution->argv[0])
+	{
+		free_cmds(cmds);
+		return ;
+	}
 	while (cmd && cmd->execution->argv[0][0])
 	{
 		configure_signals_execution();
