@@ -40,7 +40,7 @@ void		terminate(t_cmd2 *cmd, int status, char *msg);
 int			is_builtin(t_cmd2 *cmd);
 void		cmd_check(t_cmd2 *cmd);
 int			is_piped(t_cmd2 *cmd);
-int			exit_code(int status);
+void    update_exit_status(int exit_status, t_env *shell_env);
 
 /*
  *   io_redirections

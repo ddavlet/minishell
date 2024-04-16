@@ -18,8 +18,6 @@ const char	*get_parenthesis(const char *line)
 	end = line;
 	while (*end && *end != ')')
 		end++;
-	if (*end == 0)
-		return (NULL);
 	string_literal = (const char *)ft_substr(line, 0, (end + 1) - line);
 	return (string_literal);
 }

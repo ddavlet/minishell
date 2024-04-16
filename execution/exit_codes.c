@@ -1,18 +1,13 @@
 #include "execution.h"
 #include <sys/wait.h>
 
-int	exit_code(int status)
+void    update_exit_status(int exit_status, t_env *shell_env)
 {
-	// printf("%d\n", status);
-	// printf("%d\n", WEXITSTATUS(status));
-	// printf("%d\n", WTERMSIG(status));
-	// printf("%d\n", WSTOPSIG(status));
-	// printf("%d\n", WIFEXITED(status));
-	// printf("%d\n", WIFSIGNALED(status));
-	// printf("%d\n", WIFSTOPPED(status));
-	if (WTERMSIG(status) != 0)
-		return (WTERMSIG(status) + 128);
-	return 0;
+	char		*tmp;
+
+	tmp = ft_itoa(exit_status);
+	append_envp(shell_env, "LAST_EXIT_STATUS", tmp);
+	free(tmp);
 }
 
 void wait_until(t_cmd2 *cmd)
@@ -37,8 +32,8 @@ void wait_until(t_cmd2 *cmd)
 		{
 			pid = last->execution->pid;
 			waitpid(pid, &exit_status, 0);
-			last->execution->exit_status = exit_code(exit_status);
-			tmp = ft_itoa(exit_code(exit_status));
+			last->execution->exit_status = exit_status;
+			tmp = ft_itoa(exit_status);
 			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
 			free(tmp);
 			last = last->next;
