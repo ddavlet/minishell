@@ -39,7 +39,7 @@ char	**get_wildcards_argv(char ***argv_expanded, int len)
 		while (argv_expanded[i][++j])
 		{
 			argv_new[i + j] = ft_strdup(argv_expanded[i][j]);
-			if (!argv_new[i][j])
+			if (!argv_new[i + j])
 			{
 				free_argv((const char **)argv_new);
 				return (NULL);
