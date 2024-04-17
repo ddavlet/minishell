@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:18:40 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/14 16:32:09 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/17 12:20:14 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 char	*get_relative_pwd(t_env *env);
 char	*hostname(void);
 int		is_subshell(int argc, char **argv);
-void	terminate_shell(t_env *shell_env, int exit_status, char *msg);
 char	*shell_prompt(t_env *shell_env);
 t_env	*initialize_shell(const char *envp[]);
 char	*create_prompt(t_env *shell_env);

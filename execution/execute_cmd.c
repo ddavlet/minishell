@@ -1,5 +1,4 @@
 #include "execution.h"
-#include <errno.h>
 
 int	execute_command(t_cmd2 *cmd)
 {
@@ -18,11 +17,12 @@ int	execute_command(t_cmd2 *cmd)
 	}
 	else
 		path = argv[0];
-	execve(path, argv, envp);
+	if (execve(path, argv, envp) == -1)
+		terminate_shell(cmd->execution->shell_env, 126, "minishell: Permission denied");
 	return (0);
 }
 
-void	execute_cmd(t_cmd2 *cmd)
+int	execute_cmd(t_cmd2 *cmd)
 {
     pid_t   pid;
 
@@ -39,6 +39,7 @@ void	execute_cmd(t_cmd2 *cmd)
             exit(cmd->execution->exit_status);
         }
         else
-			execute_command(cmd);
+			return (execute_command(cmd));
     }
+	return (0);
 }

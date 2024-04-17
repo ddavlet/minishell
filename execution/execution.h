@@ -17,7 +17,7 @@ int			wait_check(t_cmd2 *cmd);
 int			evaluate_logic_operation(t_cmd2 *cmd);
 t_fd_state	*initialize_fd_state(int fd);
 int			is_logic_operation(t_cmd2 *cmd);
-void		execute_cmd(t_cmd2 *cmd);
+int			execute_cmd(t_cmd2 *cmd);
 char		*build_path_from_env(char *name, t_env *env);
 
 extern int	g_signal;
@@ -42,7 +42,9 @@ int			terminate(t_cmd2 *cmd, int status, char *msg);
 int			is_builtin(t_cmd2 *cmd);
 void		cmd_check(t_cmd2 *cmd);
 int			is_piped(t_cmd2 *cmd);
-void    update_exit_status(int exit_status, t_env *shell_env);
+void		update_exit_status(int exit_status, t_env *shell_env);
+void		terminate_shell(t_env *shell_env, int exit_status, char *msg);
+
 
 /*
  *   io_redirections

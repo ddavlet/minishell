@@ -8,7 +8,7 @@ void reset_input_output(int stdin, int stdout)
 		ft_putendl_fd("minishell: failed to reset stdout", STDERR_FILENO);
 }
 
-void execution(t_cmd2 *cmds)
+void	execution(t_cmd2 *cmds)
 {
 	int stdin;
 	int stdout;
@@ -26,7 +26,8 @@ void execution(t_cmd2 *cmds)
 		if (is_builtin(cmd) && !is_piped(cmd))
 			builtin_router(cmd);
 		else
-			execute_cmd(cmd);
+			if (execute_cmd(cmd))
+				return ;
 		if (cmd->next == NULL || is_logic_operation(cmd))
 			if (wait_check(cmd))
 				break ;

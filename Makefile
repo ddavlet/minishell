@@ -10,7 +10,7 @@ UTL_SRC_DIR := utils/
 WC_SRC_DIR := wildcard/
 IO_SOURCE := find_last_input_redir.c find_last_output_redir.c handle_append.c handle_here_document.c handle_input.c \
 				handle_truncate.c
-UTL_EXE_SOURCE := utils.c path.c cmd_check.c is_piped.c close_pipe.c close_redir.c
+UTL_EXE_SOURCE := utils.c path.c cmd_check.c is_piped.c close_pipe.c close_redir.c terminate_shell.c
 EXE_SOURCE := commands.c exit_codes.c and_or.c execute_cmd.c execute_builtin.c execution.c pipes.c set_input_output.c \
 				$(addprefix $(IO_SRC_DIR), $(IO_SOURCE)) $(addprefix $(UTL_SRC_DIR), $(UTL_EXE_SOURCE))
 EXE_SRCS = $(addprefix $(EXE_SRC_DIR), $(EXE_SOURCE))
