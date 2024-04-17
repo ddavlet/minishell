@@ -94,6 +94,7 @@ t_env	*initialize_shell(const char *envp[])
 	tmp = get_variable_value("PWD", shell_env);
 	add_path(shell_env, tmp);
 	free(tmp);
+	append_envp(shell_env, "LAST_EXIT_STATUS", "0");
 	return (shell_env);
 }
 

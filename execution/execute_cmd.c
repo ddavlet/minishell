@@ -13,7 +13,7 @@ int	execute_command(t_cmd2 *cmd)
 	{
 		path = (const char *)build_path_from_env(argv[0], cmd->execution->shell_env);
 		if (path == NULL)
-			return (terminate(cmd, 127, "minishell: couldn't find path"));
+			terminate(cmd, 127, "minishell: couldn't find path");
 	}
 	else
 		path = argv[0];

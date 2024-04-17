@@ -38,7 +38,7 @@ t_cmd2		*get_previous_cmd(t_cmd2 *cmd);
 void		exit_handler(int status);
 void		msg_error(char *err);
 void		free_arr2d(void **arr2d);
-int			terminate(t_cmd2 *cmd, int status, char *msg);
+void		terminate(t_cmd2 *cmd, int status, char *msg);
 int			is_builtin(t_cmd2 *cmd);
 void		cmd_check(t_cmd2 *cmd);
 int			is_piped(t_cmd2 *cmd);

@@ -25,7 +25,7 @@ void exit_handler(int status)
 		exit(status);
 }
 
-int terminate(t_cmd2 *cmds, int status, char *msg)
+void	terminate(t_cmd2 *cmds, int status, char *msg)
 {
 	t_env	*shell_env;
 
@@ -37,7 +37,7 @@ int terminate(t_cmd2 *cmds, int status, char *msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
 	}
 	append_envp(shell_env, "LAST_EXIT_STATUS", "127");
-	return (status);
+	exit (status);
 }
 
 int is_builtin(t_cmd2 *cmd)
