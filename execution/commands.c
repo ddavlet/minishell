@@ -22,6 +22,6 @@ t_cmd2	*get_previous_cmd(t_cmd2 *cmd)
 	prev = cmd->cmds;
 	while (prev && prev->next != cmd)
 		prev = prev->next;
-    cmd_check(prev);
+	cmd_check(prev);
 	return (prev);
 }

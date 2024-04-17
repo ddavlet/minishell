@@ -42,13 +42,13 @@ int	evaluate_logic_operation(t_cmd2 *cmd)
 			&& exit_status == EXIT_SUCCESS))
 		return (1);
 	else if (is_first_operant(cmd) && (operation == AND_
-			&& exit_status == EXIT_FAILURE))
+			&& exit_status))
 		return (1);
 	if (is_second_operant(cmd) && (operation == OR_
-			&& exit_status == EXIT_FAILURE))
+			&& exit_status))
 		return (1);
 	else if (is_second_operant(cmd) && (operation == AND_
-			&& exit_status == EXIT_FAILURE))
+			&& exit_status))
 		return (1);
     return (0);
 }

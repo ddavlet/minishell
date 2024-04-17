@@ -9,10 +9,10 @@ int	exit_code(int exit_status)
 	// printf("%d\n", WIFEXITED(exit_status));
 	// printf("%d\n", WIFSIGNALED(exit_status));
 	// printf("%d\n", WIFSTOPPED(exit_status));
-	// if (WEXITSTATUS(exit_status))
-	// 	return (WEXITSTATUS(exit_status));
-	// if (WTERMSIG(exit_status))
-	// 	return (WTERMSIG(exit_status) + 128);
+	if (WEXITSTATUS(exit_status))
+		return (WEXITSTATUS(exit_status));
+	if (WTERMSIG(exit_status))
+		return (WTERMSIG(exit_status) + 128);
 	return (0);
 }
 
@@ -56,7 +56,7 @@ void wait_until(t_cmd2 *cmd)
 	}
 }
 
-int wait_check(t_cmd2 *cmd)
+int	wait_check(t_cmd2 *cmd)
 {
 	cmd_check(cmd);
 	if (cmd->next == NULL)

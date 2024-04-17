@@ -18,28 +18,28 @@ int	execute_command(t_cmd2 *cmd)
 	else
 		path = argv[0];
 	if (execve(path, argv, envp) == -1)
-		terminate_shell(cmd->execution->shell_env, 126, "minishell: Permission denied");
+		terminate_shell(cmd->execution->shell_env, 126, "minishell: permission denied");
 	return (0);
 }
 
 int	execute_cmd(t_cmd2 *cmd)
 {
-    pid_t   pid;
+	pid_t	pid;
 
-    cmd_check(cmd);
+	cmd_check(cmd);
 	pid = cmd->execution->pid;
-    pid = fork();
+	pid = fork();
 	if (pid == -1)
-        terminate(cmd, EXIT_FAILURE, "minishell: failed to fork");
+		terminate(cmd, EXIT_FAILURE, "minishell: failed to fork");
 	else if (pid == 0)
-    {
-        if (is_builtin(cmd))
-        {
-            builtin_router(cmd);
-            exit(cmd->execution->exit_status);
-        }
-        else
+	{
+		if (is_builtin(cmd))
+		{
+			builtin_router(cmd);
+			exit(cmd->execution->exit_status);
+		}
+		else
 			return (execute_command(cmd));
-    }
+	}
 	return (0);
 }
