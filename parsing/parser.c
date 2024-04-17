@@ -17,7 +17,6 @@ t_cmd2	*parser(t_token *tokens, t_env *shell_env)
 		return (NULL);
 	}
 	process_quotations(cmds, shell_env);
-	expand_variables(cmds, shell_env);
 	expand_wildcards(cmds, shell_env);
 	return (cmds);
 }
