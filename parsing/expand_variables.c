@@ -71,26 +71,20 @@ const char	**get_argv_variables(const char **argv, t_env *shell_env)
 	return (new);
 }
 
-void	expand_variables(t_cmd2 *cmds, t_env *shell_env)
+void	expand_variables(t_cmd2 *cmd, t_env *shell_env)
 {
 	const char	**argv_new;
-	t_cmd2		*cmd;
 
-	cmd = cmds;
-	if (!cmds)
-		terminate_parsing(NULL, shell_env, cmds, "missing cmds");
-	while (cmd)
+	if (!cmd)
+		terminate_parsing(NULL, shell_env, cmd, "missing cmds");
+	if (argv_contains_variables(cmd->execution->argv))
 	{
-		if (argv_contains_variables(cmd->execution->argv))
-		{
-			argv_new = get_argv_variables(cmd->execution->argv, shell_env);
-			if (!argv_new)
-				terminate_parsing(NULL, shell_env, cmds,
-					"minishell: failed to initialize variables");
-			if (replace_argv(cmd, argv_new) == -1)
-				terminate_parsing(NULL, shell_env, cmds,
-					"minishell: failed to initialize variables");
-		}
-		cmd = cmd->next;
+		argv_new = get_argv_variables(cmd->execution->argv, shell_env);
+		if (!argv_new)
+			terminate_parsing(NULL, shell_env, cmd,
+				"minishell: failed to initialize variables");
+		if (replace_argv(cmd, argv_new) == -1)
+			terminate_parsing(NULL, shell_env, cmd,
+				"minishell: failed to initialize variables");
 	}
 }
