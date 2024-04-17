@@ -1,6 +1,6 @@
 #include "../parsing.h"
 
-void free_execution_data(t_execution *execution)
+void	free_execution_data(t_execution *execution)
 {
 	if (execution)
 	{

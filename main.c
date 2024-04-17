@@ -7,9 +7,11 @@ int	main(int argc, char *argv[], const char *envp[])
 	t_cmd2	*cmds;
 	t_token	*tokens;
 	t_env	*shell_env;
+	char	*prompt;
 
 	shell_env = initialize_shell(envp);
-	// printf("pid of main: %d\n", getpid());
+	if (!shell_env)
+		exit(1);
 	while (1)
 	{
 		g_signal = 0;
@@ -18,10 +20,9 @@ int	main(int argc, char *argv[], const char *envp[])
 			tokens = tokenizer(argv[2]);
 		else
 		{
-			const char *prompt = shell_prompt(shell_env);
-			// char *prompt = ft_strdup("ec 412");
+			prompt = shell_prompt(shell_env);
 			tokens = tokenizer(prompt);
-			free((char *)prompt);
+			free(prompt);
 		}
 		cmds = parser(tokens, shell_env);
 		execution(cmds);

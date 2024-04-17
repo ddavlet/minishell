@@ -1,8 +1,8 @@
 #include "parsing.h"
 
-t_execution	*initialize_execution_data(void)
+t_execution *initialize_execution_data(void)
 {
-t_execution	*execution;
+	t_execution *execution;
 
 	execution = (t_execution *)ft_calloc(1, sizeof(t_execution));
 	if (!execution)
@@ -17,10 +17,10 @@ t_execution	*execution;
 	return (execution);
 }
 
-t_cmd2	*initialize_command(void)
+t_cmd2 *initialize_command(void)
 {
-	t_cmd2		*cmd;
-	t_execution	*execution;
+	t_cmd2 *cmd;
+	t_execution *execution;
 
 	execution = initialize_execution_data();
 	if (!execution)
@@ -37,33 +37,27 @@ t_cmd2	*initialize_command(void)
 	return (cmd);
 }
 
-int	syntax_check(t_token *start, t_token *end)
+t_cmd2 *parse_command(t_token *start, t_token *end)
 {
-	(void)start;
-	(void)end;
-	 return 0;
-}
-
-t_cmd2	*parse_command(t_token *start, t_token *end)
-{
-	t_cmd2	*cmd;
+	t_cmd2 *cmd;
 
 	cmd = initialize_command();
 	if (!cmd)
-		return (NULL);
-    if (syntax_check(start, end) == -1)
-        return (NULL);
-    if (start->literal[0] == '(')
-    {
-        if (parse_nested_argv((char ***)&(cmd->execution->argv), start, end) == -1)
-        {
-            free_cmds(cmd);
-            return (NULL);
-        }
-    } 
-    else if (parse_redirections(&(cmd->execution->redirections), start, end) == -1
-		|| parse_argv((char ***)&(cmd->execution->argv), start, end) == -1
-		|| parse_operation(&(cmd->execution->operation), end) == -1)
+		return (NULL); //??
+	// if (syntax_check(start, end))
+	// {
+	// 	free_cmds(cmd);
+	// 	return (NULL);
+	// }
+	if (start->literal[0] == '(')
+	{
+		if (parse_nested_argv((char ***)&(cmd->execution->argv), start, end) == -1)
+		{
+			free_cmds(cmd);
+			return (NULL);
+		}
+	}
+	else if (parse_redirections(&(cmd->execution->redirections), start, end) == -1 || parse_argv((char ***)&(cmd->execution->argv), start, end) == -1 || parse_operation(&(cmd->execution->operation), end) == -1)
 	{
 		free_cmds(cmd);
 		return (NULL);

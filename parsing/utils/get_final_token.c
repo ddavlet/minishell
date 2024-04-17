@@ -10,5 +10,5 @@ t_token	*get_final_token(t_token *token)
 			return (token);
 		token = token->next;
 	}
-    return (token);
+	return (token);
 }

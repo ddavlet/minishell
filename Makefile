@@ -10,7 +10,7 @@ UTL_SRC_DIR := utils/
 WC_SRC_DIR := wildcard/
 IO_SOURCE := find_last_input_redir.c find_last_output_redir.c handle_append.c handle_here_document.c handle_input.c \
 				handle_truncate.c
-UTL_EXE_SOURCE := utils.c path.c cmd_check.c is_piped.c close_pipe.c
+UTL_EXE_SOURCE := utils.c path.c cmd_check.c is_piped.c close_pipe.c close_redir.c
 EXE_SOURCE := commands.c exit_codes.c and_or.c execute_cmd.c execute_builtin.c execution.c pipes.c set_input_output.c \
 				$(addprefix $(IO_SRC_DIR), $(IO_SOURCE)) $(addprefix $(UTL_SRC_DIR), $(UTL_EXE_SOURCE))
 EXE_SRCS = $(addprefix $(EXE_SRC_DIR), $(EXE_SOURCE))
@@ -20,7 +20,7 @@ UTL_PAR2_SOURCE := is_argv_token.c is_logic_token.c is_pipe_token.c is_redirecti
 					terminate_parsing.c parse_check.c argv_contains_variables.c speccase_utils.c env_utils2.c \
 					replace_argv.c argv_contains_wildcards.c close_fd.c argv_contains_quotations.c \
 					env_utils.c utils_unsetenvvar.c utils_wildcard.c utils_initenv.c merge_quotations.c \
-					get_final_token.c replace_sequence.c free_array_3d.c
+					get_final_token.c replace_sequence.c free_array_3d.c is_operation_token.c error_messages.c
 PAR2_SOURCE := parse_argv.c parse_nested_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
 				parser.c expand_variables.c initialize_commands.c expand_wildcards.c \
 				process_quotations.c \

@@ -4,7 +4,7 @@ int	parse_nested_argv(char ***ptr_argv, t_token *start, t_token *end)
 {
 	char **new;
 
-	if (!ptr_argv || !start || !end || start != end)
+	if (!ptr_argv || !start || !end)
 		return (-1);
 	new = (char **)ft_calloc(4, sizeof(char *));
 	new[0] = ft_strdup("minishell");

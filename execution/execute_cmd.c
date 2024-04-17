@@ -1,25 +1,25 @@
 #include "execution.h"
 #include <errno.h>
 
-void	execute_command(t_cmd2 *cmd)
+int	execute_command(t_cmd2 *cmd)
 {
 	const char 	*path;
 	char 	*const *argv;
 	char 	*const *envp;
 
-    cmd_check(cmd);
+	cmd_check(cmd);
 	envp = cmd->execution->shell_env->envp;
 	argv = (char *const*)cmd->execution->argv;
 	if (ft_strchr(argv[0], '/') == NULL)
 	{
 		path = (const char *)build_path_from_env(argv[0], cmd->execution->shell_env);
 		if (path == NULL)
-			terminate(cmd, 127, "minishell: couldn't find path");
+			return (terminate(cmd, 127, "minishell: couldn't find path"));
 	}
 	else
 		path = argv[0];
 	execve(path, argv, envp);
-	// exit(0);
+	return (0);
 }
 
 void	execute_cmd(t_cmd2 *cmd)
@@ -39,6 +39,6 @@ void	execute_cmd(t_cmd2 *cmd)
             exit(cmd->execution->exit_status);
         }
         else
-            execute_command(cmd);
+			execute_command(cmd);
     }
 }

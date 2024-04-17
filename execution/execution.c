@@ -14,20 +14,22 @@ void execution(t_cmd2 *cmds)
 	int stdout;
 	t_cmd2 *cmd;
 
+	if (!cmds)
+		return ;
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	cmd = cmds;
 	while (cmd && cmd->execution->argv[0][0])
 	{
-		configure_signals_execution();
 		set_input_output(cmd);
+		configure_signals_execution();
 		if (is_builtin(cmd) && !is_piped(cmd))
 			builtin_router(cmd);
 		else
 			execute_cmd(cmd);
 		if (cmd->next == NULL || is_logic_operation(cmd))
 			if (wait_check(cmd))
-				break;
+				break ;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
 	}
