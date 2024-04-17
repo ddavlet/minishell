@@ -2,17 +2,15 @@
 
 int	passed_shell_operator(int pos, const char *line)
 {
-	if (pos == 1 && line[pos - 1] == '|' && line[pos] != '|')
+	if (pos > 0 && line[pos] == '|' && line[pos - 1] != '|')
 		return (1);
-	if (pos == 2 && line[pos - 1] == '|' && line[pos - 2] == '|')
+	if (pos > 0 && line[pos - 1] == '|' && line[pos] != '|')
 		return (1);
-	if (pos == 2 && line[pos - 1] == '&' && line[pos - 2] == '&')
+	if (pos > 0 && line[pos - 1] == '|' && line[pos - 2] == '|')
 		return (1);
-	if (pos > 2 && line[pos] == '&' && line[pos + 1] == '&')
+	if (pos > 0 && line[pos - 1] == '&' && line[pos - 2] == '&')
 		return (1);
-	if (pos > 2 && line[pos] == '|' && line[pos + 1] == '|')
-		return (1);
-	if (pos > 1 && line[pos] == '|' && line[pos + 1] != '|')
+	if (pos > 0 && line[pos + 1] == '&' && line[pos] == '&')
 		return (1);
 	return (0);
 }

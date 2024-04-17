@@ -41,6 +41,5 @@ int	execute_cmd(t_cmd2 *cmd)
 		else
 			return (execute_command(cmd));
 	}
-	cmd->execution->pid = pid;
 	return (0);
 }
