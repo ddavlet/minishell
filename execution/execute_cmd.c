@@ -28,6 +28,7 @@ int	execute_cmd(t_cmd2 *cmd)
 
 	cmd_check(cmd);
 	pid = fork();
+	cmd->execution->pid = pid;
 	if (pid == -1)
 		terminate(cmd, EXIT_FAILURE, "minishell: failed to fork");
 	else if (pid == 0)
