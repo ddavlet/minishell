@@ -19,7 +19,7 @@ void	execution(t_cmd2 *cmds)
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	cmd = cmds;
-	while (cmd && cmd->execution->argv[0][0])
+	while (cmd && cmd->execution->argv[0] && cmd->execution->argv[0][0])
 	{
 		set_input_output(cmd);
 		configure_signals_execution();

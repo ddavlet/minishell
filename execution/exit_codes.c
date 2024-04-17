@@ -1,6 +1,5 @@
 #include "execution.h"
 
-
 int	exit_code(int exit_status)
 {
 	if (WEXITSTATUS(exit_status))
