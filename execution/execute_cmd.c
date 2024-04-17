@@ -7,7 +7,7 @@ int	execute_command(t_cmd2 *cmd)
 	char 	*const *argv;
 	char 	*const *envp;
 
-    cmd_check(cmd);
+	cmd_check(cmd);
 	envp = cmd->execution->shell_env->envp;
 	argv = (char *const*)cmd->execution->argv;
 	if (ft_strchr(argv[0], '/') == NULL)
