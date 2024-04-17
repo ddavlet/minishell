@@ -6,7 +6,7 @@ int	 parse_operation(t_oper2 *ptr_operation, t_token *end)
 
 	if (!end)
 	{
-		ft_putendl_fd("token missing", STDERR_FILENO);
+		// ft_putendl_fd("token missing", STDERR_FILENO);
 		return (-1);
 	}
 	if (is_pipe_token(end))
