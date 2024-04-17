@@ -3,12 +3,6 @@
 
 int	exit_code(int exit_status)
 {
-	printf("%d\n", WEXITSTATUS(exit_status));
-	// printf("%d\n", WTERMSIG(exit_status));
-	// printf("%d\n", WSTOPSIG(exit_status));
-	// printf("%d\n", WIFEXITED(exit_status));
-	// printf("%d\n", WIFSIGNALED(exit_status));
-	// printf("%d\n", WIFSTOPPED(exit_status));
 	if (WEXITSTATUS(exit_status))
 		return (WEXITSTATUS(exit_status));
 	if (WTERMSIG(exit_status))
