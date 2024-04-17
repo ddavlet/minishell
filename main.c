@@ -12,7 +12,6 @@ int	main(int argc, char *argv[], const char *envp[])
 	shell_env = initialize_shell(envp);
 	if (!shell_env)
 		exit(1);
-	printf("main pid: %d\n", getpid());
 	while (1)
 	{
 		g_signal = 0;
@@ -27,10 +26,8 @@ int	main(int argc, char *argv[], const char *envp[])
 		}
 		cmds = parser(tokens, shell_env);
 		execution(cmds);
-		printf("executed: %d\n", getpid());
 		if (is_subshell(argc, argv))
 			terminate_shell(shell_env, EXIT_SUCCESS, NULL);
-		printf("after subshell check: %d\n", getpid());
 	}
 	return (0);
 }
