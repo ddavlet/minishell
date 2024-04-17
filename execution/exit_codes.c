@@ -34,7 +34,7 @@ void wait_until(t_cmd2 *cmd)
 	}
 	while (last != cmd->next)
 	{
-		if (is_builtin(last))
+		if (is_builtin(last) && !is_piped(last))
 			last = last->next;
 		else
 		{
