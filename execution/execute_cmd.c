@@ -27,7 +27,6 @@ int	execute_cmd(t_cmd2 *cmd)
 	pid_t	pid;
 
 	cmd_check(cmd);
-	pid = cmd->execution->pid;
 	pid = fork();
 	if (pid == -1)
 		terminate(cmd, EXIT_FAILURE, "minishell: failed to fork");
@@ -41,5 +40,6 @@ int	execute_cmd(t_cmd2 *cmd)
 		else
 			return (execute_command(cmd));
 	}
+	cmd->execution->pid = pid;
 	return (0);
 }
