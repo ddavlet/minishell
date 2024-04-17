@@ -20,9 +20,11 @@ void	execution(t_cmd2 *cmds)
 	stdout = dup(STDOUT_FILENO);
 	cmd = cmds;
 	configure_signals_execution();
-	while (cmd && cmd->execution->argv[0] && cmd->execution->argv[0][0])
+	while (cmd)
 	{
 		set_input_output(cmd);
+        if (cmd->execution->argv[0] == NULL)
+            continue;
 		expand_variables(cmd, cmds->execution->shell_env);
 		if (is_builtin(cmd) && !is_piped(cmd))
 			builtin_router(cmd);
