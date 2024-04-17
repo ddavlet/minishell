@@ -19,3 +19,7 @@ multiple subshells opened
 env | grep "LAST"
 
 echo test && (echo test1 && echo test2 | cat) | cat
+
+
+./test (permission restricted) - command failed to execute
+$?
