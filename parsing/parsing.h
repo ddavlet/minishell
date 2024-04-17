@@ -142,7 +142,7 @@ void						free_tokens(t_token *tokens);
 void						free_redirections(t_redir *redirs);
 void						free_argv(const char **argv);
 void						free_cmds(t_cmd2 *cmds);
-int							parse_check(t_token *tokens, t_env *shell_env);
+int							parse_check(t_token *tokens);
 int							argv_contains_variables(const char **argv);
 int							argv_contains_wildcards(const char **argv);
 char						*get_case(char *literal, t_env *shell_env);
