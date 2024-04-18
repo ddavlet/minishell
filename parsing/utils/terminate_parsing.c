@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:31 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:31 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:45:08 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 int	terminate_parsing(t_token *tokens, t_env *shell_env, t_cmd2 *cmds,
 		char *msg)
 {
-	// if (shell_env)
-	// 	free_env(shell_env);
 	free_cmds(cmds);
 	free_tokens(tokens);
 	if (msg)

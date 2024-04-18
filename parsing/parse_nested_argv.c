@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:43 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:43 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:01:37 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	parse_nested_argv(char ***ptr_argv, t_token *start, t_token *end)
 {
-	char **new;
+	char	**new;
 
 	if (!ptr_argv || !start || !end)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:49 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:49 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:01:02 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	add_redirection(t_redir **ptr_redirs, t_redir *new)
 		*ptr_redirs = new;
 }
 
-int parse_redirections(t_redir **ptr_redirs, t_token *start, t_token *end)
+int	parse_redir(t_redir **ptr_redirs, t_token *start, t_token *end)
 {
 	t_redir	*new;
 	t_token	*token;

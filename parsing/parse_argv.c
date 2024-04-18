@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:37 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:37 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:58:16 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,20 @@ int	get_argc(t_token *start, t_token *end)
 
 int	add_argument(char **ptr_argument, char **argv, t_token *token)
 {
-    *ptr_argument = ft_strdup(token->literal);
-    if (!*ptr_argument)
-    {
+	*ptr_argument = ft_strdup(token->literal);
+	if (!*ptr_argument)
+	{
 		free_argv((const char **)argv);
 		return (-1);
 	}
 	return (0);
 }
 
-int parse_argv(char ***ptr_argv, t_token *start, t_token *end)
+int	parse_argv(char ***ptr_argv, t_token *start, t_token *end)
 {
 	int		argc;
 	int		i;
-    char    **argv_new;
+	char	**argv_new;
 	t_token	*token;
 
 	argc = get_argc(start, end);
@@ -60,11 +60,11 @@ int parse_argv(char ***ptr_argv, t_token *start, t_token *end)
 		if (is_argv_token(token))
 			if (add_argument(&(argv_new[i++]), argv_new, token) == -1)
 				return (-1);
-        if (is_redirection_token_without_name(token))
-            token = token->next->next;
+		if (is_redirection_token_without_name(token))
+			token = token->next->next;
 		else
 			token = token->next;
 	}
-    *ptr_argv = argv_new;
+	*ptr_argv = argv_new;
 	return (0);
 }

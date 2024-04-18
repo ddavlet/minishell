@@ -6,13 +6,13 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:19 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:20 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:19:17 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parsing.h"
 
-int syntax_check(t_token *tokens)
+int	syntax_check(t_token *tokens)
 {
 	t_token	*tmp;
 	t_token	*first;
@@ -39,7 +39,6 @@ int syntax_check(t_token *tokens)
 
 int	parse_check(t_token *tokens)
 {
-
 	if (!tokens->literal[0])
 		return (1);
 	return (syntax_check(tokens));

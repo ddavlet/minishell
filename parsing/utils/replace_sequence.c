@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:25 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:26 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:17:16 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 int	get_replace_count(const char *literal, const char *sequence,
 		t_replacer replacer)
@@ -29,7 +28,7 @@ int	get_replace_count(const char *literal, const char *sequence,
 	while (needle != NULL)
 	{
 		count++;
-		tmp = needle + replacer.seq_len; // Move past the sequence
+		tmp = needle + replacer.seq_len;
 		needle = ft_strnstr(tmp, sequence, ft_strlen(tmp));
 	}
 	return (count);
@@ -57,21 +56,19 @@ t_replacer	initialize_replacer(const char *literal, const char *sequence,
 	return (replacer);
 }
 
-
-
 const char	*replace_loop(const char *literal, const char *sequence,
 		const char *replacement, t_replacer replacer)
 {
 	int			head_len;
 	const char	*tmp;
 	const char	*current;
-	char	*result;
-	char	*result_ptr;
+	char		*result;
+	char		*result_ptr;
 
 	result = (char *)ft_calloc(replacer.result_len + 1, 1);
 	if (result == NULL)
-        return (NULL);
-    result_ptr = result;
+		return (NULL);
+	result_ptr = result;
 	current = literal;
 	tmp = ft_strnstr(current, sequence, ft_strlen(current));
 	while (tmp != NULL)
@@ -85,16 +82,5 @@ const char	*replace_loop(const char *literal, const char *sequence,
 		tmp = ft_strnstr(current, sequence, ft_strlen(current));
 	}
 	strcpy(result_ptr, current);
-    return (result);
-}
-
-const char	*replace_sequence(const char *literal, const char *sequence,
-		const char *replacement)
-{
-	t_replacer	replacer;
-
-	if (!literal || !sequence || !replacement)
-        return (NULL);
-	replacer = initialize_replacer(literal, sequence, replacement);
-    return (replace_loop(literal, sequence, replacement, replacer));
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:40 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:40 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:14:07 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,16 @@ t_cmd2	*parse_command(t_token *start, t_token *end)
 		return (NULL);
 	if (start->literal[0] == '(')
 	{
-		if (parse_nested_argv((char ***)&(cmd->execution->argv), start, end) ==
-			-1 || parse_operation(&(cmd->execution->operation), end) == -1)
+		if (parse_nested_argv((char ***)&(cmd->execution->argv),
+				start, end) == -1
+			|| parse_operation(&(cmd->execution->operation), end) == -1)
 		{
 			free_cmds(cmd);
 			return (NULL);
 		}
 	}
-	else if (parse_redirections(&(cmd->execution->redirections), start, end) ==
-		-1 || parse_argv((char ***)&(cmd->execution->argv), start, end) == -1
+	else if (parse_redir(&(cmd->execution->redirections), start, end) == -1
+		|| parse_argv((char ***)&(cmd->execution->argv), start, end) == -1
 		|| parse_operation(&(cmd->execution->operation), end) == -1)
 	{
 		free_cmds(cmd);

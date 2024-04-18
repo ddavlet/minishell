@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:34 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:35 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:12:48 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	add_cmd(t_cmd2 **ptr_cmds, t_cmd2 *new, t_env *shell_env)
 
 t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 {
-	t_cmd2 *cmds;
-	t_cmd2 *new;
-	t_token *start;
-	t_token *end;
+	t_cmd2	*cmds;
+	t_cmd2	*new;
+	t_token	*start;
+	t_token	*end;
 
 	parse_check(tokens);
 	cmds = NULL;
@@ -53,6 +53,6 @@ t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 		add_cmd(&cmds, new, shell_env);
 		start = end->next;
 	}
-    free_tokens(tokens);
+	free_tokens(tokens);
 	return (cmds);
 }

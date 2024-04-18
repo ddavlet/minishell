@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:27:58 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:27:59 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:35:10 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	edge_case(const char *literal, const char *dollar_sign)
 
 const char	*find_variable(const char *literal)
 {
-	const char *sign;
+	const char	*sign;
 
 	sign = ft_strchr(literal, '$');
 	while (sign && edge_case(literal, sign))

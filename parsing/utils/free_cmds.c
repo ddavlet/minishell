@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:28:27 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:28:28 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:40:59 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	free_execution_data(t_execution *execution)
 	}
 }
 
-void free_cmds(t_cmd2 *cmds)
+void	free_cmds(t_cmd2 *cmds)
 {
-	t_cmd2 *tmp;
-	t_cmd2 *cmd;
+	t_cmd2	*tmp;
+	t_cmd2	*cmd;
 
 	cmd = cmds;
 	while (cmd)

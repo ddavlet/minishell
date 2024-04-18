@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:07 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:08 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:17:52 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 int	is_redirection_token(t_token *token)
 {
 	if (!token)
-	{
-		// ft_putendl_fd("token missing", STDERR_FILENO);
 		return (0);
-	}
 	if (ft_strncmp(token->literal, "<", ft_strlen("<")) == 0
 		|| ft_strncmp(token->literal, ">", ft_strlen(">")) == 0
 		|| ft_strncmp(token->literal, "<<", ft_strlen("<<")) == 0

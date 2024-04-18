@@ -6,21 +6,18 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:46 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:46 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:12:36 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	 parse_operation(t_oper2 *ptr_operation, t_token *end)
+int	parse_operation(t_oper2 *ptr_operation, t_token *end)
 {
 	int	n;
 
 	if (!end)
-	{
-		// ft_putendl_fd("token missing", STDERR_FILENO);
 		return (-1);
-	}
 	if (is_pipe_token(end))
 		*ptr_operation = PIPE_;
 	if (is_logic_operation_token(end))

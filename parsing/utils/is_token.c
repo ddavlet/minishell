@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:14 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:18:42 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	passed_redir_sign(int pos, const char *line)
 		return (1);
 	if (pos == 2 && line[pos - 1] == '>' && line[pos - 2] == '>')
 		return (1);
-
 	if (pos > 2 && line[pos] == '<' && line[pos + 1] == '<')
 		return (1);
 	if (pos > 1 && line[pos] == '<' && line[pos + 1] != '<')

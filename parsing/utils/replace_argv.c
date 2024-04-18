@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:22 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:23 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:44:41 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	replace_argv(t_cmd2 *cmd, const char **argv_new)
 {
-	t_execution *execution_new;
+	t_execution	*execution_new;
 
 	if (!cmd || !argv_new)
 		return (-1);
@@ -29,7 +29,7 @@ int	replace_argv(t_cmd2 *cmd, const char **argv_new)
 	execution_new->redirections = cmd->execution->redirections;
 	execution_new->shell_env = cmd->execution->shell_env;
 	free_argv(cmd->execution->argv);
-    free(cmd->execution);
+	free(cmd->execution);
 	cmd->execution = execution_new;
-    return (0);
+	return (0);
 }

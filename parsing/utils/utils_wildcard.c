@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:39 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:29:40 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:52:15 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ static t_tree	*read_directory(t_env *env)
 	t_tree			*tree;
 	char			*tmp;
 
-	tmp = get_variable_value("PWD", env); // change to what we need
+	tmp = get_variable_value("PWD", env);
 	dir = opendir(tmp);
 	free(tmp);
 	if (!dir)
 	{
 		ft_putendl_fd("wildcard parsing error", STDERR_FILENO);
-		return (NULL); // catch it!
+		return (NULL);
 	}
 	tree = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (entry->d_type == 8) // ??
+		if (entry->d_type == 8)
 			add_branch(tree, entry->d_name, entry->d_name);
 		entry = readdir(dir);
 	}
@@ -61,7 +61,8 @@ char	***get_wildcard(const char **argv, t_env *env)
 	int		i;
 	t_tree	*tree;
 
-	argv_expanded = (char ***)ft_calloc(ft_arr_len((char **)argv) + 1, sizeof(char **));
+	argv_expanded = (char ***)ft_calloc(ft_arr_len((char **)argv) + 1,
+			sizeof(char **));
 	tree = read_directory(env);
 	if (!argv_expanded || !tree)
 		return (ft_free_ptr(argv_expanded, tree));

@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:20 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:31:21 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:04:50 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ t_token	*tokenizer(const char *line)
 	t_token	*tokens;
 	t_token	*new;
 
-	// if (!line)
-	// 	return (NULL);
 	if (!line || !*line)
 		return (get_token(line));
 	tokens = NULL;
