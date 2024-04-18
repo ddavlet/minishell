@@ -44,7 +44,12 @@ int	builtin_cd(const char **argv, t_env *shell_env)
 	process_path(argv, shell_env, &path);
 	if (!path)
 		return (builtin_err_gen("cd", "failed path", NULL));
-	chdir(path);
+
+	if (chdir(path))
+	{
+		write(2, "minishell: cd: ", 15);
+		perror(argv[2]);
+	}
 	free(path);
 	cwd = getcwd(NULL, 0);
 	value = get_variable_value("PWD", shell_env);
