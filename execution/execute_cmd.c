@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_cmd.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:32:16 by vketteni          #+#    #+#             */
+/*   Updated: 2024/04/18 14:09:03 by vketteni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 int	execute_command(t_cmd2 *cmd)
 {
 	const char	*path;
+	char *const	*argv;
+	char *const	*envp;
 
-	char *const *argv;
-	char *const *envp;
 	cmd_check(cmd);
 	envp = cmd->execution->shell_env->envp;
 	argv = (char *const *)cmd->execution->argv;
@@ -43,7 +55,5 @@ int	execute_cmd(t_cmd2 *cmd)
 		else
 			return (execute_command(cmd));
 	}
-	// if (cmd->execution->pipe)
-		// close_pipe(cmd->execution->pipe);
 	return (0);
 }

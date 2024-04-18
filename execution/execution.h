@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:32:22 by vketteni          #+#    #+#             */
+/*   Updated: 2024/04/18 14:15:34 by vketteni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
@@ -20,15 +32,12 @@ int			is_logic_operation(t_cmd2 *cmd);
 int			execute_cmd(t_cmd2 *cmd);
 char		*build_path_from_env(char *name, t_env *env);
 
-extern int	g_signal;
-
 /*
  *   pipes
  */
 t_pipe		*create_pipe(void);
-void	close_pipe(t_pipe *pipe);
-void    close_redir(t_fd_state *input_fd_state);
-
+void		close_pipe(t_pipe *pipe);
+void		close_redir(t_fd_state *input_fd_state);
 
 /*
  *	utils
@@ -45,7 +54,6 @@ int			is_piped(t_cmd2 *cmd);
 void		update_exit_status(int exit_status, t_env *shell_env);
 void		terminate_shell(t_env *shell_env, int exit_status, char *msg);
 
-
 /*
  *   io_redirections
  */
@@ -58,14 +66,6 @@ t_fd_state	*input_redirection(const char *file_name);
 void		handle_redir_input(t_cmd2 *cmd);
 void		handle_redir_output(t_cmd2 *cmd);
 
-/*
- *   debug
- */
-// void						debug_close_fd(t_fd_state *fd_state);
-// void						debug_pipe_information(t_pipe *pipe);
-// void						debug_started(char *msg);
-// void						debug_ended(char *msg);
-// void						debug_cmd_info(t_executor *exec);
-// void						debug_print_exit_code(t_executor *exec);
+extern int	g_signal;
 
 #endif

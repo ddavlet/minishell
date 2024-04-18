@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_codes.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:32:27 by vketteni          #+#    #+#             */
+/*   Updated: 2024/04/18 14:11:13 by vketteni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 int	exit_code(int exit_status)
@@ -11,27 +23,24 @@ int	exit_code(int exit_status)
 
 void	update_exit_status(int exit_status, t_env *shell_env)
 {
-	char		*tmp;
+	char	*tmp;
 
 	tmp = ft_itoa(exit_status);
 	append_envp(shell_env, "LAST_EXIT_STATUS", tmp);
 	free(tmp);
 }
 
-void wait_until(t_cmd2 *cmd)
+void	wait_until(t_cmd2 *cmd)
 {
-	t_cmd2 *last;
-	int exit_status;
-	pid_t pid;
+	t_cmd2	*last;
+	int		exit_status;
+	pid_t	pid;
 	char	*tmp;
 
 	cmd_check(cmd);
 	last = cmd->cmds;
 	while (last && last->execution->exit_status == EXIT_SUCCESS)
-	{
-		cmd_check(last);
 		last = last->next;
-	}
 	while (last != cmd->next)
 	{
 		if (is_builtin(last) && !is_piped(last))

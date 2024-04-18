@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_input_output.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:32:46 by vketteni          #+#    #+#             */
+/*   Updated: 2024/04/18 14:49:09 by vketteni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 void	handle_pipe_input(t_cmd2 *cmd)
@@ -63,8 +75,8 @@ void	handle_redir_output(t_cmd2 *cmd)
 
 void	set_input_output(t_cmd2 *cmd)
 {
-	t_cmd2 *prev;
-	t_cmd2 *next;
+	t_cmd2	*prev;
+	t_cmd2	*next;
 
 	cmd_check(cmd);
 	if (cmd->execution->redirections)

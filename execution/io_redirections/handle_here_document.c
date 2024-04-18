@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_here_document.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:31:22 by vketteni          #+#    #+#             */
+/*   Updated: 2024/04/18 13:39:23 by vketteni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../execution.h"
 
 void	here_doc_warning(const char *delimiter)
@@ -5,9 +17,9 @@ void	here_doc_warning(const char *delimiter)
 	if (!g_signal)
 	{
 		write(1,
-				"minishell: warning: here-document "
-				"delimited by end-of-file (wanted `",
-				68);
+			"minishell: warning: here-document "
+			"delimited by end-of-file (wanted `",
+			68);
 		write(1, delimiter, ft_strlen(delimiter));
 		write(1, "')\n", 3);
 	}
