@@ -43,7 +43,7 @@ int	execute_cmd(t_cmd2 *cmd)
 		else
 			return (execute_command(cmd));
 	}
-	if (cmd->execution->pipe)
-		close_pipe(cmd->execution->pipe);
+	// if (cmd->execution->pipe)
+		// close_pipe(cmd->execution->pipe);
 	return (0);
 }
