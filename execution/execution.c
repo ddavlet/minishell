@@ -26,11 +26,11 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 			if (cmd->next == NULL || is_logic_operation(cmd))
 				if (wait_check(cmd))
 					break ;
-			reset_input_output(stdin, stdout);
 		}
 		else
 			cmd->execution->exit_status = EXIT_SUCCESS;
 		cmd = cmd->next;
+		reset_input_output(stdin, stdout);
 	}
 	reset_input_output(stdin, stdout);
 }
