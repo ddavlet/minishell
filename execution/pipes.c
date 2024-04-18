@@ -2,9 +2,9 @@
 
 t_fd_state	*initialize_fd_state(int fd)
 {
-    t_fd_state  *fd_state;
+	t_fd_state  *fd_state;
 
-    fd_state = (t_fd_state *)ft_calloc(1, sizeof(t_fd_state));
+	fd_state = (t_fd_state *)ft_calloc(1, sizeof(t_fd_state));
 	if (!fd_state)
 		return (NULL);
 	fd_state->fd = fd;
