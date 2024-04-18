@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:13 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 14:18:42 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:26:27 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	is_token(int pos, const char *line)
 	}
 	if (line[pos] == 0)
 		return (0);
-	else if (passed_shell_operator(pos, line))
+	else if (passed_shell_operator(pos, line) && !is_between_quotes(pos, line))
 		return (0);
 	else if (passed_redir_sign(pos, line))
 		return (0);
