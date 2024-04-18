@@ -25,8 +25,10 @@ int syntax_check(t_token *tokens)
 	return (0);
 }
 
-int	parse_check(t_token *tokens, t_env *shell_env)
+int	parse_check(t_token *tokens)
 {
-	(void)shell_env;
+
+	if (!tokens->literal[0])
+		return (1);
 	return (syntax_check(tokens));
 }
