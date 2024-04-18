@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:30:41 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/16 15:27:21 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:18:54 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ static void	handle_sigint_execution(int signum)
 static void	handle_sigint_hear_doc(int signum)
 {
 	g_signal = signum;
-	write(STDOUT_FILENO, "\n", 1);
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	// write(STDOUT_FILENO, "\n", 1);
 	close(0);
 }
 

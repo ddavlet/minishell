@@ -67,15 +67,15 @@ void	set_input_output(t_cmd2 *cmd)
 	t_cmd2 *next;
 
 	cmd_check(cmd);
-	prev = get_previous_cmd(cmd);
-	next = get_next_cmd(cmd);
 	if (cmd->execution->redirections)
 	{
 		handle_redir_input(cmd);
 		handle_redir_output(cmd);
 	}
+	prev = get_previous_cmd(cmd);
 	if (prev && prev->execution->operation == PIPE_)
 		handle_pipe_input(cmd);
+	next = get_next_cmd(cmd);
 	if (next && cmd->execution->operation == PIPE_)
 		handle_pipe_output(cmd);
 }
