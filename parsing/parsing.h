@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:31:03 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 14:16:56 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -98,97 +110,91 @@ typedef struct s_token
 	t_token					*next;
 }							t_token;
 
-t_token						*tokenizer(const char *line);
-t_token						*initialize_token(const char *literal);
-void						add_token(t_token **tokens, t_token *new);
-t_token						*get_token(const char *line);
-int							parse_redirections(t_redir **ptr_redirs,
-								t_token *start, t_token *end);
-t_cmd2						*parse_command(t_token *start, t_token *end);
-int							parse_argv(char ***ptr_argv, t_token *start,
-								t_token *end);
-int							parse_operation(t_oper2 *ptr_operation,
-								t_token *end);
-t_cmd2						*initialize_commands(t_token *tokens,
-								t_env *shell_env);
-t_cmd2						*parse_command(t_token *start, t_token *end);
-t_cmd2						*initialize_command(void);
-t_execution					*initialize_execution_data(void);
-t_cmd2						*parser(t_token *tokens, t_env *shell_env);
-void						expand_wildcards(t_cmd2 *cmds, t_env *shell_env);
-void						expand_variables(t_cmd2 *cmds, t_env *shell_env);
-char						*get_shell_variable(const char *dollar_sign,
-								const char *literal, t_env *shell_env);
-void						process_quotations(t_cmd2 *cmds, t_env *shell_env);
+t_token			*tokenizer(const char *line);
+t_token			*initialize_token(const char *literal);
+void			add_token(t_token **tokens, t_token *new);
+t_token			*get_token(const char *line);
+int				parse_redir(t_redir **ptr_redirs,
+					t_token *start, t_token *end);
+t_cmd2			*parse_command(t_token *start, t_token *end);
+int				parse_argv(char ***ptr_argv, t_token *start,
+					t_token *end);
+int				parse_operation(t_oper2 *ptr_operation,
+					t_token *end);
+t_cmd2			*initialize_commands(t_token *tokens,
+					t_env *shell_env);
+t_cmd2			*parse_command(t_token *start, t_token *end);
+t_cmd2			*initialize_command(void);
+t_execution		*initialize_execution_data(void);
+t_cmd2			*parser(t_token *tokens, t_env *shell_env);
+void			expand_wildcards(t_cmd2 *cmds, t_env *shell_env);
+void			expand_variables(t_cmd2 *cmds, t_env *shell_env);
+char			*get_shell_variable(const char *dollar_sign,
+					const char *literal, t_env *shell_env);
+void			process_quotations(t_cmd2 *cmds, t_env *shell_env);
 
 /*
  *   utils
  */
-const char					*merge_quotations(const char *literal);
-int							is_argv_token(t_token *token);
-int							is_token(int pos, const char *line);
-int							is_operation_token(t_token *token);
-int							is_pipe_token(t_token *token);
-int							is_logic_operation_token(t_token *token);
-int							is_redirection_token(t_token *token);
-int							is_between_char(int pos, const char *line, char c);
-int							is_between_quotes(int pos, const char *line);
-int							is_special_case(const char *literal);
-void						free_tokens(t_token *tokens);
-int						terminate_parsing(t_token *tokens, t_env *shell_env,
-								t_cmd2 *cmds, char *msg);
-t_token						*get_final_token(t_token *token);
-void						free_tokens(t_token *tokens);
-void						free_redirections(t_redir *redirs);
-void						free_argv(const char **argv);
-void						free_cmds(t_cmd2 *cmds);
-int							parse_check(t_token *tokens);
-int							argv_contains_variables(const char **argv);
-int							argv_contains_wildcards(const char **argv);
-char						*get_case(char *literal, t_env *shell_env);
-const char					*find_variable(const char *literal);
-int							replace_argv(t_cmd2 *cmd, const char **argv_new);
-const char					*replace_variables(const char *literal,
-								t_env *shell_env);
-void						close_fd(t_fd_state *fd_state);
-const char					*get_variable_name(const char *dollar_sign);
-int							argv_contains_quotations(const char **argv);
-int							contains_quotations(const char *literal);
-int							contains_wildcards(const char *literal);
-const char					*replace_sequence(const char *literal,
-								const char *sequence, const char *replacement);
-int							parse_nested_argv(char ***ptr_argv, t_token *start,
-								t_token *end);
-void						free_array_3d(char ***arr_3d);
-int	is_redirection_token_without_name(t_token *token);
+const char		*merge_quotations(const char *literal);
+int				is_argv_token(t_token *token);
+int				is_token(int pos, const char *line);
+int				is_operation_token(t_token *token);
+int				is_pipe_token(t_token *token);
+int				is_logic_operation_token(t_token *token);
+int				is_redirection_token(t_token *token);
+int				is_between_char(int pos, const char *line, char c);
+int				is_between_quotes(int pos, const char *line);
+int				is_special_case(const char *literal);
+void			free_tokens(t_token *tokens);
+int				terminate_parsing(t_token *tokens, t_env *shell_env,
+					t_cmd2 *cmds, char *msg);
+t_token			*get_final_token(t_token *token);
+void			free_tokens(t_token *tokens);
+void			free_redirections(t_redir *redirs);
+void			free_argv(const char **argv);
+void			free_cmds(t_cmd2 *cmds);
+int				parse_check(t_token *tokens);
+int				argv_contains_variables(const char **argv);
+int				argv_contains_wildcards(const char **argv);
+char			*get_case(char *literal, t_env *shell_env);
+const char		*find_variable(const char *literal);
+int				replace_argv(t_cmd2 *cmd, const char **argv_new);
+const char		*replace_variables(const char *literal,
+					t_env *shell_env);
+void			close_fd(t_fd_state *fd_state);
+const char		*get_variable_name(const char *dollar_sign);
+int				argv_contains_quotations(const char **argv);
+int				contains_quotations(const char *literal);
+int				contains_wildcards(const char *literal);
+int				parse_nested_argv(char ***ptr_argv, t_token *start,
+					t_token *end);
+void			free_array_3d(char ***arr_3d);
+int				is_redirection_token_without_name(t_token *token);
 
 /*Utils*/
-char						**append_arr_str(char **arr, char *str);
+char			**append_arr_str(char **arr, char *str);
 
 /*Terminating*/
-void						free_env(t_env *shell_env);
+void			free_env(t_env *shell_env);
 
 /*Error*/
-int							syntax_error(const char *token_name);
-
+int				syntax_error(const char *token_name);
 
 /*Enviroment function*/
-t_env						*init_env(const char **envp);
-char						**init_envv(t_env *shell_env);
+t_env			*init_env(const char **envp);
+char			**init_envv(t_env *shell_env);
 
 /*Find and set*/
-void						append_envp(t_env *shell_env, char *name,
-								char *content);
-int							unset_envvar(t_env *shell_env, const char *to_find);
-void						add_path(t_env *shell_env, char *path);
-
-char						***get_wildcard(const char **argv, t_env *env);
-
-char						**arrstr_copy(const char **envp);
-
-ssize_t						ft_arr_len(char **arr);
-char						*get_variable_value(const char *name,
-								t_env *shell_env);
-void						*free_ptr_str(char **ptr);
+void			append_envp(t_env *shell_env, char *name,
+					char *content);
+int				unset_envvar(t_env *shell_env, const char *to_find);
+void			add_path(t_env *shell_env, char *path);
+char			***get_wildcard(const char **argv, t_env *env);
+char			**arrstr_copy(const char **envp);
+ssize_t			ft_arr_len(char **arr);
+char			*get_variable_value(const char *name,
+					t_env *shell_env);
+void			*free_ptr_str(char **ptr);
 
 #endif

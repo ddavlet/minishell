@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 18:02:40 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/03/26 18:03:28 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:48:36 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	*ft_intarrdup(int *arr)
 {
-	int	*new_arr;
+	int		*new_arr;
 	ssize_t	i;
 
 	i = 0;

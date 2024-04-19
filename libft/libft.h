@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:27:43 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/14 15:21:01 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:48:27 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
-
 
 typedef struct s_list
 {
@@ -86,7 +85,6 @@ char	*ft_strjoin_free(char *s1, char const *s2);
 ssize_t	ft_arr_len(char **arr);
 char	**append_arr_str(char **arr, char *str);
 char	**arrstr_copy(const char **envp);
-char	**inject_string(char **to_arr, char **from_arr, ssize_t inj_indx);
 int		*ft_intarrdup(int *arr);
 void	*ft_free_ptr(void *ptr1, void *ptr2);
 

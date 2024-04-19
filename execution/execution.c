@@ -43,6 +43,7 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 			cmd->execution->exit_status = EXIT_SUCCESS;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
+		reset_input_output(stdin, stdout);
 	}
 	reset_input_output(stdin, stdout);
 }

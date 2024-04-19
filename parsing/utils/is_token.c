@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   is_token.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:29:13 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 15:26:27 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parsing.h"
 
 int	passed_shell_operator(int pos, const char *line)
@@ -25,7 +37,6 @@ int	passed_redir_sign(int pos, const char *line)
 		return (1);
 	if (pos == 2 && line[pos - 1] == '>' && line[pos - 2] == '>')
 		return (1);
-
 	if (pos > 2 && line[pos] == '<' && line[pos + 1] == '<')
 		return (1);
 	if (pos > 1 && line[pos] == '<' && line[pos + 1] != '<')
@@ -71,7 +82,7 @@ int	is_token(int pos, const char *line)
 	}
 	if (line[pos] == 0)
 		return (0);
-	else if (passed_shell_operator(pos, line))
+	else if (passed_shell_operator(pos, line) && !is_between_quotes(pos, line))
 		return (0);
 	else if (passed_redir_sign(pos, line))
 		return (0);

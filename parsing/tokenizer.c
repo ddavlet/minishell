@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:31:20 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 14:04:50 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 t_token	*initialize_token(const char *literal)
@@ -61,8 +73,6 @@ t_token	*tokenizer(const char *line)
 	t_token	*tokens;
 	t_token	*new;
 
-	// if (!line)
-	// 	return (NULL);
 	if (!line || !*line)
 		return (get_token(line));
 	tokens = NULL;

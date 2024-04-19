@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_unsetenvvar.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:29:37 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 13:49:38 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parsing.h"
 
 static int	remove_envvar(t_env	*shell_env, const char *name)
@@ -37,6 +49,11 @@ int	unset_envvar(t_env *shell_env, const char *to_find)
 	{
 		free_ptr_str(shell_env->envp);
 		shell_env->envp = init_envv(shell_env);
+		if (!shell_env->envp)
+		{
+			write(2, "minishell: memory allocation error occured", 42);
+			exit(255);
+		}
 	}
 	return (0);
 }

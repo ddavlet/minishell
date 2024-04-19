@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   merge_quotations.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:29:16 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 13:44:17 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parsing.h"
 
 const char	*get_closing_quote(const char *literal, const char *opening)
@@ -32,7 +44,8 @@ const char	*process_until_quote(const char *joined, const char *quote,
 {
 	const char	*tmp;
 
-	tmp = ft_substr(literal, *ptr_start_pos, (quote) - (literal + *ptr_start_pos));
+	tmp = ft_substr(literal, *ptr_start_pos,
+			(quote) - (literal + *ptr_start_pos));
 	if (!tmp)
 		return (NULL);
 	joined = (const char *)ft_strjoin_free((char *)joined, tmp);

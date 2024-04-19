@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   argv_contains_quotations.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:27:51 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 13:34:50 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parsing.h"
 
 int	is_first_letter(const char *ptr_char, const char *literal)
@@ -13,7 +25,8 @@ int	is_literal_char(const char *ptr_char, const char *literal)
 {
 	if (!literal || !ptr_char || (literal - ptr_char) == 0)
 		return (0);
-	else if (*(ptr_char - 1) == '\\' && !is_literal_char(ptr_char - 1, literal))
+	else if (*(ptr_char - 1) == '\\'
+		&& !is_literal_char(ptr_char - 1, literal))
 		return (1);
 	return (0);
 }

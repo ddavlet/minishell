@@ -27,8 +27,15 @@ void	close_last_redir(t_redir *redir, t_fd_state *input_fd_state)
 		if (input_fd_state->pipe)
 			close_pipe(input_fd_state->pipe);
 		else
+		{
 			close_fd(input_fd_state);
+<<<<<<< HEAD
 	}
+=======
+			free(input_fd_state);
+		}
+    }
+>>>>>>> 4ea0d6d2b625d39dca2e620e79ef6cfd6d8181c7
 }
 
 t_fd_state	*last_input_redir(t_cmd2 *cmd)

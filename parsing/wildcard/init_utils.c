@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:29:48 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 13:52:26 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wildcard.h"
 
 static void	add_node(t_tree **list_p, char c, const char *content)
@@ -8,7 +20,7 @@ static void	add_node(t_tree **list_p, char c, const char *content)
 	last = *list_p;
 	new_node = (t_tree *)ft_calloc(sizeof(t_tree), 1);
 	if (!new_node)
-		return ; // dela with this return
+		return ;
 	new_node->letter = c;
 	if (content)
 	{

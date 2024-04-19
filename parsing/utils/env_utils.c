@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:28:09 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 13:49:23 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parsing.h"
 
 static void	add_envnode(t_env **list_p, char c, const char *content)
@@ -8,7 +20,7 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 	last = *list_p;
 	new_node = (t_env *)ft_calloc(sizeof(t_env), 1);
 	if (!new_node)
-		return ; // dela with this return
+		return ;
 	if (content)
 	{
 		new_node->content = ft_strdup(content);
@@ -25,7 +37,8 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 	}
 }
 
-static void	add_envvar(t_env *shell_env, const char *envvar, const char *content)
+static void	add_envvar(t_env *shell_env, const char *envvar,
+							const char *content)
 {
 	t_env	**child_p;
 
@@ -83,6 +96,11 @@ void	append_envp(t_env *shell_env, char *name, char *content)
 	add_envvar(shell_env, name, content);
 	free_ptr_str(shell_env->envp);
 	shell_env->envp = init_envv(shell_env);
+	if (!shell_env->envp)
+	{
+		write(2, "minishell: memory allocation error occured", 42);
+		exit(255);
+	}
 }
 
 void	add_path(t_env *shell_env, char *path)
@@ -96,5 +114,5 @@ void	add_path(t_env *shell_env, char *path)
 	new_path = ft_strjoin_free(old_path, ":");
 	new_path = ft_strjoin_free(new_path, path);
 	append_envp(shell_env, "PATH", new_path);
-    free(new_path);
+	free(new_path);
 }

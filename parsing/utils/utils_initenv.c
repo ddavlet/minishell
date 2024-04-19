@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_initenv.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:29:33 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 14:17:31 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../parsing.h"
 
 static char	*strjoin_env(char const *s1, char const *s2)
@@ -47,14 +59,17 @@ static void	gen_envv(t_env *shell_env, char ***envv, const char *name)
 	}
 	if (!child)
 		if (shell_env->exists == true)
-			*envv = append_arr_str(*envv, strjoin_env(name, shell_env->content));
+			*envv = append_arr_str(*envv,
+					strjoin_env(name, shell_env->content));
 }
 
 char	**init_envv(t_env *shell_env)
 {
 	char	**envv;
 
-	envv = (char **)ft_calloc(sizeof(char *), 1); // TODO: protect this
+	envv = (char **)ft_calloc(sizeof(char *), 1);
+	if (!envv)
+		return (NULL);
 	gen_envv(shell_env, &envv, "");
 	return (envv);
 }

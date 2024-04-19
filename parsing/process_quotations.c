@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_quotations.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:31:06 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 14:04:19 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 const char	**process_quotations_argv(const char **argv)
@@ -28,8 +40,8 @@ const char	**process_quotations_argv(const char **argv)
 
 void	process_quotations(t_cmd2 *cmds, t_env *shell_env)
 {
-	const char **argv_new;
-	t_cmd2 *cmd;
+	const char	**argv_new;
+	t_cmd2		*cmd;
 
 	cmd = cmds;
 	if (!cmds || !cmd->execution || !cmd->execution->argv || !shell_env)

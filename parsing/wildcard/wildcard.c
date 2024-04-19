@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcard.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:29:54 by ddavlety          #+#    #+#             */
+/*   Updated: 2024/04/18 13:56:07 by ddavlety         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wildcard.h"
 
 static void	router(char ***matches, char *letters, t_tree *shell_env);
@@ -58,9 +70,9 @@ static void	router(char ***matches, char *letters, t_tree *shell_env)
 	if (letters[0] == 42)
 	{
 		if (!letters[1])
-			return (f_3(matches, shell_env)); // any value with the last *
+			return (f_3(matches, shell_env));
 		else
-			f_2(matches, &letters[0], shell_env->child); // find char after *
+			f_2(matches, &letters[0], shell_env->child);
 	}
 	else if (letters[1])
 	{
