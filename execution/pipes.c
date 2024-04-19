@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:41 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:49:30 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:34:22 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 t_fd_state	*initialize_fd_state(int fd)
 {
-<<<<<<< HEAD
 	t_fd_state	*fd_state;
-=======
-	t_fd_state  *fd_state;
->>>>>>> 4ea0d6d2b625d39dca2e620e79ef6cfd6d8181c7
 
 	fd_state = (t_fd_state *)ft_calloc(1, sizeof(t_fd_state));
 	if (!fd_state)

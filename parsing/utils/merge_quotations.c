@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   merge_quotations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:16 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:44:17 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/19 11:35:06 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,30 @@ const char	*process_until_quote(const char *joined, const char *quote,
 {
 	const char	*tmp;
 
-	tmp = ft_substr(literal, *ptr_start_pos,
-			(quote) - (literal + *ptr_start_pos));
+	tmp = ft_substr(literal, *ptr_start_pos, (quote) - (literal
+				+ *ptr_start_pos));
 	if (!tmp)
 		return (NULL);
 	joined = (const char *)ft_strjoin_free((char *)joined, tmp);
 	free((char *)tmp);
 	*ptr_start_pos += ((quote + 1) - (literal + *ptr_start_pos));
+	return (joined);
+}
+
+const char	*process_until_end(const char *joined, int start_pos,
+		const char *literal)
+{
+	const char	*tmp;
+	int			length;
+
+	length = 0;
+	while (*(literal + length))
+		length++;
+	tmp = ft_substr(literal, start_pos, length);
+	if (!tmp)
+		return (NULL);
+	joined = (const char *)ft_strjoin_free((char *)joined, tmp);
+	free((char *)tmp);
 	return (joined);
 }
 
@@ -77,6 +94,8 @@ const char	*merge_quotations(const char *literal)
 		if (!joined)
 			return (NULL);
 		next_quote = get_opening_quote(literal + start_pos);
+		if (!next_quote)
+			joined = process_until_end(joined, start_pos, literal);
 	}
 	return (joined);
 }
