@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:33:41 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:33:44 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:41:40 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
 int	g_signal;
+
+int	is_subshell(int argc, char **argv)
+{
+	if (argc == 3 && !ft_strncmp(argv[1], "-n", 3))
+		return (1);
+	return (0);
+}
 
 int	main(int argc, char *argv[], const char *envp[])
 {

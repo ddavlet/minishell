@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 14:18:40 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:34:15 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:39:47 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,5 @@ int		is_subshell(int argc, char **argv);
 char	*shell_prompt(t_env *shell_env);
 t_env	*initialize_shell(const char *envp[]);
 char	*create_prompt(t_env *shell_env);
-
-
 
 #endif

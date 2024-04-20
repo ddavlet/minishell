@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:07:24 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/19 14:34:20 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 			cmd->execution->exit_status = EXIT_SUCCESS;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
-		reset_input_output(stdin, stdout);
 	}
 	reset_input_output(stdin, stdout);
 }

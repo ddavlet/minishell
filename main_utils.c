@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:33:46 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:33:49 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:41:54 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-int	is_subshell(int argc, char **argv)
-{
-	if (argc == 3 && !ft_strncmp(argv[1], "-n", 3))
-		return (1);
-	return (0);
-}
 
 char	*hostname(void)
 {
@@ -50,9 +43,8 @@ char	*get_relative_pwd(t_env *env)
 	if (ft_strnstr(pwd, home, ft_strlen(home)))
 	{
 		tmp = ft_substr(pwd, ft_strlen(home), ft_strlen(pwd));
-        free(pwd);
+		free(pwd);
 		pwd = ft_strjoin("~", tmp);
-
 		free(tmp);
 		free(home);
 		return (pwd);
