@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:09 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/19 11:34:47 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:43:52 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	close_last_redir(t_redir *redir, t_fd_state *input_fd_state)
 			close_fd(input_fd_state);
 			free(input_fd_state);
 		}
-    }
+	}
 }
 
 t_fd_state	*last_input_redir(t_cmd2 *cmd)
