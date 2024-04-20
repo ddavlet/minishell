@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:23 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:34:25 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:43:35 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strcdup(const char *s, int c)
 		i++;
 	str = (char *)ft_calloc(sizeof(char), (i + 1));
 	if (!str)
-		return (NULL); // protect
+		return (NULL);
 	i = 0;
 	while (s[i] && s[i] != c)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:30 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:34:33 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:43:44 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	builtin_cd(const char **argv, t_env *shell_env)
 	process_path(argv, shell_env, &path);
 	if (!path)
 		return (builtin_err_gen("cd", "failed path", NULL));
-
 	if (chdir(path))
 	{
 		write(2, "minishell: cd: ", 15);
