@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:22 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:39:23 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 20:25:51 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,17 @@ void	here_doc_warning(const char *delimiter)
 	}
 }
 
-t_fd_state	*here_document(const char *delimiter, t_env *shell_env)
+void	here_document_loop(t_pipe *pipe, const char *delimiter,
+		t_env *shell_env)
 {
 	const char	*line;
-	t_pipe		*pipe;
 	const char	*tmp;
 
-	configure_signals_heardoc();
-	pipe = create_pipe();
 	line = (const char *)readline("heredoc> ");
-	while (line && !g_signal)
+	while (line && g_signal != SIGINT)
 	{
-		if (!ft_strncmp(line, delimiter, ft_strlen(line)) && ft_strlen(line))
+		if (!ft_strncmp(line, delimiter, ft_strlen(line) + 1)
+			&& ft_strlen(line))
 			break ;
 		tmp = replace_variables(line, shell_env);
 		free((void *)line);
@@ -49,6 +48,19 @@ t_fd_state	*here_document(const char *delimiter, t_env *shell_env)
 	if (!line)
 		here_doc_warning(delimiter);
 	free((void *)line);
+}
+
+t_fd_state	*here_document(const char *delimiter, t_env *shell_env)
+{
+	t_pipe	*pipe;
+
+	if (g_signal == SIGINT)
+		return (NULL);
+	configure_signals_heardoc();
+	pipe = create_pipe();
+	if (!pipe)
+		return (NULL);
+	here_document_loop(pipe, delimiter, shell_env);
 	close_fd(pipe->write);
 	return (pipe->read);
 }

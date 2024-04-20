@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:06:42 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 14:10:14 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:30:58 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_sigint_execution(int signum)
 void	handle_sigint_hear_doc(int signum)
 {
 	g_signal = signum;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	close(0);
