@@ -6,11 +6,18 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:47 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/20 11:44:29 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:50:51 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+
+static void	free_exit(int exit_code, t_cmd2 *cmds, t_env *shell_env)
+{
+	free_cmds(cmds);
+	free_env(shell_env);
+	exit (exit_code);
+}
 
 int	builtin_exit(const char **argv, t_cmd2 *cmds, t_env *shell_env)
 {
@@ -33,16 +40,10 @@ int	builtin_exit(const char **argv, t_cmd2 *cmds, t_env *shell_env)
 			ft_putstr_fd("exit: ", 2);
 			ft_putstr_fd(argv[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			free_cmds(cmds);
-			free_env(shell_env);
-			exit (255);
+			free_exit(255, cmds, shell_env);
 		}
-		free_env(shell_env);
 		i = ft_atoi(argv[1]);
-		free_cmds(cmds);
-		exit(i % 256);
+		free_exit(i % 256, cmds, shell_env);
 	}
-	free_cmds(cmds);
-	free_env(shell_env);
-	exit (EXIT_SUCCESS);
+	free_exit(EXIT_SUCCESS, cmds, shell_env);
 }
