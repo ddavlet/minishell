@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:47 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/20 11:50:51 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/20 11:58:47 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ int	builtin_exit(const char **argv, t_cmd2 *cmds, t_env *shell_env)
 		i++;
 	if (i > 2)
 	{
-		free_env(shell_env);
-		free_cmds(cmds);
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		exit(EXIT_FAILURE);
+		free_exit(EXIT_FAILURE, cmds, shell_env);
 	}
 	if (i == 2)
 	{
@@ -46,4 +44,5 @@ int	builtin_exit(const char **argv, t_cmd2 *cmds, t_env *shell_env)
 		free_exit(i % 256, cmds, shell_env);
 	}
 	free_exit(EXIT_SUCCESS, cmds, shell_env);
+	return (EXIT_SUCCESS);
 }
