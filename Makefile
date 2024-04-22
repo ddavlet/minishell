@@ -1,4 +1,5 @@
-CC := cc -fsanitize=address -g
+CC := cc
+FLAGS := -g -Wall -Wextra -Werror
 NAME := minishell
 RM := rm -f
 EXE_SRC_DIR := execution/
@@ -25,30 +26,33 @@ PAR2_SOURCE := parse_argv.c parse_nested_argv.c parse_command.c parse_operation.
 				parser.c expand_variables.c initialize_commands.c expand_wildcards.c \
 				process_quotations.c \
 				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE)) $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
-# PAR_SOURCE := cmd_utils.c general_utils.c general_utils2.c pars_utils.c \
-# 				pars_utils2.c pars_utils3.c parsing.c redir_utils.c syntax_utils.c terminating.c \
-# 				utils_merge.c utils_split.c reparsing.c scope.c \
-# 				debug.c $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR2_SRCS := $(addprefix $(PAR2_SRC_DIR), $(PAR2_SOURCE))
-# PAR_SRCS := $(addprefix $(PAR_SRC_DIR), $(PAR_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 OBJ_DIR := obj/
 MAIN := main.c ./signal_handling/signals.c ./signal_handling/signal_handlers.c main_utils.c
 INC := -Iparsing/ -Ilibft/ -Iexecution/ -Ibuiltin/ -I/opt/homebrew/Cellar/readline/8.2.10/include -I/usr/local/opt/readline/include -I/usr/include/readline -I/usr/include
-LIB_DIR := libft
+LIB_DIR := libft/
 LIBFT := $(LIB_DIR)libft.a
+LIBFT_SRC := ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_isprint.c \
+		ft_strlen.c ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c ft_strlcpy.c ft_strlcat.c \
+		ft_toupper.c ft_tolower.c ft_strchr.c ft_strrchr.c ft_strncmp.c ft_memchr.c ft_memcmp.c \
+		ft_strnstr.c ft_atoi.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
+		ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
+		ft_putunsnbr_fd.c ft_putnbr_hex_fd.c ft_printf.c ft_get_next_line.c ft_atoi_binar.c ft_strjoinfree.c \
+		ft_chararr_len.c ft_chararr_append.c ft_chararr_dup.c ft_intarrdup.c ft_free_ptr.c
+LIBFT_SOURCE := $(addprefix $(LIB_DIR), $(LIBFT_SRC))
+LIBFT_OBJ = $(LIBFT_SOURCE:.c=.o)
 LIB := -L libft -lft  -L /opt/homebrew/Cellar/readline/8.2.10/lib -lreadline -L/usr/local/opt/readline/lib -L/usr/include/readline
-FLAGS := -g -Wall -Wextra -Werror
 OBJ = $(EXE_SRCS:.c=.o)  $(PAR2_SRCS:.c=.o) $(BUL_SRCS:.c=.o) $(MAIN:.c=.o)
 OBJ := $(addprefix $(OBJ_DIR), $(OBJ))
 
-all: $(NAME)
+all: $(NAME) $(LIBFT)
 
 $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
 	$(CC) $(FLAGS) $(INC) $(OBJ) $(LIB) -o $(NAME)
 
-$(LIBFT) :
+$(LIBFT) : $(LIBFT_OBJ)
 	$(MAKE) -C $(LIB_DIR)
 
 $(OBJ_DIR):
