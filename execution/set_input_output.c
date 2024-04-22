@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:46 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:49:09 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 20:17:29 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ void	handle_redir_input(t_cmd2 *cmd)
 	input_fd = last_input_redir(cmd);
 	if (input_fd)
 	{
-		if (dup2(input_fd->fd, STDIN_FILENO) == -1)
-			terminate(cmd, EXIT_FAILURE,
-				"minishell: failed dup2 for input redirection");
+		if (g_signal != SIGINT)
+		{
+			if (dup2(input_fd->fd, STDIN_FILENO) == -1)
+				terminate(cmd, EXIT_FAILURE,
+					"minishell: failed dup2 for input redirection");
+		}
 		if (input_fd->fd != STDIN_FILENO)
 			close_redir(input_fd);
 	}
