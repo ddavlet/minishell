@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:33:41 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/24 15:38:30 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:01:22 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	main(int argc, char *argv[], const char *envp[])
 {
 	t_env	*shell_env;
 	t_cmd2	*cmds;
+	char	*exit_code;
+	int		exit_code_int;
 
 	shell_env = initialize_shell(envp);
 	if (!shell_env)
@@ -52,7 +54,12 @@ int	main(int argc, char *argv[], const char *envp[])
 		cmds = create_cmds(argc, argv, shell_env);
 		execution(cmds);
 		if (is_subshell(argc, argv))
-			terminate_shell(shell_env, EXIT_SUCCESS, NULL);
+		{
+			exit_code = get_variable_value("LAST_EXIT_STATUS", shell_env);
+			exit_code_int = ft_atoi(exit_code);
+			free(exit_code);
+			terminate_shell(shell_env, exit_code_int, NULL);
+		}
 	}
 	return (0);
 }
