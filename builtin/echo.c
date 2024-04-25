@@ -3,23 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:39 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:34:40 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/25 17:17:10 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+static int	is_option(const char *arg)
+{
+	uint32_t	i;
+
+	i = 2;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	builtin_echo(const char **argv, t_env *shell_env)
 {
 	ssize_t	i;
 
-	(void)shell_env; 
+	(void)shell_env;
 	i = 1;
-	if (argv[i] && ft_strncmp(argv[i], "-n", 3) == 0)
-		i++;
+	while (argv[i] && ft_strncmp(argv[i], "-n", 2) == 0)
+	{
+		if (is_option(argv[i]))
+			i++;
+		else
+			break ;
+	}
 	while (argv[i])
 	{
 		ft_putstr_fd(argv[i], STDOUT_FILENO);
