@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:16 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:09:03 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:17:55 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	execute_command(t_cmd2 *cmd)
 {
 	const char	*path;
-	char *const	*argv;
-	char *const	*envp;
 
+	char *const *argv;
+	char *const *envp;
 	cmd_check(cmd);
 	envp = cmd->execution->shell_env->envp;
 	argv = (char *const *)cmd->execution->argv;
@@ -47,6 +47,23 @@ int	execute_cmd(t_cmd2 *cmd)
 		terminate(cmd, EXIT_FAILURE, "minishell: failed to fork");
 	else if (pid == 0)
 	{
+		if (get_previous_cmd(cmd) && get_previous_cmd(cmd)->execution->pipe)
+		{
+			close_fd(get_previous_cmd(cmd)->execution->pipe->write);
+			if (dup2(get_previous_cmd(cmd)->execution->pipe->read->fd, STDIN_FILENO) == -1)
+				terminate(cmd, EXIT_FAILURE,
+					"minishell: dup2 for pipe input redirection failed");
+			close_fd(get_previous_cmd(cmd)->execution->pipe->read);
+		}
+		if (cmd->execution->pipe)
+		{
+			close_fd(cmd->execution->pipe->read);
+			if (dup2(cmd->execution->pipe->write->fd, STDOUT_FILENO) == -1)
+				terminate(cmd, EXIT_FAILURE,
+					"minishell: unable to set pipe to output");
+			close_fd(cmd->execution->pipe->write);
+		}
+		close_pipes(cmd);
 		if (is_builtin(cmd))
 		{
 			builtin_router(cmd);

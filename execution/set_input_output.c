@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:46 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:49:09 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:59:50 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ void	handle_pipe_input(t_cmd2 *cmd)
 	pipe = prev->execution->pipe;
 	if (!pipe)
 		terminate(cmd, EXIT_FAILURE, "minishell: missing pipe");
-	if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
-		terminate(cmd, EXIT_FAILURE,
-			"minishell: dup2 for pipe input redirection failed");
+	// if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
+	// 	terminate(cmd, EXIT_FAILURE,
+	// 		"minishell: dup2 for pipe input redirection failed");
+	// close_fd(pipe->write);
 }
 
 void	handle_pipe_output(t_cmd2 *cmd)
@@ -35,9 +36,9 @@ void	handle_pipe_output(t_cmd2 *cmd)
 	pipe = create_pipe();
 	if (!pipe)
 		terminate(cmd, EXIT_FAILURE, "minishell: failed to create pipe");
-	if (dup2(pipe->write->fd, STDOUT_FILENO) == -1)
-		terminate(cmd, EXIT_FAILURE, "minishell: unable to set pipe to output");
-	close_fd(pipe->write);
+	// if (dup2(pipe->write->fd, STDOUT_FILENO) == -1)
+	// 	terminate(cmd, EXIT_FAILURE, "minishell: unable to set pipe to output");
+	// close_fd(pipe->write);
 	cmd->execution->pipe = pipe;
 }
 
@@ -49,9 +50,12 @@ void	handle_redir_input(t_cmd2 *cmd)
 	input_fd = last_input_redir(cmd);
 	if (input_fd)
 	{
-		if (dup2(input_fd->fd, STDIN_FILENO) == -1)
-			terminate(cmd, EXIT_FAILURE,
-				"minishell: failed dup2 for input redirection");
+		if (g_signal != SIGINT)
+		{
+			if (dup2(input_fd->fd, STDIN_FILENO) == -1)
+				terminate(cmd, EXIT_FAILURE,
+					"minishell: failed dup2 for input redirection");
+		}
 		if (input_fd->fd != STDIN_FILENO)
 			close_redir(input_fd);
 	}

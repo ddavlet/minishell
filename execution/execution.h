@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:22 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:15:34 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/25 08:28:00 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char		*build_path_from_env(char *name, t_env *env);
  *   pipes
  */
 t_pipe		*create_pipe(void);
+void		close_pipes(t_cmd2 *cmd);
 void		close_pipe(t_pipe *pipe);
 void		close_redir(t_fd_state *input_fd_state);
 

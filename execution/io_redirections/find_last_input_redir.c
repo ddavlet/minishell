@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:09 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/20 11:43:52 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/20 20:26:15 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,17 @@ t_fd_state	*last_input_redir(t_cmd2 *cmd)
 		return (NULL);
 	shell_env = cmd->execution->shell_env;
 	input_fd_state = NULL;
-	while (redir)
+	while (redir && g_signal != SIGINT)
 	{
 		if (redir->redir_sym == RED_INP)
 			input_fd_state = input_redirection(redir->redir_name);
 		else if (redir->redir_sym == HEAR_DOC)
 			input_fd_state = here_document(redir->redir_name, shell_env);
-		redir = redir->next;
-		if (redir)
+		if (g_signal == SIGINT)
+			break ;
+		if (redir->next)
 			close_last_redir(redir, input_fd_state);
+		redir = redir->next;
 	}
 	return (input_fd_state);
 }
