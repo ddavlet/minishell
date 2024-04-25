@@ -1,4 +1,4 @@
-CC := cc
+CC := cc -fsanitize=address
 FLAGS := -g -Wall -Wextra -Werror
 NAME := minishell
 RM := rm -f

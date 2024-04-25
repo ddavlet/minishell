@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:30 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/25 14:44:42 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:22:38 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ int	builtin_cd(const char **argv, t_env *shell_env)
 
 	if (argv[1] && argv[2])
 		return (builtin_err_gen("cd", "too many arguments", NULL));
-	process_path(argv, shell_env, &path);
+	if (process_path(argv, shell_env, &path))
+		return (1);
 	if (!path)
 		return (builtin_err_gen("cd", "failed path", NULL));
 	if (chdir(path))
+	{
 		write(2, "minishell: cd: failed to change directory\n", 42);
+		free(path);
+		return (1);
+	}
 	free(path);
 	cwd = getcwd(NULL, 0);
 	value = get_variable_value("PWD", shell_env);
