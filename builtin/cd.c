@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:30 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/20 11:43:44 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 14:44:42 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ static char	*build_path(char *dir)
 	char	*cwd_with_slash;
 
 	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		// perror("minishell: cd: error retrieving current directory: getcwd: ");
+		return (NULL);
+	}
 	cwd_with_slash = ft_strjoin(cwd, "/");
 	free(cwd);
 	if (!cwd_with_slash)
@@ -57,10 +62,7 @@ int	builtin_cd(const char **argv, t_env *shell_env)
 	if (!path)
 		return (builtin_err_gen("cd", "failed path", NULL));
 	if (chdir(path))
-	{
-		write(2, "minishell: cd: ", 15);
-		perror(argv[2]);
-	}
+		write(2, "minishell: cd: failed to change directory\n", 42);
 	free(path);
 	cwd = getcwd(NULL, 0);
 	value = get_variable_value("PWD", shell_env);
