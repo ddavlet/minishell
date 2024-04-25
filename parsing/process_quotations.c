@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_quotations.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:06 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 14:04:19 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:58:57 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,32 @@ const char	**process_quotations_argv(const char **argv)
 	return (new);
 }
 
-void	process_quotations(t_cmd2 *cmds, t_env *shell_env)
+void	process_quotations(t_cmd2 *cmd, t_env *shell_env)
 {
 	const char	**argv_new;
-	t_cmd2		*cmd;
 
-	cmd = cmds;
-	if (!cmds || !cmd->execution || !cmd->execution->argv || !shell_env)
-		terminate_parsing(NULL, shell_env, cmds,
-			"minishell: parser failed to process quotations");
-	while (cmd)
+	if (argv_contains_quotations(cmd->execution->argv))
 	{
-		if (argv_contains_quotations(cmd->execution->argv))
-		{
-			argv_new = process_quotations_argv(cmd->execution->argv);
-			if (!argv_new)
-				terminate_parsing(NULL, shell_env, cmds,
-					"minishell: parser failed to process quotations");
-			if (replace_argv(cmd, argv_new) == -1)
-				terminate_parsing(NULL, shell_env, cmds,
-					"minishell: parser failed to process quotations");
-		}
-		cmd = cmd->next;
+		argv_new = process_quotations_argv(cmd->execution->argv);
+		if (!argv_new)
+			terminate_parsing(NULL, shell_env, cmd,
+				"minishell: parser failed to process quotations");
+		if (replace_argv(cmd, argv_new) == -1)
+			terminate_parsing(NULL, shell_env, cmd,
+				"minishell: parser failed to process quotations");
 	}
 }
+// {
+// 	const char	**argv_new;
+// 	t_cmd2		*cmd;
+
+// 	cmd = cmds;
+// 	if (!cmds || !cmd->execution || !cmd->execution->argv || !shell_env)
+// 		terminate_parsing(NULL, shell_env, cmds,
+// 			"minishell: parser failed to process quotations");
+// 	while (cmd)
+// 	{
+
+// 		cmd = cmd->next;
+// 	}
+// }

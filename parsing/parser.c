@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:00 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:31:00 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:57:12 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_cmd2	*parser(t_token *tokens, t_env *shell_env)
 			"minishell: failed to parse command line");
 		return (NULL);
 	}
-	process_quotations(cmds, shell_env);
 	expand_wildcards(cmds, shell_env);
 	return (cmds);
 }
