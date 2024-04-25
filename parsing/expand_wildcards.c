@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:31 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:31 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:11:40 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,13 @@ void	expand_wildcards(t_cmd2 *cmds, t_env *shell_env)
 	{
 		if (argv_contains_wildcards(cmd->execution->argv))
 		{
-			expanded = get_wildcard(cmd->execution->argv, shell_env);
+			expanded = get_wildcard(cmd->execution->argv);
 			if (!expanded)
+			{
 				terminate_parsing(NULL, shell_env, cmds,
 					"minishell: failed to initialize variables");
+				return ;
+			}
 			new_len = get_total_length(expanded);
 			argv_new = (const char **)get_wildcards_argv(expanded, new_len);
 			if (replace_argv(cmd, argv_new) == -1)

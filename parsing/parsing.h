@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:03 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 14:16:56 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:11:35 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ void			append_envp(t_env *shell_env, char *name,
 					char *content);
 int				unset_envvar(t_env *shell_env, const char *to_find);
 void			add_path(t_env *shell_env, char *path);
-char			***get_wildcard(const char **argv, t_env *env);
+char			***get_wildcard(const char **argv);
 char			**arrstr_copy(const char **envp);
 ssize_t			ft_arr_len(char **arr);
 char			*get_variable_value(const char *name,

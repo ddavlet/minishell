@@ -6,20 +6,22 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:39 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:52:15 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:11:15 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parsing.h"
 
-static t_tree	*read_directory(t_env *env)
+static t_tree	*read_directory(void)
 {
 	DIR				*dir;
 	struct dirent	*entry;
 	t_tree			*tree;
 	char			*tmp;
 
-	tmp = get_variable_value("PWD", env);
+	tmp = getcwd(NULL, 0); // get_variable_value("PWD", env);
+	if (!tmp)
+		return (NULL);
 	dir = opendir(tmp);
 	free(tmp);
 	if (!dir)
@@ -55,7 +57,7 @@ char	**simple_array(const char *element)
 	return (arr);
 }
 
-char	***get_wildcard(const char **argv, t_env *env)
+char	***get_wildcard(const char **argv)
 {
 	char	***argv_expanded;
 	int		i;
@@ -63,7 +65,7 @@ char	***get_wildcard(const char **argv, t_env *env)
 
 	argv_expanded = (char ***)ft_calloc(ft_arr_len((char **)argv) + 1,
 			sizeof(char **));
-	tree = read_directory(env);
+	tree = read_directory();
 	if (!argv_expanded || !tree)
 		return (ft_free_ptr(argv_expanded, tree));
 	i = -1;
