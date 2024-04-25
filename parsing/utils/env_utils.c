@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:28:09 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:49:23 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:56:16 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ static void	add_envvar(t_env *shell_env, const char *envvar,
 			child_p = &((*child_p)->child);
 		else if (!*(envvar + 1))
 		{
-			free((*child_p)->content);
+			if ((*child_p)->exists)
+				free((*child_p)->content);
 			(*child_p)->content = ft_strdup(content);
 			(*child_p)->exists = true;
 		}
