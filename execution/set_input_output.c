@@ -6,7 +6,11 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:46 by vketteni          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/20 20:17:29 by vketteni         ###   ########.fr       */
+=======
+/*   Updated: 2024/04/25 09:59:50 by vketteni         ###   ########.fr       */
+>>>>>>> b5306e643d005103220425d8f15528cd4eb8e03a
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +26,10 @@ void	handle_pipe_input(t_cmd2 *cmd)
 	pipe = prev->execution->pipe;
 	if (!pipe)
 		terminate(cmd, EXIT_FAILURE, "minishell: missing pipe");
-	if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
-		terminate(cmd, EXIT_FAILURE,
-			"minishell: dup2 for pipe input redirection failed");
+	// if (dup2(pipe->read->fd, STDIN_FILENO) == -1)
+	// 	terminate(cmd, EXIT_FAILURE,
+	// 		"minishell: dup2 for pipe input redirection failed");
+	// close_fd(pipe->write);
 }
 
 void	handle_pipe_output(t_cmd2 *cmd)
@@ -35,9 +40,9 @@ void	handle_pipe_output(t_cmd2 *cmd)
 	pipe = create_pipe();
 	if (!pipe)
 		terminate(cmd, EXIT_FAILURE, "minishell: failed to create pipe");
-	if (dup2(pipe->write->fd, STDOUT_FILENO) == -1)
-		terminate(cmd, EXIT_FAILURE, "minishell: unable to set pipe to output");
-	close_fd(pipe->write);
+	// if (dup2(pipe->write->fd, STDOUT_FILENO) == -1)
+	// 	terminate(cmd, EXIT_FAILURE, "minishell: unable to set pipe to output");
+	// close_fd(pipe->write);
 	cmd->execution->pipe = pipe;
 }
 

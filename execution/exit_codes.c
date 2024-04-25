@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:27 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 14:11:13 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:30:47 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ void	wait_until(t_cmd2 *cmd)
 	char	*tmp;
 
 	cmd_check(cmd);
-	last = cmd->cmds;
-	while (last && last->execution->exit_status == EXIT_SUCCESS)
-		last = last->next;
-	while (last != cmd->next)
+	last = cmd;
+	while (last && last->execution->exit_status != EXIT_SUCCESS)
 	{
-		if (is_builtin(last) && !is_piped(last))
-			last = last->next;
-		else
+		if (is_piped(last) || is_logic_operation(last))
 		{
 			pid = last->execution->pid;
 			waitpid(pid, &exit_status, 0);
@@ -53,9 +49,10 @@ void	wait_until(t_cmd2 *cmd)
 			tmp = ft_itoa(exit_code(exit_status));
 			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
 			free(tmp);
-			last = last->next;
 		}
+		last = get_previous_cmd(last);
 	}
+
 }
 
 int	wait_check(t_cmd2 *cmd)
