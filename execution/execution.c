@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/25 15:20:21 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:22:40 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 				builtin_router(cmd);
 			else if (execute_cmd(cmd))
 				return ;
-			if (get_previous_cmd(cmd))
+			if (get_previous_cmd(cmd) && get_previous_cmd(cmd)->execution->pipe)
 			{
 				close_fd(get_previous_cmd(cmd)->execution->pipe->read);
 				close_fd(get_previous_cmd(cmd)->execution->pipe->write);
