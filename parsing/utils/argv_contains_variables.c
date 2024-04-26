@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_contains_variables.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:27:58 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 09:57:38 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:26:27 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ int	argv_contains_variables(const char **argv)
 
 static int	edge_case(const char *literal, const char *dollar_sign)
 {
-	if (literal[0] == '\'')
+	if (is_between_char(dollar_sign - literal, literal, '\'')
+			&& !is_between_char(ft_strchr(dollar_sign, '\'') - literal, literal, '\"'))
 		return (1);
+	else 
+		return (0);
 	if (!ft_isalpha(*(dollar_sign + 1)) && *(dollar_sign + 1) != '?')
 		return (1);
 	if ((literal - dollar_sign != 0) && *(dollar_sign - 1) == '\\')

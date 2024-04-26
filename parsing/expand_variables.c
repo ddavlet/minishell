@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:14 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:30:15 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:09:00 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ const char	*replace_variables(const char *literal, t_env *shell_env)
 	while (dollar_sign)
 	{
 		value = get_shell_variable(dollar_sign, literal, shell_env);
-		new = replace(literal, dollar_sign, value);
+		new = replace(new, dollar_sign, value);
 		if (ft_strncmp(literal, old, ft_strlen(literal) + 1) != 0)
 			free((char *)old);
 		if (!new)
@@ -83,20 +83,26 @@ const char	**get_argv_variables(const char **argv, t_env *shell_env)
 	return (new);
 }
 
-void	expand_variables(t_cmd2 *cmd, t_env *shell_env)
+void	expand_variables(t_cmd2 *cmds, t_env *shell_env)
 {
 	const char	**argv_new;
+	t_cmd2		*cmd;
 
-	if (!cmd)
-		terminate_parsing(NULL, shell_env, cmd, "missing cmds");
-	if (argv_contains_variables(cmd->execution->argv))
+	cmd = cmds;
+	if (!cmds)
+		terminate_parsing(NULL, shell_env, cmds, "missing cmds");
+	while (cmd)
 	{
-		argv_new = get_argv_variables(cmd->execution->argv, shell_env);
-		if (!argv_new)
-			terminate_parsing(NULL, shell_env, cmd,
-				"minishell: failed to initialize variables");
-		if (replace_argv(cmd, argv_new) == -1)
-			terminate_parsing(NULL, shell_env, cmd,
-				"minishell: failed to initialize variables");
+		if (argv_contains_variables(cmd->execution->argv))
+		{
+			argv_new = get_argv_variables(cmd->execution->argv, shell_env);
+			if (!argv_new)
+				terminate_parsing(NULL, shell_env, cmds,
+					"minishell: failed to initialize variables");
+			if (replace_argv(cmd, argv_new) == -1)
+				terminate_parsing(NULL, shell_env, cmds,
+					"minishell: failed to initialize variables");
+		}
+		cmd = cmd->next;
 	}
 }
