@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 09:54:12 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:21:38 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 	cmd = cmds;
 	while (cmd)
 	{
-		expand_variables(cmd, cmd->execution->shell_env);
 		set_input_output(cmd);
+		expand_variables(cmd, cmd->execution->shell_env);
 		process_quotations(cmds, cmd->execution->shell_env);
 		if (g_signal == SIGINT)
 			break ;
