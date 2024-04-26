@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:27:58 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 17:01:25 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:23:25 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	dollar_sign_edge_case(const char *literal, const char *dollar_sign)
 		return (1);
 	if (!ft_isalpha(*(dollar_sign + 1)) && *(dollar_sign + 1) != '?')
 		return (1);
-	if ((literal - dollar_sign != 0) && *(dollar_sign - 1) == '\\')
+	if (is_literal_char(dollar_sign, literal))
 		return (1);
 	return (0);
 }
