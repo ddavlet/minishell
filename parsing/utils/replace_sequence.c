@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_sequence.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:25 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 14:17:16 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:56:16 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,15 @@ const char	*replace_loop(const char *literal, const char *sequence,
 	}
 	strcpy(result_ptr, current);
 	return (result);
+}
+
+const char	*replace_sequence(const char *literal, const char *sequence,
+		const char *replacement)
+{
+	t_replacer	replacer;
+
+	if (!literal || !sequence || !replacement)
+        return (NULL);
+	replacer = initialize_replacer(literal, sequence, replacement);
+    return (replace_loop(literal, sequence, replacement, replacer));
 }

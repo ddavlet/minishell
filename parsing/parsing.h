@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:03 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 17:50:12 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:56:25 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ void						free_array_3d(char ***arr_3d);
 int							is_redirection_token_without_name(t_token *token);
 int							is_literal_char(const char *ptr_char,
 								const char *literal);
+const char	*replace_sequence(const char *literal, const char *sequence,
+		const char *replacement);
 
 /*Utils*/
 char						**append_arr_str(char **arr, char *str);
