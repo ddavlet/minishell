@@ -27,7 +27,7 @@ PAR2_SOURCE := parse_argv.c parse_nested_argv.c parse_command.c parse_operation.
 				process_quotations.c \
 				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE)) $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR2_SRCS := $(addprefix $(PAR2_SRC_DIR), $(PAR2_SOURCE))
-BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c
+BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c export_print_utils.c
 BUL_SRCS := $(addprefix $(BUL_SRC_DIR), $(BUL_SOURCE))
 OBJ_DIR := obj/
 MAIN := main.c ./signal_handling/signals.c ./signal_handling/signal_handlers.c main_utils.c

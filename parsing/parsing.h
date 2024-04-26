@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:03 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/25 21:11:35 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 10:41:56 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_env
 {
 	char					letter;
 	bool					exists;
+	bool					exported;
 	char					*content;
 	char					**envp;
 	struct s_env			*child;

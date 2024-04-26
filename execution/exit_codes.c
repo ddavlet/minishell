@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:27 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 10:06:37 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:12:12 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	wait_until(t_cmd2 *cmd)
 	{
 		// if (is_piped(last) || is_logic_operation(last))
 		// {
-			pid = last->execution->pid;
-			if (waitpid(pid, &exit_status, 0) != -1)
-			{
-				last->execution->exit_status = exit_code(exit_status);
-				tmp = ft_itoa(exit_code(exit_status));
-				append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
-				free(tmp);
-			}
+		pid = last->execution->pid;
+		if (waitpid(pid, &exit_status, 0) != -1)
+		{
+			last->execution->exit_status = exit_code(exit_status);
+			tmp = ft_itoa(exit_code(exit_status));
+			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
+			free(tmp);
+		}
 		// }
 		last = get_previous_cmd(last);
 	}
