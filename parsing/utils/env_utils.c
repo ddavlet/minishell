@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:28:09 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 13:30:16 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:30:45 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 		return ;
 	if (content)
 	{
+		if (content[0] == '=')
+			content++;
 		new_node->content = ft_strdup(content);
 		new_node->exists = true;
 	}
@@ -39,18 +41,18 @@ static void	add_envnode(t_env **list_p, char c, const char *content)
 
 static void	change_envnode(t_env *list_p, const char *content)
 {
-	if (list_p->exists)
+	if (list_p->exists && content)
 		free(list_p->content);
 	if (content)
 	{
+		if (content[0] == '=')
+			content++;
 		list_p->content = ft_strdup(content);
 		list_p->exists = true;
 		list_p->exported = false;
 	}
 	else
 	{
-		list_p->content = ft_strdup("");
-		list_p->exists = true;
 		list_p->exported = true;
 	}
 }
@@ -75,13 +77,7 @@ static void	add_envvar(t_env *shell_env, const char *envvar,
 		else if (*(envvar + 1))
 			child_p = &((*child_p)->child);
 		else if (!*(envvar + 1))
-		{
-			// if ((*child_p)->exists)
-			// 	free((*child_p)->content);
-			// (*child_p)->content = ft_strdup(content);
-			// (*child_p)->exists = true;
 			change_envnode(*child_p, content);
-		}
 		envvar++;
 	}
 }
@@ -103,7 +99,7 @@ t_env	*init_env(const char **envp)
 		while (envp[i][j] != '=')
 			j++;
 		tmp = ft_substr(envp[i], 0, j);
-		add_envvar(shell_env, tmp, &(envp[i][j + 1]));
+		add_envvar(shell_env, tmp, &(envp[i][j]));
 		free(tmp);
 		i++;
 	}
