@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:27:58 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/18 13:35:10 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:57:38 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	argv_contains_variables(const char **argv)
 
 static int	edge_case(const char *literal, const char *dollar_sign)
 {
-	if (is_between_char(dollar_sign - literal, literal, '\''))
+	if (literal[0] == '\'')
 		return (1);
 	if (!ft_isalpha(*(dollar_sign + 1)) && *(dollar_sign + 1) != '?')
 		return (1);

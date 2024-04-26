@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/25 15:57:38 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:54:12 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ int	handle_previous_pipe(t_cmd2 *cmd)
 
 void	execute(t_cmd2 *cmd)
 {
-	expand_variables(cmd, cmd->execution->shell_env);
 	if (is_builtin(cmd) && !is_piped(cmd))
 		builtin_router(cmd);
-	else 
+	else
 	{
 		execute_cmd(cmd);
 		handle_previous_pipe(cmd);
@@ -50,6 +49,7 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 	cmd = cmds;
 	while (cmd)
 	{
+		expand_variables(cmd, cmd->execution->shell_env);
 		set_input_output(cmd);
 		process_quotations(cmds, cmd->execution->shell_env);
 		if (g_signal == SIGINT)
