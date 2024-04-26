@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:28:09 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 12:36:07 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 13:30:16 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ static void	change_envnode(t_env *list_p, const char *content)
 	{
 		list_p->content = ft_strdup(content);
 		list_p->exists = true;
+		list_p->exported = false;
 	}
 	else
 	{
-		list_p->content = NULL;
-		list_p->exists = false;
+		list_p->content = ft_strdup("");
+		list_p->exists = true;
 		list_p->exported = true;
 	}
-
 }
 
 static void	add_envvar(t_env *shell_env, const char *envvar,
