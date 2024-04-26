@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:37 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 11:04:18 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/26 12:21:18 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	remove_envvar(t_env	*shell_env, const char *name)
 			{
 				free(child->content);
 				child->exists = false;
-				child->exported = false;
-				return (0);
 			}
+			child->exported = false;
+			return (0);
 		}
 		else
 			child = child->next;
