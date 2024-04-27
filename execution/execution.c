@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/27 17:29:54 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:31:05 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 	t_cmd2	*cmd;
 
 	cmd = cmds;
-	// while (cmd)
-	// {
-	// 	if (cmd->execution->redirections)
-	// 		handle_redir_input(cmd);
-	// 	cmd = cmd->next;
-	// }
-	// cmd = cmds;
+	while (cmd)
+	{
+		if (cmd->execution->redirections)
+			handle_redir_input(cmd);
+		cmd = cmd->next;
+	}
+	cmd = cmds;
 	while (cmd)
 	{
 		set_input_output(cmd);

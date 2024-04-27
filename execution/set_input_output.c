@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:46 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/27 17:29:57 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:51:49 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	set_input_output(t_cmd2 *cmd)
 	cmd_check(cmd);
 	if (cmd->execution->redirections)
 	{
-		handle_redir_input(cmd);
+		// handle_redir_input(cmd);
 		handle_redir_output(cmd);
 	}
 	prev = get_previous_cmd(cmd);
