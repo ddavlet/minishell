@@ -155,7 +155,6 @@ void						free_tokens(t_token *tokens);
 void						free_redirections(t_redir *redirs);
 void						free_argv(const char **argv);
 void						free_cmds(t_cmd2 *cmds);
-int							parse_check(t_token *tokens);
 int							argv_contains_variables(const char **argv);
 int							argv_contains_wildcards(const char **argv);
 char						*get_case(char *literal, t_env *shell_env);
@@ -174,6 +173,9 @@ void						free_array_3d(char ***arr_3d);
 int							is_redirection_token_without_name(t_token *token);
 int							is_literal_char(const char *ptr_char,
 								const char *literal);
+int	syntax_check(t_token *tokens);
+const char	*get_opening_quote(const char *literal);
+const char	*get_closing_quote(const char *literal, const char *opening);
 const char	*replace_sequence(const char *literal, const char *sequence,
 		const char *replacement);
 

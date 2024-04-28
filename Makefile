@@ -18,13 +18,13 @@ EXE_SRCS = $(addprefix $(EXE_SRC_DIR), $(EXE_SOURCE))
 WC_SOURCE := init_utils.c terminating.c wildcard.c
 UTL_PAR2_SOURCE := is_argv_token.c is_logic_token.c is_pipe_token.c is_redirection_token.c is_token.c \
 					free_argv.c free_cmds.c free_redirections.c free_tokens.c free_env.c free_ptr_str.c \
-					terminate_parsing.c parse_check.c argv_contains_variables.c speccase_utils.c env_utils2.c \
+					terminate_parsing.c argv_contains_variables.c speccase_utils.c env_utils2.c \
 					replace_argv.c argv_contains_wildcards.c close_fd.c argv_contains_quotations.c \
 					env_utils.c utils_unsetenvvar.c utils_wildcard.c utils_initenv.c merge_quotations.c \
-					get_final_token.c replace_sequence.c free_array_3d.c is_operation_token.c error_messages.c
+					get_final_token.c replace_sequence.c free_array_3d.c is_operation_token.c 
 PAR2_SOURCE := parse_argv.c parse_nested_argv.c parse_command.c parse_operation.c parse_redirection.c tokenizer.c \
 				parser.c expand_variables.c initialize_commands.c expand_wildcards.c \
-				process_quotations.c \
+				process_quotations.c syntax_check.c\
 				$(addprefix $(UTL_SRC_DIR), $(UTL_PAR2_SOURCE)) $(addprefix $(WC_SRC_DIR), $(WC_SOURCE))
 PAR2_SRCS := $(addprefix $(PAR2_SRC_DIR), $(PAR2_SOURCE))
 BUL_SOURCE := builtin_utils.c cd.c echo.c env.c exit.c export.c pwd.c unset.c export_print_utils.c

@@ -41,7 +41,6 @@ t_cmd2	*initialize_commands(t_token *tokens, t_env *shell_env)
 	t_token	*start;
 	t_token	*end;
 
-	parse_check(tokens);
 	cmds = NULL;
 	start = tokens;
 	while (start != NULL)

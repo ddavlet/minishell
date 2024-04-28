@@ -6,7 +6,7 @@
 /*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:25 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 17:56:16 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:16:38 by vketteni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_replacer	initialize_replacer(const char *literal, const char *sequence,
 	return (replacer);
 }
 
-const char	*replace_loop(const char *literal, const char *sequence,
+const char	*process_replacement(const char *literal, const char *sequence,
 		const char *replacement, t_replacer replacer)
 {
 	int			head_len;
@@ -71,16 +71,13 @@ const char	*replace_loop(const char *literal, const char *sequence,
 	result_ptr = result;
 	current = literal;
 	tmp = ft_strnstr(current, sequence, ft_strlen(current));
-	while (tmp != NULL)
-	{
+
 		head_len = tmp - current;
 		ft_memcpy(result_ptr, current, head_len);
 		result_ptr += head_len;
 		ft_memcpy(result_ptr, replacement, replacer.rep_len);
-		result_ptr += replacer.rep_len;
-		current = tmp + replacer.seq_len;
-		tmp = ft_strnstr(current, sequence, ft_strlen(current));
-	}
+
+
 	strcpy(result_ptr, current);
 	return (result);
 }
@@ -93,5 +90,5 @@ const char	*replace_sequence(const char *literal, const char *sequence,
 	if (!literal || !sequence || !replacement)
         return (NULL);
 	replacer = initialize_replacer(literal, sequence, replacement);
-    return (replace_loop(literal, sequence, replacement, replacer));
+    return (process_replacement(literal, sequence, replacement, replacer));
 }
