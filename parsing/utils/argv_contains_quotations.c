@@ -21,12 +21,12 @@ int	is_first_letter(const char *ptr_char, const char *literal)
 	return (0);
 }
 
-int	is_literal_char(const char *ptr_char, const char *literal)
+int	is_escaped(const char *ptr_char, const char *literal)
 {
 	if (!literal || !ptr_char || (literal - ptr_char) == 0)
 		return (0);
 	else if (*(ptr_char - 1) == '\\'
-		&& !is_literal_char(ptr_char - 1, literal))
+		&& !is_escaped(ptr_char - 1, literal))
 		return (1);
 	return (0);
 }
@@ -42,7 +42,7 @@ int	contains_quotations(const char *literal)
 	{
 		if (is_first_letter(quotes, literal))
 			return (1);
-		else if (!is_literal_char(quotes, literal) && !is_between_char(quotes
+		else if (!is_escaped(quotes, literal) && !is_between_char(quotes
 				- literal, literal, '\"'))
 			return (1);
 	}
@@ -51,7 +51,7 @@ int	contains_quotations(const char *literal)
 	{
 		if (is_first_letter(quotes, literal))
 			return (1);
-		else if (!is_literal_char(quotes, literal) && !is_between_char(quotes
+		else if (!is_escaped(quotes, literal) && !is_between_char(quotes
 				- literal, literal, '\''))
 			return (1);
 	}

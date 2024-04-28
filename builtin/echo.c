@@ -26,6 +26,23 @@ static int	is_option(const char *arg)
 	return (1);
 }
 
+int	print_shell_format(const char *literal, int fd)
+{
+	const char	*ptr_literal;
+	int	count;
+
+	count = 0;
+	ptr_literal = literal;
+	while (*ptr_literal)
+	{
+		if (ptr_literal && *ptr_literal == '\\')
+			ptr_literal++;
+		count += ft_putchar_fd(*ptr_literal, fd);
+		ptr_literal++;
+	}
+	return (count);
+}
+
 int	builtin_echo(const char **argv, t_env *shell_env)
 {
 	ssize_t	i;
@@ -41,7 +58,7 @@ int	builtin_echo(const char **argv, t_env *shell_env)
 	}
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], STDOUT_FILENO);
+		print_shell_format(argv[i], STDOUT_FILENO);
 		if (argv[i + 1])
 			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
