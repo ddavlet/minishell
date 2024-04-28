@@ -43,7 +43,7 @@ typedef enum e_red_sym
 	NO_REDIR,
 	RED_INP,
 	RED_OUT,
-	HEAR_DOC,
+	HERE_DOC,
 	APP_OUT
 }							t_red_sym;
 
@@ -94,6 +94,7 @@ typedef struct s_execution
 	pid_t					pid;
 	t_env					*shell_env;
 	t_oper2					operation;
+	t_pipe					*heredoc;
 	t_pipe					*pipe;
 	t_redir					*redirections;
 }							t_execution;
@@ -178,6 +179,9 @@ const char	*get_opening_quote(const char *literal);
 const char	*get_closing_quote(const char *literal, const char *opening);
 const char	*replace_sequence(const char *literal, const char *sequence,
 		const char *replacement);
+void		close_pipe(t_pipe *pipe);
+void		close_pipes(t_cmd2 *cmd);
+void	free_pipe(t_pipe *pipe);
 
 /*Utils*/
 char						**append_arr_str(char **arr, char *str);

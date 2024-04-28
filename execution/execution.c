@@ -49,13 +49,6 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 	cmd = cmds;
 	while (cmd)
 	{
-		if (cmd->execution->redirections)
-			handle_redir_input(cmd);
-		cmd = cmd->next;
-	}
-	cmd = cmds;
-	while (cmd)
-	{
 		set_input_output(cmd);
 		expand_variables(cmd, cmd->execution->shell_env);
 		process_quotations(cmds, cmd->execution->shell_env);
@@ -65,13 +58,12 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 			execute(cmd);
 		else
 			cmd->execution->exit_status = EXIT_SUCCESS;
-		if (wait_check(cmd))
-			cmd = cmd->next;
+		if (cmd->next == NULL || is_logic_operation(cmd))
+			if (wait_check(cmd))
+				break ;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
 	}
-	while (waitpid(-1, NULL, 0) != -1)
-		;
 	reset_input_output(stdin, stdout);
 }
 
@@ -85,6 +77,7 @@ void	execution(t_cmd2 *cmds)
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	configure_signals_execution();
+	handle_heredoc_before_execution(cmds, cmds->execution->shell_env);
 	execution_loop(cmds, stdin, stdout);
 	free_cmds(cmds);
 }

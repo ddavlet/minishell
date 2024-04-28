@@ -85,7 +85,7 @@ void	set_input_output(t_cmd2 *cmd)
 	cmd_check(cmd);
 	if (cmd->execution->redirections)
 	{
-		// handle_redir_input(cmd);
+		handle_redir_input(cmd);
 		handle_redir_output(cmd);
 	}
 	prev = get_previous_cmd(cmd);

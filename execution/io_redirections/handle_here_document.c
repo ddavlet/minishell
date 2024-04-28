@@ -32,7 +32,7 @@ void	here_document_loop(t_pipe *pipe, const char *delimiter,
 	const char	*tmp;
 
 	line = (const char *)readline("heredoc> ");
-	int fd = open("/home/ddavlety/Core_projects/minishell_project/minishell/testfile", O_WRONLY | O_CREAT);
+	// int fd = open("/home/ddavlety/Core_projects/minishell_project/minishell/testfile", O_WRONLY | O_CREAT);
 	while (line && g_signal != SIGINT)
 	{
 		if (!ft_strncmp(line, delimiter, ft_strlen(line) + 1)
@@ -41,9 +41,8 @@ void	here_document_loop(t_pipe *pipe, const char *delimiter,
 		tmp = replace_variables(line, shell_env);
 		free((void *)line);
 		line = tmp;
-		(void)pipe;
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
+		write(pipe->write->fd, line, ft_strlen(line));
+		write(pipe->write->fd, "\n", 1);
 		free((void *)line);
 		line = (const char *)readline("heredoc> ");
 	}
@@ -52,7 +51,7 @@ void	here_document_loop(t_pipe *pipe, const char *delimiter,
 	free((void *)line);
 }
 
-t_fd_state	*here_document(const char *delimiter, t_env *shell_env)
+t_pipe	*here_document(const char *delimiter, t_env *shell_env)
 {
 	t_pipe	*pipe;
 
@@ -64,5 +63,28 @@ t_fd_state	*here_document(const char *delimiter, t_env *shell_env)
 		return (NULL);
 	here_document_loop(pipe, delimiter, shell_env);
 	close_fd(pipe->write);
-	return (pipe->read);
+	return (pipe);
+}
+
+void	handle_heredoc_before_execution(t_cmd2 *cmds, t_env *shell_env)
+{
+	t_cmd2	*cmd;
+	t_redir	*redir;
+
+	cmd = cmds;
+	while (cmd)
+	{
+		redir = cmd->execution->redirections;
+		while (redir)
+		{
+			if (redir->redir_sym == HERE_DOC)
+			{
+				if (cmd->execution->heredoc)
+					close_pipe(cmd->execution->heredoc);
+				cmd->execution->heredoc = here_document(redir->redir_name, shell_env);
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
 }

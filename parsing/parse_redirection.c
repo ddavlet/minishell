@@ -30,7 +30,7 @@ t_redir	*initialize_redirection(const char *symbol, const char *name)
 	if (ft_strncmp(symbol, "<", ft_strlen(symbol) + 1) == 0)
 		redir->redir_sym = RED_INP;
 	else if (ft_strncmp(symbol, "<<", ft_strlen(symbol) + 1) == 0)
-		redir->redir_sym = HEAR_DOC;
+		redir->redir_sym = HERE_DOC;
 	else if (ft_strncmp(symbol, ">", ft_strlen(symbol) + 1) == 0)
 		redir->redir_sym = RED_OUT;
 	else if (ft_strncmp(symbol, ">>", ft_strlen(symbol) + 1) == 0)

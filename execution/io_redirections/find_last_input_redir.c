@@ -14,7 +14,7 @@
 
 int	is_input_redir(int fd, t_red_sym symbol)
 {
-	if (fd != STDIN_FILENO && (symbol == RED_INP || symbol == HEAR_DOC))
+	if (fd != STDIN_FILENO && (symbol == RED_INP || symbol == HERE_DOC))
 		return (1);
 	return (0);
 }
@@ -34,6 +34,20 @@ void	close_last_redir(t_redir *redir, t_fd_state *input_fd_state)
 	}
 }
 
+int	is_final_input(t_redir *redir)
+{
+	t_redir *other;
+
+	other = redir->next;
+	while (other)
+	{
+		if (other->redir_sym == HERE_DOC || other->redir_sym == RED_INP)
+			return (0);
+		other = other->next;
+	}
+	return (1);
+}
+
 t_fd_state	*last_input_redir(t_cmd2 *cmd)
 {
 	t_redir		*redir;
@@ -50,11 +64,11 @@ t_fd_state	*last_input_redir(t_cmd2 *cmd)
 	{
 		if (redir->redir_sym == RED_INP)
 			input_fd_state = input_redirection(redir->redir_name);
-		else if (redir->redir_sym == HEAR_DOC)
-			input_fd_state = here_document(redir->redir_name, shell_env);
+		else if (redir->redir_sym == HERE_DOC && is_final_input(redir))
+			input_fd_state = cmd->execution->heredoc->read;
 		if (g_signal == SIGINT)
 			break ;
-		if (redir->next)
+		if (!is_final_input(redir))
 			close_last_redir(redir, input_fd_state);
 		redir = redir->next;
 	}

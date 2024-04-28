@@ -36,8 +36,6 @@ char		*build_path_from_env(char *name, t_env *env);
  *   pipes
  */
 t_pipe		*create_pipe(void);
-void		close_pipes(t_cmd2 *cmd);
-void		close_pipe(t_pipe *pipe);
 void		close_redir(t_fd_state *input_fd_state);
 
 /*
@@ -60,12 +58,13 @@ void		terminate_shell(t_env *shell_env, int exit_status, char *msg);
  */
 t_fd_state	*last_output_redir(t_cmd2 *cmd);
 t_fd_state	*last_input_redir(t_cmd2 *cmd);
-t_fd_state	*here_document(const char *delimiter, t_env *env);
+t_pipe	*here_document(const char *delimiter, t_env *shell_env);
 t_fd_state	*truncate_redirection(const char *file_name);
 t_fd_state	*append_redirection(const char *file_name);
 t_fd_state	*input_redirection(const char *file_name);
 void		handle_redir_input(t_cmd2 *cmd);
 void		handle_redir_output(t_cmd2 *cmd);
+void	handle_heredoc_before_execution(t_cmd2 *cmds, t_env *shell_env);
 
 extern int	g_signal;
 
