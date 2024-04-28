@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:39 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/25 21:11:15 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:36:56 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_tree	*read_directory(void)
 	t_tree			*tree;
 	char			*tmp;
 
-	tmp = getcwd(NULL, 0); // get_variable_value("PWD", env);
+	tmp = getcwd(NULL, 0);
 	if (!tmp)
 		return (NULL);
 	dir = opendir(tmp);

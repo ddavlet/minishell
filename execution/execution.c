@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 13:21:38 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:31:05 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 	cmd = cmds;
 	while (cmd)
 	{
+		if (cmd->execution->redirections)
+			handle_redir_input(cmd);
+		cmd = cmd->next;
+	}
+	cmd = cmds;
+	while (cmd)
+	{
 		set_input_output(cmd);
 		expand_variables(cmd, cmd->execution->shell_env);
 		process_quotations(cmds, cmd->execution->shell_env);
@@ -58,12 +65,13 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 			execute(cmd);
 		else
 			cmd->execution->exit_status = EXIT_SUCCESS;
-		if (cmd->next == NULL || is_logic_operation(cmd))
-			if (wait_check(cmd))
-				break ;
+		if (wait_check(cmd))
+			cmd = cmd->next;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
 	}
+	while (waitpid(-1, NULL, 0) != -1)
+		;
 	reset_input_output(stdin, stdout);
 }
 

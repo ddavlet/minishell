@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:29:19 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/25 16:54:49 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/27 14:31:35 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,28 @@ static int	check_quotations(t_token *tokens)
 {
 	t_token		*tmp;
 	uint32_t	i;
-	uint32_t	j;
+	long		j;
+	int			quot_type;
 
 	tmp = tokens;
 	i = 0;
+	quot_type = 0;
 	while (tmp)
 	{
-		if (tmp->literal[0] == '\'' || tmp->literal[0] == '\"')
+		j = -1;
+		while (tmp->literal[++j])
 		{
-			j = ft_strlen(tmp->literal);
-			if (j == 1)
-				return (1);
-			if (tmp->literal[j - 1] != tmp->literal[0])
-				return (1);
+			if (quot_type && tmp->literal[j] != quot_type)
+				;
+			else if (quot_type)
+				quot_type = 0;
+			else if (tmp->literal[j] == '\'')
+				quot_type = '\'';
+			else if (tmp->literal[j] == '\"')
+				quot_type = '\"';
 		}
+		if (quot_type)
+			return (1);
 		tmp = tmp->next;
 	}
 	return (0);

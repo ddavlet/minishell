@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_last_input_redir.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:30:09 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/20 20:26:15 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:53:47 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
