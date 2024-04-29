@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:55 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:52:11 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:30:11 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	free_arr2d(void **arr2d)
 	free(arr);
 }
 
-void	msg_error(char *err)
+void	*msg_error(char *err)
 {
 	perror(err);
-	exit(EXIT_FAILURE);
+	return (NULL);
 }
 
 void	exit_handler(int status)

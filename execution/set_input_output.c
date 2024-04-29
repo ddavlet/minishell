@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:46 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/27 17:51:49 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:40:31 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_pipe_output(t_cmd2 *cmd)
 	cmd->execution->pipe = pipe;
 }
 
-void	handle_redir_input(t_cmd2 *cmd)
+int	handle_redir_input(t_cmd2 *cmd)
 {
 	t_fd_state	*input_fd;
 
@@ -39,10 +39,14 @@ void	handle_redir_input(t_cmd2 *cmd)
 		}
 		if (input_fd->fd != STDIN_FILENO)
 			close_redir(input_fd);
+		return (0);
 	}
+	else
+		return (1);
+
 }
 
-void	handle_redir_output(t_cmd2 *cmd)
+int	handle_redir_output(t_cmd2 *cmd)
 {
 	t_fd_state	*output_fd;
 
@@ -55,20 +59,26 @@ void	handle_redir_output(t_cmd2 *cmd)
 				"minishell: dup2 for output redirection failed");
 		if (output_fd->fd != STDOUT_FILENO)
 			close_redir(output_fd);
+		return (0);
 	}
+	else
+		return (1);
 }
 
-void	set_input_output(t_cmd2 *cmd)
+int	set_input_output(t_cmd2 *cmd)
 {
 	t_cmd2	*next;
 
 	cmd_check(cmd);
 	if (cmd->execution->redirections)
 	{
-		handle_redir_input(cmd);
-		handle_redir_output(cmd);
+		if (handle_redir_input(cmd))
+			return (1);
+		if (handle_redir_output(cmd))
+			return (1);
 	}
 	next = get_next_cmd(cmd);
 	if (next && cmd->execution->operation == PIPE_)
 		handle_pipe_output(cmd);
+	return (0);
 }

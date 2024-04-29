@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/27 17:31:05 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:06:25 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	execute(t_cmd2 *cmd)
 	else
 	{
 		execute_cmd(cmd);
-		handle_previous_pipe(cmd);
+		// handle_previous_pipe(cmd);
 		return ;
 	}
 }
@@ -49,7 +49,13 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 	cmd = cmds;
 	while (cmd)
 	{
-		set_input_output(cmd);
+		if (set_input_output(cmd))
+		{
+			append_envp(cmd->execution->shell_env, "LAST_EXIT_STATUS", "1");
+			handle_previous_pipe(cmd);
+			cmd = cmd->next;
+			continue ;
+		}
 		expand_variables(cmd, cmd->execution->shell_env);
 		process_quotations(cmds, cmd->execution->shell_env);
 		if (g_signal == SIGINT)
@@ -58,12 +64,15 @@ void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
 			execute(cmd);
 		else
 			cmd->execution->exit_status = EXIT_SUCCESS;
-		if (cmd->next == NULL || is_logic_operation(cmd))
+		handle_previous_pipe(cmd);
+		if (!cmd->next || is_logic_operation(cmd))
 			if (wait_check(cmd))
 				break ;
 		reset_input_output(stdin, stdout);
 		cmd = cmd->next;
 	}
+	while (waitpid(-1, NULL, 0) != -1)
+		;
 	reset_input_output(stdin, stdout);
 }
 

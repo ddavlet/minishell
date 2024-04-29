@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:22 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/25 08:28:00 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:40:08 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/wait.h>
 
 void		execution(t_cmd2 *cmds);
-void		set_input_output(t_cmd2 *cmd);
+int			set_input_output(t_cmd2 *cmd);
 int			execute_command(t_cmd2 *cmd);
 void		builtin_router(t_cmd2 *cmd);
 int			wait_check(t_cmd2 *cmd);
@@ -44,7 +44,7 @@ void		close_redir(t_fd_state *input_fd_state);
 t_cmd2		*get_next_cmd(t_cmd2 *cmd);
 t_cmd2		*get_previous_cmd(t_cmd2 *cmd);
 void		exit_handler(int status);
-void		msg_error(char *err);
+void		*msg_error(char *err);
 void		free_arr2d(void **arr2d);
 void		terminate(t_cmd2 *cmd, int status, char *msg);
 int			is_builtin(t_cmd2 *cmd);
@@ -62,8 +62,8 @@ t_pipe		*here_document(const char *delimiter, t_env *shell_env);
 t_fd_state	*truncate_redirection(const char *file_name);
 t_fd_state	*append_redirection(const char *file_name);
 t_fd_state	*input_redirection(const char *file_name);
-void		handle_redir_input(t_cmd2 *cmd);
-void		handle_redir_output(t_cmd2 *cmd);
+int			handle_redir_input(t_cmd2 *cmd);
+int			handle_redir_output(t_cmd2 *cmd);
 void		handle_heredoc_before_execution(t_cmd2 *cmds, t_env *shell_env);
 
 extern int	g_signal;

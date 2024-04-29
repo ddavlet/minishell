@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_last_output_redir.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:15 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/18 13:31:17 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/29 16:28:47 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_fd_state	*last_output_redir(t_cmd2 *cmd)
 			output_fd_state = truncate_redirection(redir->redir_name);
 		else if (redir->redir_sym == APP_OUT)
 			output_fd_state = append_redirection(redir->redir_name);
+		if (!output_fd_state)
+			break ;
 		redir = redir->next;
 	}
 	return (output_fd_state);
