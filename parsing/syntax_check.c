@@ -72,6 +72,16 @@ int	unclosed_quotations(t_token *token)
 	return (0);
 }
 
+int	unclosed_escape(t_token *token)
+{
+	const char	*backslash;
+
+	backslash = ft_strchr(token->literal, '\\');
+	if (backslash && !is_escaped(backslash, token->literal) && *(backslash + 1) == '\0')
+		return (1);
+	return (0);
+}
+
 int	syntax_check(t_token *tokens)
 {
 	t_token	*token;
@@ -84,6 +94,8 @@ int	syntax_check(t_token *tokens)
 	token = token->next;
 	while (token)
 	{
+		if (unclosed_escape(token))
+			return (syntax_error(token->literal));
 		if (unclosed_quotations(token))
 			return (syntax_error(token->literal));
 		if (is_operation_token(token) && is_operation_token(token->next))

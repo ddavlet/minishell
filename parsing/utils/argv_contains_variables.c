@@ -42,7 +42,7 @@ static int	dollar_sign_edge_case(const char *literal, const char *dollar_sign)
 		return (1);
 	if (!ft_isalpha(*(dollar_sign + 1)) && *(dollar_sign + 1) != '?')
 		return (1);
-	if (is_literal_char(dollar_sign, literal))
+	if (is_escaped(dollar_sign, literal))
 		return (1);
 	return (0);
 }

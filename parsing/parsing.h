@@ -172,7 +172,7 @@ int							parse_nested_argv(char ***ptr_argv, t_token *start,
 								t_token *end);
 void						free_array_3d(char ***arr_3d);
 int							is_redirection_token_without_name(t_token *token);
-int							is_literal_char(const char *ptr_char,
+int							is_escaped(const char *ptr_char,
 								const char *literal);
 int							syntax_check(t_token *tokens);
 const char					*get_opening_quote(const char *literal);
