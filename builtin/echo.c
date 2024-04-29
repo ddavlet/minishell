@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:39 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/29 13:30:16 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:40:35 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_option(const char *arg)
 int	print_shell_format(const char *literal, int fd)
 {
 	const char	*ptr_literal;
-	int	count;
+	int			count;
 
 	count = 0;
 	ptr_literal = literal;

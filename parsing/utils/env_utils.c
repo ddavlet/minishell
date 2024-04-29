@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:28:09 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 14:30:45 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:40:51 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,4 @@ void	append_envp(t_env *shell_env, char *name, char *content)
 		write(2, "minishell: memory allocation error occured", 42);
 		exit(255);
 	}
-}
-
-void	add_path(t_env *shell_env, char *path)
-{
-	char	*old_path;
-	char	*new_path;
-
-	old_path = get_variable_value("PATH", shell_env);
-	if (ft_strnstr(old_path, path, ft_strlen(path)))
-		return ;
-	new_path = ft_strjoin_free(old_path, ":");
-	new_path = ft_strjoin_free(new_path, path);
-	append_envp(shell_env, "PATH", new_path);
-	free(new_path);
 }

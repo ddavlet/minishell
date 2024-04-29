@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:23 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/29 13:30:45 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:37:47 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ int	builtin_err_gen(const char *cmd, const char *msg, const char *path)
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	ft_putendl_fd(msg, 2);
+	if (msg)
+		ft_putendl_fd(msg, 2);
+	else
+		perror("");
 	return (127);
 }

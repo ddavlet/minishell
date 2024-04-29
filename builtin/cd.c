@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:30 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 14:28:54 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:40:27 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ static char	*build_path(char *dir)
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-	{
-		// perror("minishell: cd: error retrieving current directory: getcwd: ");
 		return (NULL);
-	}
 	cwd_with_slash = ft_strjoin(cwd, "/");
 	free(cwd);
 	if (!cwd_with_slash)

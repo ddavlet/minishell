@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:28:14 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/26 13:51:57 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:27:03 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,18 @@ char	*get_shell_variable(const char *dollar_sign, const char *literal,
 		free((char *)name);
 	}
 	return (value);
+}
+
+void	add_path(t_env *shell_env, char *path)
+{
+	char	*old_path;
+	char	*new_path;
+
+	old_path = get_variable_value("PATH", shell_env);
+	if (ft_strnstr(old_path, path, ft_strlen(path)))
+		return ;
+	new_path = ft_strjoin_free(old_path, ":");
+	new_path = ft_strjoin_free(new_path, path);
+	append_envp(shell_env, "PATH", new_path);
+	free(new_path);
 }
