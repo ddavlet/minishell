@@ -60,7 +60,6 @@ void	handle_redir_output(t_cmd2 *cmd)
 
 void	set_input_output(t_cmd2 *cmd)
 {
-	t_cmd2	*prev;
 	t_cmd2	*next;
 
 	cmd_check(cmd);

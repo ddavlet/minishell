@@ -45,7 +45,7 @@ static void	write_error(char *name, char *value)
 	write(2, ": not a valid identifier\n", 25);
 }
 
-static void	check_append(char *name, char *value, t_env *shell_env)
+static void	check_append(char *name, char *value)
 {
 	uint32_t	i;
 
@@ -60,29 +60,30 @@ static void	check_append(char *name, char *value, t_env *shell_env)
 			return (write_error(name, value));
 		i++;
 	}
-	append_envp(shell_env, name, value);
+}
+
+static void	export_argument(const char *argument, t_env *shell_env)
+{
+	char		*key;
+	char		*value;
+
+	key = ft_strcdup(argument, '=');
+	value = ft_strchr(argument, '=');
+	check_append(key, value);
+	append_envp(shell_env, key, value);
 	if (!value)
-		set_flag(name, shell_env);
+		set_flag(key, shell_env);
+	free(key);
 }
 
 int	builtin_export(const char **argv, t_env *shell_env)
 {
 	uint32_t	i;
-	char		*key;
-	char		*value;
 	char		**env_print;
 
 	i = 1;
 	while (argv[i] != NULL)
-	{
-		key = ft_strcdup(argv[i], '=');
-		value = ft_strchr(argv[i], '=');
-			// append_envp(shell_env, key, value);
-			// set_flag(key, shell_env);
-		check_append(key, value, shell_env);
-		free(key);
-		i++;
-	}
+		export_argument(argv[i++], shell_env);
 	if (!argv[1])
 	{
 		i = 0;
