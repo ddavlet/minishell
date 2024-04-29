@@ -71,13 +71,10 @@ const char	*process_replacement(const char *literal, const char *sequence,
 	result_ptr = result;
 	current = literal;
 	tmp = ft_strnstr(current, sequence, ft_strlen(current));
-
-		head_len = tmp - current;
-		ft_memcpy(result_ptr, current, head_len);
-		result_ptr += head_len;
-		ft_memcpy(result_ptr, replacement, replacer.rep_len);
-
-
+	head_len = tmp - current;
+	ft_memcpy(result_ptr, current, head_len);
+	result_ptr += head_len;
+	ft_memcpy(result_ptr, replacement, replacer.rep_len);
 	strcpy(result_ptr, current);
 	return (result);
 }
@@ -88,7 +85,7 @@ const char	*replace_sequence(const char *literal, const char *sequence,
 	t_replacer	replacer;
 
 	if (!literal || !sequence || !replacement)
-        return (NULL);
+		return (NULL);
 	replacer = initialize_replacer(literal, sequence, replacement);
-    return (process_replacement(literal, sequence, replacement, replacer));
+	return (process_replacement(literal, sequence, replacement, replacer));
 }

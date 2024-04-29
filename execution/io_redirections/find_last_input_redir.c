@@ -36,7 +36,7 @@ void	close_last_redir(t_redir *redir, t_fd_state *input_fd_state)
 
 int	is_final_input(t_redir *redir)
 {
-	t_redir *other;
+	t_redir	*other;
 
 	other = redir->next;
 	while (other)

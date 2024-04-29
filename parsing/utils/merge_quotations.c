@@ -27,10 +27,12 @@ const char	*get_opening_quote(const char *literal)
 	if (!literal)
 		return (NULL);
 	single_quote = ft_strchr(literal, '\'');
-	while (single_quote && single_quote - literal != 0 && *(single_quote - 1) == '\\')
+	while (single_quote && single_quote - literal != 0 && *(single_quote
+			- 1) == '\\')
 		single_quote = ft_strchr(single_quote + 1, '\'');
 	double_quote = ft_strchr(literal, '"');
-	while (double_quote && double_quote - literal != 0 && *(double_quote - 1) == '\\')
+	while (double_quote && double_quote - literal != 0 && *(double_quote
+			- 1) == '\\')
 		double_quote = ft_strchr(double_quote + 1, '"');
 	if (single_quote && !double_quote)
 		return (single_quote);

@@ -26,7 +26,6 @@ void	close_pipe(t_pipe *pipe)
 void	close_pipes(t_cmd2 *cmd)
 {
 	cmd = cmd->cmds;
-
 	while (cmd)
 	{
 		if (cmd->execution && cmd->execution->pipe)

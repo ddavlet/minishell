@@ -18,8 +18,7 @@ void	here_doc_warning(const char *delimiter)
 	{
 		write(1,
 			"minishell: warning: here-document "
-			"delimited by end-of-file (wanted `",
-			68);
+			"delimited by end-of-file (wanted `", 68);
 		write(1, delimiter, ft_strlen(delimiter));
 		write(1, "')\n", 3);
 	}
@@ -32,7 +31,6 @@ void	here_document_loop(t_pipe *pipe, const char *delimiter,
 	const char	*tmp;
 
 	line = (const char *)readline("heredoc> ");
-	// int fd = open("/home/ddavlety/Core_projects/minishell_project/minishell/testfile", O_WRONLY | O_CREAT);
 	while (line && g_signal != SIGINT)
 	{
 		if (!ft_strncmp(line, delimiter, ft_strlen(line) + 1)
@@ -81,7 +79,8 @@ void	handle_heredoc_before_execution(t_cmd2 *cmds, t_env *shell_env)
 			{
 				if (cmd->execution->heredoc)
 					close_pipe(cmd->execution->heredoc);
-				cmd->execution->heredoc = here_document(redir->redir_name, shell_env);
+				cmd->execution->heredoc = here_document(redir->redir_name,
+						shell_env);
 			}
 			redir = redir->next;
 		}

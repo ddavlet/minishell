@@ -25,12 +25,13 @@ int	argv_contains_variables(const char **argv)
 	}
 	return (0);
 }
+
 static int	is_between_single_quotes(const char *literal,
 		const char *dollar_sign)
 {
 	if (is_between_char(dollar_sign - literal, literal, '\'')
-			&& !is_between_char(ft_strchr(dollar_sign, '\'') - literal, literal,
-		'\"'))
+		&& !is_between_char(ft_strchr(dollar_sign, '\'') - literal, literal,
+			'\"'))
 		return (1);
 	return (0);
 }
