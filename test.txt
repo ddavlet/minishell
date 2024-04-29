@@ -1,5 +1,0 @@
-NAME := minishell
-all: $(NAME) $(LIBFT)
-$(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
-	$(CC) $(FLAGS) $(INC) $(OBJ) $(LIB) -o $(NAME)
-	$(RM) $(NAME)

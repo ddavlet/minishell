@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:39 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/25 17:17:10 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:30:16 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	builtin_echo(const char **argv, t_env *shell_env)
 	i = 1;
 	while (argv[i] && ft_strncmp(argv[i], "-n", 2) == 0)
 	{
-		if (is_option(argv[i]))
+		if (argv[2] && is_option(argv[i]))
 			i++;
 		else
 			break ;
@@ -63,7 +63,7 @@ int	builtin_echo(const char **argv, t_env *shell_env)
 			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
-	if (argv[1] == NULL || ft_strncmp(argv[1], "-n", 3))
+	if (!argv[1] || ft_strncmp(argv[1], "-n", 2))
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }
