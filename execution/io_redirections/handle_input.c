@@ -19,7 +19,7 @@ t_fd_state	*input_redirection(const char *file_name)
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
-		return (msg_error("open")); // catch
+		return (msg_error("open"));
 	fd_state = initialize_fd_state(fd);
 	if (!fd_state)
 	{

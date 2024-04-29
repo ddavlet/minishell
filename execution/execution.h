@@ -31,6 +31,8 @@ t_fd_state	*initialize_fd_state(int fd);
 int			is_logic_operation(t_cmd2 *cmd);
 int			execute_cmd(t_cmd2 *cmd);
 char		*build_path_from_env(char *name, t_env *env);
+int			find_input_redirection(t_cmd2 *cmd);
+int			find_output_redirection(t_cmd2 *cmd);
 
 /*
  *   pipes

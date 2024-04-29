@@ -37,33 +37,25 @@ void	execute(t_cmd2 *cmd)
 	else
 	{
 		execute_cmd(cmd);
-		// handle_previous_pipe(cmd);
 		return ;
 	}
 }
 
-void	execution_loop(t_cmd2 *cmds, int stdin, int stdout)
+void	execution_loop(t_cmd2 *cmd, int stdin, int stdout)
 {
-	t_cmd2	*cmd;
-
-	cmd = cmds;
-	while (cmd)
+	while (cmd && g_signal != SIGINT)
 	{
 		if (set_input_output(cmd))
-		{
 			append_envp(cmd->execution->shell_env, "LAST_EXIT_STATUS", "1");
-			handle_previous_pipe(cmd);
-			cmd = cmd->next;
-			continue ;
-		}
-		expand_variables(cmd, cmd->execution->shell_env);
-		process_quotations(cmds, cmd->execution->shell_env);
-		if (g_signal == SIGINT)
-			break ;
-		if (cmd->execution->argv[0])
-			execute(cmd);
 		else
-			cmd->execution->exit_status = EXIT_SUCCESS;
+		{
+			expand_variables(cmd, cmd->execution->shell_env);
+			process_quotations(cmd, cmd->execution->shell_env);
+			if (cmd->execution->argv[0])
+				execute(cmd);
+			else
+				cmd->execution->exit_status = EXIT_SUCCESS;
+		}
 		handle_previous_pipe(cmd);
 		if (!cmd->next || is_logic_operation(cmd))
 			if (wait_check(cmd))
