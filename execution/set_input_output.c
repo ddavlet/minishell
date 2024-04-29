@@ -65,6 +65,34 @@ int	handle_redir_output(t_cmd2 *cmd)
 		return (1);
 }
 
+int	find_input_redirection(t_cmd2 *cmd)
+{
+	t_redir	*redir;
+
+	redir = cmd->execution->redirections;
+	while (redir)
+	{
+		if (redir->redir_sym == RED_INP || redir->redir_sym == HERE_DOC)
+			return (1);
+		redir = redir->next;
+	}
+	return (0);
+}
+
+int	find_output_redirection(t_cmd2 *cmd)
+{
+	t_redir	*redir;
+
+	redir = cmd->execution->redirections;
+	while (redir)
+	{
+		if (redir->redir_sym == RED_OUT || redir->redir_sym == APP_OUT)
+			return (1);
+		redir = redir->next;
+	}
+	return (0);
+}
+
 int	set_input_output(t_cmd2 *cmd)
 {
 	t_cmd2	*next;
@@ -72,10 +100,12 @@ int	set_input_output(t_cmd2 *cmd)
 	cmd_check(cmd);
 	if (cmd->execution->redirections)
 	{
-		if (handle_redir_input(cmd))
-			return (1);
-		if (handle_redir_output(cmd))
-			return (1);
+		// if (find_input_redirection(cmd))
+			if (handle_redir_input(cmd))
+				return (1);
+		// if (find_output_redirection(cmd))
+			if (handle_redir_output(cmd))
+				return (1);
 	}
 	next = get_next_cmd(cmd);
 	if (next && cmd->execution->operation == PIPE_)
