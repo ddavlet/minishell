@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:34:50 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 14:34:57 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/29 14:42:02 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,17 @@ static void	set_flag(const char *name, t_env *shell_env)
 	}
 }
 
-static void	write_error(char *name, char *value)
+static int	write_error(char *name, char *value)
 {
 	write(2, "minishell: export: ", 19);
 	write(2, name, ft_strlen(name));
 	if (value)
 		write(2, value, ft_strlen(value));
 	write(2, ": not a valid identifier\n", 25);
+	return (1);
 }
 
-static void	check_append(char *name, char *value)
+static int	check_append(char *name, char *value, t_env *shell_env)
 {
 	uint32_t	i;
 
@@ -60,30 +61,40 @@ static void	check_append(char *name, char *value)
 			return (write_error(name, value));
 		i++;
 	}
+	append_envp(shell_env, name, value);
+	if (!value)
+		set_flag(value, shell_env);
+	return (0);
 }
 
-static void	export_argument(const char *argument, t_env *shell_env)
+static int	export_argument(const char **argv, t_env *shell_env)
 {
+	uint32_t	i;
 	char		*key;
 	char		*value;
+	int			exit_code;
 
-	key = ft_strcdup(argument, '=');
-	value = ft_strchr(argument, '=');
-	check_append(key, value);
-	append_envp(shell_env, key, value);
-	if (!value)
-		set_flag(key, shell_env);
-	free(key);
+	exit_code = 0;
+	i = 1;
+	while (argv[i])
+	{
+		key = ft_strcdup(argv[i], '=');
+		value = ft_strchr(argv[i], '=');
+		if (check_append(key, value, shell_env))
+			exit_code = 1;
+		free(key);
+		i++;
+	}
+	return (exit_code);
 }
 
 int	builtin_export(const char **argv, t_env *shell_env)
 {
 	uint32_t	i;
 	char		**env_print;
+	int			exit_code;
 
-	i = 1;
-	while (argv[i] != NULL)
-		export_argument(argv[i++], shell_env);
+	exit_code = export_argument(argv, shell_env);
 	if (!argv[1])
 	{
 		i = 0;
@@ -92,5 +103,5 @@ int	builtin_export(const char **argv, t_env *shell_env)
 			ft_putendl_fd(env_print[i++], STDOUT_FILENO);
 		free_ptr_str(env_print);
 	}
-	return (0);
+	return (exit_code);
 }
