@@ -45,7 +45,8 @@
 
 int	syntax_error(const char *token_name)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+	ft_putstr_fd("minishell: syntax error near unexpected token `",
+		STDERR_FILENO);
 	ft_putstr_fd(token_name, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
 	return (-1);

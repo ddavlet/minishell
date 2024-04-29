@@ -21,6 +21,7 @@ t_execution	*initialize_execution_data(void)
 		return (NULL);
 	execution->argv = NULL;
 	execution->pipe = NULL;
+	execution->heredoc = NULL;
 	execution->redirections = NULL;
 	execution->shell_env = NULL;
 	execution->exit_status = EXIT_FAILURE;

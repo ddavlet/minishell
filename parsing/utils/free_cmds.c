@@ -19,16 +19,9 @@ void	free_execution_data(t_execution *execution)
 		if (execution->argv)
 			free_argv(execution->argv);
 		if (execution->pipe)
-		{
-			if (execution->pipe->write->is_open)
-				close_fd(execution->pipe->write);
-			if (execution->pipe->read->is_open)
-				close_fd(execution->pipe->read);
-			free(execution->pipe->read);
-			free(execution->pipe->write);
-			free(execution->pipe->pipe_fd);
-			free(execution->pipe);
-		}
+			free_pipe(execution->pipe);
+		if (execution->heredoc)
+			free_pipe(execution->heredoc);
 		if (execution->redirections)
 			free_redirections(execution->redirections);
 		free(execution);

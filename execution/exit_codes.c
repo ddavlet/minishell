@@ -41,8 +41,6 @@ void	wait_until(t_cmd2 *cmd)
 	last = cmd;
 	while (last && last->execution->exit_status != EXIT_SUCCESS)
 	{
-		// if (is_piped(last) || is_logic_operation(last))
-		// {
 		pid = last->execution->pid;
 		if (waitpid(pid, &exit_status, 0) != -1)
 		{
@@ -51,10 +49,8 @@ void	wait_until(t_cmd2 *cmd)
 			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
 			free(tmp);
 		}
-		// }
 		last = get_previous_cmd(last);
 	}
-
 }
 
 int	wait_check(t_cmd2 *cmd)

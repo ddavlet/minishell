@@ -41,7 +41,8 @@ void	handle_pipes(t_cmd2 *cmd)
 	if (get_previous_cmd(cmd) && get_previous_cmd(cmd)->execution->pipe)
 	{
 		close_fd(get_previous_cmd(cmd)->execution->pipe->write);
-		if (dup2(get_previous_cmd(cmd)->execution->pipe->read->fd, STDIN_FILENO) == -1)
+		if (dup2(get_previous_cmd(cmd)->execution->pipe->read->fd,
+				STDIN_FILENO) == -1)
 			terminate(cmd, EXIT_FAILURE,
 				"minishell: dup2 for pipe input redirection failed");
 		close_fd(get_previous_cmd(cmd)->execution->pipe->read);

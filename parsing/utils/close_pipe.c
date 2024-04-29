@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../execution.h"
+#include "../parsing.h"
 
 void	close_pipe(t_pipe *pipe)
 {
@@ -20,24 +20,18 @@ void	close_pipe(t_pipe *pipe)
 			close_fd(pipe->read);
 		if (pipe->write->is_open)
 			close_fd(pipe->write);
-		free(pipe->pipe_fd);
-		free(pipe->read);
-		free(pipe->write);
-		free(pipe);
 	}
 }
 
 void	close_pipes(t_cmd2 *cmd)
 {
 	cmd = cmd->cmds;
-
 	while (cmd)
 	{
 		if (cmd->execution && cmd->execution->pipe)
-		{
-			close(cmd->execution->pipe->read->fd);
-			close(cmd->execution->pipe->write->fd);
-		}
+			close_pipe(cmd->execution->pipe);
+		if (cmd->execution && cmd->execution->heredoc)
+			close_pipe(cmd->execution->heredoc);
 		cmd = cmd->next;
 	}
 }
