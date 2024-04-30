@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:27 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 14:10:01 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:30:57 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,29 @@ void	update_exit_status(int exit_status, t_env *shell_env)
 	free(tmp);
 }
 
+// void	wait_until(t_cmd2 *cmd)
+// {
+// 	t_cmd2	*last;
+// 	int		exit_status;
+// 	pid_t	pid;
+// 	char	*tmp;
+
+// 	cmd_check(cmd);
+// 	last = cmd->cmds;
+// 	while (last && last != cmd)
+// 	{
+// 		pid = last->execution->pid;
+// 		if (waitpid(pid, &exit_status, 0) != -1)
+// 		{
+// 			last->execution->exit_status = exit_code(exit_status);
+// 			tmp = ft_itoa(exit_code(exit_status));
+// 			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
+// 			free(tmp);
+// 		}
+// 		last = last->next;
+// 	}
+// }
+
 void	wait_until(t_cmd2 *cmd)
 {
 	t_cmd2	*last;
@@ -38,18 +61,23 @@ void	wait_until(t_cmd2 *cmd)
 	char	*tmp;
 
 	cmd_check(cmd);
-	last = cmd;
-	while (last && last->execution->exit_status != EXIT_SUCCESS)
+	last = cmd->cmds;
+	while (last && last->execution->exit_status == EXIT_SUCCESS)
+		last = last->next;
+	while (last != cmd->next)
 	{
-		pid = last->execution->pid;
-		if (waitpid(pid, &exit_status, 0) != -1)
+		if (is_builtin(last) && !is_piped(last))
+			last = last->next;
+		else
 		{
+			pid = last->execution->pid;
+			waitpid(pid, &exit_status, 0);
 			last->execution->exit_status = exit_code(exit_status);
 			tmp = ft_itoa(exit_code(exit_status));
 			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
 			free(tmp);
+			last = last->next;
 		}
-		last = get_previous_cmd(last);
 	}
 }
 
