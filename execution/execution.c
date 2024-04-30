@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:19 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/30 11:13:35 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:00:34 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void	execution(t_cmd2 *cmds)
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	handle_heredoc_before_execution(cmds, cmds->execution->shell_env);
-	if (g_signal == SIGINT)
-		append_envp(cmds->execution->shell_env, "LAST_EXIT_STATUS", "130");
 	configure_signals_execution();
 	execution_loop(cmds, stdin, stdout);
 	free_cmds(cmds);

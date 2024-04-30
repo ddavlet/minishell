@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:22 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/27 18:01:36 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:59:35 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	here_document_loop(t_pipe *pipe, const char *delimiter,
 	const char	*tmp;
 
 	line = (const char *)readline("heredoc> ");
+	if (g_signal == SIGINT)
+		append_envp(shell_env, "LAST_EXIT_STATUS", "130");
 	while (line && g_signal != SIGINT)
 	{
 		if (!ft_strncmp(line, delimiter, ft_strlen(line) + 1)

@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:33:41 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/26 10:28:09 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:58:46 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	main(int argc, char *argv[], const char *envp[])
 		g_signal = 0;
 		configure_signals_shell_input();
 		cmds = create_cmds(argc, argv, shell_env);
+		if (g_signal == SIGINT)
+			append_envp(shell_env, "LAST_EXIT_STATUS", "130");
 		execution(cmds);
 		if (is_subshell(argc, argv))
 		{

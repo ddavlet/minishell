@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 14:06:42 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/20 19:30:58 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:51:29 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
