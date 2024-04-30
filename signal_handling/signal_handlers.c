@@ -15,10 +15,9 @@
 void	handle_sigint_shell_input(int signum)
 {
 	g_signal = signum;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	rl_replace_line("", 0);
-	rl_redisplay();
+	rl_on_new_line();
 }
 
 void	handle_sigint_execution(int signum)
