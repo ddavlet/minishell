@@ -6,7 +6,7 @@
 /*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:32:27 by vketteni          #+#    #+#             */
-/*   Updated: 2024/04/30 12:30:57 by ddavlety         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:07:36 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,14 @@ void	wait_until(t_cmd2 *cmd)
 		last = last->next;
 	while (last != cmd->next)
 	{
-		if (is_builtin(last) && !is_piped(last))
-			last = last->next;
-		else
+		pid = last->execution->pid;
+		if (waitpid(pid, &exit_status, 0) != -1)
 		{
-			pid = last->execution->pid;
-			waitpid(pid, &exit_status, 0);
 			last->execution->exit_status = exit_code(exit_status);
 			update_exit_status(last->execution->exit_status,
 				cmd->execution->shell_env);
-			last = last->next;
 		}
+		last = last->next;
 	}
 }
 

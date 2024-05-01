@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vketteni <vketteni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddavlety <ddavlety@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:31:00 by ddavlety          #+#    #+#             */
-/*   Updated: 2024/04/25 15:57:12 by vketteni         ###   ########.fr       */
+/*   Updated: 2024/05/01 14:57:30 by ddavlety         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_cmd2	*parser(t_token *tokens, t_env *shell_env)
 
 	if (syntax_check(tokens) == -1)
 	{
+		append_envp(shell_env, "LAST_EXIT_STATUS", "2");
 		free_tokens(tokens);
 		return (NULL);
 	}
