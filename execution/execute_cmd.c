@@ -12,6 +12,20 @@
 
 #include "execution.h"
 
+void	exit_name_error(t_cmd2 *cmd, const char *command)
+{
+	ft_putstr_fd(command, STDERR_FILENO);
+	terminate(cmd, 127, ": command not found");
+}
+
+void	exit_path_error(t_cmd2 *cmd, const char *path)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(path, STDERR_FILENO);
+	terminate_shell(cmd->execution->shell_env, 126,
+		": No such file or directory");
+}
+
 int	execute_command(t_cmd2 *cmd)
 {
 	const char	*path;
@@ -26,13 +40,12 @@ int	execute_command(t_cmd2 *cmd)
 		path = (const char *)build_path_from_env(argv[0],
 				cmd->execution->shell_env);
 		if (path == NULL)
-			terminate(cmd, 127, "minishell: couldn't find path");
+			exit_name_error(cmd, argv[0]);
 	}
 	else
 		path = argv[0];
 	if (execve(path, argv, envp) == -1)
-		terminate_shell(cmd->execution->shell_env, 126,
-			"minishell: permission denied");
+		exit_path_error(cmd, path);
 	return (0);
 }
 

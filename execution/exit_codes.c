@@ -30,35 +30,11 @@ void	update_exit_status(int exit_status, t_env *shell_env)
 	free(tmp);
 }
 
-// void	wait_until(t_cmd2 *cmd)
-// {
-// 	t_cmd2	*last;
-// 	int		exit_status;
-// 	pid_t	pid;
-// 	char	*tmp;
-
-// 	cmd_check(cmd);
-// 	last = cmd->cmds;
-// 	while (last && last != cmd)
-// 	{
-// 		pid = last->execution->pid;
-// 		if (waitpid(pid, &exit_status, 0) != -1)
-// 		{
-// 			last->execution->exit_status = exit_code(exit_status);
-// 			tmp = ft_itoa(exit_code(exit_status));
-// 			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
-// 			free(tmp);
-// 		}
-// 		last = last->next;
-// 	}
-// }
-
 void	wait_until(t_cmd2 *cmd)
 {
 	t_cmd2	*last;
 	int		exit_status;
 	pid_t	pid;
-	char	*tmp;
 
 	cmd_check(cmd);
 	last = cmd->cmds;
@@ -73,9 +49,8 @@ void	wait_until(t_cmd2 *cmd)
 			pid = last->execution->pid;
 			waitpid(pid, &exit_status, 0);
 			last->execution->exit_status = exit_code(exit_status);
-			tmp = ft_itoa(exit_code(exit_status));
-			append_envp(last->execution->shell_env, "LAST_EXIT_STATUS", tmp);
-			free(tmp);
+			update_exit_status(last->execution->exit_status,
+				cmd->execution->shell_env);
 			last = last->next;
 		}
 	}
