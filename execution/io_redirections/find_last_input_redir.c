@@ -68,7 +68,7 @@ t_fd_state	*last_input_redir(t_cmd2 *cmd)
 			input_fd_state = cmd->execution->heredoc->read;
 		if (g_signal == SIGINT)
 			break ;
-		if (!is_final_input(redir))
+		if (!is_final_input(redir) && redir->redir_sym == RED_INP)
 			close_last_redir(redir, input_fd_state);
 		redir = redir->next;
 	}
